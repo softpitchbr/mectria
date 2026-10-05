@@ -74,6 +74,19 @@ A etapa vem na frente de cada tarefa. Se o ERP tiver etiqueta, use a letra como 
 36. [A] Reunião de encerramento e entrega dos arquivos
 37. [A] Pedir as contrapartidas: collab no Instagram, case no site da Triângulo, indicações
 
+### Tarefas a acrescentar (decisão de 05/10: hospedagem própria)
+A numeração continua a partir de 37 para não mexer no que já está no ERP. Detalhes em `08-site-e-hospedagem.md`.
+
+38. [T] Criar as contas (hospedagem, repositório, Search Console, Analytics) no e-mail institucional da MecTRIA, com a Triângulo como membro
+39. [T] Levantar o domínio: onde está registrado, quando vence e registros de e-mail (MX)
+40. [T] Mapear as URLs atuais do Wix e configurar os redirecionamentos 301
+41. [T] Migrar os posts do blog do Wix
+42. [T] Painel de edição do blog e manual de uso
+43. [T] Virada: apontar o domínio, enviar o sitemap no Search Console, conferir formulários, chatbot e anúncios
+44. [A] Entregar contas e repositório à MecTRIA e cancelar o Wix Premium antes da renovação
+
+Se a hospedagem recomendada (Cloudflare) for aceita, a tarefa **8** passa a ser "Publicar na hospedagem definitiva, com entrega a partir de São Paulo": nessa opção não há servidor para mudar de região.
+
 ## 3. Anotações · um post-it por bloco
 
 **Post-it 1 · Contatos**

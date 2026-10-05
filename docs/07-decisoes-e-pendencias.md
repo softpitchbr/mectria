@@ -15,22 +15,22 @@ Atualizar este arquivo sempre que algo for decidido ou resolvido.
 | Pós-venda de 2 meses. Depois a MecTRIA assume tudo | R2 19:18 |
 | Pagamento atrelado a resultado, a ser detalhado no contrato | Reunião não gravada, confirmado na R2 27:48 |
 | Começar pelo fechamento. Topo de funil, prospecção e pós-venda ficam para projetos futuros | R1 46:39, R2 30:42 |
+| **Site novo fora do Wix, em hospedagem própria, criado pela Triângulo. Domínio pago pela MecTRIA.** A hospedagem será escolhida a partir das sugestões em `08-site-e-hospedagem.md` | Lucas, 05/10/2026 |
 
 ## Pendências e inconsistências
 
 ### 1. O escopo em PDF está desatualizado (alta)
 O PDF de 21/09 não tem treinamento, roleplay, micro pactos, calculadora, roteiro do vendedor, chatbot, SEO local nem processo comercial visual. A S8 dele é "publicação e encerramento", e o pós-venda **proíbe novas versões de copy**, o que contradiz o "ajustar o roteiro a partir dos dados". **Atualizar o TAP antes de enviar ao Marcelo (tarefa 1).** Tabela completa em `02-escopo.md` seção C.
 
-### 2. Plataforma do site: Wix ou hospedagem própria? (alta)
-- O PDF diz "implementação na plataforma atual" e exclui a migração de plataforma. O Kanban fala em "acessos ao Wix".
-- O protótipo roda **fora do Wix**, num servidor em Washington que vai para Guarulhos (parece Vercel, regiões `iad1` → `gru1`).
-- Se o site novo não for no Wix, isso **é** uma migração de plataforma. Decidir e registrar:
-  - Onde o site fica depois do projeto e **quem paga a hospedagem** depois do pós-venda.
-  - Se a MecTRIA cancela o Wix Premium ou mantém algo nele.
-  - Como **apontar o domínio** (DNS) e quem faz isso.
-  - **Blog e URLs atuais:** migrar os posts do Wix e criar **redirecionamentos 301**, senão o ranqueamento que já existe se perde.
-  - Onde o **chatbot** e os **formulários** vão rodar e para onde vão os leads.
-  - Quem mantém o site depois. O PDF diz que é a MecTRIA, e ela não tem ninguém que saiba mexer (R1 00:32). Isso pede um site que a MecTRIA consiga editar ou um manual de uso.
+### 2. Hospedagem e saída do Wix (alta)
+**Decidido em 05/10/2026:** hospedagem própria, fora do Wix. A Triângulo cria o site e a MecTRIA paga o domínio. **Ainda falta:**
+- Escolher a hospedagem. Recomendação: Cloudflare no plano gratuito, com as contas no e-mail institucional da MecTRIA. Depende do stack do protótipo (perguntar ao Matheus).
+- Atualizar a premissa 3 do TAP, que excluía a migração de plataforma.
+- Levantar domínio, e-mail no domínio, Search Console, Analytics e Ad Grants no kick-off.
+- Migrar o blog com redirecionamentos 301 e cancelar o Wix antes da renovação.
+- Painel de edição e manual, porque a MecTRIA não mexe em código.
+
+Detalhes e perguntas do kick-off em `08-site-e-hospedagem.md`.
 
 ### 3. Cláusula de pagamento por resultado (alta)
 Métrica, linha de base, janela, fonte de dados, obrigações da MecTRIA, o que acontece se não bater e a troca de gestão. Lista completa em `05-comercial.md`.
