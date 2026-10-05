@@ -71,3 +71,12 @@ São usados no pitch e vão aparecer no case:
 - A R1 começa com a reunião em andamento. A R2 termina em 33:20, no meio de uma fala.
 - O que foi combinado no "bench" sem gravação depois da R1 (contrapartidas e pagamento por resultado) só aparece indiretamente na R2.
 - Grafia certa da EJ do Lucas e do Pedro: "Projep" (deck) ou "Progep" (transcrição).
+
+### 12. Data da publicação do site (média)
+O PDF prevê a publicação na S8. A sugestão do briefing da Tela é publicar no fim da S5 (~06/11), depois da validação da copy: sobe uma vez só, com os textos finais, e o Google ganha umas três semanas antes do treinamento. Decidir com Pedro e Lucas. Ver `09-briefing-tela-matheus.md`.
+
+### 13. Itens novos que entram na frente Tela (baixa)
+- **Política de privacidade:** obrigatória pela LGPD, porque os formulários coletam dados pessoais. A MecTRIA fornece razão social, CNPJ e um e-mail de contato.
+- **Feed do Instagram no site:** exige conta profissional da MecTRIA e liberação de acesso, porque a API antiga de exibição foi desativada.
+- **Cases:** confirmar quais clientes podem ser citados. Projeto de engenharia costuma ter sigilo.
+

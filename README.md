@@ -17,6 +17,7 @@ Meta: conversão entre proposta e fechamento de ~25% para **40%**. Execução de
 | [`docs/06-referencias-de-execucao.md`](docs/06-referencias-de-execucao.md) | Protótipo do site, sequência da apresentação com micro pactos e o deck de referência |
 | [`docs/07-decisoes-e-pendencias.md`](docs/07-decisoes-e-pendencias.md) | O que já foi decidido e o que está em aberto |
 | [`docs/08-site-e-hospedagem.md`](docs/08-site-e-hospedagem.md) | Hospedagem própria: recomendação, domínio, saída do Wix, custos e perguntas do kick-off |
+| [`docs/09-briefing-tela-matheus.md`](docs/09-briefing-tela-matheus.md) | Briefing da frente Tela: perguntas ao Matheus, o que pedir à MecTRIA e como fazer a primeira entrega |
 | [`docs/glossario.md`](docs/glossario.md) | Erros da transcrição e termos do projeto |
 | [`docs/reunioes/`](docs/reunioes/) | Resumos e transcrições completas das reuniões |
 | [`referencias/`](referencias/) | Escopo original em PDF e o deck institucional interativo da Triângulo |
