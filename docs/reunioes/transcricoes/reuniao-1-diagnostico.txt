@@ -1,0 +1,388 @@
+REUNIÃO 1 · DIAGNÓSTICO (MecTRIA × Triângulo Solutions)
+Transcrição automática do Google Meet, colada como veio. Data a confirmar.
+Obs.: a gravação começa com a reunião já em andamento e termina quando o Meet caiu (53:09).
+A identificação de quem fala às vezes erra. Grafias erradas de nomes: ver docs/glossario.md.
+--------------------------------------------------------------------------------
+
+00:00 Marcelo Zaiden: E claro que o site, né? A gente conseguiu obter o Google AdSense de volta. A gente, a gestão passada tinha acabado, mas a gente conseguiu reverter isso agora.
+00:13 Marcelo Zaiden: Faz menos de uma semana. E, bom, A gente, acho que em questões de edição e tudo mais no site, acaba que a gente tem acho que as ferramentas pra tá mexendo nisso, não o interno, mas eu falo em questão de pagamento, que a gente faz pela
+00:30 Lucas Boaretto: Wix, e a
+00:32 Marcelo Zaiden: gente tem o prêmio que um Downwix, que ele fornece alguns métodos de edição muito bons lá e tudo mais, mas a gente, de novo, a gente não tem desconhecimento dentro da empresa pra tá mexendo nisso, a gente não tem ninguém que é capaz de mexer nisso e, E tem essa questão da apresentação de proposta também
+00:53 Marcelo Zaiden: , que são os dois principais mesmo.
+00:54 Lucas Boaretto: Beleza, então hoje você sente que o mais prioritário de fazer um remapeamento, não só de texto, mas design também, apresentação e o site, ou tem outros documentos?
+01:05 Lucas Boaretto: Então,
+01:06 Marcelo Zaiden: acredito que em relação aos documentos em si, o POP, os outros, mais assim, já é muito organizado e bem recebido pelo pessoal.
+01:17 Marcelo Zaiden: Beleza. Acredito que, talvez, a gente tenha uma dificuldade. dificuldade e eu não sei se era de atuação de vocês, você pode me responder em relação a isso, a questão das redes sociais.
+01:29 Lucas Boaretto: Perfeito, e qual é essa dificuldade Marcelo? Você sente dificuldade de manter uma constância, de aplicar um funil que é a rede social, também é usada para vendas?
+01:39 Lucas Boaretto: Qual que é o maior gap hoje?
+01:41 Marcelo Zaiden: Então, o maior gap estaria nessa parte de faltar alguns conteúdos para cada tipo de funil e também sobre o formato validado por pelo algoritmo, mas também a questão dos ganchos, todas essas etapas, inclusive o João aqui, ele tá responsável pela questão do meio do funil, né, lá no nosso setor.
+02:09 Lucas Boaretto: Perfeito, perfeito. E onde você quer chegar com isso, Marcelo, com essa reestruturação da apresentação de proposta do teu site? Qual que é o resultado que você espera?
+02:19 Lucas Boaretto: Que você tenha mais conversão? Onde exatamente você quer chegar com isso? Eu
+02:24 Marcelo Zaiden: quero ter, Melhorar a conversão não só em números, mas também em porcentagem. Da gente diminuir a quantidade de percas que a gente tem, percentual em relação a cada número que a gente tem geral.
+02:39 Marcelo Zaiden: Então de, sei lá, de dez por cento, propostas que a gente apresenta, vamos supor que a gente fecha 3, então eu queria que a gente tivesse uma porcentagem disso aí maior também.
+02:50 Lucas Boaretto: Entendi, você quer melhorar essa conversão entre proposta e fechamento. Sim. Legal, legal. E o que vocês vêm fazendo? para isso acontecer.
+03:00 Marcelo Zaiden: Em relação ao marketing, a gente estava em busca desse AdSense e tudo mais. A comercial, no início desse ano, passou por uma estruturação nova.
+03:09 Marcelo Zaiden: Eles
+03:09 Lucas Boaretto: tiveram,
+03:11 Marcelo Zaiden: Eles agora funcionam como a Progep funcionou. funcionava, que são a Casa de Dados, os Hunters, os Closers, essas questões. Agora, eu sou mais responsável pela Casa de
+03:25 Vinicius Nicoletti Marzocchi: Dados, eu estou sendo
+03:27 Marcelo Zaiden: mais responsável nisso. E, bom, peraí, qual que é a sua pergunta mesmo, que eu acho que eu fugi completamente dela.
+03:34 Vinícius Miguel: Relaxa Marcelo. Cara,
+03:35 Lucas Boaretto: eu acho que quando a gente começa a tocar nesses assuntos, Marcelo, principalmente em torno de topo de funil, meio de funil, fundo de funil, esses problemas que a gente identifica.
+03:45 Lucas Boaretto: Cara, é tanta coisa no dia-a-dia do Marcelo, é tanto problema novo aparecendo e quando a gente vai elencar todos eles, até parece que a gente acaba concatenando ali as ideias.
+03:54 Lucas Boaretto: Tá tudo bem, Marcelo, mas o cerne da pergunta era entender de fato o que vocês vêm construindo para que você consiga maiores oportunidades.
+04:01 Lucas Boaretto: oportunidades vindo do inbound, uma vez que não dá pra gente falar, Marcelo, de um feijão com arroz bem feito, quando a gente fala de um serviço de desenhar uma brinquetadeira, é um mercado bem específico, é um nicho bem específico e não dá pra gente replicar o que os outros vem fazendo.
+04:17 Lucas Boaretto: fazendo esperando que isso vai funcionar e não é o que vocês estão fazendo, vocês estão exatamente se reinventando, buscando uma resposta no mercado que é o momento que a gente está aqui e eu tinha perguntado sobre o caminho que vocês vêm construindo e aí você comentou que vocês conseguiram o Google
+04:32 Lucas Boaretto: AdSense de novo, você comentou Você comentou também que vocês dividiram o organograma dentro dos cargos em que a Progep opera hoje, então Hunters, Closers, e que você está responsável pela Casa dos Dados, ou seja, você que faz a geração das planilhas, dos leads hoje para passar para o seu time de vendas
+04:49 Lucas Boaretto: . E, E o cerne dessa pergunta, Marcelo, é porque quando a gente olha para essas duas frentes ao mesmo tempo, inclusive eu sou prestador de serviços numa empresa de marketing de Curitiba com mais de 600 clientes ativos ao lado do Vinícius.
+05:02 Lucas Boaretto: Então a gente acaba que sai até no natural, mas eu acho A reunião começa aqui, que a gente vai falar sobre inbound, sobre tráfego pago e tal.
+05:12 Lucas Boaretto: E quando a gente olha para design, nem sempre a resposta está no mais bonito. Por que? Vou te dar um exemplo.
+05:18 Lucas Boaretto: Hoje o site de vocês, Marcelo, ele é maravilhoso, cara. O site da McTree, inclusive, é tem um chatbot lá e tal, mas deixa eu te mostrar uma coisa que, Esse
+05:26 Marcelo Zaiden: chatbot
+05:26 Lucas Boaretto: eu acho que ele é
+05:27 Marcelo Zaiden: bugado, eu não tenho certeza. Ele é bugado?
+05:28 Lucas Boaretto: Eu acho, tenho certeza. Se você quiser
+05:31 Marcelo Zaiden: fazer o teste aí,
+05:32 Lucas Boaretto: Vou ter que testar, cara. Vou ter que testar o chatbot depois. Dá um F12, e ver o que tá rolando aqui.
+05:40 Lucas Boaretto: Mas Marcelo, qual que é o CERN? Cara, vocês tem um site muito bonito. Site com abas, provas sociais, serviços, postos, formuláriozinho.
+05:52 Lucas Boaretto: Só que qual que é o ponto? E a Google, ela não vê o que é bonito. A Google, ela tem uns motores de busca, inclusive, isso que vocês estão vendo agora é o mapa do site de vocês.
+06:04 Lucas Boaretto: Se vocês pegarem o mesmo link da MacTree, de barra sitemap.xml, vocês vão acessar essa tela aqui. aqui. O sitemap.xml ele é basicamente a indexação do teu site dentro do Google Search Console.
+06:19 Lucas Boaretto: Pô, Lucão, tá falando coisas muito técnicas, beleza. Isso eu entendo.
+06:24 Marcelo Zaiden: Perfeito, Marcelo.
+06:25 Lucas Boaretto: Então, quando a gente, Quando a gente tem um sitemap, principalmente uma empresa de consultoria, o que a gente espera ver quando a gente chega nessa página?
+06:33 Lucas Boaretto: Algo mais ou menos assim, ó. Então, sistemas personalizados Uberaba, automação de processos Uberaba, software de gestão Uberaba. O que que eu tô te mostrando?
+06:45 Marcelo Zaiden: Que aqui a gente
+06:46 Lucas Boaretto: tá indexando cada aba do nosso site pra que o potencial usuário de Uberaba nos encontre por diferentes palavras-chave. Hoje, como que o usuário de Uberaba tá encontrando vocês?
+06:55 Lucas Boaretto: Barra, blog, post, sitemap? Blog, Category, Sitemap e Page, Sitemap. Ou seja, falta alguma distribuição de palavras-chaves dentro do sitemap de vocês, fruto de bons artigos de blog, por exemplo, para que vocês tenham um melhor ranqueamento orgânico.
+07:10 Lucas Boaretto: Hoje a Trianglo Solutions, por exemplo, a gente acaba roubando uma demanda de outras empresas. com o nome Triângulo, porque a gente faz um bom trabalho de SEO.
+07:17 Lucas Boaretto: Então, Marcelo, com certeza, se a gente trabalhasse um projeto com vocês, a gente arrumaria sua estrutura de SEO ou de I.O.
+07:24 Lucas Boaretto: e deixaria vocês melhores anquiados. Mas isso ainda assim não chega onde você quer, que é sobre conversão. O que você está sentindo falta?
+07:30 Lucas Boaretto: O que na tua apresentação, Marcelo? É conteúdo, design,
+07:33 Marcelo Zaiden: processo, interação?
+07:36 Lucas Boaretto: Aí
+07:36 Marcelo Zaiden: eu acho que o Vinícius consegue falar melhor que eu
+07:38 Lucas Boaretto: nessa questão. Boa, vamos lá.
+07:41 Vinícius Miguel: Cara, acho que o, até o João Guilherme também. também já presenciou, a apresentação de proposta, a apresentação diagnóstica da amectria, assim, segue a mesma linhagem que o site, entendeu?
+07:59 Vinícius Miguel: É razoavelmente bonita, razoavelmente, Se razoavelmente tem um conteúdo bom, basicamente é uma apresentação razoável, entendeu? E a minha ideia de contactar vocês é exatamente isso, trazer um diferencial para, essas partes visuais da McTria, que basicamente a parte visual que faz converter uma venda,
+08:28 Vinícius Miguel: que faz converter um cliente, a parte visual é, na minha parte de prospecção ativa, são as apresentações. Então, por isso que eu vi um gargalo nisso.
+08:39 Vinícius Miguel: Eu, pelo menos, não acho bonitas as apresentações e não sei quem pode fazer uma apresentação mais bonita, mais organizada também, tá?
+08:50 Vinícius Miguel: Nem sei. Aqui a gente fala de duas coisas, visual e organização. Estrutura também. É, estrutura, enfim. Eu não sei exatamente
+09:00 Lucas Boaretto: como
+09:02 Vinícius Miguel: alguém dentro da Mectria conseguiria fazer isso, entendeu? Por isso que eu não contato com vocês.
+09:07 Lucas Boaretto: Sensacional.
+09:08 Vinícius Miguel: É, então, é um, tipo assim, tem vários gargalos que estamos, que a gente vê aqui dentro, né? Mas eu acho que um que vocês poderiam solucionar é esse, visual.
+09:20 Vinícius Miguel: Perfeito. Visual.
+09:22 Lucas Boaretto: E vocês, Mas vocês
+09:24 Vinícius Miguel: já mostraram também que não é só visual agora, você acabou de mostrar a questão de
+09:27 Lucas Boaretto: palavras-chaves. É, mas eu
+09:29 Vinícius Miguel: acho
+09:29 Marcelo Zaiden: o site um pouco,
+09:31 Lucas Boaretto: O site é mais tranquilo.
+09:32 Marcelo Zaiden: Desatualizado também.
+09:33 Vinícius Miguel: É, exatamente. A apresentação também, entendeu? A apresentação também. Algo no Canva, copia tudo da mesma forma. página e vai colocando alguns elementos.
+09:45 Lucas Boaretto: Então o que eu tenho até a colaborar. Você ia falar alguma coisa Marcelo? Não. De boa. O que eu tenho a colaborar cara.
+09:53 Lucas Boaretto: Eu tenho uma experiência de certa forma com o consolidada, não só no Médio, mas no mercado, ao respeito de vendas, né?
+09:59 Lucas Boaretto: E, de fato, o design, a interatividade, responsividade da apresentação, faz muita diferença, é muito sobre experiência, sabe? Então, quando você tá numa apresentação de propósito, o cliente, ele tem que, você tem Você quer que ele esteja a maior parte do tempo atento, porque numa reunião de uma hora,
+10:16 Lucas Boaretto: às vezes, o cliente acaba olhando para um celular, olhando para alguma coisa, e quando você tem uma apresentação que gruda, que ela acaba sendo um chiclete aos olhos do teu cliente, está facilitando para o vencedor.
+10:27 Lucas Boaretto: para que esse cliente esteja atento ao raciocínio que ele está construindo. Qual que é o detalhe? Esse raciocínio.
+10:34 Marcelo Zaiden: Esse
+10:35 Lucas Boaretto: raciocínio, Marcelo, é o que de fato vai trazer a tua expectativa em termos de conversão. Nem sempre a gente melhorar o bonito de uma apresentação vai entender necessariamente criar gatilhos, micropactos, responsabilidade, interação, engajamento, são as variáveis que de fato fazem o cliente se confortar
+10:55 Lucas Boaretto: . O que que eu queria até reforçar aqui com vocês para que a gente vá construindo essa isso juntos e encontre um projeto colaborativo aqui conosco.
+11:04 Lucas Boaretto: A gente tem diversos olhares aqui dentro da Triângulo Solutions, desde alguém mais voltado a design e marketing, que produz inclusive o CIA, o CIA Wise Summit, desde esse cara, ao cara que, e bateu o maior faturamento da história do núcleo triângulo, Vinícius Nicoletti, ou seja, alguém que entende sobre
+11:22 Lucas Boaretto: o MESG, entende sobre o processo, alguém que esteve dentro do MESG, alguém que gerenciou o projeto, se alguém, dois principalmente, o Carlos e o João, tiveram ou estão dentro da MESG.
+11:33 Lucas Boaretto: Isso mostra, Marcelo, que a gente tem um olhar um pouco mais profundo, vamos dizer assim, uma visão mais sistêmica de alguém que não está dentro da operação.
+11:40 Lucas Boaretto: Concorda comigo, Marcelo, que hoje, além de você olhar para as apresentações e o seu site, você tem mais uns 15 milhões de problemas?
+11:48 Lucas Boaretto: para resolver dentro da maquetria também, isso acaba tirando um pouco, cara, a tua visão ampla, a tua visão panorâmica sobre qual seria a resposta.
+11:58 Lucas Boaretto: E agora que a gente aproveitou esse momento para que a gente olhe para isso especificamente, sua apresentação. o seu site, se amanhã os teus, vamos dizer, se você tivesse uma varinha mágica, e aí você pudesse fazer um pedido para essa varinha mágica amanhã ter realizado, o que você espera que amanhã
+12:16 Lucas Boaretto: já seja melhorado, por exemplo, para amanhã? Você
+12:19 Marcelo Zaiden: fala em relação a, são conectado com o serviço de vocês?
+12:23 Lucas Boaretto: Não, o que você quiser, Marcelo. O que quiser. Não precisa ser sobre o nosso serviço, só os problemas reais da
+12:27 Marcelo Zaiden: MagTrio. Cara, o que eu mais quero, o que eu mais vou buscar é destravar a prospecção ativa. Eu quero que eles funcionem em um sistema de engrenagem ali e eles precisam sair dessa inércia.
+12:47 Marcelo Zaiden: Então, seria mais isso aí o que eu mais quero e é o que eu tô pesquisando. A Lina traz pra ver o que eu consigo fazer em relação a isso.
+12:55 Marcelo Zaiden: E que tá
+12:55 Lucas Boaretto: faltando, Marcelo, na prospecção ativa de vocês? Cara,
+12:59 Marcelo Zaiden: ó, de todos os dados que eu pesquisei, que eu tô trazendo agora, o nosso maior gargalo sempre foi e ainda é, e acredito que que de geral sempre vai ser também, é a porcentagem de ligações feitas para um contato com o decisor.
+13:17 Marcelo Zaiden: Se não me engano, a gente tem 80% ou 88% de perca. Nessa etapa, e seria isso, e também acaba que sim, todos os projetos que a gente fechou vieram da passiva, então, também vai muito do método de venda, e também, também vai muito em relação a esse fator de persuasão alinhado juntamente à apresentação
+13:48 Marcelo Zaiden: de proposta para estar realmente convertendo uma venda da comercial. Sim.
+13:53 Lucas Boaretto: Então você disse que é muito sobre as habilidades também, sobre, Porque em termos de estrutura, você falou que você tá com a casa dos dados na mão, não tá?
+14:01 Lucas Boaretto: É,
+14:01 Marcelo Zaiden: eu acabei, Eu, É que isso é recente, tipo, Recente. É, eu, Quando eu assumi a vice-presidência, eu peguei todos os dados da comercial e identifiquei os gargalos.
+14:12 Marcelo Zaiden: A gente descobriu onde é que tava tendo vazamento de funil, e aí eu fui e tentei ver possíveis soluções e agora eu tô com um sistema de filtragem feito por Kinai, de acordo com o que monta um sistema de score.
+14:28 Marcelo Zaiden: Eu posso, dependendo, até mostrar pra vocês, pra vocês entenderem. Se tiver
+14:32 Lucas Boaretto: vontade, com certeza, Marcelo. Quero conhecer sim. Vamos lá.
+14:39 Marcelo Zaiden: Esse aqui é o nosso site, só que é só da MacTria. Mas buscadinho. A minha mente é assim que eu tô fazendo, né?
+14:47 Marcelo Zaiden: Eu faço toda a filtragem por região e por Kine também. E esse é direto na casa de dados.
+14:54 Lucas Boaretto: Eu assinei o plano pago. Aí você tá com o API deles. Tô com o
+14:57 Marcelo Zaiden: API deles, eu faço toda a filtragem e ele filtra por região. Porque na AI joga um score de acordo com as filtragens que eu quero, né?
+15:06 Lucas Boaretto: E aí ele
+15:06 Marcelo Zaiden: gera a hipótese de dor também, o decisor, o telefone, e assim por diante. Esse é um teste, né? Inclusive eu terminei isso essa semana.
+15:17 Marcelo Zaiden: semana e aí o pessoal da comercial vai testar agora a qualidade disso e a gente vai estar aprimorando o máximo possível.
+15:24 Marcelo Zaiden: Boa, então
+15:24 Lucas Boaretto: sobre prospecção ativa acho que está bem encaminhado porque se tem um problema é sobre gatekeeper que é sobre falar com o secretário e tal que é uma prospecção bottom up que é quando você está falando com de baixo para cima, primeiro com o secretário, para aí sim chegar no tomador de decisão.
+15:38 Lucas Boaretto: Aparentemente a tua solução é de fato fazer uma ligação top-down, então já pegar os celulares para conversar diretamente com o decisor.
+15:47 Lucas Boaretto: Então sobre prospecção ativa, você enxerga, que isso já vai sanar ali tuas preocupações.
+15:52 Marcelo Zaiden: Eu espero.
+15:53 Lucas Boaretto: Beleza, e significa então que sobre topo e meio de funil, aliás meio de funil não né, meio de funil você também sinalizou que é um ponto que você gostaria de melhorar.
+16:04 Lucas Boaretto: Então sobre topo E hoje teu maior holofote então tá nesse fundo de funil, na apresentação, nos micropactos, no conteúdo, na persuasão do vendedor.
+16:21 Marcelo Zaiden: E
+16:21 Lucas Boaretto: se você quer depender menos da habilidade do vendedor, seria como se a apresentação facilitasse para que ele conduza de uma forma persuasiva, é isso que você espera?
+16:30 Lucas Boaretto: Eu
+16:31 Marcelo Zaiden: não queria depender menos, eu queria que ele tivesse mais repertório e um pouco mais e uma estrutura melhor para ele estar performando mais.
+16:40 Lucas Boaretto: Isso eu
+16:41 Marcelo Zaiden: acho
+16:41 Vinícius Miguel: que, consequentemente, faz ele depender menos. Até para a galera que está entrando, inclusive eu, que está começando nesse mundo agora, ficaria mais fácil, sabe?
+16:50 Vinícius Miguel: Legal. Na última apresentação de propósito, na primeira apresentação de apresentação de propósito que eu participei, o conteúdo estava bom na apresentação.
+17:01 Vinícius Miguel: A gente fez umas alterações de ordem, então o conteúdo estava bom. mas o cara só ficou quieto, a gente parou ele em algum momento, que era o momento que na apresentação estava para parar, e o cara só ficou quieto, certo?
+17:21 Vinícius Miguel: A gente obviamente já tinha pegado muitas dores dele, então a gente entendia bem o que ele queria, mas, sabe, faltou alguma coisa, tá ligado?
+17:30 Vinícius Miguel: Obviamente faltou. Faltou ver
+17:31 Lucas Boaretto: o ânimo dele,
+17:32 Vinícius Miguel: a energia dele. Faltou também a habilidade minha, da outra pessoa que tava fazendo, falta também, certo? Mas com, Então, com uma apresentação melhor, eu consigo ver que iria melhorar.
+17:46 Lucas Boaretto: Legal. Eu não
+17:47 Vinícius Miguel: sei também, eu queria até perguntar pro João Guilherme, pro Castor, se ele acha também que isso, tipo assim, na época que ele estava no comercial, se isso atrapalhava.
+17:57 Vinícius Miguel: Queria até ter uma visão pra ele. Eu nunca conversei exatamente com você disso, Castor.
+18:00 João Guilherme Freitas: Cara, a gente já fez algumas reuniões juntas, inclusive, antes de eu sair do comercial. E essa parte de repertório, acredito que é uma parte muito importante, sabe?
+18:13 João Guilherme Freitas: É uma parte muito É uma parte que, realmente, às vezes o cliente fica quieto, às vezes o cliente, Mesmo com todo o know-how que a gente já tem, de empresas, de cases que a gente já tem, às vezes o cliente fica quieto.
+18:26 João Guilherme Freitas: Então, essa é uma parte que poderia estar ajudando muito. Exato, exato.
+18:32 Lucas Boaretto: Perfeito, perfeito. Marcelo, até foi um ponto que os meninos me contaram com muito ânimo, o próprio Castor também comentou comigo, que vocês fizeram treinamento, vocês tiveram uma capacitação comercial.
+18:46 Lucas Boaretto: comercial, eu me recordo que na própria época do Kim também teve uma capacitação comercial, então esse repertório que você quer dizer é sobre os ativos da tua empresa, ou seja, sobre as armas em que o vendedor pode utilizar para dar mais credibilidade à mectria, ou você se identificou com Falta mais
+19:02 Lucas Boaretto: habilidade nos vendedores. Seja sincero eu
+19:06 Marcelo Zaiden: acho que eu diria que um pouco dos dois é muito por relação ao tempo muito por relação ao tempo que o pessoal tá.
+19:19 Marcelo Zaiden: Jota e por conta que assim, o treinamento foi caro e assim, do meu ponto de vista, um treinamento que tem resultado ele converte em vendas, ainda mais para comercial e não é o que aconteceu, o setor ele está estruturado, mas é um setor que que não tinha dados até pouco tempo e, tipo assim, sei lá, operar
+19:38 Marcelo Zaiden: sem dado é, do meu ponto de vista, é foda, cara. E a gente
+19:43 Lucas Boaretto: é da
+19:43 Marcelo Zaiden: engenharia,
+19:44 Lucas Boaretto: né, cara? Até Peter Drucker, um dos maiores nomes da administração moderna, ele traz, né? Eu não controlo nada que eu não consigo metrificar de primeira.
+19:50 Lucas Boaretto: ponta a ponta. Se o comercial não está metrificado de ponta a ponta, está incontrolável. É.
+19:56 Marcelo Zaiden: E assim, a gente entende que é muito difícil também a questão de comparar, por exemplo, com a Progep, porque eu acredito que o mercado deles é muito maior.
+20:06 Marcelo Zaiden: Já é um valor de ticket mais alto e eles têm essa facilidade com essas vendas e tudo mais. Mas acho que falta um pouco dessas duas coisas que você citou, sabe?
+20:20 Marcelo Zaiden: Então, agora o curso em si, Ele forneceu algumas ideias, tudo mais, e as ideias foram boas e foram tentadas, tentaram implementar, só que acabou que não deu resultado e isso meio que reseta a gente para um pouco, no sentido de tipo assim, pô, peguei tais ferramentas, tentei implementar, não deu certo
+20:47 Marcelo Zaiden: . Aí você fica questionando a qualidade dessas ferramentas que você tem, sabe?
+20:51 Lucas Boaretto: Eu
+20:52 Vinícius Miguel: entendi também que esse curso, eu não fiz esse curso. Eu entrei depois, mas eu entendi que esse curso ajudou muito na parte de organização.
+21:01 Vinícius Miguel: Realmente visualizar um funil, entender o que está acontecendo ali. Acho que nisso realmente ajudou. Agora, realmente em estratégias de vendas.
+21:12 Vinícius Miguel: estratégias, pode ter sido passado nesse curso, mas ou não foi
+21:18 Marcelo Zaiden: aplicado, ou foi
+21:20 Vinícius Miguel: prioridade, isso eu não sei exatamente, mas pode crer.
+21:24 Marcelo Zaiden: Não deve ter tido algo assim. porque foi um curso bem completo, foi quase um mês. O João participou, João, você não participou?
+21:33 João Guilherme Freitas: Participei, participei no curso inteiro, peguei todo o curso. Realmente a gente trabalhou todas as partes do funil mesmo. Foi de ponta a ponta, desde a CodeCal até o funil.
+21:43 João Guilherme Freitas: fechamento, follow-up, então foi um curso que realmente reestruturou tudo, toda a parte de vendas e tudo mais.
+21:53 Lucas Boaretto: Perfeito e infelizmente não foi, né?
+21:56 Marcelo Zaiden: Exato, mas aí a gente
+21:57 Vinícius Miguel: chega e a gente não vendeu nenhuma. Por prospecção ativa.
+22:00 Lucas Boaretto: Posso dar
+22:00 Vinícius Miguel: a resposta
+22:01 Lucas Boaretto: pra vocês? Tá ligado? Vocês me permitem, Pode, vai. ,dar essa, Vamos dizer, colocar um pouquinho o dedo nessa ferida, Marcelo.
+22:10 Lucas Boaretto: Sabe quem que criou o plano de ação que dividiu a projépia entre Hunter, Close, ele criou esses cargos? Não. Esse plano de ação, Marcelo, ele requer um acompanhamento muito grande de indicadores, métricas e posso te dizer o que virou a minha visão sobre o comercial.
+22:42 Lucas Boaretto: Quando eu era da Progépio, eu era um cara muito habilidoso por já ter tido experiência com prospecção agrícola. ativa anteriormente.
+22:49 Lucas Boaretto: Só que eu percebi, Marcelo, que eu não consegui expandir esses mesmos resultados para os meus colegas. É aí que eu assumo a gerência de outbound.
+22:56 Lucas Boaretto: E eu começo a entender que não era sobre eu treinar, por exemplo, o sunga, que era, estava ao meu lado na época da Progep, e dá cada vez mais técnica, gatilho, ferramenta, instrumento, porque a gente tem um problema, Marcelo, quando a gente é do médio, tá?
+23:14 Lucas Boaretto: E eu vou dizer que ele é um dos maiores. Primeiro. As pessoas não recebem dinheiro para estar ali. Então elas são muito movidas por propósito, cada um tem um, elas dependem muito de motivação.
+23:25 Lucas Boaretto: Uma semana está tudo dando errado, a pessoa vai ligar menos, ela vai ter menos energia e está tudo dando certo, ela foi reconhecida, pô, ela vai começar a ligar mais.
+23:34 Lucas Boaretto: O que você está percebendo nesses dois casos? Variabilidade, correto?
+23:38 Marcelo Zaiden: Sim.
+23:39 Lucas Boaretto: Como que eu diminuo variabilidade? Constância. Constância. O que que entrega uma constância? Um bom processo. Quanto mais eu dependo de um repertório dentro do meu do meu vendedor, ou seja, eu posso ter o vendedor, o Vinícius né, o Marechal, o cara é meu melhor amigo.
+23:57 Lucas Boaretto: Esse cara eu consigo treinar ele a semana inteira, Marcelo, se for necessário. Só que sabe o que vai acontecer? A hora que ele sair, a gente vai patinar no gelo, porque não vai ter água.
+24:06 Lucas Boaretto: alguém que vai ganhar um processo em que ele assumiu, com o mesmo repertório e habilidade. Você enquanto vice-presidente, Marcelo, dormiria muito mais tranquilo controlando indicadores e processos comerciais, eu te garanto que a tua taxa de conversão seria muito maior.
+24:22 Lucas Boaretto: Por que que Por que que eu tô fazendo esse paralelo, Marcelo, até pra devolver a palavra pra você? Porque quando eu ingresso na Digital Boom, essa empresa de marketing de Curitiba, eu conheci o Vinícius Nobbi, que é engenheiro de produção e se especializou na engenharia de produção aplicada ao mundo
+24:35 Lucas Boaretto: de vendas. Então, criar processos comerciais pra que as coisas se concordem. E dentro da dita aluna fui uma esponja cara, comecei a entender que não era sobre técnicas, pincel, engatilho mental, era tudo sobre processo e quando a gente fala de processo, toca aqui o nosso bate-papo.
+24:53 Lucas Boaretto: Apresentação comercial, ter um convite. Um processo melhor, e é aí que eu quero pôr o dedo, não só no
+24:58 Marcelo Zaiden: visual, mas
+24:59 Lucas Boaretto: entregar pra vocês algo pronto, e algo que a gente vai treinar vocês a usar, e segundo, de cortesia o site.
+25:07 Lucas Boaretto: Por que que eu falo cortesia? Pra facilitar a nossa negociação, e que vocês tenham Eles têm algo tangível também além da apresentação e conteúdo.
+25:14 Lucas Boaretto: Então a gente te dá um novo modelo de site de vocês, cara. Os arquivos são de vocês, tudo de vocês.
+25:22 Marcelo Zaiden: Posso só fazer duas perguntas rapidinho? Por
+25:23 Lucas Boaretto: favor, até três, Marcelo. Vamos embora.
+25:26 Marcelo Zaiden: Quando você, Quando você diz os processos, você poderia me dar um exemplo do que você está se referindo exatamente?
+25:33 Lucas Boaretto: Com certeza, deixa eu te mostrar um negócio bem legal Marcelo. Eu vou te mostrar o próprio sistema da Triangulo Solutions que eu fui criando aqui junto aos meninos.
+25:42 Lucas Boaretto: Só um momento. Quando isso daqui, é lógico que eu não posso abrir muita coisa aqui também, Marcelo, tem umas coisas um pouco mais confidenciais, mas você concorda comigo que quando eu cobro uma meta semanal, canal do meu vendedor, ou seja, eu peço para o Vinícius ligar, fazer oito ligações.
+26:06 Lucas Boaretto: Você concorda que ele pode fazer uma na segunda, três na terça, quarta e quinta ele para, mata tudo na sexta?
+26:14 Marcelo Zaiden: Isso
+26:14 Lucas Boaretto: te parece constante?
+26:19 Marcelo Zaiden: Não é
+26:20 Lucas Boaretto: muito constante, porque eu estou dependendo muito do ânimo, disposição e energia para ele cumprir tudo isso. Agora, Marcelo, quando a gente, Por exemplo, isso aqui é uma aba de contato.
+26:31 Lucas Boaretto: rotinas para que um closer saiba utilizar do CRM, o que ele vai fazer dentro do dia dele são checks aqui no sistema.
+26:40 Lucas Boaretto: Então ele vai dando o check, as coisas vão evoluindo. Quando a gente fala de processo Marcelo, a gente fala que uma vez que Uma vez que esse lead passou pelo topo de funil, eu tenho que ter uma rotina desde o vendedor, ou seja, desde o hunter, o BDR, até o closer, até o pós-closer, que seria repassar
+27:00 Lucas Boaretto: isso ao time de projetos. O que eu quero dizer sobre processo? Eu quero dizer para você, Marcelo, que a apresentação tem que ser metódica e poucas variabilidades.
+27:08 Lucas Boaretto: Por exemplo, o que é uma variabilidade em uma apresentação? A marca do cara, as dores dele, mas a estrutura tem que ser metódica, tem que ser um processo.
+27:17 Lucas Boaretto: Sabe por quê? Porque se eu crio algo muito simples, aleatório, Marcelo, eu
+27:20 Marcelo Zaiden: dependo
+27:21 Lucas Boaretto: desse vendedor, todas as vezes, ter uma aleatoriedade no que ele vai apresentar. E às vezes a gente vai pegar esse cara numa semana ruim.
+27:30 Lucas Boaretto: Uma semana que ele foi mal numa prova, uma semana que ele tá devendo três trabalhos pro mesmo dia que ele tá fazendo a apresentação.
+27:36 Lucas Boaretto: Agora, se a gente padroniza melhor, com base nos escopos de vocês e cria essa possibilidade de alteração de pequenos tópicos, logo, dores e tal, esse cara vai fazer a mesma coisa todos os dias.
+27:48 Lucas Boaretto: A mesma apresentação, os mesmos ativos, as mesmas as mesmas provas sociais, a depender do escopo do projeto, que é uma variabilidade muito pequena.
+27:58 Lucas Boaretto: Ah, mas a máquina de tal indústria é tal máquina. Beleza, isso daí continua sendo um mesmo escopo. A máquina do cara é diferente, o serviço é o mesmo, entende?
+28:07 Lucas Boaretto: O público é o mesmo. O que a gente está ofertando para ele é a mesma coisa. O que vai mudar?
+28:11 Lucas Boaretto: Preço, prazo, time, Isso é uma variabilidade muito pequena. É design, não é comercial. Sabe o que é processo comercial em uma apresentação?
+28:20 Lucas Boaretto: Vou te mostrar aqui. Processo comercial é, em uma apresentação, é quando eu tenho intencionalidade em tudo que eu tô te apresentando.
+28:29 Lucas Boaretto: Então, se você fizer uma reunião comigo hoje, sei lá, pela Digital Bloom, por exemplo, eu vou criar micropactos com você durante a reunião e raramente você vai perceber todos eles.
+28:38 Lucas Boaretto: Deixa eu te dar um exemplo. O primeiro passo é nos diferenciar dentro do que seria um segmento de marketing padrão.
+28:46 Lucas Boaretto: Então a gente vai mostrar o nosso holofote enquanto empresa. E aqui entra que a MEC Tria tem como principal propósito fomentar, isso aí o Sunga vai saber falar melhor que eu.
+28:56 Lucas Boaretto: que é o lema do Médio, mas se eu não me engano, é sobre impactar o empreendedorismo local através de soluções e engenharia.
+29:03 Lucas Boaretto: Alô, Sunga, é por aí?
+29:08 Vinicius Nicoletti Marzocchi: Bom, isso daí a gente vai descobrindo junto da Mectria, mas até onde, quando? O propósito está em volta disso.
+29:15 Lucas Boaretto: Perfeito, sobre fomentar o empreendedorismo local. É a primeira coisa que a gente quer mostrar, algo mais social. De novo, processo.
+29:22 Lucas Boaretto: Primeiro eu te mostro algo mais social. Aí eu te mostro o meu histórico estatístico. Aí eu te mostro quem tá fazendo por trás de tudo isso para gerar uma humanização e você se conectar com quem está por trás da MECTRI.
+29:34 Lucas Boaretto: E aí eu te mostro dois tipos de jornada, uma jornada de cliente, que no caso de vocês seria o projeto de vocês no Mercado Sênior, e a jornada do MEG.
+29:42 Lucas Boaretto: Quando eu te falo da jornada do MEG. Eu quero criar um céu inferno, isso eu sei que vocês aprenderam no treinamento.
+29:48 Lucas Boaretto: Qual que é o ponto? Que esse céu inferno esteja muito fácil para o vendedor, ou seja, é aqui que a gente iria fazer essas variabilidades, tá Marcello, então dos problemas do cara e das, vamos dizer, do pós-MAC trio que esse cara vai ter.
+30:00 Lucas Boaretto: Só que aí já entra muita interação. Tudo é muito responsível, consigo chamar a sua atenção com o meu mouse para qualquer lugar da tela.
+30:09 Lucas Boaretto: Garantindo que a sua atenção está não só na minha tela, mas no que eu estou falando. A partir daí, eu começo a te explicar a métrica desse projeto com o meu com responsabilidade, com interação, e tudo isso aqui é basicamente o projeto, tá?
+30:22 Lucas Boaretto: Então a gente não tem que se apegar muito nisso. Onde que entram os pactos? Por exemplo, Marcelo, agora eu viro pra você e falo Marcelo, você tem alguma dúvida em torno do projeto?
+30:30 Lucas Boaretto: Pô, não tenho, Lucas. Beleza. Marcelo, você Se excluindo o preço, cara, você seria cliente aqui da Triângulo Solutions? Pô, seria cara, eu gostei do projeto.
+30:41 Lucas Boaretto: Tá, mas você seria cliente porque é de graça ou porque o projeto é bom? Beleza, fiz um micropacto com você de que você amou o projeto e precisa acertar o preço.
+30:49 Lucas Boaretto: Agora eu vou te diferenciar o que é preço e o que é valor. Vocês vão fazer isso também, porque vocês vão falar de valor, quanto vale no mercado sênior, e preço, quanto ele efetivamente paga dentro do MEG, que é o melhor custo-benefício.
+31:01 Lucas Boaretto: Raul da fama, prova social, mais prova prova social, calculadora com preço. Isso é processo, vai ser sempre assim. Nessa ordem, mesmo os micropactos, os mesmos micropactos, as mesmas analogias, essa própria do Peter Drucker, que eu falei pra você, é uma analogia de que eu uso bastante.
+31:23 Lucas Boaretto: Entendeu o que eu me refiro a processo de apresentação de proposta? Eu sempre crio os mesmos micropactos, eu sempre apresento de uma forma sistêmica, então tudo é bem interativo, vai se conectando, porque o maior gatilho do comercial, gatilho de coerência, é de Robert Cialdini.
+31:37 Lucas Boaretto: É tudo sobre ele. gerar coerência. Coerência confortável para o cérebro. Eu sei que eu expliquei bastante coisa, então agora eu vou querer te ouvir, eu ouvi o Vinícius também.
+31:45 Lucas Boaretto: Mas, cara, isso que eu apresentei para vocês, é dentro do que você está procurando? É dentro do que você tem como expectativa?
+31:52 Lucas Boaretto: Ou você sente que é diferente?
+31:53 Marcelo Zaiden: Não, é bem no ponto principal da nossa dor, assim, eu acho que realmente é algo que eu acredito que pode ajudar muita gente.
+32:07 Marcelo Zaiden: É, Eu gostei muito da parte dessa questão do micropacto que você falou também. É um curso
+32:14 Lucas Boaretto: da Full Sales, Marcelo, de
+32:15 Marcelo Zaiden: 24K
+32:17 Lucas Boaretto: que eu tive pela Digital Bloom. Full Sales hoje é referência de processos comerciais, um negócio de maluco mesmo, Marcelo, é muito foda.
+32:26 Marcelo Zaiden: Não, da hora também. E tem também a parte, que aí talvez vocês podem falar mais também, não sei se é área de atuação de vocês, de novo, eu pesquisei o negócio do site, eu também me interessei nessa, na parte de falta de indicador.
+32:48 Marcelo Zaiden: E aí vem até uma dúvida pra mim de atuação. Do ponto de vista de vocês, as redes sociais, elas funcionam mais como?
+32:58 Marcelo Zaiden: como um método de aumento de qualidade da marca ou mais voltado também, porque a gente tem, por exemplo, o institucional e o comercial.
+33:07 Marcelo Zaiden: Só que a minha sensação é de que a gente usa muito o nosso comercial para atrair clientes e não para, Então eu diria que esse está sendo nosso ponto principal, inclusive até uma coisa que o João Guilherme vai
+33:21 Lucas Boaretto: estar olhando aí
+33:23 Marcelo Zaiden: pra gente. É mais nessa questão, porque um cara que aparece a gente no Instagram, ele, Ele quer se entender mais, ele quer que ele tenha certeza da decisão dele.
+33:36 Marcelo Zaiden: Então se ele tá vendo um vídeo, ele tem que ser atraído e ele tem que ser consolidado. Com certeza. E eu sinto que a gente tem a parte do atraído, não é boa.
+33:46 Marcelo Zaiden: Eu, do meu ponto de vista, não considero ela boa, e a gente não tem a parte do consolidado, que seria o meio do funil.
+33:55 Lucas Boaretto: Boa. Cara, eu vou te dar essa, você vai me dar essa resposta, tá? Porque marketing é um negócio que, quando a gente olha pra dentro e começa a, se olhar com mais estratégia a gente começa a perceber.
+34:05 Lucas Boaretto: Kotler, o pai do marketing, Philip Kotler, a nível acadêmico. Um guru de internet. Philip Kotler, estudado na Engenharia de Produção, professora Flávia.
+34:16 Lucas Boaretto: Kotler, ele fala muito sobre o marketing experiência. que é o Marketing Actuate, que conecta de humano para humano. Kotler também fala, Marcelo, sobre ocasião de consumo.
+34:25 Lucas Boaretto: O que que é ocasião de consumo? Pensa o seguinte, por que que o Marcelo pessoalmente usa o Instagram?
+34:31 Marcelo Zaiden: Eu? É, pessoalmente. Pessoalmente? Assim, eu tento ao máximo evitar, né?
+34:39 Lucas Boaretto: Legal.
+34:40 Marcelo Zaiden: Eu geralmente assisto as coisas pelo que os meus amigos me mandam. Boa.
+34:46 Lucas Boaretto: Memes, vídeos para dar risada.
+34:47 Marcelo Zaiden: E eu também uso muito, eu acho que eu mudei o meu algoritmo para isso. para isso, para coisas que me agregam de acordo com o que eu tô procurando.
+34:56 Lucas Boaretto: Perfeito, perfeito. Então é sobre entretenimento, lazer, um pouco de desejo também.
+35:01 Marcelo Zaiden: Ainda mais, por exemplo, falam sobre formatos desvalidados. Por exemplo, marketing, estruturação, questão de vendas, tem até coisas de motivacional também, tem um pouco disso aí.
+35:13 Lucas Boaretto: Então é um pouco de entretenimento, vida pessoal, autocuidado, tudo girando em torno de entretenimento, desejo, lazer, correto? É, basicamente. A ocasião de consumo em que favorece a MacTria, ou seja, a MacTria entretém alguém?
+35:31 Lucas Boaretto: Não. Não. A MacTria dá lazer para alguém? Não. A MacTria desperta deseja alguém? Alguém acorda e vê um post e fala, nossa, eu preciso da de uma brinquedadeira?
+35:40 Lucas Boaretto: Não. A maquetria trabalha a necessidade, ou seja, você precisa que uma indústria, uma empresa, uma organização tenha uma necessidade que você consegue resolver.
+35:51 Lucas Boaretto: Se você associa a sua marca ao ambiente de entretenimento, lazer e de trabalho. desejo, significa que as pessoas que estão ali não consomem o que você oferece, o que significa que a maior utilidade do teu Instagram tá no mesmo motivo do iFood te oferecer o clube iFood, a Uber te oferecer o clube Uber
+36:09 Lucas Boaretto: , a academia te oferecer que se você fechar Se você baixar o anual, você tem acesso à rede nacional deles, ao McDonald's te dão um aplicativo com cashback.
+36:18 Marcelo Zaiden: Se você falar mais em ofertas. O
+36:20 Lucas Boaretto: maior problema do mercado hoje é retenção e fidelização. O mesmo lead te acompanhando, ele pode vir e te indicar para para uma postagem tua.
+36:29 Lucas Boaretto: Então o Instagram de vocês tem que ser o menor esforço da Mectria porque ele tem que ser mais uma fonte de você munir e dar instrumento para o teu vendedor encaminhar uma postagem para um lead que ele está negociando.
+36:40 Lucas Boaretto: É basicamente isso. Por quê? Porque você quer que esse meme que mesmo lead que ele está negociando e vem a te seguir, olha uma postagem, olha para o lado e fala, cara, tem um empresário que também precisa disso, porque ele já está no teu funil, você não adquiriu esse lead pelo teu Instagram, você usou
+36:54 Lucas Boaretto: do teu Instagram como uma ponte de retenção e fidelização para aumento das indicações. Então a maior energia de vocês tem que ser totalmente Google.
+37:03 Lucas Boaretto: Instagram propositalmente orquestrado para dar munição aos vendedores para que os vendedores seria
+37:10 Marcelo Zaiden: mais essa parte de meio e fundo de funil de consolidação. É, tipo, tirando o funil, vamos falar mais de, tipo, assim,
+37:18 Lucas Boaretto: Eu pós-venda, eu diria que o Instagram, ele entra numa etapa mais de pós-venda e que se vocês quiserem extrair o melhor dele, seria aproveitar e fazer uma estratégia bem similar à da Projep.
+37:28 Lucas Boaretto: Olhar para a própria faculdade, usar isso como uma fonte de, Dá mais autoridade, aumenta a mão de obra e qualificação dos colaboradores da Mectria.
+37:37 Lucas Boaretto: E a energia de inbound, prospecção passiva, vem mais da Google mesmo. Porque o Instagram é um, Pra quem trabalha com necessidade, serviço, consultoria, Você quer atribuir a sua marca a uma ocasião em que as pessoas resolvem necessidades, que majoritariamente é a Google, entendeu?
+37:56 Lucas Boaretto: Então, Instagram, se eu fosse o estrategista de vocês, se eu fosse o CMO, o Diretor de Marketing da McTree, eu perguntaria as dores da marca.
+38:04 Lucas Boaretto: Então até trocar essas figurinhas para
+38:06 Marcelo Zaiden: o nosso estruturador está aí na cal legal.
+38:14 Lucas Boaretto: O que eu faria Marcelo perguntaria aos vendedores sobre as negociações e o que exatamente. eles estão negociando, para que eu pegue alguma dessas negociações, um problema que eles estão resolvendo, faça virar um post, para que esse vendedor fale, cara, lembra que a gente estava conversando sobre isso
+38:29 Lucas Boaretto: aqui? Olha o post que saiu lá na MacTree. Eu faria isso para amanhã, se eu fosse diretor de marketing de vocês, que é a melhor forma.
+38:35 Lucas Boaretto: O MacTree é A agência, ele associa, ele traz para dentro um público muito universitário, o próprio algoritmo entende isso, do Instagram, e acaba entregando também essa mesma empresa para um público universitário.
+38:46 Lucas Boaretto: Pô, mas eu tenho um lado comercial. Sim, seguido por universitários também. Então, desassociar disso. Isso, cara, tem que codar meta-ads, é uma correria bem grande.
+38:56 Vinícius Miguel: Deixa o Vini falar aí, mas depois eu falo.
+38:58 Lucas Boaretto: Boa. Vai daí, o Gary.
+39:02 Vinicius Nicoletti Marzocchi: Boa. Mas, galera, é isso. O Instagram, ele, de certa forma, vai entregar pra vocês o que vocês querem. que vocês quiserem.
+39:09 Vinicius Nicoletti Marzocchi: Depende muito também de uma orientação, entendeu? Um foco, método, objetivo. E o que eu posso trazer para vocês hoje, trabalhando com essa experiência de gerenciar projetos com social media, é justamente isso.
+39:22 Vinicius Nicoletti Marzocchi: Eu tenho projetos que são para profissionais autônomos. autônomos posicionar a sua marca enquanto autoridade do mercado, criar uma audiência e começar o seu trabalho dentro do meio digital.
+39:33 Vinicius Nicoletti Marzocchi: Eu tenho projetos que são empresas ou então clínicas, onde tem pessoas ali buscando a continuidade do trabalho só da publicidade.
+39:40 Vinicius Nicoletti Marzocchi: A capacidade só de publicar e tornar essa audiência, um público fiel àquela marca. Porque a longo prazo, primeiro que é a curto prazo, a gente está falando muito sobre curiosos visitarem o Instagram e gostarem de vocês, fidelizarem a essa marca.
+39:56 Vinicius Nicoletti Marzocchi: dessa forma, a longo prazo, se tornarem compradores. E a gente pode falar também de usar o Instagram como um motor de venda pra vocês, galera, que vai impulsionar, sinceramente, a venda de vocês sobre novidades.
+40:11 Vinicius Nicoletti Marzocchi: Então o Instagram, ele é muito, muito bom para a gente reter uma atenção a curto prazo. Então subir alguns criativos, trabalhar com o tráfego pago do Instagram, ele é uma estratégia muito bacana e muito validado para quando a gente quer anunciar algo.
+40:27 Vinicius Nicoletti Marzocchi: Então, por exemplo, dentro do modelo que A gente tem muitos eventos, certo? Esse ano que a gente não teve um por conta do ENED ser dentro do estado, mas a partir do ano que vem vocês voltam com o calendário completo.
+40:39 Vinicius Nicoletti Marzocchi: E se vocês utilizassem do gatilho de eventos, que até mesmo em alguns ciclos estratégicos, vocês precisam atingir muitas metas até alguns eventos.
+40:49 Vinicius Nicoletti Marzocchi: E se vocês preparassem a audiência para produtos a serem vendidos neste período de retenção, de captação, ou seja, eu tenho ciclo 1, ciclo 2, ciclo ciclo 3, ciclo 4, para vender dentro de um ano.
+41:04 Vinicius Nicoletti Marzocchi: Cara, se eu consigo estipular o quanto eu preciso vender, eu não preciso de mais nada. Eu só preciso agora gerar esse resultado.
+41:11 Vinicius Nicoletti Marzocchi: E muito desse resultado pode estar dentro de uma audiência que a gente reteu a atenção. Só que se a gente, Como é você não se interessou em produzir conteúdo, em gerar educação também para esse público?
+41:22 Vinicius Nicoletti Marzocchi: Cara, como que de alguma forma eu retive uma atenção para que dentro dessa atenção eu ache grana? Então, Marcelão, uma coisa muito bacana que eu posso te trazer é que, E a necessidade de ter um trabalho de social media já é difícil de você ter a clareza, tá bom?
+41:41 Vinicius Nicoletti Marzocchi: Isso daí já é muito legal, de você entender que é importante, de você até saber que tem alguns resultados ali dentro.
+41:47 Vinicius Nicoletti Marzocchi: Mas eu acho que é até um pouquinho parecido. com o que eu estava comentando ali sobre a apresentação da de proposta, alguns processos comerciais, eles vão gerar alguns resultados para vocês e algumas dessas peças, ferramentas, ações e estratégias vão ser gerar o resultado dessa sequência do processo.
+42:08 Marcelo Zaiden: Então, mais
+42:08 Vinicius Nicoletti Marzocchi: uma vez, eu realmente elogio a parte de você enxergar a necessidade do social media para a MEC TRIO porque ela é uma etapa dentro do processo de vocês conseguirem gerar esse faturamento estipulado.
+42:22 Vinicius Nicoletti Marzocchi: Então saiba que existem diversas estratégias a serem trabalhadas, o que vai ser definido sinceramente é, até mesmo o próprio diretor comercial puxando essa rede, fica mais claro pra você enxergar tudo isso?
+42:35 Vinicius Nicoletti Marzocchi: Porque se o diretor comercial puxar essa Enxerga quais são esses steps que o time dele vai ter ali pra atingir durante toda uma gestão, às vezes durante todo o ano.
+42:45 Vinicius Nicoletti Marzocchi: Cara, é interessante que dentro dessas etapas estejam as coisas. A gente tá chegando no fim agora do ciclo 2, cara, tamo próximo da R&R, com certeza nossa necessidade de captação é muito maior do que quando a gente tá em fevereiro, e o que que a gente vai fazer?
+43:03 Vinicius Nicoletti Marzocchi: Será que são as mesmas estratégias de fevereiro? Com certeza não, e com certeza o Instagram entra nisso.
+43:11 Marcelo Zaiden: Sim. Com certeza. E a gente não tem mudança dessas estratégias. O máximo que
+43:19 Vinícius Miguel: teve, O máximo que teve foi entrar em contato com antigos clientes, oferecendo os mesmos serviços ou o que eles estiverem precisando de novo por valores em desconto, para tentar bater a meta, vamos dizer assim.
+43:36 Vinícius Miguel: O
+43:37 Lucas Boaretto: que
+43:37 Vinícius Miguel: não deu certo. É, imagino. É meio
+43:40 Lucas Boaretto: difícil
+43:40 Vinícius Miguel: trabalhar isso.
+43:40 Marcelo Zaiden: A nossa retenção, ela é, por exemplo, a gente
+43:46 Lucas Boaretto: até tem uma
+43:47 Marcelo Zaiden: quantidade de projetos que são, que voltam, de clientes que voltam.
+43:51 Lucas Boaretto: voltam para a gente muito por
+43:55 Vinícius Miguel: conta
+43:55 Marcelo Zaiden: da qualidade do nosso serviço. Sim sim.
+43:59 Lucas Boaretto: Então vocês trabalham recompra. Acontece bastante sim a gente tem
+44:03 Marcelo Zaiden: o nosso maior cliente assim ele faz projeto com a gente paga no Pix sensacional.
+44:08 Vinícius Miguel: É, e
+44:09 Marcelo Zaiden: já é o quarto, quinto dia
+44:10 Lucas Boaretto: Então dá pra usar o Instagram pra falar sobre ele, por exemplo. Exato.
+44:15 Vinícius Miguel: E é
+44:16 Marcelo Zaiden: muito em relação à qualidade da nossa entrega.
+44:19 Lucas Boaretto: Então é
+44:20 Marcelo Zaiden: o que me deixa intrigado, é que do meu ponto de vista a gente tem uma, a qualidade, tipo assim, em relação a engenharia mecânica, a gente tem uma das maiores qualidades que eu já vi, de todas as engenharias que eu já vi assim, a qualidade da nossa entrega é sempre um nível muito alto, e isso
+44:38 Vinícius Miguel: não, o grid
+44:39 Marcelo Zaiden: não expande pra nada. outros, entendeu?
+44:41 Lucas Boaretto: Na apresentação de
+44:42 Vinícius Miguel: proposta a gente não consegue mostrar isso, tá ligado? Mas isso é
+44:45 Lucas Boaretto: natural, pessoal, porque, por exemplo, por que a Progep cresce tão rápido? Primeiro, os serviços comunicam dores muito vendáveis. Então, pô, eu vou tornar seu dia mais rápido.
+44:56 Lucas Boaretto: Eu vou aumentar a tua margem de lucro, eu vou aumentar a tua captação de clientes. Entende que eu tenho mais mercado pra esse tipo de fala?
+45:03 Lucas Boaretto: Sim, todo mundo tem. Segundo, dentro da engenharia de produção a gente fala sobre processos comerciais, a gente estuda marketing, então a pessoa já acaba absorvendo por osmose esse tipo de de frente.
+45:13 Lucas Boaretto: Só que a Progep pegue em uma coisa, e aqui tem um diretor de projetos que não me deixa mentir, o Mega, meu diretor de projetos no caso, ele era gerente de projetos dentro da Progep.
+45:24 Lucas Boaretto: A Progep pegue em uma coisa, qualidade dos projetos. Só que vendas é muito bom, você entende? O de vocês é o contrário, vocês tem o mais difícil, vocês já tem o mais difícil, que é o projeto ser tão bom que o cara compra de novo, porque o projeto é bom e não porque eu tenho um vendedor bizarro, então
+45:41 Lucas Boaretto: o mais difícil vocês já tem, o que a gente precisa aprender a fazer agora. e que eu quero pegar na mão de vocês e, de novo, dentro de uma collab, mas que vocês me permitam, dentro de um pós-venda, acompanhar os resultados que a gente tem a propor e não ensine, entregue e desapareça, mas sim que vocês
+45:58 Lucas Boaretto: me permitam acompanhar tudo isso, treinar os ingredientes. que eles saibam utilizar esse processo, acompanhar a rotina, a gente aplicar métricas para garantir que isso vai funcionar.
+46:07 Lucas Boaretto: É isso que eu tenho a propor. Onde eu quero desenvolver uma parceria com vocês? Até já adiantei, porque a nossa reunião vai encerrar, inclusive o Vinícius vai, Eu sei que ele tem algo muito importante com o cliente nosso, agora 7 e meia, né?
+46:24 Lucas Boaretto: Sim. Perfeito. O que que eu tenho a propor, Marcelo? Primeiro, Ah, inclusive, Marcelo, se depois você quiser continuar no Meet, a gente seguir trocando me dê a seguir como se fosse um bench, a gente gera um novo meet e fica com você, tá tudo bem.
+46:37 Marcelo Zaiden: Tá tranquilo aqui. O que que eu
+46:39 Lucas Boaretto: tenho a te propor? A gente vai remapear, eu não quero abraçar o mundo agora, eu quero que a gente também tenha recompra, eu quero começar com um prioritário, pra que a partir do que eu te entregar, você venha contratar.
+46:49 Lucas Boaretto: outro serviço aqui da Triana. O que a gente vai começar a fazer? Primeiro, semana que vem eu vou entregar pra você o novo protótipo do site da MacTria, já com robots.txt, que é pra comunicar com as LLMs, já com LLMs.txt, que também é pra comunicar com, é, fazer basicamente a Basicamente que aqui na região
+47:06 Lucas Boaretto: , as IAs entreguem artigos científicos da MEC-TRIA pra quem tá usando GPT, Gemini, Cloud e que a gente refaça o sitemap de vocês pra vocês terem um melhor ranqueamento orgânico dentro das palavras consultoria e Uberaba consultoria e engenharia mecânica e Uberaba projetista e Uberaba Entendeu?
+47:21 Lucas Boaretto: Esse tipo de pesquisa que vai fugir um pouco de média, pra vocês pegarem uma demanda um pouco mais represada. Então a gente vai, semana que vem, já entregar o site prototipado pra vocês.
+47:31 Lucas Boaretto: De novo, cortesia, não vamos cobrar pelo site, não vamos cobrar hospedagem, não vamos cobrar nada do site, cortesia. O que que a gente pode chegar no meio viável?
+47:40 Lucas Boaretto: A gente vai montar o processo comercial de vocês de uma forma mais visual pra facilitar o treinamento. De novo, cortesia.
+47:48 Lucas Boaretto: Por que cortesia? Porque eu já tenho pronto. Eu criei tudo isso na época que eu tava dentro do MESG, fui adaptando e tanto tempo.
+47:53 Lucas Boaretto: para EJs da UFMG e tal, a gente consegue replicar isso ao caso de vocês. E terceiro, entregar essa apresentação mais responsiva, da mesma forma que você viu a Digital Bloom, com os micropactos definidos na apresentação, de uma forma sutil, e a gente vai criar o roteiro.
+48:09 Lucas Boaretto: de apresentação para que depois eu consiga implantar isso e capacitar os vendedores. O que você acha Marcelo?
+48:16 Marcelo Zaiden: Eu acho uma boa. Legal.
+48:21 Lucas Boaretto: Alguma coisa a adicionar? Não,
+48:24 Marcelo Zaiden: acho que tá esse sistema assim de, Definir por prioritário, assim, acho que é algo bom também de se fazer. A gente ir alinhando ponta a ponta, assim.
+48:34 Marcelo Zaiden: Porque o foco da minha gestão e para a minha próxima gestão também, por isso que eu já queria deixar as coisas dependendo até alinhadas.
+48:41 Marcelo Zaiden: E já adianto pra vocês, a comercial vem do investimento que não teve o retorno ainda.
+48:49 Lucas Boaretto: Tô sabendo desse lado, Marcelo.
+48:52 Marcelo Zaiden: E o que acontece, eu tô montando uma planilha de investimentos futuros. de acordo com a prioridade. E o que que acontece?
+49:02 Marcelo Zaiden: Aí eu monto um score de acordo com algumas características, ou seja o que que isso vai agregar pro pessoal, o que que vai desenvolver, qual que é o retorno sobre investimento, se tem algum retorno, se não tem.
+49:14 Marcelo Zaiden: tem, se gera, o que que gera, e é isso que eu já tô montando. Então o meu foco na minha gestão tá sendo uma reestruturação e subdivisão de todos os setores.
+49:25 Marcelo Zaiden: Então, que nem o João Guilherme que tá aí do marketing, eu fiz a reestruturação dele eles agora, mudei o jeito que cada um faz, porque antes cada um era responsável por uma rede social, no marketing, antes era assim.
+49:39 Marcelo Zaiden: Agora eu tenho o estruturador de leads, eu tenho o estruturador de leads, o editor de vids, os responsáveis pelo conteúdo.
+49:46 Marcelo Zaiden: e o diretor que vai estar analisando indicadores e métricas. Basicamente é algo básico, mas é o que a gente tem ali.
+49:52 Marcelo Zaiden: O comercial já está nessa parte de estruturação. E cada setor vai ter uma subdivisão, inclusive o marketing vai ter uma subdivisão de gestor de tráfego pago.
+50:02 Lucas Boaretto: Perfeito. no
+50:02 Marcelo Zaiden: futuro também, então esse é o meu foco e a partir do ano que vem que eu vou prestar para a presidência, o meu foco total vai ser em performance e faturamento, porque a gente está vindo de duas gestões que não acumularam saúde de caixa.
+50:18 Marcelo Zaiden: Apesar de ter batido o faturamento, subido de cluster, do cluster 3 pro cluster 4, nós não tivemos um acúmulo de caixa que gera uma saúde financeira pra nossa empresa.
+50:31 Marcelo Zaiden: E alguma gestão, Alguma gestão, A gestão vai ter que fazer isso, alguma gestão vai ter que estar focando nisso também.
+50:38 Lucas Boaretto: Você sabe qual que é o problema dessas mentorias comerciais, treinamentos comerciais? É como se eu te ensinasse a andar de bicicleta na fala.
+50:46 Lucas Boaretto: E na hora de você montar na bicicleta e tentar andar, eu não te seguro, eu não coloco rodinha e vou.
+50:50 Lucas Boaretto: Eu te ensinar a andar de bicicleta, você tem que montar, se equilibrar, segurar no guidão e pedalar.
+51:02 Lucas Boaretto: Se eu não consigo acompanhar os resultados, se a pessoa não acompanha os resultados daquilo que ela te tem, que treinou ou gerou de habilidade e tá constantemente adaptando a realidade de vocês, é difícil que isso dê algum rol aí mesmo.
+51:14 Lucas Boaretto: É difícil que isso de fato dê algum resultado, sabe? E é por isso que eu quero casar com o objetivo da gestão de vocês, que é uma reestruturação de todos os setores, Focar dentro do comercial, que é a minha especialidade, é onde eu domino e utilizar da Triângulo Solutions, que une tanto a formalização
+51:31 Lucas Boaretto: quanto processos, engenharia de produção, quanto também o mapeamento, quanto também o design, a frente de marketing que a gente tem aqui dentro.
+51:39 Lucas Boaretto: Então, é para trabalhar o processo de fechamento. Você gostou? Aí, no ano que vem ou em outro período, você traz a gente pra fazer a mesma coisa pra prospecção ativa, pra diagnóstica e por aí vai.
+51:51 Lucas Boaretto: Inicialmente, eu quero focar na apresentação de proposta, no site do Eu site de vocês como uma certa cortesia, com um negócio mais legal, não só mais bonito, mas também com uma estrutura melhor para SEO.
+52:04 Lucas Boaretto: E além do site de apresentação de proposta, a definição desses micropactos, os scripts deles. E me proponho também a me reunir com o time comercial posteriormente pra treiná-los e acompanhá-los utilizando essa apresentação.
+52:20 Marcelo Zaiden: Seria bom também, não sei se também, mas eu acredito que seja da situação de vocês, algo em relação aos indicadores também.
+52:26 Marcelo Zaiden: Beleza. da comercial, pessoal do marketing e outros afins, mas principalmente os dois, eles atuam em cima de dados.
+52:35 Lucas Boaretto: Perfeito.
+52:35 Marcelo Zaiden: E é algo que eu sinto que falo, porque eu busquei os dados de como que o setor estava, onde era o vazamento.
+52:43 Marcelo Zaiden: e o que eles podiam fazer em cima disso. Mas não teve uma nova coleta de dados. O pessoal, desde então, a gente vem tentando implementar novas formas, mas acaba que a gente não consegue acompanhar e ter essa certeza da qualidade daquilo
+52:58 Lucas Boaretto: que, Perfeito. E a
+53:00 Marcelo Zaiden: gente fez. Perfeito.
+53:01 Lucas Boaretto: Não, com certeza Marcelo, inclusive eu criei isso pra Triângulo, pra Digital Bloom. Vai acabar a chamada aí. O Meet vai acabar agora
+53:08 Marcelo Zaiden: e aí eu
+53:09 Lucas Boaretto: queria dizer, Abriu outro Meet? Beleza. Luminato.

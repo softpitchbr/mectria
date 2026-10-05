@@ -1,0 +1,700 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Triângulo Solutions</title>
+<meta name="description" content="Apresentação institucional interativa da Triângulo Solutions">
+<meta name="robots" content="noindex, nofollow">
+<meta name="theme-color" content="#0E0E10">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,300;0,400;0,500;0,600;0,700;1,300&display=swap" rel="stylesheet">
+<style>
+:root {
+  color-scheme: dark;
+  --bg: #0E0E10; --surface: #17171A; --surface-2: #1D1D21; --line: #2C2C33; --line-2: #3C3C45;
+  --fg: #FFFFFF; --fg-2: #9A9AA2; --fg-3: #6E6E76;
+  --red: #E83E46; --red-logo: #CE2B34; --red-deep: #8A2A30;
+  --red-tint: rgba(232, 62, 70, 0.12); --red-line: rgba(232, 62, 70, 0.5);
+  --radius: 8px;
+  --pad-x: clamp(20px, 5.2vw, 100px); --pad-y: clamp(24px, 5vh, 64px);
+  --h1: clamp(1.9rem, 3.4vw, 3.6rem); --h2: clamp(1.6rem, 3vw, 3.2rem);
+  --body: clamp(0.95rem, 1.08vw, 1.15rem); --small: clamp(0.8rem, 0.86vw, 0.92rem);
+  --font: "Poppins", "Segoe UI", system-ui, -apple-system, sans-serif;
+}
+* { box-sizing: border-box; margin: 0; padding: 0; }
+[hidden] { display: none !important; }
+html, body { height: 100%; }
+body { background: var(--bg); color: var(--fg); font-family: var(--font); font-size: var(--body); line-height: 1.55; -webkit-font-smoothing: antialiased; overflow: hidden; }
+button { font: inherit; color: inherit; background: none; border: 0; cursor: pointer; }
+button:focus-visible { outline: 2px solid var(--red); outline-offset: 3px; }
+.eyebrow { font-weight: 700; font-size: clamp(0.66rem, 0.76vw, 0.82rem); letter-spacing: 0.32em; text-transform: uppercase; color: var(--red); }
+.kicker { font-weight: 600; font-size: clamp(0.64rem, 0.72vw, 0.78rem); letter-spacing: 0.26em; text-transform: uppercase; color: var(--fg-3); }
+.hl { color: var(--red); }
+.muted { color: var(--fg-2); }
+
+.deck { position: relative; height: 100%; }
+.slide {
+  --gx: 88%; --gy: 100%;
+  position: absolute; inset: 0; display: flex; flex-direction: column;
+  padding: var(--pad-y) var(--pad-x) calc(var(--pad-y) - 10px); overflow: hidden auto;
+  background: radial-gradient(ellipse 55% 70% at var(--gx) var(--gy), rgba(158, 30, 38, 0.34), transparent 70%), linear-gradient(165deg, #131316 0%, #0C0C0E 60%, #0A0A0C 100%);
+  opacity: 0; visibility: hidden; transform: translateY(10px);
+  transition: opacity .45s ease, transform .45s ease, visibility 0s linear .45s; isolation: isolate;
+}
+.slide.alt { --gx: 10%; --gy: 100%; }
+.slide.mid { --gx: 64%; --gy: 42%; }
+.slide.is-active { opacity: 1; visibility: visible; transform: none; transition: opacity .45s ease, transform .45s ease; }
+.slide.red { background: radial-gradient(ellipse 75% 85% at 42% 32%, #E23C44 0%, #C42A33 48%, #8A2A30 100%); }
+.slide.red .eyebrow, .slide.red .stamp, .slide.red .brand .x { color: rgba(255, 255, 255, 0.72); }
+.slide.red .brand .mark { color: #fff; }
+.slide-header { display: flex; justify-content: space-between; align-items: center; gap: 16px; margin-bottom: clamp(14px, 3vh, 40px); min-height: 26px; }
+.brand { display: flex; align-items: center; gap: 10px; font-size: clamp(0.88rem, 1vw, 1.02rem); }
+.brand .mark { width: 20px; height: 22px; color: var(--red); flex: none; }
+.wm i { font-weight: 300; font-style: italic; }
+.wm b { font-weight: 700; }
+.brand .x { color: var(--fg-3); margin-left: 2px; }
+.slide-body { flex: 1 0 auto; display: flex; flex-direction: column; justify-content: center; gap: clamp(14px, 2.6vh, 30px); }
+.stamp { display: flex; align-items: center; flex-wrap: wrap; gap: 10px 28px; margin-top: clamp(14px, 2.4vh, 28px); margin-right: 170px; min-height: 36px; font-size: 0.62rem; font-weight: 600; letter-spacing: 0.28em; text-transform: uppercase; color: var(--fg-3); }
+.stamp .grow { flex: 1; font-size: 0.8rem; font-weight: 400; letter-spacing: 0.02em; text-transform: none; }
+h1, h2, h3 { font-weight: 700; line-height: 1.12; letter-spacing: -0.01em; text-wrap: balance; }
+h1 { font-size: var(--h1); }
+h2 { font-size: var(--h2); max-width: 26ch; }
+h3 { font-size: clamp(1.05rem, 1.35vw, 1.4rem); font-weight: 600; }
+.lead { color: var(--fg-2); font-weight: 300; max-width: 60ch; font-size: clamp(1.02rem, 1.3vw, 1.35rem); }
+.grid { display: grid; gap: clamp(12px, 1.5vw, 22px); }
+.g3 { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+.g4 { grid-template-columns: repeat(4, minmax(0, 1fr)); }
+.card { background: linear-gradient(180deg, #1A1A1E, var(--surface)); border: 1px solid var(--line); border-radius: var(--radius); padding: clamp(16px, 1.7vw, 26px); }
+.card p { color: var(--fg-2); }
+.dlist { list-style: none; display: grid; gap: 16px; }
+.dlist li { position: relative; padding-left: 30px; font-weight: 300; }
+.dlist li::before { content: ""; position: absolute; left: 2px; top: 0.5em; width: 10px; height: 10px; background: var(--red); transform: rotate(45deg); border-radius: 1px; }
+
+.progress { position: fixed; top: 0; left: 0; height: 3px; background: var(--red); z-index: 50; transition: width .4s ease; }
+.nav { position: fixed; right: clamp(12px, 2vw, 28px); bottom: calc(clamp(12px, 2vh, 22px) + env(safe-area-inset-bottom, 0px)); z-index: 50; display: flex; align-items: center; gap: 2px; background: rgba(23, 23, 26, 0.92); backdrop-filter: blur(8px); border: 1px solid var(--line); border-radius: 999px; padding: 4px; }
+.nav button { width: 36px; height: 36px; border-radius: 50%; display: grid; place-items: center; color: var(--fg-2); }
+.nav button:hover { background: var(--surface-2); color: var(--fg); }
+.nav .counter { width: auto; padding: 0 12px; border-radius: 999px; font-size: 0.8rem; font-weight: 500; letter-spacing: 0.08em; }
+.index-menu { position: fixed; right: clamp(12px, 2vw, 28px); bottom: 74px; z-index: 60; background: var(--surface); border: 1px solid var(--line-2); border-radius: 10px; padding: 8px; max-height: 70vh; overflow: auto; min-width: 260px; }
+.index-menu button { display: flex; gap: 12px; width: 100%; text-align: left; padding: 7px 12px; border-radius: 6px; color: var(--fg-2); font-size: 0.9rem; }
+.index-menu button:hover, .index-menu button.current { background: var(--surface-2); color: var(--fg); }
+.index-menu .n { color: var(--red); font-weight: 600; min-width: 2ch; }
+
+.pact { display: inline-flex; align-items: center; gap: 10px; border: 1px solid var(--line-2); border-radius: 999px; padding: 6px 14px 6px 6px; color: var(--fg-2); font-size: 0.82rem; font-weight: 500; letter-spacing: 0; text-transform: none; transition: all .25s ease; white-space: nowrap; }
+.tick { width: 22px; height: 22px; border-radius: 50%; border: 1.5px solid var(--line-2); display: grid; place-items: center; transition: all .25s ease; flex: none; }
+.tick svg { width: 13px; height: 13px; opacity: 0; transition: opacity .2s; }
+.pact:hover { border-color: var(--red); color: var(--fg); }
+.pact.on { border-color: var(--red); color: var(--fg); background: var(--red-tint); }
+.pact.on .tick { background: var(--red); border-color: var(--red); color: #fff; }
+.pact.on .tick svg { opacity: 1; }
+.slide.red .pact { border-color: rgba(255, 255, 255, 0.55); color: #fff; }
+.slide.red .pact .tick { border-color: rgba(255, 255, 255, 0.7); }
+.slide.red .pact.on { background: #fff; color: var(--red-logo); border-color: #fff; }
+.slide.red .pact.on .tick { background: var(--red-logo); border-color: var(--red-logo); }
+
+/* Capa */
+.corner { position: absolute; left: 0; top: 0; width: 30vw; height: 40vh; z-index: -1; background: linear-gradient(165deg, rgba(150, 34, 42, 0.62), rgba(90, 18, 24, 0.3)); clip-path: polygon(0 0, 100% 0, 44% 100%, 0 54%); }
+.lockup { display: flex; align-items: center; gap: clamp(14px, 1.6vw, 26px); }
+.lockup .mark { width: clamp(64px, 7.4vw, 128px); height: auto; color: #fff; flex: none; }
+.lockup .wm { display: flex; flex-direction: column; line-height: 0.98; }
+.lockup .wm i { font-size: clamp(1.5rem, 2.9vw, 3.1rem); }
+.lockup .wm b { font-size: clamp(2.1rem, 4.3vw, 4.7rem); letter-spacing: -0.015em; }
+.cover h1 { max-width: 22ch; }
+.cover-meta { display: flex; flex-wrap: wrap; align-items: flex-end; gap: 16px clamp(16px, 3vw, 48px); margin-right: 170px; }
+.cover-meta > div { display: flex; flex-direction: column; gap: 4px; }
+.cover-meta strong { font-weight: 500; }
+.cover-meta small { color: var(--fg-3); font-size: var(--small); }
+.big-mark { position: absolute; right: 7vw; top: 50%; transform: translateY(-50%); width: min(24vw, 360px); height: auto; color: var(--red-logo); z-index: -1; }
+.closing h1 { max-width: 18ch; }
+a.tel { color: inherit; text-decoration: none; }
+
+.purpose { display: grid; grid-template-columns: 1.1fr 1fr; gap: clamp(20px, 3vw, 56px); align-items: center; }
+.purpose blockquote { font-weight: 700; font-size: clamp(1.5rem, 2.6vw, 2.6rem); line-height: 1.2; text-wrap: balance; }
+
+/* Dores */
+.pains { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: clamp(10px, 1.3vw, 18px); }
+.pain { text-align: left; display: flex; flex-direction: column; gap: 10px; transition: border-color .25s, background .25s; }
+.pain:hover { border-color: var(--line-2); }
+.pain .top { display: flex; gap: 12px; align-items: flex-start; }
+.pain q { font-weight: 600; font-size: clamp(1rem, 1.2vw, 1.25rem); line-height: 1.35; quotes: "“" "”"; flex: 1; }
+.pain .cause { color: var(--fg-2); font-size: var(--small); border-top: 1px solid var(--line); padding-top: 10px; display: none; }
+.pain .cause b { color: var(--red); font-weight: 600; }
+.pain.on { border-color: var(--red-line); background: var(--red-tint); }
+.pain.on .tick { background: var(--red); border-color: var(--red); color: #fff; }
+.pain.on .tick svg { opacity: 1; }
+.pain.on .cause { display: block; animation: fadeUp .3s ease; }
+.pain-count { color: var(--fg-2); font-size: var(--small); }
+.pain-count b { color: var(--red); }
+
+/* Por que a Triângulo */
+.rival h3 { margin: 8px 0 8px; }
+.rival.us { background: var(--red-logo); border-color: var(--red-logo); }
+.rival.us .kicker { color: rgba(255, 255, 255, 0.85); }
+.rival.us p { color: #fff; font-weight: 500; }
+
+/* O que fazemos / método */
+.step-card .num { font-weight: 700; font-size: clamp(2.6rem, 5vw, 5rem); line-height: 0.9; margin: 8px 0 10px; color: var(--red); }
+.front ul { list-style: none; display: grid; gap: 6px; margin-top: 12px; }
+.front li { color: var(--fg-2); font-size: var(--small); padding-left: 18px; position: relative; }
+.front li::before { content: ""; position: absolute; left: 2px; top: 0.6em; width: 6px; height: 6px; transform: rotate(45deg); background: var(--red); }
+.front .ex { margin-top: 12px; padding-top: 10px; border-top: 1px solid var(--line); font-size: var(--small); color: var(--fg); }
+
+.metric-num { font-weight: 700; font-size: clamp(2rem, 3.2vw, 3.3rem); line-height: 1; margin: 14px 0 8px; color: var(--red); }
+.metric.prior { border-style: dashed; background: transparent; }
+.metric.prior .metric-num { color: var(--fg-2); }
+
+.person { display: flex; flex-direction: column; gap: 10px; }
+.avatar { width: 60px; height: 60px; border-radius: 50%; display: grid; place-items: center; font-weight: 600; font-size: 1.15rem; color: #fff; background: var(--red-logo); }
+.person .p-role { display: block; margin-top: 4px; color: var(--red); font-weight: 600; font-size: 0.66rem; letter-spacing: 0.22em; text-transform: uppercase; }
+.person p { font-size: var(--small); }
+
+.case .client { font-weight: 600; font-size: 1.08rem; margin-bottom: 4px; }
+.case .result { font-size: clamp(1.35rem, 2vw, 2rem); font-weight: 700; margin: 14px 0 6px; color: var(--red); line-height: 1.15; }
+
+.big-q h1 { max-width: 20ch; font-size: clamp(2.2rem, 4.4vw, 4.6rem); }
+.answer { display: flex; flex-wrap: wrap; gap: 12px; }
+.answer .pact { font-size: 1rem; padding: 10px 20px 10px 10px; white-space: normal; text-align: left; }
+.answer .pact .tick { width: 28px; height: 28px; }
+
+/* Projeto */
+.module .kicker { color: var(--red); }
+.module h3 { margin: 6px 0 6px; }
+.module p { font-size: var(--small); }
+.chips { display: flex; flex-wrap: wrap; gap: 8px; align-items: center; }
+.chips span.chip { border: 1px dashed var(--line-2); border-radius: 999px; padding: 5px 14px; color: var(--fg-2); font-size: var(--small); }
+
+/* Planos */
+.plans { display: grid; grid-template-columns: 1fr 1fr; gap: clamp(12px, 2vw, 28px); }
+.plan { display: flex; flex-direction: column; gap: 12px; transition: all .35s ease; }
+.plan ul { list-style: none; display: grid; gap: 8px; }
+.plan li { color: var(--fg-2); padding-left: 22px; position: relative; font-size: var(--small); }
+.plan li::before { content: ""; position: absolute; left: 2px; top: 0.6em; width: 7px; height: 7px; transform: rotate(45deg); background: var(--fg-3); }
+.plan.p2 { border-color: var(--red-line); }
+.plan.p2 li::before { background: var(--red); }
+.plan .price { margin-top: auto; display: flex; flex-direction: column; gap: 4px; padding: 14px 16px; border: 1px solid var(--line); border-radius: var(--radius); background: rgba(0, 0, 0, 0.18); }
+.plan.p2 .price { border-color: var(--red-line); background: var(--red-tint); }
+.plan .val { font-weight: 700; font-size: clamp(1.6rem, 2.6vw, 2.8rem); line-height: 1.1; transition: filter .4s, color .4s; }
+.plan .locked .val { filter: blur(9px); color: var(--fg-3); user-select: none; }
+.plan .inst { color: var(--fg-2); font-size: 0.85rem; min-height: 1.3em; }
+.plans.pick-jornada .p2, .plans.pick-parceria .p1 { opacity: 0.4; transform: scale(0.98); }
+.plans.pick-parceria .p2, .plans.pick-jornada .p1 { box-shadow: 0 0 0 1px var(--red), 0 20px 60px -20px rgba(232, 62, 70, 0.45); }
+.btn { display: inline-flex; align-items: center; justify-content: center; gap: 8px; padding: 10px 16px; border-radius: var(--radius); font-weight: 600; font-size: 0.9rem; background: var(--red-logo); color: #fff; transition: background .2s, transform .2s; align-self: flex-start; }
+.btn:hover { background: var(--red); transform: translateY(-1px); }
+.btn.ghost { background: transparent; color: var(--fg); border: 1px solid var(--line-2); }
+.pact-summary { display: flex; flex-wrap: wrap; align-items: center; gap: 10px 18px; color: var(--fg-2); font-size: var(--small); }
+.pact-summary .dot { display: inline-flex; align-items: center; gap: 8px; }
+.pact-summary .dot i { width: 9px; height: 9px; transform: rotate(45deg); background: var(--line-2); }
+.pact-summary .dot.on i { background: var(--red); }
+.save { color: var(--fg-2); font-size: var(--small); }
+.save b { color: var(--fg); }
+
+.steps { display: grid; grid-template-columns: repeat(5, minmax(0, 1fr)); gap: 14px; }
+.step { display: flex; flex-direction: column; gap: 6px; }
+.step .dotline { height: 2px; background: var(--line-2); position: relative; margin: 8px 0 10px; }
+.step .dotline::before { content: ""; position: absolute; left: 0; top: -5px; width: 12px; height: 12px; transform: rotate(45deg); background: var(--red); box-shadow: 0 0 0 5px rgba(232, 62, 70, 0.18); }
+.step p { color: var(--fg-2); font-size: var(--small); }
+.terms p { font-size: var(--small); margin-top: 4px; }
+
+.toast { position: fixed; left: 50%; bottom: 28px; transform: translate(-50%, 20px); opacity: 0; background: var(--fg); color: #111114; padding: 10px 18px; border-radius: 999px; font-weight: 600; font-size: 0.9rem; transition: all .3s; z-index: 80; pointer-events: none; }
+.toast.show { opacity: 1; transform: translate(-50%, 0); }
+@keyframes fadeUp { from { opacity: 0; transform: translateY(8px); } to { opacity: 1; transform: none; } }
+
+@media (max-width: 1180px) {
+  .g4 { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .pains { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .steps { grid-template-columns: repeat(3, minmax(0, 1fr)); row-gap: 24px; }
+}
+@media (max-width: 820px), (max-height: 520px) and (max-width: 1000px) {
+  body { overflow-x: clip; overflow-y: auto; }
+  .deck { height: auto; }
+  .slide { position: relative; inset: auto; opacity: 1; visibility: visible; transform: none; overflow: visible; overflow-x: clip; border-bottom: 1px solid var(--line); padding: 44px 16px; }
+  .slide.cover { min-height: 100svh; }
+  .nav, .progress { display: none !important; }
+  .g3, .g4, .pains, .plans, .purpose, .steps { grid-template-columns: 1fr; }
+  .stamp, .cover-meta { margin-right: 0; }
+  .big-mark { opacity: 0.18; width: 70vw; right: -18vw; }
+  .corner { width: 60vw; height: 26vh; }
+}
+@media print {
+  @page { size: 1600px 900px; margin: 0; }
+  body { overflow: visible; -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+  .deck { height: auto; }
+  .slide { position: relative; opacity: 1; visibility: visible; transform: none; width: 1600px; height: 900px; page-break-after: always; overflow: hidden; }
+  .nav, .progress, .index-menu, .toast { display: none !important; }
+}
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after { animation-duration: .01ms !important; transition-duration: .01ms !important; }
+}
+</style>
+</head>
+<body>
+
+<div class="progress" id="progress"></div>
+
+<main class="deck" id="deck">
+
+<!-- 01 · CAPA -->
+<section class="slide cover" data-title="Capa">
+  <div class="corner" aria-hidden="true"></div>
+  <div class="slide-header"><span class="eyebrow" data-cover-eyebrow></span><span class="kicker" data-date></span></div>
+  <div class="slide-body">
+    <div class="lockup"><span data-mark="lock"></span><span class="wm"><i>Triângulo</i><b>Solutions</b></span></div>
+    <h1>Tecnologia sob medida para <span class="hl">destravar o lucro</span> da sua empresa.</h1>
+    <p class="lead">Consultoria empresarial que usa soluções tecnológicas próprias para aplicar planos de ação reais dentro da sua empresa.</p>
+  </div>
+  <div class="cover-meta">
+    <div data-for hidden><span class="kicker">Preparado para</span><strong data-f="client"></strong></div>
+    <div><span class="kicker">Apresentado por</span><strong data-f="presenter"></strong><small data-f="presenterRole"></small></div>
+    <div><span class="kicker">Site</span><strong data-f="site"></strong><small data-f="city"></small></div>
+  </div>
+</section>
+
+<!-- 02 · QUEM SOMOS -->
+<section class="slide mid" data-title="Quem somos">
+  <div class="slide-header"><div class="brand" data-brand></div></div>
+  <div class="slide-body">
+    <span class="eyebrow">Quem somos</span>
+    <div class="purpose">
+      <blockquote>Existe lucro preso em toda empresa. <span class="hl">Nosso trabalho é destravar.</span></blockquote>
+      <ul class="dlist">
+        <li>Nascemos numa aula de empreendedorismo da Engenharia de Produção da UFTM.</li>
+        <li>Não somos agência nem software house. Usamos o método da engenharia: mapear o processo, achar a falha, medir e otimizar.</li>
+        <li>A gente não chuta: triangula. Acha o ponto exato antes de agir.</li>
+        <li>Se não move o ponteiro do lucro, a gente não faz.</li>
+      </ul>
+    </div>
+  </div>
+  <div class="stamp" data-stamp></div>
+</section>
+
+<!-- 03 · DORES -->
+<section class="slide alt" data-title="Isso acontece aí?">
+  <div class="slide-header"><div class="brand" data-brand></div></div>
+  <div class="slide-body">
+    <span class="eyebrow">Diagnóstico rápido</span>
+    <h2>Isso acontece na sua empresa?</h2>
+    <div class="pains" data-pains></div>
+    <p class="pain-count" data-pain-count></p>
+  </div>
+  <div class="stamp" data-stamp data-pact-key="dor" data-hint="Clique no que acontece aí"></div>
+</section>
+
+<!-- 04 · POR QUE A TRIÂNGULO -->
+<section class="slide" data-title="Por que a Triângulo">
+  <div class="slide-header"><div class="brand" data-brand></div></div>
+  <div class="slide-body">
+    <span class="eyebrow">Por que ninguém resolveu ainda</span>
+    <h2>Cada um resolve um pedaço. <span class="hl">O lucro fica preso no meio.</span></h2>
+    <div class="grid g4" data-rivals></div>
+  </div>
+  <div class="stamp" data-stamp data-pact-key="time"></div>
+</section>
+
+<!-- 05 · NÚMEROS -->
+<section class="slide alt" data-title="Números">
+  <div class="slide-header"><div class="brand" data-brand></div></div>
+  <div class="slide-body">
+    <span class="eyebrow">Nossos números</span>
+    <h2>Empresa nova, número real.</h2>
+    <p class="lead">Tudo o que está aqui dá para verificar.</p>
+    <div class="grid g4" data-metrics></div>
+  </div>
+  <div class="stamp" data-stamp></div>
+</section>
+
+<!-- 06 · TIME -->
+<section class="slide" data-title="Time">
+  <div class="slide-header"><div class="brand" data-brand></div></div>
+  <div class="slide-body">
+    <span class="eyebrow">Quem está por trás</span>
+    <h2>Engenharia, tecnologia e marketing na mesma mesa.</h2>
+    <div class="grid g4" data-team></div>
+  </div>
+  <div class="stamp" data-stamp></div>
+</section>
+
+<!-- 07 · O QUE FAZEMOS -->
+<section class="slide mid" data-title="O que fazemos">
+  <div class="slide-header"><div class="brand" data-brand></div></div>
+  <div class="slide-body">
+    <span class="eyebrow">O que fazemos</span>
+    <h2>Quatro frentes. Um objetivo: lucro.</h2>
+    <div class="grid g4" data-fronts></div>
+  </div>
+  <div class="stamp" data-stamp></div>
+</section>
+
+<!-- 08 · COMO TRABALHAMOS -->
+<section class="slide alt" data-title="Como trabalhamos">
+  <div class="slide-header"><div class="brand" data-brand></div></div>
+  <div class="slide-body">
+    <span class="eyebrow">A gente não chuta: triangula</span>
+    <h2>Como trabalhamos.</h2>
+    <div class="grid g4" data-method></div>
+  </div>
+  <div class="stamp" data-stamp data-pact-key="metodo"></div>
+</section>
+
+<!-- 09 · CASES -->
+<section class="slide" data-title="Cases">
+  <div class="slide-header"><div class="brand" data-brand></div></div>
+  <div class="slide-body">
+    <span class="eyebrow">Em operação</span>
+    <h2>Já está rodando em outros negócios.</h2>
+    <div class="grid g3" data-cases></div>
+  </div>
+  <div class="stamp" data-stamp></div>
+</section>
+
+<!-- 10 · JORNADA COMERCIAL · ESCOPO -->
+<section class="slide mid" data-title="A proposta">
+  <div class="slide-header"><div class="brand" data-brand></div></div>
+  <div class="slide-body">
+    <span class="eyebrow">A proposta · Jornada Comercial</span>
+    <h2>Seus clientes, cobranças e vendas <span class="hl">num lugar só.</span></h2>
+    <p class="lead">Um sistema de gestão de clientes com banco de dados centralizado, para reduzir controles manuais, economizar tempo da equipe e facilitar a cobrança e a reativação de clientes.</p>
+    <div class="grid g3" data-modules></div>
+    <div class="chips"><span class="kicker">Evoluções futuras, fora do MVP</span><span data-future></span></div>
+  </div>
+  <div class="stamp" data-stamp data-hint="Começamos por um MVP e evoluímos a partir do uso real"></div>
+</section>
+
+<!-- 11 · PERGUNTA -->
+<section class="slide red big-q" data-title="Tirando o preço">
+  <div class="slide-header"><div class="brand" data-brand></div></div>
+  <div class="slide-body">
+    <span class="eyebrow">Uma pergunta sincera</span>
+    <h1>Tirando o preço da mesa, isso resolveria o que a sua empresa precisa?</h1>
+    <div class="answer">
+      <button class="pact" data-pact="cliente"><span class="tick"><svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M3 8.5l3 3 7-7"/></svg></span>Sim, faz sentido para a minha empresa</button>
+      <button class="pact" data-goto-title="A proposta">Quero rever a proposta</button>
+    </div>
+  </div>
+  <div class="stamp" data-stamp></div>
+</section>
+
+<!-- 12 · INVESTIMENTO -->
+<section class="slide" data-title="Investimento">
+  <div class="slide-header"><div class="brand" data-brand></div></div>
+  <div class="slide-body">
+    <span class="eyebrow">Investimento</span>
+    <h2>Dois jeitos de começar. <span class="hl">O mesmo sistema.</span></h2>
+    <div class="pact-summary" data-pact-summary></div>
+    <div class="plans" data-plans>
+      <div class="card plan p1">
+        <span class="kicker">Plano 1</span>
+        <h3>Jornada Comercial</h3>
+        <ul>
+          <li>Sistema completo do MVP: clientes, débitos, inadimplentes, inativos, cobranças e painel.</li>
+          <li>Sem contrapartidas.</li>
+          <li>Valor total, parcelado em até 5x.</li>
+        </ul>
+        <div class="price locked" data-price="jornada"><div class="val">R$ 0.000</div><span class="inst"></span></div>
+        <div class="btn-row"><button class="btn" data-reveal>Revelar valor</button><button class="btn ghost" data-pick="jornada" hidden>Escolher este plano</button></div>
+      </div>
+      <div class="card plan p2">
+        <span class="eyebrow">Plano 2</span>
+        <h3>Parceria</h3>
+        <ul data-partner-terms></ul>
+        <div class="price locked" data-price="parceria"><div class="val">R$ 0.000</div><span class="inst"></span></div>
+        <div class="btn-row"><button class="btn" data-unlock hidden>Ver condição de parceria</button><button class="btn" data-pick="parceria" hidden>Escolher este plano</button></div>
+      </div>
+    </div>
+    <p class="save" data-save hidden></p>
+  </div>
+  <div class="stamp" data-stamp></div>
+</section>
+
+<!-- 13 · PRÓXIMOS PASSOS -->
+<section class="slide alt" data-title="Próximos passos">
+  <div class="slide-header"><div class="brand" data-brand></div></div>
+  <div class="slide-body">
+    <span class="eyebrow">Próximos passos</span>
+    <h2>Do sim ao sistema rodando.</h2>
+    <div class="steps">
+      <div class="step"><span class="eyebrow">Hoje</span><div class="dotline"></div><h3>Escolha do plano</h3><p>Jornada Comercial ou Parceria.</p></div>
+      <div class="step"><span class="eyebrow">Passo 2</span><div class="dotline"></div><h3>Contrato</h3><p>Assinado antes de qualquer desenvolvimento.</p></div>
+      <div class="step"><span class="eyebrow">Passo 3</span><div class="dotline"></div><h3>Kickoff</h3><p>Coletamos os dados reais: clientes, débitos e histórico.</p></div>
+      <div class="step"><span class="eyebrow">Passo 4</span><div class="dotline"></div><h3>Construção do MVP</h3><p>Desenvolvido e validado com você, etapa por etapa.</p></div>
+      <div class="step"><span class="eyebrow">Passo 5</span><div class="dotline"></div><h3>Entrega e acompanhamento</h3><p>Sistema no ar, equipe usando e ajustes a partir do uso real.</p></div>
+    </div>
+    <div class="grid g3 terms">
+      <div class="card"><span class="kicker">Pagamento</span><p>Valor total, parcelado em até 5x.</p></div>
+      <div class="card"><span class="kicker">Contrato</span><p>Assinado antes de começar o desenvolvimento.</p></div>
+      <div class="card"><span class="kicker">Evoluções</span><p>Automações, WhatsApp, ERP e relatórios são orçados à parte, depois do MVP.</p></div>
+    </div>
+  </div>
+  <div class="stamp" data-stamp></div>
+</section>
+
+<!-- 14 · ENCERRAMENTO -->
+<section class="slide cover closing mid" data-title="Encerramento">
+  <div class="slide-header"><div class="brand" data-brand></div></div>
+  <span data-mark="big-mark"></span>
+  <div class="slide-body">
+    <span class="eyebrow" data-thanks>Obrigado</span>
+    <h1>Existe lucro preso na sua empresa. <span class="hl">Vamos destravar.</span></h1>
+    <p class="lead">Destrave o lucro que já é seu.</p>
+  </div>
+  <div class="cover-meta">
+    <div><span class="kicker">Site</span><strong data-f="site"></strong><small data-f="city"></small></div>
+    <div><span class="kicker">Instagram</span><strong data-f="instagram"></strong></div>
+    <div><span class="kicker">WhatsApp</span><strong><a class="tel" data-tel></a></strong><small data-f="presenter"></small></div>
+  </div>
+</section>
+
+</main>
+
+<nav class="nav" aria-label="Navegação">
+  <button data-prev aria-label="Anterior"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M15 18l-6-6 6-6"/></svg></button>
+  <button class="counter" data-index-toggle aria-label="Índice"></button>
+  <button data-next aria-label="Próximo"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 6l6 6-6 6"/></svg></button>
+</nav>
+<div class="index-menu" data-index-menu hidden></div>
+<div class="toast" data-toast></div>
+
+<script>
+/* ════════════════════════════════════════════════════════════════
+   CONFIG · o que muda de uma reunião para outra.
+   Para personalizar a capa, abra com ?para=Nome da empresa
+   ════════════════════════════════════════════════════════════════ */
+const CONFIG = {
+  client: "",
+  presenter: "Lucas Cruvinel",
+  presenterRole: "CEO · Triângulo Solutions",
+  phone: "(16) 99388-2232",
+  instagram: "@triangulosolutionsbrasil",
+  site: "triangulosolutions.com.br",
+  city: "Uberaba/MG",
+
+  // [frase do empresário, causa, o que a Triângulo faz]
+  pains: [
+    ["Pra saber quem está me devendo, abro caderno, planilha e WhatsApp.", "Informação espalhada, sem base única.", "CRM com banco de dados centralizado."],
+    ["Cliente bom some e eu só percebo meses depois.", "Ninguém acompanha há quanto tempo cada um não compra.", "Lista automática de clientes inativos."],
+    ["Cobrar dá trabalho, e muita coisa fica pra depois.", "Sem histórico nem rotina de cobrança.", "Controle de débitos e histórico de cobranças."],
+    ["Passar um orçamento leva dias.", "Cálculo manual, feito de cabeça.", "Sistema de orçamento sob medida."],
+    ["Não sei dizer o que dá resultado e o que não dá.", "Nada é medido.", "Painel com os indicadores que importam."],
+    ["Cliente novo só chega por indicação.", "A empresa não aparece no Google.", "Site com SEO local."]
+  ],
+
+  rivals: [
+    { k: "Agência", h: "Entende de post.", t: "Cuida do Instagram e do anúncio, mas não entra no seu processo." },
+    { k: "Software house", h: "Entende de código.", t: "Entrega o sistema, mas não entende de venda nem do dia a dia da empresa." },
+    { k: "O sobrinho", h: "Boa vontade.", t: "Resolve na hora, sem método. Quando ele some, a solução some junto." },
+    { k: "Triângulo", h: "Um time só.", t: "Engenharia de produção, marketing e software juntos: diagnostica, constrói sob medida e mede.", us: true }
+  ],
+
+  metrics: [
+    { k: "Reconhecimento", v: "FAPEMIG", t: "Prêmio de pesquisa e inovação com o Precisa, nosso sistema de orçamento." },
+    { k: "Incubação", v: "UFTM", t: "Pré-incubados na Universidade Federal do Triângulo Mineiro." },
+    { k: "SEO medido", v: "7,9", t: "de posição média no Google com cerca de 1 mês de site no ar, sem tráfego pago (Search Console, jul/2026)." },
+    { k: "Experiência do time", v: "600", t: "clientes ativos ao mesmo tempo na operação de marketing de onde vêm Lucas e Vinícius. Experiência da dupla, não clientes da Triângulo.", prior: true }
+  ],
+
+  team: [
+    { name: "Lucas Cruvinel", role: "Sócio · CEO", bio: "Comercial e processos. Foi gerente de outbound na Projep. Especialista em processo comercial e apresentação de proposta." },
+    { name: "Vinícius Nicoletti Marzocchi", role: "Sócio · CSO", bio: "Foi presidente executivo do Núcleo Triângulo. Cuida do relacionamento com clientes e de projetos de marca e social media." },
+    { name: "Matheus Miguel", role: "Sócio · CTO", bio: "Tecnologia e marca. Tem agência própria e é responsável por eventos como Uai Summit, CIA, Intercursos e Rodeio de Uberaba." },
+    { name: "Pedro Henrique Pazoti Mega", role: "Diretor de projetos", bio: "Foi gerente de projetos na Projep. Responsável pela execução dos projetos." }
+  ],
+
+  fronts: [
+    { k: "01", h: "Sistemas sob medida", items: ["CRM de clientes e cobrança", "Painel de indicadores", "Sistema de orçamento"], ex: "Precisa · Ribercon" },
+    { k: "02", h: "Site e SEO local", items: ["Site responsivo com WhatsApp", "SEO local para aparecer no Google", "robots.txt e llms.txt para IAs"], ex: "Teacher Lucas" },
+    { k: "03", h: "Processo comercial", items: ["Processo de venda desenhado", "Apresentação de proposta interativa", "Treino do time"], ex: "Esta apresentação" },
+    { k: "04", h: "Conteúdo com IA", items: ["Roteiro, legenda e arte toda semana", "Você só aprova", "Posicionamento de marca como base"], ex: "Teacher Lucas" }
+  ],
+
+  method: [
+    { h: "Diagnóstico", t: "Entendemos como a empresa funciona hoje e onde o lucro está preso." },
+    { h: "Protótipo", t: "Você vê a solução desenhada para o seu caso antes de decidir." },
+    { h: "Construção", t: "Sob medida, com os dados reais da sua empresa, validada por etapa." },
+    { h: "Acompanhamento", t: "Medimos o uso e ajustamos. Tem que ser usado, não só entregue." }
+  ],
+
+  cases: [
+    { client: "FN Cortinas", tag: "Precisa · orçamento", result: "De dias para na hora", text: "Com o Precisa, sistema premiado pela FAPEMIG: preço final a partir das medidas e materiais, lista de materiais e PDF com a marca do ateliê." },
+    { client: "Teacher Lucas", tag: "Conteúdo e site", result: "2 alunos em 1 semana", text: "Automatizamos a geração de conteúdo no Instagram. Com uma semana de site no ar, já foram 2 alunos fechados." },
+    { client: "Ribercon", tag: "CRM e dashboard", result: "Dados num painel só", text: "Integramos dados que estavam espalhados em um CRM com dashboard único." }
+  ],
+
+  modules: [
+    ["Cadastro de clientes", "Todos os clientes num lugar só, com contato e dados de compra."],
+    ["Controle de débitos", "Valores em aberto de cada cliente, sempre atualizados."],
+    ["Inadimplentes", "Lista automática de quem está com pagamento atrasado."],
+    ["Clientes inativos", "Quem está há um período sem comprar, pronto para reativação."],
+    ["Histórico de cobranças", "Quando cobrou, como cobrou e o que foi combinado."],
+    ["Painel de indicadores", "Os principais números da operação numa tela só."]
+  ],
+  future: ["Automações", "Integração com WhatsApp", "Integração com ERP", "Envio de cobranças", "Relatórios gerenciais"],
+
+  plans: { jornada: 5500, parceria: 2500, n: 5 },
+  partnerTerms: [
+    "Mesmo sistema da Jornada Comercial. Em troca:",
+    "Post no Instagram da Triângulo contando o projeto.",
+    "Uso da marca como case de sucesso no site e no portfólio.",
+    "Indicações futuras para outros empresários."
+  ],
+
+  pacts: { dor: "Reconheço as dores", time: "Faz sentido um time só", metodo: "Método claro", cliente: "Resolve o que preciso" }
+};
+
+const para = new URLSearchParams(location.search).get("para");
+if (para) CONFIG.client = para.trim().slice(0, 60);
+
+/* Utilitários */
+const $ = (s, r = document) => r.querySelector(s);
+const $$ = (s, r = document) => [...r.querySelectorAll(s)];
+const brl = n => "R$ " + Math.round(n).toLocaleString("pt-BR");
+const esc = s => String(s).replace(/[&<>"]/g, c => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;" }[c]));
+const pad = n => String(n).padStart(2, "0");
+const TICK = '<span class="tick"><svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M3 8.5l3 3 7-7"/></svg></span>';
+function toast(msg) { const t = $("[data-toast]"); t.textContent = msg; t.classList.add("show"); clearTimeout(t._h); t._h = setTimeout(() => t.classList.remove("show"), 2200); }
+function countUp(el, to, ms = 700) {
+  const from = el._v || 0; el._v = to; const t0 = performance.now();
+  cancelAnimationFrame(el._raf);
+  const tick = now => { const p = Math.min(1, (now - t0) / ms), e = 1 - Math.pow(1 - p, 4); el.textContent = brl(from + (to - from) * e); if (p < 1) el._raf = requestAnimationFrame(tick); };
+  el._raf = requestAnimationFrame(tick);
+}
+const initials = n => n.trim().split(/\s+/).map(w => w[0]).slice(0, 2).join("").toUpperCase();
+
+/* Símbolo da Triângulo (vetorizado da logo oficial) */
+const MARK_D = "M 411.6 298 C 269.3 354.8, 277.1 351.3, 271.8 361.9 L 269.5 366.5 269.2 485.9 C 268.9 620.2, 268.5 612.1, 276.2 620.4 C 278.6 622.9, 282.1 625.7, 284.1 626.7 C 286 627.7, 341.9 649.9, 408.3 676 L 529 723.5 529 775 C 529 843.4, 526.9 839.5, 557.2 827.5 C 699.9 771.1, 795.5 732.4, 800.1 729.2 C 803.8 726.6, 806.2 723.9, 808.2 720.1 L 811 714.8 811 593.6 L 811 472.5 808.6 467.4 C 805.2 460.2, 800 455.6, 791.1 451.9 C 786.9 450.2, 731.3 428.3, 667.5 403.2 L 551.5 357.5 551 303.5 C 550.7 273.8, 550.4 249.4, 550.2 249.3 C 549.3 248.4, 543.9 246, 542.8 246.1 C 542.1 246.1, 483.1 269.5, 411.6 298 M 414.5 438 C 289.7 486.5, 293.1 484.9, 299.4 491.1 C 301 492.7, 338.6 507.6, 418.6 538.4 C 482.9 563.1, 538.3 584.6, 541.7 586.1 C 551.5 590.4, 551 587.5, 551 641 L 551 687.1 553.2 686.4 C 565.8 682.5, 779.8 598.6, 781.4 597 L 783.5 595 781.5 591.4 C 779.5 587.8, 778.9 587.6, 657.6 541 C 556 502, 535.2 493.7, 532.6 491.1 L 529.5 488 529.2 441 C 529.1 415.1, 528.6 394, 528.2 394.1 C 527.8 394.2, 476.6 413.9, 414.5 438";
+const mark = cls => `<svg class="mark ${cls || ""}" viewBox="266 243 548 595" aria-hidden="true"><path fill="currentColor" fill-rule="evenodd" d="${MARK_D}"/></svg>`;
+(() => {
+  const svg = `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1081 1081"><rect width="1081" height="1081" fill="#CE2B34"/><path fill="#fff" fill-rule="evenodd" d="${MARK_D}"/></svg>`;
+  const l = document.createElement("link"); l.rel = "icon"; l.href = "data:image/svg+xml," + encodeURIComponent(svg); document.head.appendChild(l);
+})();
+
+/* Conteúdo */
+const slides = $$(".slide");
+const C = CONFIG;
+$$("[data-f]").forEach(el => el.textContent = C[el.dataset.f] ?? "");
+$$("[data-date]").forEach(el => el.textContent = new Date().toLocaleDateString("pt-BR"));
+$$("[data-tel]").forEach(el => { el.textContent = C.phone; el.href = "tel:+55" + C.phone.replace(/\D/g, ""); });
+$("[data-cover-eyebrow]").textContent = C.client ? `Apresentação · ${C.client} · 2026` : "Apresentação institucional · 2026";
+$("[data-for]").hidden = !C.client;
+if (C.client) $("[data-thanks]").textContent = `Obrigado, ${C.client}`;
+$$("[data-brand]").forEach(el => el.innerHTML = `${mark()}<span class="wm"><i>Triângulo</i> <b>Solutions</b></span>${C.client ? `<span class="x">× ${esc(C.client)}</span>` : ""}`);
+$$("[data-mark]").forEach(el => el.outerHTML = mark(el.dataset.mark));
+
+slides.forEach((s, i) => {
+  const st = $("[data-stamp]", s); if (!st) return;
+  const key = st.dataset.pactKey, hint = st.dataset.hint;
+  st.innerHTML = `<span>Triângulo Solutions${C.client ? " × " + esc(C.client) : " · " + esc(C.city)}</span><span class="grow">${esc(hint || "")}</span>` +
+    (key ? `<button class="pact" data-pact="${key}">${TICK}${esc(C.pacts[key])}</button>` : "") +
+    `<span>${pad(i + 1)} / ${pad(slides.length)}</span>`;
+});
+
+// Dores
+$("[data-pains]").innerHTML = C.pains.map(([q, c, f]) => `
+  <button class="card pain"><span class="top"><q>${esc(q)}</q>${TICK}</span><span class="cause">Causa: ${esc(c)}<br><b>O que fazemos:</b> ${esc(f)}</span></button>`).join("");
+function painCount() {
+  const n = $$(".pain.on").length;
+  $("[data-pain-count]").innerHTML = n ? `<b>${n} de ${C.pains.length}</b> acontecem na sua empresa.` : "Marque o que acontece aí.";
+}
+$$(".pain").forEach(b => b.addEventListener("click", () => { b.classList.toggle("on"); painCount(); }));
+painCount();
+
+$("[data-rivals]").innerHTML = C.rivals.map(r => `
+  <div class="card rival${r.us ? " us" : ""}"><span class="kicker">${esc(r.k)}</span><h3>${esc(r.h)}</h3><p>${esc(r.t)}</p></div>`).join("");
+$("[data-metrics]").innerHTML = C.metrics.map(m => `
+  <div class="card metric${m.prior ? " prior" : ""}"><span class="kicker">${esc(m.k)}</span><div class="metric-num">${esc(m.v)}</div><p>${esc(m.t)}</p></div>`).join("");
+$("[data-team]").innerHTML = C.team.map(p => `
+  <div class="card person"><div class="avatar">${esc(initials(p.name))}</div><div><h3>${esc(p.name)}</h3><span class="p-role">${esc(p.role)}</span></div><p>${esc(p.bio)}</p></div>`).join("");
+$("[data-fronts]").innerHTML = C.fronts.map(f => `
+  <div class="card front"><span class="kicker">${f.k}</span><h3 style="margin-top:6px">${esc(f.h)}</h3><ul>${f.items.map(x => `<li>${esc(x)}</li>`).join("")}</ul><div class="ex"><span class="kicker">Exemplo</span><br>${esc(f.ex)}</div></div>`).join("");
+$("[data-method]").innerHTML = C.method.map((m, i) => `
+  <div class="card step-card"><span class="kicker">Etapa</span><div class="num">${pad(i + 1)}</div><h3>${esc(m.h)}</h3><p style="margin-top:6px">${esc(m.t)}</p></div>`).join("");
+$("[data-cases]").innerHTML = C.cases.map(c => `
+  <div class="card case"><span class="kicker">${esc(c.tag)}</span><div class="result">${esc(c.result)}</div><div class="client">${esc(c.client)}</div><p>${esc(c.text)}</p></div>`).join("");
+$("[data-modules]").innerHTML = C.modules.map(([h, t], i) => `
+  <div class="card module"><span class="kicker">MVP · ${pad(i + 1)}</span><h3>${esc(h)}</h3><p>${esc(t)}</p></div>`).join("");
+$("[data-future]").outerHTML = C.future.map(f => `<span class="chip">${esc(f)}</span>`).join("");
+$("[data-partner-terms]").innerHTML = C.partnerTerms.map(t => `<li>${esc(t)}</li>`).join("");
+
+/* Micro pactos */
+const pacts = {};
+function renderPacts() {
+  const keys = Object.keys(C.pacts), n = keys.filter(k => pacts[k]).length;
+  $("[data-pact-summary]").innerHTML = `<span class="kicker">Até aqui concordamos em ${n} de ${keys.length}</span>` +
+    keys.map(k => `<span class="dot${pacts[k] ? " on" : ""}"><i></i>${esc(C.pacts[k])}</span>`).join("");
+}
+$$("[data-pact]").forEach(b => b.addEventListener("click", () => {
+  const k = b.dataset.pact; pacts[k] = !pacts[k];
+  $$(`[data-pact="${k}"]`).forEach(x => x.classList.toggle("on", pacts[k]));
+  renderPacts();
+}));
+renderPacts();
+
+/* Investimento · Jornada primeiro, depois a Parceria */
+let stage = 0, picked = null;
+const inst = v => `ou ${C.plans.n}x de ${brl(v / C.plans.n)}`;
+function renderPlans() {
+  ["jornada", "parceria"].forEach((id, i) => {
+    const box = $(`[data-price="${id}"]`), open = stage > i, val = $(".val", box);
+    box.classList.toggle("locked", !open);
+    if (open) countUp(val, C.plans[id]); else { cancelAnimationFrame(val._raf); val._v = 0; val.textContent = "R$ 0.000"; }
+    $(".inst", box).textContent = open ? inst(C.plans[id]) : (i ? "Liberada depois do Plano 1" : "");
+  });
+  $("[data-reveal]").hidden = stage !== 0;
+  $("[data-unlock]").hidden = stage !== 1;
+  $$("[data-pick]").forEach(b => b.hidden = stage < 2);
+  $("[data-save]").hidden = stage < 2;
+  $("[data-save]").innerHTML = `Com a parceria, a economia é de <b>${brl(C.plans.jornada - C.plans.parceria)}</b>. O sistema é o mesmo.`;
+  const w = $("[data-plans]"); w.classList.remove("pick-jornada", "pick-parceria"); if (picked) w.classList.add("pick-" + picked);
+}
+$("[data-reveal]").addEventListener("click", () => { stage = 1; renderPlans(); });
+$("[data-unlock]").addEventListener("click", () => { stage = 2; renderPlans(); });
+$$("[data-pick]").forEach(b => b.addEventListener("click", () => {
+  picked = picked === b.dataset.pick ? null : b.dataset.pick; renderPlans();
+  if (picked) toast(picked === "parceria" ? "Parceria escolhida" : "Jornada Comercial escolhida");
+}));
+renderPlans();
+
+/* Navegação */
+let cur = 0;
+const isMobile = () => matchMedia("(max-width: 820px), (max-height: 520px) and (max-width: 1000px)").matches;
+const menu = $("[data-index-menu]");
+menu.innerHTML = slides.map((s, i) => `<button data-goto="${i}"><span class="n">${pad(i + 1)}</span>${esc(s.dataset.title)}</button>`).join("");
+function go(i) {
+  i = Math.max(0, Math.min(slides.length - 1, i));
+  if (isMobile()) { slides[i].scrollIntoView({ behavior: "smooth" }); return; }
+  // o preço nunca abre de cara: ao sair do investimento sem revelar tudo, ele volta a travar
+  if (i !== cur && slides[cur].dataset.title === "Investimento" && stage < 2) { stage = 0; renderPlans(); }
+  slides.forEach((s, k) => s.classList.toggle("is-active", k === i));
+  cur = i;
+  $("#progress").style.width = ((i + 1) / slides.length * 100) + "%";
+  $(".nav .counter").textContent = `${pad(i + 1)} / ${slides.length}`;
+  $$("[data-goto]").forEach(b => b.classList.toggle("current", +b.dataset.goto === i));
+  try { history.replaceState(null, "", location.search + "#" + (i + 1)); } catch {}
+}
+$("[data-next]").addEventListener("click", () => go(cur + 1));
+$("[data-prev]").addEventListener("click", () => go(cur - 1));
+$("[data-index-toggle]").addEventListener("click", e => { e.stopPropagation(); menu.hidden = !menu.hidden; });
+$$("[data-goto]").forEach(b => b.addEventListener("click", () => { go(+b.dataset.goto); menu.hidden = true; }));
+$$("[data-goto-title]").forEach(b => b.addEventListener("click", () => go(slides.findIndex(s => s.dataset.title === b.dataset.gotoTitle))));
+document.addEventListener("click", e => { if (!e.target.closest("[data-index-menu]")) menu.hidden = true; });
+document.addEventListener("keydown", e => {
+  if (isMobile()) return;
+  const k = e.key.toLowerCase();
+  if (["arrowright", "pagedown", " "].includes(k)) { e.preventDefault(); go(cur + 1); }
+  else if (["arrowleft", "pageup"].includes(k)) { e.preventDefault(); go(cur - 1); }
+  else if (k === "home") go(0);
+  else if (k === "end") go(slides.length - 1);
+  else if (k === "s") { const b = $("[data-pact]", slides[cur]); if (b) b.click(); }
+  else if (k === "f") { try { document.fullscreenElement ? document.exitFullscreen() : document.documentElement.requestFullscreen(); } catch {} }
+});
+let tx = null;
+document.addEventListener("touchstart", e => { tx = e.touches[0].clientX; }, { passive: true });
+document.addEventListener("touchend", e => {
+  if (tx === null || isMobile()) { tx = null; return; }
+  const dx = e.changedTouches[0].clientX - tx; tx = null;
+  if (Math.abs(dx) > 60) go(cur + (dx < 0 ? 1 : -1));
+});
+go(Math.max(0, (parseInt(location.hash.slice(1)) || 1) - 1));
+</script>
+</body>
+</html>

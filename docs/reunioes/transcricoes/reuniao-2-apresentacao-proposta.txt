@@ -1,0 +1,300 @@
+REUNIÃO 2 · APRESENTAÇÃO DA PROPOSTA (MecTRIA × Triângulo Solutions)
+Transcrição automática do Google Meet, colada como veio. Data a confirmar.
+Obs.: a transcrição termina em 33:20, no meio de uma fala. A identificação de quem fala erra
+bastante nesta reunião (respostas do Marcelo aparecem atribuídas ao Vinicius Nicoletti).
+Grafias erradas de nomes e valores: ver docs/glossario.md e docs/07-decisoes-e-pendencias.md.
+--------------------------------------------------------------------------------
+
+00:01 Lucas Boaretto: Bora começar então Marcelo, tá animado cara?
+00:04 Marcelo Zaiden: Bora,
+00:04 Lucas Boaretto: bora, tô. Perfeito, vambora, você vai curtir, eu vou te contar um segredo, eu já mostrei para os meninos, os meninos piraram, Vinícius, o João, os meninos piraram, piraram de verdade.
+00:16 Lucas Boaretto: Acho que até eu estou ansioso para te mostrar isso aqui. Vamos lá. O primeiro ponto é que a gente vai iniciar a nossa reunião e quando a gente está falando da nossa reunião eu já estou associando aqui quem vai ser o diretor de projeto de vocês.
+00:30 Lucas Boaretto: O diretor de projeto de vocês vai ser o Pedro Carvalho. Pedro Mega, que é o nosso diretor de projetos, aqui do quadro da diretoria da Trianglo Solutions.
+00:38 Lucas Boaretto: Poderia ser outro gestor de projetos, mas eu fiz questão de pegar alguém bem próximo à diretoria, porque, na prática, nós que vamos executar o projeto junto com vocês.
+00:47 Lucas Boaretto: A questão é que o nosso diretor Nosso foco vai ser que a gente crie processos comerciais de fechamento e um time comercial muito mais treinado para conduzir o cliente até o fim.
+00:59 Lucas Boaretto: A questão é que hoje você já tem esse lucro dentro da MECTRI. A questão é que hoje você já tem bons lucros.
+01:04 Lucas Boaretto: alguns projetos, você já tem um time muito bom, você já tem cartilhas de serviços estruturadas no mercado. A diferença é que hoje isso tá travado fruto da ausência de processos, que é o seu exato objetivo de gestão.
+01:18 Lucas Boaretto: A Triângulo Solutions, inclusive, para quem tivesse assistindo essa gravação, é uma empresa composta, inclusive nascida na UFTM, por uma inquietação.
+01:26 Lucas Boaretto: Uma inquietação do nosso time, que numa aula de empreendedorismo com a nossa professora Juliane, a gente acabou levantando uma demanda do filho dela, e a partir dessa demanda a gente foi premiado, Começou a desbravar novos mercados e decidiu tocar isso enquanto empresa.
+01:41 Lucas Boaretto: Inclusive, nossa diretoria, majoritariamente, tirando o MM, foi composta no movimento Empresa Júnior. A gente não é uma agência de marketing, a gente não é uma software house, e, na prática, a gente é uma empresaria.
+01:53 Lucas Boaretto: de construção tecnológica que desenvolve soluções através de tecnologia, usando a visão da engenharia de produção para encontrar e resolver problemas.
+02:02 Lucas Boaretto: A gente nunca vai chutar qual é o problema, o ponto vai ser que a gente vai triangular e entender exatamente o ponto de coincidência entre eles.
+02:09 Lucas Boaretto: E aí, sim, a gente começa a desenvolver toda essa solução. Detalhe, se não move o ponteiro do lucro, ou faturamento, não faz sentido nenhum pra nós, enquanto empresa, tocar um projeto com vocês.
+02:21 Lucas Boaretto: Sobre a nossa empresa, cara, a gente, inclusive, já teve, a gente acabou de ser presidente. premiado pela FapMig, governo de Minas, através de uma solução por pesquisa e inovação que a gente desenvolveu.
+02:31 Lucas Boaretto: Cara, em uma semana de SEO médio, a gente já está em 7.9 nas pesquisas de triângulo aqui em Uberaba, inclusive mais de 227 impressões por semana, sem qualquer tipo de tráfego pago.
+02:41 Lucas Boaretto: A gente já tem 4 cases muito bem penetrados, um deles inclusive é exatamente o que a gente vai fazer, só que no nível um pouco mais abaixo, porque a gente vai estruturar o comercial em termos de tecnologia, da Parachoque, que é uma loja de roupas lá de Mocó.
+02:52 Lucas Boaretto: Mas a gente já desenvolveu para a FN curtir, que foi a solução que a gente foi premiado. O Teacher Lucas, o site dele foi colocado no ar na segunda-feira e hoje na sexta-feira ele já tem mais quatro novos alunos para as aulas dele de inglês, então o resultado é o que não falta por aqui.
+03:08 Lucas Boaretto: E a Ribercon, que é uma empresa de soluções para limpeza, lá em Ribeirão Preto, em limpeza empresarial lá em Ribeirão Preto, que a gente trabalhou exatamente a estruturação comercial, desde o processo, a apresentação de proposta, a gente só não treinou os vendedores, mas a gente criou toda a tecnologia
+03:24 Lucas Boaretto: . Além disso, eu e o Vinícius, a gente presta serviço para uma empresa com mais de 600 clientes ativos simultâneos, com grandíssimas marcas, os próprios irmãos Minotouro, Minotauro lá do UFC são os nossos clientes, por exemplo.
+03:37 Lucas Boaretto: O time que vai compor aqui o nosso projeto e também, coincidentemente, a diretoria aqui da Triângulo, eu, Lucas Cruvinel. Muito prazer pra vocês.
+03:45 Lucas Boaretto: para quem estiver assistindo, inclusive. Participei de uma das gestões com maior faturamento da história da Progep, inclusive na nossa época era de maior faturamento.
+03:53 Lucas Boaretto: Fui responsável por, inclusive, criar o plano de ação que, hoje, vocês aplicaram na Mectria sobre dividir o organograma comercial com base no livro Receita Previsível.
+04:01 Lucas Boaretto: visível do Elon Ross, em que a gente divide o organograma tanto em BDRs, ou seja, Hunters, Closers, que não só foi aplicado na ProJet, como vocês trouxeram a notícia que hoje tá funcionando na MacTria também.
+04:14 Lucas Boaretto: Fui gerente de Outbound, tô na vida comercial desde os 14 anos, marquei a Marquei mais de 54 reuniões. No meu plano treininho, inclusive, marquei uma reunião hoje para a MacTree que vocês vão ter segunda-feira, 10 horas da manhã.
+04:25 Lucas Boaretto: O Pedro Henrique Mega é nosso diretor de projetos. Ele foi gerente e coordenador de projetos na Projeto. E o Vinícius Nicoletti, acho que eu não preciso apresentar não, né?
+04:33 Lucas Boaretto: Fala aí, Vinícius.
+04:35 Marcelo Zaiden: Bom, é
+04:36 Vinicius Nicoletti Marzocchi: legal falar pra deixar registrado, sim, mas a gente também participou da Progep na gestão do Lucas, conseguimos aí faturar pelo menos metade do faturamento anual em contratos.
+04:48 Vinicius Nicoletti Marzocchi: Outro resultado bacana foi quando a gente A gente foi para o Núcleo Triângulo na gestão de presidente executivo, também conquistando aí um faturamento recorde, uma gestão aí completa de resultados bacanas que trouxe para a gente resultados que o Núcleo Triângulo ainda não tinha alcançado, como o palco
+05:04 Vinicius Nicoletti Marzocchi: do EMEG e do ENERGY. Então, hoje aí também estou dentro do mercado com o Lucas, a gente trabalha junto no mercado, hoje a gente vem empreendendo juntos também.
+05:13 Vinicius Nicoletti Marzocchi: E a gente nessa visão do Marketing Vendas conseguiu trazer também para dentro desse projeto com a Mectria. Então, a proposta a partir de agora é a gente mostrar um pouquinho mais dessa experiência e casando também com a oportunidade que a gente viu aí com vocês.
+05:27 Lucas Boaretto: Perfeito Vinícius
+05:28 Vinicius Nicoletti Marzocchi: e por
+05:29 Lucas Boaretto: fim para compor o projeto é o Mateus Miguel. Mateus Miguel ele era da engenharia elétrica passou para a engenharia de produção.
+05:36 Lucas Boaretto: Hoje ele tem uma agência de marketing chamada Anitta. que ele já atende múltiplos clientes, mas só para vocês terem uma ideia, foi ele quem desenhou o palco do Cia, ele que cuidou de todo o marketing da Y-Summit, que inclusive recebeu o Felipe Tito, é um dos maiores eventos aqui da região sobre investidores
+05:51 Lucas Boaretto: anjos, startups, ideias, negócios. Ele quase um Shark Tank ali de Uberaba, ele produz intercursos, o próprio rodeio de Uberaba, foi ele que produziu todo o marketing também.
+06:01 Lucas Boaretto: Então, o Matheus Miguel vai estar dentro dessa visão de marketing e tecnologia aqui dentro do nosso projeto. E vamos lá, que a gente já começa a trocar uma ideia sobre o que a gente levantou.
+06:10 Lucas Boaretto: o porquê que a gente desenvolveu o projeto dessa forma, porquê que o escopo foi assim. Marcelo, teve seis frases da nossa conversa, cara, que foram muito preocupantes.
+06:19 Lucas Boaretto: Preocupantes porque elas mostram um incontrole dentro do processo. Vou te dar um exemplo. De cada dez propostas, a gente fecha umas três.
+06:25 Lucas Boaretto: O cliente só ficou quieto. na hora de decidir. A gente apresentou tudo, chegou na hora de falar sobre o preço.
+06:30 Lucas Boaretto: Legal, depois eu vejo lá e respondo pra vocês. A apresentação é até razoável, mas é algo no campo, é tipo um copo e cola.
+06:37 Lucas Boaretto: O site está desatualizado, ninguém aqui sabe mexer, ninguém tem uma noção acima de cloud, gpt, gmt. é mais uma visão um pouco mais marketing, para que ele dê resultados e não seja só um site bonito.
+06:47 Lucas Boaretto: O treinamento foi caro e não virou venda. Nós se entrega de altíssimo nível e os clientes voltam. É a partir daí que a gente começa a entender o que a gente vai trabalhar.
+06:58 Lucas Boaretto: antes de a gente desenvolver esse projeto, como é o contexto antes de a gente desenvolver o projeto e como vai ser o contexto da MEC-Tria a partir do nosso projeto.
+07:09 Lucas Boaretto: Antes, cara, sem processo dentro de um ciclo de fechamento, cada reunião, O ânimo do vendedor naquela semana, se ele teve prova pra caramba, ele vai tentar fazer mais rapidão, porque ele precisa estudar.
+07:20 Lucas Boaretto: A apresentação fica mudando de ordem, com base em quem tá explicando, e o cliente fica em silêncio na hora de decidir.
+07:25 Lucas Boaretto: Quando o melhor vendedor vai embora da MacTria, o repertório que ele construiu vai junto, ele acaba não capacitando ninguém. e não mostrando para ninguém esse método dele.
+07:33 Lucas Boaretto: O treinamento ensina, mas ninguém acompanha a aplicação, então ninguém vê resultado a partir do treinamento que vocês contratam. E cada entrega é excelente, só que o cliente só descobre depois que ele compra, o que limita bastante o topo de funil, o fundo de funil, o mais clientes ele entrada.
+07:47 Lucas Boaretto: Agora, quando a gente começar a trabalhar juntos, vai ser a mesma estrutura. A apresentação vai seguir com micropactos e provas em todas as reuniões.
+07:54 Lucas Boaretto: O que varia vai ser muito pouco. Alugo do cliente, as dores que vocês coletaram, o preço do projeto, prazo, time.
+08:02 Lucas Boaretto: Só que o nome novo membro, ele vai apresentar no mesmo nível em pouquíssimas semanas, porque é um processo padronizado. A taxa de fechamento vai ser medida proposta a proposta, e a qualidade da engenharia que aparece antes do preço, e não o contrário.
+08:16 Lucas Boaretto: Aqui a gente vai ter quatro etapas dentro do nosso projeto. A primeira delas vai ser o T, de tria, que vai ser a parte de tela, que inclusive já está pronta.
+08:25 Lucas Boaretto: A parte de tela é quando a gente vai começar a trabalhar melhor o ranqueamento orgânico de vocês. Para que vocês não dependam de alguém e fiquem girando o tráfego pago o tempo inteiro e abram essa porta para a Google.
+08:35 Lucas Boaretto: em termos de ranqueamento. Então, o protótipo do novo site seria na primeira semana, mas já está pronto. Arquitetura, páginas, toda a navegação revisada.
+08:45 Lucas Boaretto: SEO local, que vai ser o mapa do site para a entrega orgânica aqui em Uberaba. Então, as palavras-chave de engenharia mecânica.
+08:51 Lucas Boaretto: mecânica, projetista, consultorinho Uberaba, a gente vai criar as abas robots.txt e llms.txt para buscadores e IA's, então Gemini, Cloud, GPT, conseguir entregar o site de vocês nas pesquisas.
+09:05 Lucas Boaretto: Toda a implementação vai ser responsível, a Então, o site vai sempre responder com base no movimento, o cursor do cara.
+09:11 Lucas Boaretto: E a gente também vai aplicar os CTAs, os formulários de qualificação e colocar um novo chatbot para vocês, porque o Marcelo falou que aquele lá não estava funcionando muito bem.
+09:19 Lucas Boaretto: Então, a gente vai colocar um que funciona de fato. Então, essa é a primeira etapa do projeto. Marcelo, a gente tá falando de uma semaninha aqui, cara.
+09:25 Lucas Boaretto: Da semana 1 à semana 3, né? Só que envolvem algumas cortesias. Depois eu vou explicar pra vocês. A entrega vai ser o novo site, a estrutura de SEO local e o arquivo de vocês como uma cortesia ali.
+09:36 Lucas Boaretto: Então, sobre tela, Marcelo, alguma dúvida, cara? Tudo certo? Não. Bom, tudo certo, tranquilo.
+09:41 Marcelo Zaiden: Quer conhecer
+09:41 Vinicius Nicoletti Marzocchi: o
+09:41 Lucas Boaretto: novo site?
+09:43 Vinicius Nicoletti Marzocchi: Vai, bora.
+09:44 Marcelo Zaiden: Cara, se prepara.
+09:46 Vinicius Nicoletti Marzocchi: Você
+09:46 Lucas Boaretto: tá falando de um negócio muito louco aqui, cara. Bom, ele tá dando uma demorinha pra carregar, porque a gente criou, A gente finalizou a formatação dele hoje.
+09:54 Lucas Boaretto: O servidor tá O cursor dele está em Washington, inclusive a gente precisa passar para Guarulhos. Mas aqui o cursor é completamente responsível.
+10:01 Lucas Boaretto: O que, detalhe, Marcelo, não necessariamente é o oficial, tá? A gente está mostrando até onde dá para chegar. Então você vai mostrando, ele vai iluminando a foto de vocês ali atrás.
+10:10 Lucas Boaretto: Aqui os cases de vocês. Esse motor que, cara, olha isso aqui Marcelo, de verdade, o negócio vai agindo sozinho e ele vai acelerando, e ele vai abrindo, e vai tudo acontecendo e meu computador não tá nem aguentando, por causa do micro.
+10:28 Lucas Boaretto: Sete frentes de engenharia, o mesmo rigor, os serviços de vocês. Aqui também é responsível, ele vai criando toda a jornada do parceiro aqui com vocês, desde a entrada.
+10:37 Lucas Boaretto: Aqui eu estou com o mouse em cima. Desde a entrada até a expedição. Aí ele conecta, produz a mais. Aqui a fotinha de vocês para falar de propósito, storytelling, aqui os valores para de novo trazer isso algo mais promocional, o blog de vocês para SEO e o Instagram é muito louco, cara, você consegue escolher
+10:55 Lucas Boaretto: a postagem que está lá dentro e clicar por aqui mesmo, negócio doido, cara. Por fim, um videozinho de vocês, processo seletivo, formulário de diagnóstico e é lógico que ainda vai vir chatbot, ainda vai vir newsletter, ainda vai vir coisa pra caramba.
+11:10 Lucas Boaretto: Isso aqui é só a home do site e mostrando pra vocês até onde pode chegar. Eu, por exemplo, tiraria o esse cursor com fumaça pra caramba, é só pra vocês verem que dá pra fazer algo tão complexo nesse sentido, mas eu mantei o motor, o motor ficou muito louco, o
+11:23 Vinicius Nicoletti Marzocchi: motor
+11:24 Marcelo Zaiden: ficou da hora mesmo.
+11:25 Vinicius Nicoletti Marzocchi: Olha lá
+11:26 Lucas Boaretto: cara, o negócio vai funcionando, é uma asset real, muito louco cara, então essa é a primeira entrega né, essa Não esse site necessariamente, mas a primeira entrega vai ser essa frente de tela.
+11:37 Lucas Boaretto: Sobre a frente de tela, Marcelo, de boa cara? Curtiu? Cara, curti.
+11:40 Marcelo Zaiden: Curti bastante. O negócio da fumaça também que você falou, também mudaria. Mas de resto, eu gostei bastante.
+11:48 Lucas Boaretto: Legal, legal. Cara, a gente precisa deixar esse site bem clean, né? Tipo, pelo menos a home, ser um negócio mais clean, mais e tal.
+11:54 Lucas Boaretto: Mas, tipo, essa interação, essa responsividade, ela é muito boa pra conversão. Porque a galera fica brincando no site, manda o site um pro outro.
+12:01 Lucas Boaretto: Os próprios alunos da UFT vão ficar encaminhando mais site de vocês. Isso vai ajudar vocês a terem mais entrega orgânica ali na Google.
+12:07 Lucas Boaretto: Então, vamos lá. Sobre tela de boa. É o tópico mais tranquilo do nosso projeto, vamos dizer assim. E agora a gente já entra em R, de tria, que vai ser de retórica.
+12:16 Lucas Boaretto: Vai ser a frente de copy e o processo visual. O primeiro, O primeiro passo vai ser todo o time explicando a MacTria do mesmo jeito.
+12:24 Lucas Boaretto: Todo mundo tem um processo para fazer a apresentação do comercial. Então eu vou criar a proposta de valor de vocês, separar os diferenciais, definir o público que vocês vão estar comunicando, o tom de comunicação, a MacTria.
+12:36 Lucas Boaretto: mensagem-chave que vocês querem passar, todos os textos institucionais e dos serviços também, e os processos comerciais de uma forma visual, do Hunter ao Closer, isso foi uma cortesia que eu tinha combinado com você, uma visão um pouco mais sistêmica ali do processo.
+12:50 Lucas Boaretto: Argumentos e provas para cada objeção comum. Então, eu vou criar algumas objeções e alguns contornos de objeção ali. E aí, a gente vai aplicar todo esse copy dentro do site de vocês.
+13:01 Lucas Boaretto: Aqui vem a frente de instrumento. A frente de instrumento é quando eu crio a apresentação. Então, aqui eu defino a estratégia, o processo, os efeitos.
+13:08 Lucas Boaretto: os scripts, o roteiro, e aqui a gente criou uma apresentação, da mesma forma que vocês estão vendo aqui. Uma apresentação completamente irresponsiva, uma narrativa fixa, com propósito, números reais, time, cenário, método, preço, e micropactos definidos em pontos fixos.
+13:24 Lucas Boaretto: E isso é o curso lá de 24 mil da Full Sales que eu havia comentado com você. É quando eu consigo criar na própria apresentação pontos de contato entre o meu vendedor e aquele lead para garantir que eu estou isolando algumas objeções.
+13:36 Lucas Boaretto: Você vai ver Marcelo, isso aconteceu hoje, na sua reunião. Eu ia fazer o contrário. Primeiro, eu aplicar tudo isso, depois falar lá, Marcelo, o negócio acontecendo, mas eu quero que você perceba, porque isso também vai estar no projeto de vocês.
+13:48 Lucas Boaretto: Valor e preço, calculadora de investimento ali no próprio site, já já você vai entender o que que é, e vocês vão ter uma versão web interativa e responsiva da apresentação, igual essa aqui.
+13:56 Lucas Boaretto: que vocês estão vendo aqui, então eu vou clicando, as coisas vão acontecendo, até para garantir que o lead vai prestando atenção, vai tendo movimento na apresentação, mas também vai ter a versão em PDF para rodar o offline, para fazer uma visita, eu quero ter uma apresentação, vai ter uma versão web.
+14:10 Lucas Boaretto: E vai ter também o roteiro do vendedor, Slides, a slide o que ele deve falar na apresentação. Pô, Lucas, mas eu acho que o vendedor tem que ter mais liberdade.
+14:18 Lucas Boaretto: Com certeza, Marcelo. Só que antes, quando a gente está aprendendo no comercial, qual é o primeiro passo que a gente aprende?
+14:24 Lucas Boaretto: Script. Primeiro eu aprendo a ler, depois eu vou desenvolvendo algo próprio. Então, Então vai ter um roteiro slide a slide, cara, desde o bom dia ao tchau, obrigado, o cara vai saber exatamente o que ele falar.
+14:36 Lucas Boaretto: Isso daqui vai estar na sexta semana, tá? Sexta semana pra semana sete. E por fim, pra finalizar o nosso projeto, o pós-venda.
+14:44 Lucas Boaretto: Então é aqui. É
+14:44 Vinicius Nicoletti Marzocchi: aqui que
+14:45 Marcelo Zaiden: a gente vai garantir que
+14:45 Lucas Boaretto: o processo seja de fato usado, dê resultado e que eu só não entregue materiais para vocês. É aqui que eu vou capacitar o time comercial com uma nova apresentação.
+14:55 Lucas Boaretto: É aqui que eu vou simular com eles as reuniões e dar feedbacks fazendo um roleplay ali. como se eu fosse o cliente, e a gente pode fazer isso um a um, a gente pode fazer isso tudo junto, a gente define isso.
+15:07 Lucas Boaretto: Acompanhamento das primeiras reuniões reais é mais uma opção tua e do Arthur, no caso, se vocês querem que eu esteja ali na reunião mesmo, vendo a reunião acontecer, uma reunião real, mas, deixo aberto esse canal, a gente vai registrar a taxa de fechamento proposta a proposta, que eu vou estar acompanhando
+15:22 Lucas Boaretto: vocês, e a gente vai estar sempre ajustando o roteiro a partir dos dados. No começo, a gente está fazendo referencial teórico, à medida que isso vai colocando na prática, a gente também vai mudando o projeto aqui para vocês.
+15:33 Lucas Boaretto: E vai ter um canal para dúvidas e pequenas correções. Vai ser um grupozinho no WhatsApp, a gente vai marcar míticos periódicos também.
+15:39 Lucas Boaretto: Então, essa é a finalização do nosso projeto, Método Tria. E eu queria te ouvir, Marciano. Alguma dúvida, cara, sobre o que vai ser executado?
+15:47 Lucas Boaretto: Sobre como vai ser o nosso projeto? O que a tela retorna? histórico, instrumento e acompanhamento? Ah, por
+15:51 Vinicius Nicoletti Marzocchi: enquanto não.
+15:52 Marcelo Zaiden: Tranquilo. Então a explicação
+15:53 Lucas Boaretto: tá top, tá curtinho. Tá,
+15:54 Vinicius Nicoletti Marzocchi: tá boa. Boa, tá
+15:56 Marcelo Zaiden: dando pra tangibilizar.
+15:57 Lucas Boaretto: E tá dentro do que você tava esperando, cara? Que a gente ia conversar aqui em reunião?
+16:00 Vinicius Nicoletti Marzocchi: Sim, tá dentro
+16:01 Marcelo Zaiden: dos principais pontos mesmo.
+16:03 Lucas Boaretto: Boa, legal. E você? Você tá enxergando a tua gestão fazendo isso daqui, isso daqui ajudando com o que você tem de plano de gestão para o ano que vem?
+16:12 Lucas Boaretto: Enxergo,
+16:12 Vinicius Nicoletti Marzocchi: enxergo sim.
+16:13 Marcelo Zaiden: Acredito que, assim, todas essas coisas são voltadas para aprimoramento também. E tudo isso são ferramentas que vão gerar uma consequência, que é o que eu busco como objetivo.
+16:29 Marcelo Zaiden: Incrível, Marcelo.
+16:30 Lucas Boaretto: Estamos alinhados, então, cara, estamos alinhados nesse sentido em termos de projeto. Aqui tem o sprint do projeto, tá, Marcelo? Então, semana a semana eu que vai rolar.
+16:38 Lucas Boaretto: De novo, depois eu vou mandar essa mesma apresentação pra vocês, pra você ter o PDFzinho dela lá, ou até o link se você quiser ir clicando, mexendo nela e tal.
+16:46 Lucas Boaretto: É verdade, vou mandar o link, porque daí você consegue ir clicando e interagindo com a apresentação. Aqui tá o Sprint, então é mais pra depois no próximo vídeo.
+16:53 Lucas Boaretto: PDF falando o que vai acontecer todas as semanas, e aqui o que está dentro, o que não está, o que é cortesia, enfim.
+17:01 Lucas Boaretto: Vamos lá. O que está incluído? Proposta de valor, os diferenciais de vocês, o tom, a mensagem-chave da Mectria, nova narrativa da apresentação de proposta com os micropactos para fechar em cal, esse é o objetivo dos micropactos, ou em cal ou no mesmo dia, calculadora de investimento e bloco de valor
+17:17 Lucas Boaretto: versus preço para reforçar, né, fazer o downsell ali com o cara, capacitação do time comercial com a nova apresentação e processo, reuniões semanais de valiosidade.
+17:25 Lucas Boaretto: validação por etapas, então a gente vai estar sempre validando tudo com vocês, não é como se a gente fosse tocar um projeto que a gente comece e eu apareço daqui dois meses.
+17:32 Lucas Boaretto: Todo o co-op institucional de serviço aplicado ao site, então também vai ter roteiro comercial lá no site. A apresentação web interativa e responsível, mas a versão em PDF.
+17:41 Lucas Boaretto: O roteiro, O roteiro do vendedor slide é slide, para ele saber tocar a reunião mesmo que eu não ensine ele.
+17:45 Lucas Boaretto: Sei lá, alguém não conseguiu participar do treinamento. Vai ter o roteiro ali, o cara quer ter um playbook na mão para lembrar o que ele deve fazer etapa a etapa.
+17:54 Lucas Boaretto: Acompanhamento das primeiras reuniões é opcional, tá Marcelo? Igual falei para vocês, se vocês quiserem acompanhar. Eu participo, se vocês não quiserem, eu não participo, é mais o que for mais confortável para vocês.
+18:02 Lucas Boaretto: E o canal para dúvidas, o que a gente vai dar de cortesia? O novo site, o site responsível, sem cobrança de site nem de hospedagem durante o projeto, SEO local, que é a frente de sitemap porque é palavra-chave, robots.txt e LLMs, e o processo comercial, o processo comercial visual do Hunter All Closer
+18:21 Lucas Boaretto: . Então, entender de fato em blocos, um mapeamento de processos, como que é o processo de vocês. E não incluir da FER, né, gestão de rede, remodelação, formulação de identidade visual, porque a gente vai entregar o Primal Branding de vocês com base no que a gente combinou.
+18:35 Lucas Boaretto: Eu não vou criar uma nova identidade visual pra vocês do zero. Eu vou utilizar a de vocês atual e melhorá-la, né, que é a frente de Primal Branding.
+18:42 Lucas Boaretto: Aqui a gente só não vai pagar o domínio, que você já tem. Não faz sentido eu pagar um domínio que você já tem.
+18:46 Lucas Boaretto: já tem, ou plugins, por exemplo, o chatbot, eu não consigo assinar o chatbot para vocês. A gente já tem tudo
+18:52 Vinicius Nicoletti Marzocchi: no Wix.
+18:53 Lucas Boaretto: Exatamente, então a gente vai desenvolvendo essas ferramentas, o que for por fora, tipo, se eu precisar, sei lá, de um, sei lá, se a gente precisar de um novo chatbot para o site.
+19:02 Lucas Boaretto: A gente especifica, acha as melhores opções e passa para vocês ou a gente aproveita de alguma forma. Não vai estar envolvido tráfego pago, anúncios, e-mail, marketing, produção de conteúdo audiovisual, artigo recorrente do blog, a gente vai manter uma base ali para SEO e aí depois vocês dão continuidade
+19:18 Lucas Boaretto: . a manutenção contínua do site depois do pós-venda, ou seja, vou entregar para vocês, vai ter o pós-venda de dois meses e depois disso fecha, a gente deixa vocês cuidando de tudo.
+19:30 Marcelo Zaiden: Então vamos lá
+19:30 Lucas Boaretto: Marcelo, primeiro micropacto aqui para você ir pegando na
+19:33 Marcelo Zaiden: reunião, pegando Primeiro
+19:34 Lucas Boaretto: micropacto, tirando o preço da mesa, sentiu vontade de ser nosso cliente, Marcelão?
+19:40 Vinicius Nicoletti Marzocchi: Sim. Legal.
+19:41 Lucas Boaretto: Então se preço não fosse uma variável, vocês já estavam com a gente. Então a gente está fechado, Marcelo. Então a gente está fechado.
+19:49 Lucas Boaretto: Que bom. E olha que legal, Marcelo. Marcelo aqui, na apresentação de vocês, ainda tenho dúvida, a gente volta para o método.
+19:54 Lucas Boaretto: Ah, está tudo certo. Ah, está tudo certo. Ele já vai dar check e a gente já passa para a próxima frente.
+20:02 Lucas Boaretto: Até para você ter uma ideia, Marcelo, de quanta gente está envolvida, quantos processos estão envolvidos. Se você quisesse tudo o que a gente vai te entregar no Mercado Sênior, peraí que eu apertei F12 sem querer, se você fosse pegar tudo o que a gente vai te entregar no Mercado Sênior, a gente está
+20:17 Lucas Boaretto: falando de um consultor de processos comerciais para criar os processos, R$ 7.000,00, mais um gestor de um gerente de projetos, uns 6,5.
+20:24 Lucas Boaretto: Mais um web designer para UI e UX, mais uns 4,5. Mais um desenvolvedor front-end, 5,5. Mais um especialista em SEO, 4,5.
+20:33 Lucas Boaretto: Poderia ser um estrategista de marketing, o salário é o mesmo. Co-producer sênior, que é para a gente. Alguém que vai criar os textos comerciais lá do site, do roteiro comercial, mais uns quatro e meio, e um treinador comercial que você já até sentiu o gosto, né, cara?
+20:46 Lucas Boaretto: R$ 5.000 a R$ 6.000 ali no mínimo. Então, cara, a gente está falando de um custo mensal altíssimo se você fosse internalizar todo mundo, contratar todo mundo por fora.
+20:55 Lucas Boaretto: Na prática, isso já está acontecendo, então a própria FN Curtinas, cara, antes o cara demorava 4 dias para conseguir te dar um preço de quanto vai ficar a curtina.
+21:04 Lucas Boaretto: Agora demora 5 minutos. O Tietchan e o Lucas, dois alunos fechados, mas duas oportunidades de fechamento e uma única chance.
+21:10 Lucas Boaretto: semana, o site foi lançado segunda-feira. Para-choque, a gente cuidou de todo o sistema de estoque, processo, CRM próprio, para não ter que ficar pagando licença para os outros.
+21:20 Lucas Boaretto: E a virada no portfólio também da Ribercon, que a gente colocou CRM, dashboard e é o projeto que foi indivisível.
+21:26 Lucas Boaretto: de águas aqui pra nossa empresa mesmo, cara. Agora, Marcelo, a gente tem dois caminhos, cara. O primeiro deles vai ser uma contratação padrão.
+21:35 Lucas Boaretto: Então eu vou te fazer o valor de mercado, sem qualquer tipo de contrapartida, e aí a gente entra como um prestador de serviço e eu vou te mandar essa proposta por inscrito.
+21:43 Lucas Boaretto: e em sete dias eu vou precisar de um sim ou não, basicamente. Já na parceria com o MED, que é o segundo caminho, eu já espero algumas contrapartidas de vocês, que é o que a gente falou naquela nossa reunião que, inclusive, eu não gravei.
+21:55 Lucas Boaretto: Foi uma reunião que virou mais ou menos um bench ali depois. E a parceria com o Com o Magic, o que a gente vai esperar de vocês?
+22:01 Lucas Boaretto: Primeiro, que a gente troque divulgação entre a MacTree e a Triângulo, que a gente possa fazer um postzinho no Insta de vocês, um nosso, né, mas fazer uma collab com vocês, que a MacTree esteja de cliente, de case de sucesso oficial dentro do meu site, e que a gente abra portas.
+22:15 Lucas Boaretto: parceria em projetos, vou te dar um exemplo, hoje mesmo, eu tava com o João em ligação e falei assim, pô João, é tão difícil assim, marcar uma reunião com a Mectria cara, para a Mectria né, é tão difícil esse mercado, peguei o celular e liguei, falei com o César, que é engenheiro mecânico, me pergunta
+22:30 Lucas Boaretto: quantos anos serviços, Marcelo, de vocês eu conheço. Nenhum. E aí, a reunião tá marcada, segunda-feira às 10. Sabe o que o César virou pra mim e perguntou?
+22:39 Lucas Boaretto: Cara, além de serviço de engenharia mecânica, vocês trabalham com marketing? É aí que eu espero que, pô, a gente trabalhe.
+22:45 Lucas Boaretto: Que inclusive foi minha resposta pro César. Pô, a minha criatividade. que tem acesso ao ecossistema, que tem parceiros, eles conseguem desenvolver contatos ali por conta do movimento Empresa Júnior e tal.
+22:55 Lucas Boaretto: Então é isso que eu espero, tá, dentro da parceria com o Médium. Imagina que o Vinícius vai até falar melhor sobre isso, ele entende mais na prática como isso pode funcionar.
+23:03 Lucas Boaretto: E se, Segundo, que caso outras EJs, vejam a Mectria, venderam pra caramba, caso, sei lá, membros da Mectria, vejam, pô, tá mudando, cara, a gente tá conseguindo um processo muito melhor e tal, cara, a gente espera do fundo do nosso coração que vocês venham a nos indicar.
+23:18 Lucas Boaretto: Esse é o segundo ponto. caminho. Então tem duas propostas aqui, basicamente. Uma totalmente free, prestação de serviço, e uma que eu espero contra a partida de vocês, entendeu?
+23:27 Lucas Boaretto: Perfeito.
+23:29 Marcelo Zaiden: Perfeito.
+23:30 Vinicius Nicoletti Marzocchi: Então bora
+23:30 Lucas Boaretto: pra calculadora e depois o Vinícius começa a falar com você. Antes eu queria te fazer algumas perguntinhas, Marcelo. Em média, quantas propostas vocês apresentam por mês?
+23:40 Marcelo Zaiden: Cara, por mês, Acredito que, assim, Difícil pegar por conta da situação atual, né?
+23:50 Vinicius Nicoletti Marzocchi: Mas,
+23:51 Marcelo Zaiden: Mas tem que
+23:52 Vinicius Nicoletti Marzocchi: pegar
+23:52 Lucas Boaretto: atual
+23:53 Marcelo Zaiden: Marcelo, pode pegar Era de
+23:54 Vinicius Nicoletti Marzocchi: Ouro, tem
+23:54 Lucas Boaretto: que pegar agora, na prática quanto em média ali?
+23:58 Vinicius Nicoletti Marzocchi: Cara, eu diria que tá em
+23:59 Marcelo Zaiden: torno de 10 a 15. 10
+24:01 Vinicius Nicoletti Marzocchi: a 15? Vamos
+24:02 Lucas Boaretto: jogar 13, não, 13 eu não gosto, vamos jogar 12. E a taxa de fechamento, Marcelo, em média?
+24:12 Marcelo Zaiden: Ah, agora tá zero.
+24:14 Lucas Boaretto: Zero? É, vai. Pô, louco.
+24:16 Marcelo Zaiden: Até agora tá. Meu Deus, então
+24:18 Lucas Boaretto: qualquer coisa que eu trouxer é lucro, cê fala?
+24:21 Marcelo Zaiden: É, mas, Vamos jogar
+24:22 Vinicius Nicoletti Marzocchi: uma
+24:22 Lucas Boaretto: taxa
+24:22 Marcelo Zaiden: aceitável, vai. É, trabalhando na realidade, a gente tava com uma média assim de a cada oito fechava três ou quatro, então se colocar doze, coloca sei lá, quatro ou cinco.
+24:38 Lucas Boaretto: Beleza, beleza. A gente tava falando de dois. na prática uns 30% de fechamento, mas na realidade uns 1 quarto, né?
+24:44 Lucas Boaretto: Vamos colocar 1 a cada 4, né? 2 em 8, por aí vai. Ticket médio de projeto, Marcelo? Valor médio. Ticket
+24:53 Vinicius Nicoletti Marzocchi: médio
+24:53 Marcelo Zaiden: em projeto, é, Também, Invaria de acordo com cada carta de serviço.
+24:58 Vinicius Nicoletti Marzocchi: Claro, com certeza.
+24:59 Lucas Boaretto: Mas na prática, assim, média geral da empresa.
+25:01 Vinicius Nicoletti Marzocchi: A
+25:01 Lucas Boaretto: maioria
+25:02 Marcelo Zaiden: está vendendo na casa dos 2 a 4 mil reais.
+25:07 Vinicius Nicoletti Marzocchi: 2
+25:08 Marcelo Zaiden: a 4 mil
+25:08 Lucas Boaretto: reais, legal. Eu posso pegar o
+25:11 Vinicius Nicoletti Marzocchi: do site,
+25:11 Marcelo Zaiden: se vocês quiserem. se quiser. Tem o ticket médio do site?
+25:15 Lucas Boaretto: Tem, do BJD.
+25:17 Vinicius Nicoletti Marzocchi: Beleza.
+25:18 Lucas Boaretto: Quer ver?
+25:19 Marcelo Zaiden: Tem algo que eu consegui trazer pra vocês.
+25:30 Lucas Boaretto: Bom, que a gente já te ajuda a fazer conta aqui de ROE, Marcelo. Essa calculadora era literalmente pra eu te ajudar a calcular o ROE disso aqui.
+25:38 Lucas Boaretto: Uhum.
+25:40 Marcelo Zaiden: O do BJ dele tem, não tem? Ah, não.
+25:44 Vinicius Nicoletti Marzocchi: Alô, Sunga.
+25:47 Lucas Boaretto: Se eu não me engano, eu entendo.
+25:48 Vinicius Nicoletti Marzocchi: Dentro do portal da BJ tem o faturamento de vocês. O
+25:51 Marcelo Zaiden: valor
+25:52 Lucas Boaretto: médio, ô Sunga, o ticket médio. Ele deve
+25:55 Vinicius Nicoletti Marzocchi: dar devido ao volume de solução inovadora que vocês vão subindo, né? E aí tem o valor do contrato, então dá pra fazer essa anúncio.
+26:04 Vinicius Nicoletti Marzocchi: No perfil
+26:04 Lucas Boaretto: do EJ eu
+26:05 Vinicius Nicoletti Marzocchi: acho que
+26:05 Marcelo Zaiden: não tem, mas se eu pesquisar pelos dados da rede eu acho que ele fornece alguma coisa. Mas vamos colocar 2,7
+26:10 Lucas Boaretto: mil na
+26:10 Vinicius Nicoletti Marzocchi: média? É, pode
+26:12 Marcelo Zaiden: ser. É que eu vi um
+26:13 Vinicius Nicoletti Marzocchi: projeto de
+26:14 Lucas Boaretto: 45 mil ser negociado e eu falei que Caramba, legal.
+26:18 Marcelo Zaiden: O negócio nosso é meio que isso, tipo assim, são poucos projetos, mas varia. Então a gente pega, por exemplo, a gente fechou um de R$500 agora com a Dois E-Tech, só que o nosso carro-chefe é desenvolvimento de produtos.
+26:33 Marcelo Zaiden: Desenvolvimento de produtos é algo muito caro.
+26:35 Lucas Boaretto: Perfeito, perfeito. Então, vamos colocar essa média de R$2.700,00, porque a gente, inclusive, quando a gente vai fazer análise de dados na PROD, a gente exclui os outliers, desde esses de R$500,00 ao de R$40,00.
+26:48 Lucas Boaretto: E aí eu pego o que tá nesse meio pra garantir que eu tenha a menor taxa de erro possível. Aqui a gente tá falando de promover, pelo menos, uma taxa de conversão de 40%, que é a taxa de conversão praticada pelos meus vendedores, que eu capacitei, e dentro da, não só na Digital Boom, mas pela Triângulo
+27:04 Lucas Boaretto: Social. soluções aqui também. Então a gente tá falando pelo menos de R$ 4.950 a mais todo mês pra vocês. Em 12 meses a gente tá falando de R$ 54.900.
+27:14 Lucas Boaretto: É a meta do ano de vocês, de diferença de ter um processo ou não. Cara, a gente até prefi, Aplicou isso, pediu para o Gemini fazer algumas pesquisas para a gente, com consultoria comercial, com algumas automações, e a gente estaria falando de pelo menos 18 mil total, não 18 mil por mês, 18 mil total.
+27:31 Lucas Boaretto: Agora, aplicando a condição MESG, inclusive aqui tem a dinâmica do avista, que tem menos 5%, que tem E por aí vai, isso tudo é plenamente negociável com vocês, mas pra acontecer o média a gente tá falando de R$ 400 e R$ 500 a vista, ou parcelado em R$ 3, em R$ 6, a gente vai fazer um negócio normal.
+27:48 Lucas Boaretto: Agora, o que a gente tinha combinado na nossa última reunião? Você recorda, Marcelo?
+27:52 Marcelo Zaiden: em relação a quê mais ou menos quando
+27:54 Lucas Boaretto: você vai pagar isso para você me pagar os
+27:57 Marcelo Zaiden: resultados
+27:58 Lucas Boaretto: a partir do
+27:58 Marcelo Zaiden: momento que tiver resultado. Uma vez que
+28:00 Lucas Boaretto: eu te gerei isso aqui ou mais a gente pode combinar por Lucas eu quero faturar 12 através disso para te pagar isso aí.
+28:09 Lucas Boaretto: Aí sim vocês me pagam.
+28:12 Marcelo Zaiden: Então,
+28:12 Lucas Boaretto: esse vai ser o valor do nosso projeto, pra gente entregar tudo isso pra vocês. A gente tá falando de uma economia de R$3.500, ali no mínimo.
+28:19 Lucas Boaretto: E as cortesias, sozinha, somam R$8,50. Então, a gente de fato, está empenhado a trabalhar nesse sentido com vocês, caso vocês queiram seguir a gente já tem tudo desenhado, o sprint do projeto e a questão é que, assim como a tua própria fala Marcelo, a entrega de vocês, os projetos de vocês são muito
+28:36 Lucas Boaretto: bons agora a venda também é muito vai se tornar muito boa e aí você vai ter uma empresa completa, pronta para faturar e não deixar de bater recorde na sua própria próxima gestão.
+28:48 Lucas Boaretto: Tendo isso em vista, valores, condições de pagamento, projetos e você sinalizou para mim que vai. Valores era o único fator, uma vez que você amou o projeto e se fosse de graça seria meu cliente.
+28:58 Lucas Boaretto: E uma vez que a gente tá falando de que você só vai me pagar quando der ROI, o que falta pra gente apertar as mãos, Marcelo?
+29:05 Marcelo Zaiden: Cara, acredito que, no mais assim, estruturar a questão das parcerias certinho, definir o que vai acontecer. Também preciso ver a questão contratual, porque, tipo assim, eu realmente não trabalho com essa possibilidade, mas é uma dúvida.
+29:21 Marcelo Zaiden: dúvida que eu tenho interna, que é em relação a tipo assim, e se não trouxer resultado, sabe? Aí você não pagou nada.
+29:27 Marcelo Zaiden: É. Entendeu? Mas eu acho que isso daí já é uma questão mais contratual, entendeu? Porque eu acredito que vai dar resultado.
+29:35 Marcelo Zaiden: Claro.
+29:35 Lucas Boaretto: Mas
+29:35 Marcelo Zaiden: se não der,
+29:36 Lucas Boaretto: você não gastou nada, Marcelo.
+29:37 Marcelo Zaiden: É, sendo
+29:38 Lucas Boaretto: bem sincero,
+29:38 Marcelo Zaiden: eu acredito que vai dar resultado, por isso que eu não gosto nem de trabalhar, de falar disso assim com vocês, porque não é algo que eu acredito.
+29:46 Marcelo Zaiden: Claro, mas
+29:47 Lucas Boaretto: você tem que ter isso em mente, Marcelo. E se não funcionar? E aí Lucão, o que você vai fazer? É uma ótima pergunta, Marcelo.
+29:55 Lucas Boaretto: É, acredito que
+29:56 Marcelo Zaiden: é mais essa ideia, cara. E assim, eu acredito muito na qualidade da nossa equipe, em relação à entrega de projetos, em relação a toda a estrutura do pessoal, A leva nova que está vindo agora dos treinis, apesar de que a gente vai perder muita gente no final do ano, essa leva agora que está vindo substitui
+30:18 Marcelo Zaiden: de nível igualitário para próximo ali num nível muito fácil. Em poucas semanas a gente já tem essa reposição. E bom, com esse alinhamento que a gente faz, algo que eu gostaria que a gente fizesse no futuro é que você, da mesma maneira que você, Se vocês conseguiram me convencer, a próxima diretoria também
+30:40 Marcelo Zaiden: necessita dessa questão. Eu acho que fica
+30:42 Lucas Boaretto: muito mais Esse aqui pelo menos a gente vai ter resolvido, Marcelo. Eu tava até conversando com o João hoje, o João Vítor, o Monte Lima, né?
+30:51 Lucas Boaretto: que era treiner e tal, tá no comercial, irmão do Vinícius, aí eu tava conversando com ele hoje, aí ele falou assim, pô, vamos focar, por que vocês não falam de topo de funil também?
+31:01 Lucas Boaretto: Porque a gente começa falando de automação, por que a gente não começa falando começa falando de marcar reunião, e eu vou te dar a resposta, Marcelo, porque é muito fácil.
+31:08 Lucas Boaretto: Para a gente criar um processo para marcar reunião, a gente está falando de uma semana, não é um projeto.
+31:12 Marcelo Zaiden: O que eu quero é que a partir desse
+31:14 Lucas Boaretto: primeiro projeto, à medida que vocês têm acesso aos meus resultados, têm acesso ao meu conteúdo, conhecimento, tem acesso à minha experiência e que eu capacite o time de vocês, cara, que a gente vai expandindo isso para outras frentes.
+31:27 Lucas Boaretto: Então topo de funil, pós-venda, que é algo zero praticado no MED, ninguém faz. Ninguém sabe fazer pós-venda, que é upselling, cross-selling, downsell, ninguém sabe fazer isso, nem a Projeto.
+31:37 Marcelo Zaiden: Então, eu
+31:38 Lucas Boaretto: quero trabalhar outros projetos com vocês, eu tenho planos futuros com vocês. Só que primeiro, cara, vamos matar o feijão com arroz, que não é um feijão com arroz, é mais difícil fechar, né?
+31:45 Lucas Boaretto: Mas cai a união de boa, fechar é o mais difícil. Então sim, Marcelo, tô com você, cara, pra convencer a tua diretoria, convencer a tua presidência, convencer os seus membros, pra fazer o teu time comprar essa briga, porque também é necessário, é preciso que a galera do comercial queira aprender, queira
+32:02 Lucas Boaretto: executar, vai fugir das ondas de de conforto, porque a gente vai ter que aprender quase do zero a apresentação. Então, tô com você nesse sentido, Marcelo.
+32:10 Lucas Boaretto: E Marcelo, você
+32:10 Vinicius Nicoletti Marzocchi: acha que esse contato seria a gente, por exemplo, marcar uma próxima reunião? Ou a gente discutir pelo grupo, a gente enviar a gravação dessa reunião?
+32:20 Vinicius Nicoletti Marzocchi: Então, aguardar vocês assistirem, né, e virem aí
+32:23 Lucas Boaretto: com uma
+32:24 Vinicius Nicoletti Marzocchi: possível, né, aprovação ou uma contraproposta, o que você acha? Cara,
+32:30 Marcelo Zaiden: acredito que eu posso, é, acho que seria legal se eu tivesse as informações da conversa. para eu não passar nenhuma informação errada e tudo mais, eu posso estar repassando o pessoal para o pessoal, assim, porque eu vou ter a reunião com os próximos candidatos para alinhar todas as coisas do futuro.
+32:48 Marcelo Zaiden: E dentro da minha gestão de presidência, eu tenho que estar incluindo essas essa parceria, porque é algo que vai incluir muitos setores.
+32:55 Marcelo Zaiden: Perfeito. Então, para eu ter essa linha, talvez até a apresentação de vocês, não toda, né, mas os pontos importantes para eu falar para o pessoal, falar, olha, o pessoal quer fazer isso, isso e isso.
+33:07 Lucas Boaretto: Claro. Vocês vão dar certeza.
+33:08 Marcelo Zaiden: A gente tem inclusive o
+33:11 Lucas Boaretto: escopo, Marcelo, do teu projeto, como se fosse um TAP mesmo, sabe? Um termo de abertura do projeto. A gente tem o escopo em planeilha, dá pra gente enviar tudo.
+33:20 Lucas Boaretto: Tá tudo muito preparado. O que eu vou fazer, Marcelo? Ó.
