@@ -11,6 +11,7 @@ Minuta: `minuta-contrato-v2.md`. A v1 está no histórico do git.
 | D3 | Acompanhamento | **Até fevereiro de 2027**, com 1 reunião por mês e ajuste mensal do roteiro | 2.3, Anexo I |
 | D4 | Proteção se a MecTRIA não usar o processo | **De acordo:** parcelas das etapas entregues ficam devidas (T 2, R 1, I 2, A 1) | 11.2 a 11.4 |
 | D6 | Responsável pela aprovação | **Marcelo Zaiden**, Vice-Presidente, marcelo.zaiden@mectria.com | 5.1, 13.2 |
+| D8 | E-mail da Triângulo para comunicações formais | triangulosolutionsbrasil@gmail.com | 13.2 |
 | D7 | Foro e disposições jurídicas | **Foro da Comarca de Uberaba/MG**, com renúncia a qualquer outro, e cláusulas gerais completas: integralidade, prevalência, tolerância, nulidade parcial, cessão, força maior, sucessores, poderes e título executivo | 13, 14 |
 
 ## Quando começa o "on-going"
@@ -58,10 +59,9 @@ Pelo escopo, a estrutura comercial nova só roda depois de três coisas: a apres
 
 ### Da Triângulo
 1. **D5 · Data de publicação do site:** 13/11 (depois da copy) ou S8.
-2. E-mail da Triângulo para comunicações formais (13.2).
-3. **Registro do contrato social:** confirmar na JUCEMG e no cartão do CNPJ que o nome já é "TRIÂNGULO SOLUTIONS BRASIL LTDA". Se ainda não for, usar o nome que constar no CNPJ na assinatura.
-4. **Atividades no CNPJ (falar com o contador):** o objeto social não tem consultoria em gestão (CNAE 7020-4/00) nem treinamento (CNAE 8599-6/04). Ver como emitir a nota fiscal.
-5. CPFs dos signatários, só na versão de assinatura, fora do repositório.
+2. **Registro do contrato social:** confirmar na JUCEMG e no cartão do CNPJ que o nome já é "TRIÂNGULO SOLUTIONS BRASIL LTDA". Se ainda não for, usar o nome que constar no CNPJ na assinatura.
+3. **Atividades no CNPJ (falar com o contador):** o objeto social não tem consultoria em gestão (CNAE 7020-4/00) nem treinamento (CNAE 8599-6/04). Ver como emitir a nota fiscal.
+4. CPFs dos signatários, só na versão de assinatura, fora do repositório.
 
 > Antes de assinar, vale uma leitura de advogado ou do contador da Triângulo, principalmente das cláusulas 3, 9 e 11.
 

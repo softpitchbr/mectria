@@ -20,7 +20,7 @@
 | **Matheus Miguel** | Marketing e tecnologia (frente Tela) | CTO. Tem agência própria. Fez o marketing de eventos como Uai Summit, CIA, Intercursos e Rodeio de Uberaba |
 
 ### Dados da empresa
-- Razão social: **TRIÂNGULO SOLUTIONS BRASIL LTDA**, CNPJ 68.057.695/0001-81, sede em Uberaba/MG. Transformação em LTDA assinada em 05/10/2026; confirmar o registro na JUCEMG.
+- Razão social: **TRIÂNGULO SOLUTIONS BRASIL LTDA**, CNPJ 68.057.695/0001-81, sede em Uberaba/MG. E-mail para comunicações formais: triangulosolutionsbrasil@gmail.com. Transformação em LTDA assinada em 05/10/2026; confirmar o registro na JUCEMG.
 - Sócios administradores, que assinam isoladamente: Vinicius Nicoletti Marzocchi, Lucas Cruvinel Boaretto e **Matheus Miguel Tome Pires** (nome completo do Matheus).
 
 ## Terceiros

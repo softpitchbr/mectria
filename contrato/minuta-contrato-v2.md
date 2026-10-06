@@ -141,7 +141,7 @@ As partes celebram este contrato, que se rege pelas cláusulas a seguir.
 
 13.1. **Independência das partes.** Este contrato não cria vínculo empregatício, societário ou de representação entre as partes. Os sócios, colaboradores e prestadores da CONTRATADA não têm qualquer vínculo com a CONTRATANTE, e cada parte responde pelas obrigações trabalhistas, previdenciárias e fiscais de quem contratar.
 
-13.2. **Comunicações.** As comunicações formais entre as partes são feitas por escrito, pelos e-mails: CONTRATADA [PREENCHER: e-mail da Triângulo]; CONTRATANTE marcelo.zaiden@mectria.com. A parte que mudar de e-mail deve informar a outra por escrito.
+13.2. **Comunicações.** As comunicações formais entre as partes são feitas por escrito, pelos e-mails: CONTRATADA triangulosolutionsbrasil@gmail.com; CONTRATANTE marcelo.zaiden@mectria.com. A parte que mudar de e-mail deve informar a outra por escrito.
 
 13.3. **Alterações.** Qualquer alteração deste contrato só tem validade se feita por termo aditivo escrito, assinado pelas duas partes.
 
