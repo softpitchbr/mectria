@@ -1,27 +1,27 @@
 # Plano no ERP: descrição, Kanban e post-its
 
-Blocos prontos para colar no ERP. As datas usam início em **05/10/2026 (segunda)** e prazo em **05/12/2026**, como no formulário do ERP.
+Blocos prontos para colar no ERP. **Atualizado em 06/10/2026:** kick-off na **sexta, 09/10/2026**, execução de 12/10 a 04/12 e prazo em **05/12/2026**, como no formulário do ERP. As datas das tarefas que já estão no ERP andam uma semana.
 
 ## Calendário
 
 | Semana | Período | Etapa | Observação |
 |---|---|---|---|
-| S1 | 05/10–09/10 | T · Tela | Kick-off |
-| S2 | 12/10–16/10 | T · Tela | **12/10 (seg) é feriado** (N. Sra. Aparecida) |
-| S3 | 19/10–23/10 | T · Tela | Validação do site |
-| S4 | 26/10–30/10 | R · Retórica | |
-| S5 | 02/11–06/11 | R · Retórica | **02/11 (seg) é feriado** (Finados). Validação da copy |
-| S6 | 09/11–13/11 | I · Instrumento | |
-| S7 | 16/11–20/11 | I · Instrumento | **20/11 (sex) é feriado** (Consciência Negra). Não marcar a validação da apresentação nesse dia |
-| S8 | 23/11–27/11 | A · Acompanhamento | Capacitação e roleplay |
-| Folga | 30/11–05/12 | | 05/12/2026 cai num **sábado** |
-| Pós-venda | até ~05/02/2027 | A · Acompanhamento | Atravessa fim de ano e férias da UFTM, quando muita gente sai da EJ |
+| Kick-off | sex 09/10 | | Início oficial do projeto |
+| S1 | 12/10–16/10 | T · Tela | **12/10 (seg) é feriado** (N. Sra. Aparecida) |
+| S2 | 19/10–23/10 | T · Tela | |
+| S3 | 26/10–30/10 | T · Tela | Validação do site |
+| S4 | 02/11–06/11 | R · Retórica | **02/11 (seg) é feriado** (Finados) |
+| S5 | 09/11–13/11 | R · Retórica | Validação da copy |
+| S6 | 16/11–20/11 | I · Instrumento | **20/11 (sex) é feriado** (Consciência Negra) |
+| S7 | 23/11–27/11 | I · Instrumento | Validação da apresentação |
+| S8 | 30/11–04/12 | A · Acompanhamento | Capacitação e roleplay. Fim da execução, um dia antes do prazo do ERP (05/12, sábado) |
+| Acompanhamento | 07/12/2026–05/02/2027 | A · Acompanhamento | Estrutura em uso. 1 reunião por mês (dez, jan, fev). Apuração do resultado desde dezembro. Atravessa fim de ano e férias da UFTM |
 
 ---
 
 ## 1. Descrição do projeto (campo "Descrição")
 
-Reestruturação comercial e digital da MecTRIA (EJ de eng. mecânica, UFTM) pelo Método TRIA. O objetivo é aumentar a conversão entre proposta e fechamento (hoje ~25%, meta 40%) com uma apresentação padronizada com micro pactos, o roteiro do vendedor, um time treinado e acompanhado e um site novo com SEO local. Condição parceria MEJ: R$ 4.500 (mercado sênior R$ 18.000), com contrapartidas de divulgação, parcerias em projetos e indicações. 8 semanas + 2 meses de pós-venda. Responsável: Pedro Mega. Decisores: Marcelo Zaiden (VP) e Arthur Jordão (presidente).
+Reestruturação comercial e digital da MecTRIA (EJ de eng. mecânica, UFTM) pelo Método TRIA. O objetivo é aumentar a conversão entre proposta e fechamento (hoje ~25%, meta 40%) com uma apresentação padronizada com micro pactos, o roteiro do vendedor, um time treinado e acompanhado e um site novo com SEO local. Condição parceria MEJ: R$ 4.500 em 6 parcelas de R$ 750 pagas pelo resultado (mercado sênior R$ 18.000), com contrapartidas de divulgação, parcerias em projetos e indicações. 8 semanas + 2 meses de pós-venda. Responsável: Pedro Mega. Decisores: Marcelo Zaiden (VP) e Arthur Jordão (presidente).
 
 ## 2. Kanban · coluna "A Fazer"
 
@@ -34,7 +34,7 @@ A etapa vem na frente de cada tarefa. Se o ERP tiver etiqueta, use a letra como 
 4. [Comercial] Acompanhar a aprovação interna com Marcelo e Arthur
 5. [Comercial] Agendar o kick-off
 
-### T · Tela — S1 a S3 (05/10 a 23/10)
+### T · Tela — S1 a S3 (12/10 a 30/10)
 6. [T] Kick-off: acessos ao Wix, domínio, logos e materiais
 7. [T] Ajustar o protótipo: home mais limpa, sem cursor de fumaça, manter o motor
 8. [T] Migrar o servidor de Washington para Guarulhos
@@ -45,7 +45,7 @@ A etapa vem na frente de cada tarefa. Se o ERP tiver etiqueta, use a letra como 
 13. [T] Especificar e implantar o novo chatbot (plano assinado pela MecTRIA)
 14. [T] Validação formal do site com a MecTRIA
 
-### R · Retórica — S4 e S5 (26/10 a 06/11)
+### R · Retórica — S4 e S5 (02/11 a 13/11)
 15. [R] Levantar proposta de valor, diferenciais e público
 16. [R] Definir tom e mensagens-chave (Primal Branding sobre a identidade atual)
 17. [R] Escrever os textos institucionais e de serviços
@@ -54,7 +54,7 @@ A etapa vem na frente de cada tarefa. Se o ERP tiver etiqueta, use a letra como 
 20. [R] Aplicar a copy no site
 21. [R] Validação formal da copy
 
-### I · Instrumento — S6 e S7 (09/11 a 20/11)
+### I · Instrumento — S6 e S7 (16/11 a 27/11)
 22. [I] Analisar a apresentação atual da MecTRIA
 23. [I] Montar a narrativa fixa: propósito, números, time, cenário, método e preço
 24. [I] Definir os micro pactos em pontos fixos
@@ -64,7 +64,7 @@ A etapa vem na frente de cada tarefa. Se o ERP tiver etiqueta, use a letra como 
 28. [I] Roteiro do vendedor slide a slide (playbook)
 29. [I] Validação formal da apresentação
 
-### A · Acompanhamento — S8 (23/11 a 27/11) + pós-venda até ~05/02/2027
+### A · Acompanhamento — S8 (30/11 a 04/12) + acompanhamento até 05/02/2027
 30. [A] Capacitar o time comercial na nova apresentação
 31. [A] Roleplay de reuniões com feedback
 32. [A] Perguntar a Marcelo e Arthur se querem acompanhamento das primeiras reuniões reais (é opcional)
@@ -106,9 +106,10 @@ Triângulo: Pedro Mega (responsável), Lucas (comercial/treino), Vinicius/Sunga 
 
 **Post-it 3 · Comercial**
 Mercado sênior: R$ 18.000 (cortesias R$ 8.500)
-Parceria MEJ: R$ 4.500, à vista −5%, ou 3x/6x
+Parceria MEJ: R$ 4.500 = 6 × R$ 750, pagas pelo resultado
+1 parcela a cada R$ 1.250 vendidos acima da média (R$ 5.429/mês), líquido, máx. 2/mês
+Apuração de dez/2026 a dez/2027
 Contrapartidas: troca de divulgação (collab + case no site), parcerias em projetos, indicações
-Pagamento discutido: só após resultado → colocar no contrato
 
 **Post-it 4 · Tese de lucro**
 12 propostas/mês · ticket R$ 2.700

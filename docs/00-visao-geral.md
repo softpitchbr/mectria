@@ -16,9 +16,9 @@ Reestruturação comercial e digital da **MecTRIA** (Empresa Júnior de Engenhar
 | Responsável (Triângulo) | Pedro Henrique Pazoti Mega · diretor de projetos |
 | Decisores (MecTRIA) | Marcelo Zaiden (VP) e Arthur Jordão (presidente) |
 | Escopo formal | `referencias/escopo-mectria-2026-09-21.pdf` (21/09/2026) |
-| Início | 05/10/2026 (segunda) |
-| Prazo no ERP | 05/12/2026 (fim da S8 é 27/11/2026) |
-| Duração | 8 semanas de execução + 2 meses de pós-venda (até ~05/02/2027) |
+| Início | Kick-off na sexta, 09/10/2026. Execução de 12/10 a 04/12/2026 |
+| Prazo no ERP | 05/12/2026 (fim da S8 é 04/12/2026) |
+| Duração | 8 semanas de execução + acompanhamento de 07/12/2026 a 05/02/2027 |
 | Condição | Parceria MEJ: **R$ 4.500** em 6 × R$ 750, pagas pelo resultado (mercado sênior: R$ 18.000), com contrapartidas. Minuta em `contrato/` |
 
 ## O problema
@@ -38,10 +38,10 @@ Detalhes em `04-diagnostico.md`.
 
 | Etapa | Semanas | Período | Entrega principal |
 |---|---|---|---|
-| **T · Tela** | S1–S3 | 05/10–23/10 | Site novo, SEO local (sitemap por palavra-chave, robots.txt, llms.txt), CTAs, formulários, chatbot novo |
-| **R · Retórica** | S4–S5 | 26/10–06/11 | Proposta de valor, tom, mensagens-chave (Primal Branding), textos do site, processo comercial visual hunter→closer, objeções e contornos |
-| **I · Instrumento** | S6–S7 | 09/11–20/11 | Apresentação web interativa com narrativa fixa e micro pactos, bloco valor × preço, calculadora, versão PDF, roteiro do vendedor slide a slide |
-| **A · Acompanhamento** | S8 + pós-venda | 23/11–27/11, depois até ~05/02/2027 | Capacitação, roleplay, planilha de taxa de fechamento proposta a proposta, ajuste mensal do roteiro, grupo de WhatsApp, reuniões periódicas |
+| **T · Tela** | S1–S3 | 12/10–30/10 | Site novo, SEO local (sitemap por palavra-chave, robots.txt, llms.txt), CTAs, formulários, chatbot novo |
+| **R · Retórica** | S4–S5 | 02/11–13/11 | Proposta de valor, tom, mensagens-chave (Primal Branding), textos do site, processo comercial visual hunter→closer, objeções e contornos |
+| **I · Instrumento** | S6–S7 | 16/11–27/11 | Apresentação web interativa com narrativa fixa e micro pactos, bloco valor × preço, calculadora, versão PDF, roteiro do vendedor slide a slide |
+| **A · Acompanhamento** | S8 + acompanhamento | 30/11–04/12, depois até 05/02/2027 | Capacitação, roleplay, planilha de taxa de fechamento proposta a proposta, ajuste mensal do roteiro, grupo de WhatsApp, reuniões periódicas |
 
 Lista completa de tarefas em `03-plano-erp.md`.
 
@@ -51,10 +51,12 @@ Lista completa de tarefas em `03-plano-erp.md`.
 
 Na call foram ditos R$ 4.950 e R$ 54.900. **Esses valores estão errados** e não devem ser repetidos. Conta completa em `05-comercial.md`.
 
-## Status em 05/10/2026
+## Status em 06/10/2026
 
 - Diagnóstico feito (reunião 1) e proposta apresentada (reunião 2). Marcelo gostou e disse que só faltava o preço. Pediu o material para levar à presidência e aos próximos candidatos.
 - Protótipo da home do site já existe (mostrado na reunião 2).
 - **Site:** decidido em 05/10 que sai do Wix para hospedagem própria. A Triângulo cria o site e a MecTRIA paga o domínio. A hospedagem está em escolha (`08-site-e-hospedagem.md`).
+- **Kick-off marcado para sexta, 09/10/2026.**
+- **Contrato:** minuta v2 pronta com as decisões do Lucas (`contrato/`). Faltam os dados da MecTRIA e a confirmação de quem assina.
 - **Pendente para fechar:** enviar material (gravação, link, PDF, TAP), formalizar contrapartidas, contrato com pagamento por resultado, aprovação de Marcelo e Arthur, kick-off.
 - O escopo em PDF é **anterior** ao que foi apresentado na call e precisa ser atualizado antes de ir para o Marcelo. Ver `07-decisoes-e-pendencias.md`.

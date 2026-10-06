@@ -1,14 +1,14 @@
 # Briefing da frente Tela (para o Matheus)
 
 **Para:** Matheus Miguel · **Responsável pelo projeto:** Pedro Mega · **Copy e treino:** Lucas
-**Primeira entrega:** site novo em homologação, validado pela MecTRIA até **23/10/2026** (fim da S3).
+**Primeira entrega:** site novo em homologação, validado pela MecTRIA até **30/10/2026** (fim da S3). Kick-off na **sexta, 09/10**.
 
 ## Em 30 segundos
 
 - **Projeto:** reestruturação comercial e digital da MecTRIA, EJ de Engenharia Mecânica da UFTM. Meta: levar a conversão de proposta para fechamento de 25% para 40%.
-- **Sua frente:** T · Tela, de 05/10 a 23/10. Site novo, SEO local, robots.txt e llms.txt, CTAs, formulários e chatbot.
+- **Sua frente:** T · Tela, de 12/10 a 30/10. Site novo, SEO local, robots.txt e llms.txt, CTAs, formulários e chatbot.
 - **O que vem depois e mexe no site:** a copy final (R · Retórica, com o Lucas) entra no site na S5. Construa agora com os textos atuais ou provisórios, mas com o **conteúdo separado do layout**, para a troca não dar retrabalho.
-- **Dependência:** o kick-off depende da aprovação do contrato (tarefas 1 a 5). Se atrasar, o cronograma anda junto. A seção 2 lista o que dá para adiantar sem a MecTRIA.
+- **Início:** kick-off na sexta, 09/10. A seção 2 lista o que dá para adiantar antes dele.
 
 ## Já decidido
 
@@ -30,7 +30,7 @@
 
 ## 2. O que dá para começar já, sem a MecTRIA
 
-Tudo aqui usa informação pública e é aproveitado mesmo se o kick-off atrasar.
+Tudo aqui usa informação pública e pode ser feito antes do kick-off de sexta.
 
 - [ ] **Inventário de URLs do site atual:** abrir `/sitemap.xml` do domínio e os sitemaps internos (`blog-post`, `blog-category`, `page`). Montar uma planilha com URL atual · título · tipo · URL nova · ação (manter, redirecionar ou remover). Essa planilha vira o mapa de redirecionamentos 301.
 - [ ] **Medição do "antes":** PageSpeed no celular e no computador, e quantas páginas o Google indexa hoje (busca `site:dominio`).
@@ -80,17 +80,17 @@ Tudo aqui usa informação pública e é aproveitado mesmo se o kick-off atrasar
 
 ### Governança
 - [ ] Quem é o **responsável único** pelas aprovações (exigência do escopo).
-- [ ] Data da reunião de validação do site. Sugestão: quinta, 22/10.
+- [ ] Data da reunião de validação do site. Sugestão: quinta, 29/10.
 
 ## 4. Como fazer a primeira entrega
 
-### S1 · 05/10 a 09/10
+### Kick-off (sex 09/10) e S1 · 12/10 a 16/10 (12/10 é feriado)
 - Kick-off com a MecTRIA.
 - Contas criadas no e-mail da MecTRIA. Repositório e homologação no ar.
 - **Homologação bloqueada para o Google** (noindex ou senha). Senão o Google indexa duas versões do site.
 - Protótipo ajustado e mapa de páginas aprovado.
 
-### S2 · 12/10 a 16/10 (12/10 é feriado)
+### S2 · 19/10 a 23/10
 - Páginas internas responsivas, com o conteúdo separado do layout.
 - Formulários ligados ao destino combinado e testados de ponta a ponta.
 - Posts do blog migrados.
@@ -99,14 +99,14 @@ Tudo aqui usa informação pública e é aproveitado mesmo se o kick-off atrasar
 - Dados estruturados de empresa local: nome, endereço, telefone e serviços.
 - Chatbot: duas ou três opções com preço enviadas para a MecTRIA escolher e assinar.
 
-### S3 · 19/10 a 23/10
+### S3 · 26/10 a 30/10
 - Chatbot instalado, se já assinado.
 - Revisão em celular, tablet e computador, no Chrome e no Safari. PageSpeed, links, formulários e acessibilidade básica (contraste, textos alternativos).
 - **Validação formal na homologação** (tarefa 14), com feedback consolidado por escrito pelo responsável único.
 - Arquitetura e layout congelados depois da aprovação. O que vier depois é mudança de escopo e passa pelo Pedro.
 
 ### Publicação (virada)
-Não é no fim da S3. **Sugestão:** publicar depois da validação da copy, no fim da S5 (~06/11), para subir uma vez só, já com os textos finais. Isso também dá ao Google umas três semanas a mais antes do treinamento da S8. O PDF do escopo previa a publicação na S8. Decidir com Pedro e Lucas.
+Não é no fim da S3. **Sugestão:** publicar depois da validação da copy, no fim da S5 (13/11), para subir uma vez só, já com os textos finais. Isso também dá ao Google umas três semanas a mais antes do treinamento da S8. O PDF do escopo previa a publicação na S8. Decidir com Pedro e Lucas.
 
 Ordem da virada:
 1. Copiar os registros de e-mail do DNS atual.
@@ -140,4 +140,4 @@ Ordem da virada:
 
 ## Mensagem para o Matheus (WhatsApp)
 
-> Matheus, segue o briefing da frente Tela da MecTRIA (S1 a S3, validação do site até 23/10). Decidimos que o site sai do Wix para hospedagem própria, com as contas no nome da MecTRIA. Antes do kick-off preciso de 5 respostas tuas: (1) em que tecnologia o protótipo foi feito, (2) onde ele está publicado hoje e em qual conta, (3) o que é o motor e quanto pesa a home, (4) se dá para publicar como site estático (a ideia é Cloudflare grátis), (5) quanto tempo leva o ajuste da home. Enquanto o contrato não sai, já dá para fazer o inventário de URLs do site atual, a medição do PageSpeed e as palavras-chave, que não dependem deles.
+> Matheus, segue o briefing da frente Tela da MecTRIA (S1 a S3, validação do site até 30/10). Decidimos que o site sai do Wix para hospedagem própria, com as contas no nome da MecTRIA. Antes do kick-off de sexta (09/10) preciso de 5 respostas tuas: (1) em que tecnologia o protótipo foi feito, (2) onde ele está publicado hoje e em qual conta, (3) o que é o motor e quanto pesa a home, (4) se dá para publicar como site estático (a ideia é Cloudflare grátis), (5) quanto tempo leva o ajuste da home. Até lá, já dá para fazer o inventário de URLs do site atual, a medição do PageSpeed e as palavras-chave, que não dependem deles.

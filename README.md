@@ -2,7 +2,7 @@
 
 Projeto da **Triângulo Solutions** para a **MecTRIA** (Empresa Júnior de Engenharia Mecânica da UFTM, Uberaba/MG), pelo Método TRIA: **T**ela, **R**etórica, **I**nstrumento e **A**companhamento.
 
-Meta: conversão entre proposta e fechamento de ~25% para **40%**. Execução de 05/10/2026 a 27/11/2026, com pós-venda até ~05/02/2027.
+Meta: conversão entre proposta e fechamento de ~25% para **40%**. Kick-off em 09/10/2026, execução de 12/10 a 04/12/2026 e acompanhamento até 05/02/2027.
 
 ## Onde está cada coisa
 

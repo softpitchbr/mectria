@@ -1,6 +1,6 @@
-# Minuta v1 · Contrato de prestação de serviços
+# Minuta v2 · Contrato de prestação de serviços
 
-> **Uso interno.** Versão de 06/10/2026 para revisão da Triângulo. Antes de enviar à MecTRIA, resolver as marcações **[DECIDIR]** (ver `notas-v1.md`) e preencher as **[PREENCHER]**. CPFs e dados pessoais só entram na versão de assinatura, fora do repositório.
+> **Uso interno.** Versão de 06/10/2026, com as decisões do Lucas. Antes de enviar à MecTRIA, preencher as marcações **[PREENCHER]** e resolver a única **[DECIDIR]** que sobrou (data de publicação do site). Ver `notas-v2.md`. CPFs só entram na versão de assinatura, fora do repositório.
 
 ---
 
@@ -8,7 +8,7 @@
 
 **CONTRATADA:** TRIÂNGULO SOLUTIONS BRASIL LTDA, sociedade empresária limitada, inscrita no CNPJ sob o nº 68.057.695/0001-81, com sede na Rua Doutor Paulo Pontes, 139, Apto. 106, Centro, CEP 38010-180, Uberaba/MG, neste ato representada por seu sócio administrador **Lucas Cruvinel Boaretto**, CPF [PREENCHER NA VERSÃO DE ASSINATURA].
 
-**CONTRATANTE:** [PREENCHER: RAZÃO SOCIAL DA MECTRIA], [PREENCHER: natureza jurídica, ex.: associação civil sem fins lucrativos, empresa júnior nos termos da Lei nº 13.267/2016], inscrita no CNPJ sob o nº [PREENCHER], com sede em [PREENCHER], Uberaba/MG, neste ato representada por [PREENCHER: nome], [PREENCHER: cargo], CPF [PREENCHER NA VERSÃO DE ASSINATURA], na forma do seu estatuto.
+**CONTRATANTE:** [PREENCHER: RAZÃO SOCIAL DA MECTRIA], [PREENCHER: natureza jurídica, ex.: associação civil sem fins lucrativos, empresa júnior nos termos da Lei nº 13.267/2016], inscrita no CNPJ sob o nº [PREENCHER], com sede em [PREENCHER], Uberaba/MG, neste ato representada, na forma do seu estatuto, por **Arthur Jordão**, Presidente, CPF [PREENCHER NA VERSÃO DE ASSINATURA], e por **Marcelo Zaiden**, Vice-Presidente, CPF [PREENCHER NA VERSÃO DE ASSINATURA].
 
 As partes celebram este contrato, que se rege pelas cláusulas a seguir.
 
@@ -28,30 +28,33 @@ As partes celebram este contrato, que se rege pelas cláusulas a seguir.
 
 ### Cláusula 2 · Prazos e vigência
 
-2.1. **Execução:** 8 (oito) semanas a partir da reunião de kick-off, conforme o cronograma do Anexo I.
+2.1. **Início:** o projeto começa na reunião de kick-off, em **09/10/2026**.
 
-2.2. **Acompanhamento:** depois da execução, a CONTRATADA presta o acompanhamento descrito no Anexo I até **[DECIDIR: 30/06/2027, como propôs a MecTRIA | 2 meses após a semana 8, como no escopo original]**. O acompanhamento continua até essa data mesmo que a CONTRATANTE quite as parcelas antes.
+2.2. **Execução:** 8 (oito) semanas, de **12/10/2026 a 04/12/2026**, conforme o cronograma do Anexo I.
 
-2.3. Atrasos da CONTRATANTE no envio de informações, acessos, materiais ou aprovações deslocam proporcionalmente os prazos seguintes.
+2.3. **Acompanhamento:** de **07/12/2026 a 05/02/2027**, com 1 (uma) reunião por mês e ajuste mensal do roteiro, conforme o Anexo I. O acompanhamento é prestado integralmente nesse período, independentemente do pagamento das parcelas.
 
-2.4. **Vigência:** da assinatura até a quitação das parcelas do Anexo II ou até 31/12/2027, o que ocorrer primeiro. As obrigações de confidencialidade, propriedade intelectual e contrapartidas continuam válidas depois do fim da vigência, nos termos das respectivas cláusulas.
+2.4. Atrasos da CONTRATANTE no envio de informações, acessos, materiais ou aprovações deslocam proporcionalmente os prazos seguintes.
+
+2.5. **Vigência:** da assinatura até a quitação das parcelas do Anexo II ou até 31/12/2027, o que ocorrer primeiro. Depois do fim da vigência, continuam valendo as obrigações de confidencialidade, propriedade intelectual e contrapartidas, nos termos das respectivas cláusulas, e o pagamento de parcelas já liberadas.
 
 ### Cláusula 3 · Preço e pagamento pelo resultado
 
 3.1. O preço total é de **R$ 4.500,00 (quatro mil e quinhentos reais)**, dividido em **6 (seis) parcelas de R$ 750,00**. O valor de mercado de referência dos serviços é de R$ 18.000,00. A diferença decorre da condição de parceria com o Movimento Empresa Júnior e das contrapartidas da Cláusula 7.
 
 3.2. **As parcelas só são devidas quando houver resultado**, conforme a regra do **Anexo II**. Em resumo:
-- a) **Resultado** é o valor vendido pela CONTRATANTE acima da sua média mensal de referência, de **R$ 5.429,00**, apurado a partir de **[DECIDIR: janeiro de 2027]**.
-- b) Cada parcela é liberada a cada **R$ 1.250,00 de ganho acumulado**, até 6 parcelas.
-- c) São pagas no máximo **2 (duas) parcelas por mês**. As parcelas liberadas acima desse limite são pagas nos meses seguintes.
-- d) Parcela ainda não liberada fica suspensa. Se não for liberada até **31/12/2027**, deixa de ser devida.
-- e) Quitadas as 6 parcelas, todo o ganho seguinte é da CONTRATANTE.
+- a) A apuração começa em **dezembro de 2026**, primeiro mês com a nova estrutura comercial em uso, depois da capacitação da semana 8.
+- b) **Resultado** é o total vendido pela CONTRATANTE desde o início da apuração, menos a média mensal de referência (**R$ 5.429,00**) multiplicada pelo número de meses apurados.
+- c) Cada parcela é liberada a cada **R$ 1.250,00 de resultado acumulado**, até 6 parcelas. **Parcela liberada não volta a ficar suspensa.**
+- d) São pagas no máximo **2 (duas) parcelas por mês**. As parcelas liberadas acima desse limite são pagas nos meses seguintes.
+- e) Parcela não liberada até **31/12/2027** deixa de ser devida.
+- f) Quitadas as 6 parcelas, todo o ganho seguinte é da CONTRATANTE.
 
 3.3. **Forma de pagamento:** PIX ou boleto, até o dia 15 do mês seguinte ao da apuração, mediante emissão de nota fiscal pela CONTRATADA.
 
 3.4. **Atraso:** sobre a parcela paga com atraso incidem multa de 2%, juros de 1% ao mês e correção pelo IPCA.
 
-3.5. A CONTRATADA assume obrigação de meio quanto aos resultados comerciais. O risco de resultado é compartilhado entre as partes exclusivamente pela regra do Anexo II.
+3.5. A CONTRATADA assume obrigação de meio quanto aos resultados comerciais. O risco de resultado é compartilhado entre as partes exclusivamente pela regra do Anexo II e pela Cláusula 11.
 
 ### Cláusula 4 · Obrigações da CONTRATADA
 
@@ -64,7 +67,7 @@ As partes celebram este contrato, que se rege pelas cláusulas a seguir.
 
 ### Cláusula 5 · Obrigações da CONTRATANTE
 
-5.1. Indicar **um responsável** com autonomia para consolidar informações, priorizar demandas e aprovar entregas, e comunicar a CONTRATADA sempre que ele mudar.
+5.1. Ter como **responsável pelo projeto Marcelo Zaiden**, Vice-Presidente, e-mail marcelo.zaiden@mectria.com, com autonomia para consolidar informações, priorizar demandas e aprovar entregas. Se o responsável mudar, a CONTRATANTE comunicará a CONTRATADA por escrito, indicando o substituto.
 5.2. Disponibilizar no kick-off os acessos e materiais listados no Anexo I, com autorização de uso de imagens, marcas e cases.
 5.3. Dar feedback consolidado e por escrito em até **5 (cinco) dias úteis** após cada entrega submetida à validação.
 5.4. Pagar o domínio e os serviços de terceiros que contratar (ex.: plano do chatbot), mantendo-os ativos.
@@ -108,24 +111,36 @@ As partes celebram este contrato, que se rege pelas cláusulas a seguir.
 10.1. As partes mantêm sigilo sobre as informações a que tiverem acesso, durante a vigência e por 2 (dois) anos depois dela, salvo o que for público ou autorizado por escrito.
 10.2. Ao tratar dados pessoais de leads, clientes ou membros da CONTRATANTE, a CONTRATADA atua como operadora, segue as instruções da CONTRATANTE, adota medidas de segurança adequadas e elimina os dados ao fim do contrato, nos termos da Lei nº 13.709/2018 (LGPD).
 
-### Cláusula 11 · Rescisão
+### Cláusula 11 · Rescisão e proteção do resultado
 
 11.1. Qualquer das partes pode rescindir este contrato por descumprimento da outra que não seja corrigido em 15 (quinze) dias após notificação por escrito.
-11.2. A CONTRATANTE pode rescindir sem justa causa, com aviso de 30 (trinta) dias. **[DECIDIR]** Nesse caso, ficam devidas, independentemente de resultado, as parcelas correspondentes às etapas já entregues: T = 2 parcelas, R = 1 parcela, I = 2 parcelas, A = 1 parcela.
-11.3. **[DECIDIR]** Ficam devidas, independentemente de resultado, as parcelas correspondentes às etapas entregues, se a CONTRATANTE, depois de notificada e com 15 dias para regularizar:
-- a) deixar de usar a apresentação e o roteiro ou de registrar as propostas (cláusulas 5.5 e 5.6) por 2 (dois) meses seguidos; ou
+
+11.2. A CONTRATANTE pode rescindir sem justa causa, com aviso de 30 (trinta) dias. Nesse caso, ficam devidas, independentemente de resultado, as parcelas correspondentes às etapas já entregues:
+
+| Etapa entregue | Parcelas devidas | Valor |
+|---|---|---|
+| T · Tela | 2 | R$ 1.500,00 |
+| R · Retórica | 1 | R$ 750,00 |
+| I · Instrumento | 2 | R$ 1.500,00 |
+| A · Acompanhamento | 1 | R$ 750,00 |
+
+11.3. Também ficam devidas, independentemente de resultado, as parcelas correspondentes às etapas entregues, se a CONTRATANTE, depois de notificada e com 15 (quinze) dias para regularizar:
+- a) deixar de usar a apresentação e o roteiro, ou de registrar as propostas (cláusulas 5.5 e 5.6), por 2 (dois) meses seguidos; ou
 - b) deixar de enviar o relatório mensal (cláusula 5.7).
-11.4. Se a rescisão for por descumprimento da CONTRATADA, não são devidas parcelas de etapas não entregues.
+
+11.4. Nas hipóteses das cláusulas 11.2 e 11.3, as parcelas já pagas são descontadas do valor devido.
+
+11.5. Se a rescisão for por descumprimento da CONTRATADA, não são devidas parcelas de etapas não entregues.
 
 ### Cláusula 12 · Troca de gestão
 
 12.1. Este contrato vincula a CONTRATANTE como pessoa jurídica e não se altera com a troca da sua diretoria.
-12.2. A CONTRATANTE apresentará este contrato à diretoria eleita e indicará o novo responsável (cláusula 5.1) em até 15 (quinze) dias após a posse.
+12.2. A CONTRATANTE apresentará este contrato à diretoria eleita e confirmará ou indicará o responsável pelo projeto (cláusula 5.1) em até 15 (quinze) dias após a posse.
 
 ### Cláusula 13 · Disposições gerais
 
 13.1. Não há vínculo empregatício entre a CONTRATADA, seus sócios ou colaboradores e a CONTRATANTE.
-13.2. As comunicações formais são feitas pelos e-mails: CONTRATADA [PREENCHER]; CONTRATANTE [PREENCHER].
+13.2. As comunicações formais são feitas pelos e-mails: CONTRATADA [PREENCHER: e-mail da Triângulo]; CONTRATANTE marcelo.zaiden@mectria.com.
 13.3. Alterações deste contrato só valem por escrito, assinadas pelas duas partes.
 13.4. As partes admitem a assinatura eletrônica deste contrato, nos termos da Lei nº 14.063/2020.
 13.5. Fica eleito o foro da Comarca de Uberaba/MG.
@@ -134,7 +149,7 @@ Uberaba/MG, [PREENCHER: data].
 
 | CONTRATADA | CONTRATANTE |
 |---|---|
-| TRIÂNGULO SOLUTIONS BRASIL LTDA · Lucas Cruvinel Boaretto, sócio administrador | [RAZÃO SOCIAL DA MECTRIA] · [nome], [cargo] |
+| TRIÂNGULO SOLUTIONS BRASIL LTDA · Lucas Cruvinel Boaretto, sócio administrador | [RAZÃO SOCIAL DA MECTRIA] · Arthur Jordão, Presidente · Marcelo Zaiden, Vice-Presidente |
 
 Testemunhas: 1. [nome e CPF] · 2. [nome e CPF]
 
@@ -142,26 +157,42 @@ Testemunhas: 1. [nome e CPF] · 2. [nome e CPF]
 
 ## Anexo I · Escopo
 
-### Cronograma (semanas contadas a partir do kick-off)
+### Cronograma
 
-| Etapa | Semanas | Entregáveis | Validação |
+Kick-off em **09/10/2026** (sexta). Semanas de segunda a sexta.
+
+| Semana | Período | Etapa | Marco |
 |---|---|---|---|
-| **T · Tela** | S1–S3 | Site novo responsivo em ambiente de homologação; arquitetura e navegação revisadas; SEO local (mapa do site por palavra-chave, robots.txt, llms.txt); CTAs e formulários de qualificação; especificação e implantação do chatbot; migração do blog e redirecionamentos | Estrutura e layout do site |
-| **R · Retórica** | S4–S5 | Proposta de valor, diferenciais, público, tom e mensagens-chave (Primal Branding sobre a identidade atual); textos institucionais e de serviços aplicados no site; processo comercial visual, do hunter ao closer; mapa de objeções e contornos | Textos (copy) |
-| **I · Instrumento** | S6–S7 | Apresentação de proposta web, interativa e responsiva, com narrativa fixa, micro pactos, bloco valor × preço e calculadora de investimento; versão em PDF; roteiro do vendedor slide a slide | Apresentação comercial |
-| **A · Acompanhamento** | S8 + acompanhamento | Capacitação do time comercial; roleplay com feedback; planilha de taxa de fechamento proposta a proposta; acompanhamento (abaixo) | Encerramento da execução |
+| S1 | 12/10 a 16/10 | T · Tela | 12/10 é feriado |
+| S2 | 19/10 a 23/10 | T · Tela | |
+| S3 | 26/10 a 30/10 | T · Tela | **Validação do site** |
+| S4 | 02/11 a 06/11 | R · Retórica | 02/11 é feriado |
+| S5 | 09/11 a 13/11 | R · Retórica | **Validação da copy** |
+| S6 | 16/11 a 20/11 | I · Instrumento | 20/11 é feriado |
+| S7 | 23/11 a 27/11 | I · Instrumento | **Validação da apresentação** |
+| S8 | 30/11 a 04/12 | A · Acompanhamento | **Capacitação e roleplay. Fim da execução** |
+| Acompanhamento | 07/12/2026 a 05/02/2027 | A · Acompanhamento | Estrutura em uso. Apuração do resultado a partir de dezembro de 2026 |
 
-**Publicação do site:** [DECIDIR: após a validação da copy (fim da S5) | na S8].
+**Publicação do site:** [DECIDIR: depois da validação da copy, em 13/11/2026 | na S8].
 
-### Acompanhamento (até a data da cláusula 2.2)
-- 1 (uma) reunião mensal de acompanhamento, de até 1 hora.
+### Entregáveis por etapa
+
+| Etapa | Entregáveis | Validação |
+|---|---|---|
+| **T · Tela** | Site novo responsivo em ambiente de homologação; arquitetura e navegação revisadas; SEO local (mapa do site por palavra-chave, robots.txt, llms.txt); CTAs e formulários de qualificação; especificação e implantação do chatbot; migração do blog e redirecionamentos | Estrutura e layout do site |
+| **R · Retórica** | Proposta de valor, diferenciais, público, tom e mensagens-chave (Primal Branding sobre a identidade atual); textos institucionais e de serviços aplicados no site; processo comercial visual, do hunter ao closer; mapa de objeções e contornos | Textos (copy) |
+| **I · Instrumento** | Apresentação de proposta web, interativa e responsiva, com narrativa fixa, micro pactos, bloco valor × preço e calculadora de investimento; versão em PDF; roteiro do vendedor slide a slide | Apresentação comercial |
+| **A · Acompanhamento** | Capacitação do time comercial; roleplay com feedback; planilha de taxa de fechamento proposta a proposta; acompanhamento (abaixo) | Encerramento |
+
+### Acompanhamento (07/12/2026 a 05/02/2027)
+- 1 (uma) reunião por mês, de até 1 hora, em dezembro, janeiro e fevereiro. A de fevereiro é a reunião de encerramento.
 - Análise mensal da planilha de taxa de fechamento e ajuste do roteiro a partir dos dados.
 - Canal no WhatsApp para dúvidas, com resposta em até 2 dias úteis, em horário comercial.
 - Pequenas correções no site e nos materiais entregues.
 - Acompanhamento das primeiras reuniões reais de proposta, se a CONTRATANTE quiser.
 
 ### Não está incluído
-Identidade visual nova ou logotipo; gestão de redes sociais e produção recorrente de conteúdo; tráfego pago, anúncios e e-mail marketing; produção audiovisual; artigos recorrentes no blog; páginas, funcionalidades, integrações ou versões de materiais além do aprovado; domínio, planos e licenças de terceiros; manutenção do site depois do acompanhamento.
+Identidade visual nova ou logotipo; gestão de redes sociais e produção recorrente de conteúdo; tráfego pago, anúncios e e-mail marketing; produção audiovisual; artigos recorrentes no blog; páginas, funcionalidades, integrações ou versões de materiais além do aprovado; domínio, planos e licenças de terceiros; manutenção do site e acompanhamento depois de 05/02/2027.
 
 ### O que a CONTRATANTE fornece no kick-off
 Acessos ao Wix, ao domínio e às ferramentas do Google; e-mail institucional para as contas; logos em vetor, cores e fontes; fotos e vídeo com autorização de uso; carta de serviços; cases e depoimentos com autorização; números verificáveis; dados de contato; a apresentação de proposta atual; destino dos leads e critérios de qualificação.
@@ -172,37 +203,38 @@ Acessos ao Wix, ao domínio e às ferramentas do Google; e-mail institucional pa
 
 ### Definições
 - **Valor vendido no mês:** soma do valor total dos contratos e aditivos de prestação de serviço assinados pela CONTRATANTE no mês, pela data de assinatura, independentemente da forma de pagamento, do recebimento ou do canal de origem. Contrato cancelado em até 30 dias da assinatura é descontado no mês do cancelamento.
-- **Média de referência:** **R$ 5.429,00 por mês**, valor fixo, calculado sobre as vendas da CONTRATANTE de [PREENCHER: meses de 2026 usados no cálculo], conforme o Anexo III.
-- **Período de apuração:** de **[DECIDIR: 01/01/2027]** a **31/12/2027**.
-- **Ganho acumulado:** total vendido desde o início do período de apuração menos a média de referência multiplicada pelo número de meses apurados. **[DECIDIR: líquido (recomendado) | bruto: soma apenas dos meses acima da média]**
+- **Média de referência:** **R$ 5.429,00 por mês**, valor fixo, calculado pela CONTRATANTE como o faturamento total de 2026 até a assinatura dividido pelo número de meses (Anexo III).
+- **Período de apuração:** de **01/12/2026 a 31/12/2027**.
+- **Resultado acumulado:** total vendido desde o início do período de apuração, menos a média de referência multiplicada pelo número de meses apurados. Meses abaixo da média descontam do resultado. É a mesma conta usada para calcular a média.
 
 ### Regra
-1. **Parcelas liberadas** = ganho acumulado ÷ R$ 1.250,00, arredondado para baixo, no máximo 6.
-2. **Uma parcela liberada nunca volta a ficar suspensa**, mesmo que o ganho acumulado caia depois. Parcela paga nunca é devolvida.
+1. **Parcelas liberadas** = resultado acumulado ÷ R$ 1.250,00, arredondado para baixo, no máximo 6.
+2. **Uma parcela liberada nunca volta a ficar suspensa**, mesmo que o resultado acumulado caia depois. Parcela paga nunca é devolvida.
 3. Em cada mês são pagas no máximo **2 parcelas**. As liberadas acima disso ficam para os meses seguintes.
-4. A parcela que não for liberada até 31/12/2027 deixa de ser devida. Parcelas liberadas até essa data continuam devidas e são pagas nos meses seguintes, respeitado o limite do item 3.
-5. A apuração é mensal: a CONTRATANTE envia o relatório até o dia 5 e paga as parcelas do mês até o dia 15.
+4. A parcela não liberada até 31/12/2027 deixa de ser devida. Parcelas liberadas até essa data continuam devidas e são pagas nos meses seguintes, respeitado o limite do item 3.
+5. A apuração é mensal: a CONTRATANTE envia o relatório até o dia 5 e paga as parcelas do mês até o dia 15. O primeiro relatório, de dezembro de 2026, vence em 05/01/2027.
 
-### Exemplo (ganho líquido)
+### Exemplo (valores ilustrativos)
 
-| Mês | Vendido | Diferença para a média | Ganho acumulado | Parcelas liberadas | Paga no mês | Total pago |
+| Mês | Vendido | Diferença para a média | Resultado acumulado | Parcelas liberadas | Paga no mês | Total pago |
 |---|---|---|---|---|---|---|
-| Jan | R$ 4.000 | −R$ 1.429 | −R$ 1.429 | 0 | 0 | 0 |
-| Fev | R$ 9.000 | +R$ 3.571 | R$ 2.142 | 1 | 1 | 1 (R$ 750) |
-| Mar | R$ 12.000 | +R$ 6.571 | R$ 8.713 | 6 | 2 (limite) | 3 (R$ 2.250) |
-| Abr | R$ 3.000 | −R$ 2.429 | R$ 6.284 | 6 (não volta) | 2 | 5 (R$ 3.750) |
-| Mai | R$ 6.000 | +R$ 571 | R$ 6.855 | 6 | 1 | **6 (R$ 4.500): quitado** |
+| 1 | R$ 4.000 | −R$ 1.429 | −R$ 1.429 | 0 | 0 | 0 |
+| 2 | R$ 9.000 | +R$ 3.571 | R$ 2.142 | 1 | 1 | 1 (R$ 750) |
+| 3 | R$ 12.000 | +R$ 6.571 | R$ 8.713 | 6 | 2 (limite) | 3 (R$ 2.250) |
+| 4 | R$ 3.000 | −R$ 2.429 | R$ 6.284 | 6 (não volta) | 2 | 5 (R$ 3.750) |
+| 5 | R$ 6.000 | +R$ 571 | R$ 6.855 | 6 | 1 | **6 (R$ 4.500): quitado** |
 
 ### Relatório mensal (até o dia 5)
-Para cada contrato assinado no mês: cliente, data de assinatura, valor total e serviço. Também os cancelamentos do mês. A CONTRATADA pode pedir, em até 10 dias, cópia dos contratos ou o registro equivalente no portal da Brasil Júnior, e a CONTRATANTE os fornece em até 10 dias.
+Para cada contrato assinado no mês: cliente, data de assinatura, valor total e serviço. Também os cancelamentos do mês. A CONTRATADA pode pedir cópia dos contratos ou o registro equivalente no portal da Brasil Júnior, e a CONTRATANTE os fornece em até 10 dias.
 
 ---
 
 ## Anexo III · Base da média de referência
 
-[PREENCHER pela CONTRATANTE: lista de meses de 2026 e valor vendido em cada um, cuja média resulta em R$ 5.429,00.]
+Informado pela CONTRATANTE: faturamento total de 2026 até a assinatura, dividido pelo número de meses do período.
 
-| Mês de 2026 | Valor vendido |
-|---|---|
-| [mês] | [R$] |
-| **Média** | **R$ 5.429,00** |
+| Período | Faturamento total | Meses | Média mensal |
+|---|---|---|---|
+| Janeiro a [PREENCHER: mês] de 2026 | R$ [PREENCHER] | [PREENCHER] | **R$ 5.429,00** |
+
+A média é fixa durante todo o contrato e não é recalculada.

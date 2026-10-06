@@ -15,6 +15,9 @@ Atualizar este arquivo sempre que algo for decidido ou resolvido.
 | Pós-venda de 2 meses. Depois a MecTRIA assume tudo | R2 19:18 |
 | Pagamento atrelado a resultado, a ser detalhado no contrato | Reunião não gravada, confirmado na R2 27:48 |
 | Começar pelo fechamento. Topo de funil, prospecção e pós-venda ficam para projetos futuros | R1 46:39, R2 30:42 |
+| **Kick-off na sexta, 09/10/2026.** Execução de 12/10 a 04/12, acompanhamento de 07/12/2026 a 05/02/2027 | Lucas, 06/10/2026 |
+| **Contrato:** resultado líquido com trava; apuração a partir de dez/2026, quando a estrutura entra em uso; acompanhamento até fev/2027 com 1 reunião por mês e ajuste mensal do roteiro (contraproposta aos "até junho" do Marcelo); parcelas das etapas entregues devidas se a MecTRIA desistir ou não usar o processo (T 2, R 1, I 2, A 1) | Lucas, 06/10/2026 |
+| **Responsável da MecTRIA pelas aprovações:** Marcelo Zaiden (VP), marcelo.zaiden@mectria.com | Lucas, 06/10/2026 |
 | **Site novo fora do Wix, em hospedagem própria, criado pela Triângulo. Domínio pago pela MecTRIA.** A hospedagem será escolhida a partir das sugestões em `08-site-e-hospedagem.md` | Lucas, 05/10/2026 |
 
 ## Pendências e inconsistências
@@ -33,7 +36,7 @@ O PDF de 21/09 não tem treinamento, roleplay, micro pactos, calculadora, roteir
 Detalhes e perguntas do kick-off em `08-site-e-hospedagem.md`.
 
 ### 3. Cláusula de pagamento por resultado (alta)
-**Atualização 06/10/2026:** minuta v1 pronta, com base na proposta do Marcelo (`contrato/`). Decisões em aberto: ganho líquido ou bruto, início da apuração, acompanhamento até jun/2027, proteção se a MecTRIA não usar o processo. Ver `contrato/notas-v1.md`.
+**Atualização 06/10/2026:** minuta v2 com as decisões do Lucas (`contrato/minuta-contrato-v2.md`): resultado líquido com trava, apuração de dez/2026 a dez/2027, acompanhamento até 05/02/2027, proteção se a MecTRIA não usar o processo. Faltam dados da MecTRIA, a base da média e a confirmação de quem assina. Ver `contrato/notas-v2.md`.
 
 Métrica, linha de base, janela, fonte de dados, obrigações da MecTRIA, o que acontece se não bater e a troca de gestão. Lista completa em `05-comercial.md`.
 
@@ -58,7 +61,7 @@ Foram combinadas numa reunião sem gravação. Formalizar (tarefa 2): o que é c
 O escopo exige um responsável com autonomia para consolidar feedback e aprovar. Marcelo? Definir no kick-off, pensando na troca de gestão.
 
 ### 8. Feriados e calendário (baixa)
-12/10 (seg, S2), 02/11 (seg, S5) e 20/11 (sex, S7, dia previsto para fechar o Instrumento). O prazo no ERP, 05/12/2026, é um sábado. O pós-venda atravessa o fim do ano e as férias da UFTM, quando muita gente sai da EJ. Planejar a capacitação com os trainees que ficam.
+Com o kick-off em 09/10: 12/10 (seg, S1), 02/11 (seg, S4) e 20/11 (sex, S6). A execução termina em 04/12, um dia antes do prazo do ERP (05/12, sábado). O pós-venda atravessa o fim do ano e as férias da UFTM, quando muita gente sai da EJ. Planejar a capacitação com os trainees que ficam.
 
 ### 9. Indicadores (baixa · oportunidade)
 No fim da R1 o Marcelo pediu ajuda com indicadores de comercial e marketing. A chamada caiu antes da resposta. A planilha de taxa de fechamento (tarefa 34) cobre só uma parte. Decidir se fica só nisso ou se vira proposta futura (painel de indicadores).
@@ -75,15 +78,15 @@ São usados no pitch e vão aparecer no case:
 - Grafia certa da EJ do Lucas e do Pedro: "Projep" (deck) ou "Progep" (transcrição).
 
 ### 12. Data da publicação do site (média)
-O PDF prevê a publicação na S8. A sugestão do briefing da Tela é publicar no fim da S5 (~06/11), depois da validação da copy: sobe uma vez só, com os textos finais, e o Google ganha umas três semanas antes do treinamento. Decidir com Pedro e Lucas. Ver `09-briefing-tela-matheus.md`.
+O PDF prevê a publicação na S8. A sugestão do briefing da Tela é publicar no fim da S5 (13/11), depois da validação da copy: sobe uma vez só, com os textos finais, e o Google ganha umas três semanas antes do treinamento. Decidir com Pedro e Lucas. Ver `09-briefing-tela-matheus.md`.
 
 ### 13. Itens novos que entram na frente Tela (baixa)
 - **Política de privacidade:** obrigatória pela LGPD, porque os formulários coletam dados pessoais. A MecTRIA fornece razão social, CNPJ e um e-mail de contato.
 - **Feed do Instagram no site:** exige conta profissional da MecTRIA e liberação de acesso, porque a API antiga de exibição foi desativada.
 - **Cases:** confirmar quais clientes podem ser citados. Projeto de engenharia costuma ter sigilo.
 
-### 14. Acompanhamento até junho de 2027 (alta)
-A proposta do Marcelo estende o serviço até jun/2027, contra 2 meses de pós-venda no escopo original. A recomendação é aceitar com o conteúdo limitado: 1 reunião por mês, ajuste mensal do roteiro, WhatsApp e pequenas correções. Ver `contrato/notas-v1.md` (D3).
+### 14. Acompanhamento: fevereiro × junho (média)
+**Decidido em 06/10:** até 05/02/2027. É uma contraproposta aos "até junho" do Marcelo. Argumento para ele: o acompanhamento tem duração fixa e é prestado inteiro, pague a EJ antes ou depois. Se ele insistir em junho, a extensão é orçada à parte. Ver `contrato/notas-v2.md`.
 
 ### 15. Registro e atividades da Triângulo (média)
 O contrato social de transformação em LTDA foi assinado em 05/10/2026. Confirmar o registro na JUCEMG antes de assinar com a MecTRIA. O objeto social não tem consultoria em gestão (CNAE 7020-4/00) nem treinamento (CNAE 8599-6/04). Ver com o contador como emitir a nota fiscal.
