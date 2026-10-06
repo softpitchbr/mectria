@@ -17,6 +17,7 @@ Atualizar este arquivo sempre que algo for decidido ou resolvido.
 | Começar pelo fechamento. Topo de funil, prospecção e pós-venda ficam para projetos futuros | R1 46:39, R2 30:42 |
 | **Kick-off na sexta, 09/10/2026.** Execução de 12/10 a 04/12, acompanhamento de 07/12/2026 a 05/02/2027 | Lucas, 06/10/2026 |
 | **Contrato:** resultado líquido com trava; apuração a partir de dez/2026, quando a estrutura entra em uso; acompanhamento até fev/2027 com 1 reunião por mês e ajuste mensal do roteiro (contraproposta aos "até junho" do Marcelo); parcelas das etapas entregues devidas se a MecTRIA desistir ou não usar o processo (T 2, R 1, I 2, A 1) | Lucas, 06/10/2026 |
+| **Publicação do site:** depois da validação do site (S3), sem data fixa; prazo final no fim da execução (04/12). A copy entra no site já publicado | Lucas, 06/10/2026 |
 | **Responsável da MecTRIA pelas aprovações:** Marcelo Zaiden (VP), marcelo.zaiden@mectria.com | Lucas, 06/10/2026 |
 | **Site novo fora do Wix, em hospedagem própria, criado pela Triângulo. Domínio pago pela MecTRIA.** A hospedagem será escolhida a partir das sugestões em `08-site-e-hospedagem.md` | Lucas, 05/10/2026 |
 
@@ -77,8 +78,8 @@ São usados no pitch e vão aparecer no case:
 - O que foi combinado no "bench" sem gravação depois da R1 (contrapartidas e pagamento por resultado) só aparece indiretamente na R2.
 - Grafia certa da EJ do Lucas e do Pedro: "Projep" (deck) ou "Progep" (transcrição).
 
-### 12. Data da publicação do site (média)
-O PDF prevê a publicação na S8. A sugestão do briefing da Tela é publicar no fim da S5 (13/11), depois da validação da copy: sobe uma vez só, com os textos finais, e o Google ganha umas três semanas antes do treinamento. Decidir com Pedro e Lucas. Ver `09-briefing-tela-matheus.md`.
+### 12. Data da publicação do site (resolvido)
+**Decidido em 06/10 (Lucas):** o site é publicado depois da validação do site (S3, até 30/10), sem data fixa. Pode sair antes de 13/11; o prazo final no contrato é o fim da execução (04/12). A copy final entra no site já publicado.
 
 ### 13. Itens novos que entram na frente Tela (baixa)
 - **Política de privacidade:** obrigatória pela LGPD, porque os formulários coletam dados pessoais. A MecTRIA fornece razão social, CNPJ e um e-mail de contato.

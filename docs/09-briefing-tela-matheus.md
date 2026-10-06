@@ -106,7 +106,7 @@ Tudo aqui usa informação pública e pode ser feito antes do kick-off de sexta.
 - Arquitetura e layout congelados depois da aprovação. O que vier depois é mudança de escopo e passa pelo Pedro.
 
 ### Publicação (virada)
-Não é no fim da S3. **Sugestão:** publicar depois da validação da copy, no fim da S5 (13/11), para subir uma vez só, já com os textos finais. Isso também dá ao Google umas três semanas a mais antes do treinamento da S8. O PDF do escopo previa a publicação na S8. Decidir com Pedro e Lucas.
+**Decidido:** publicar depois da validação do site (S3, até 30/10), assim que estiver pronto. Não tem data fixa e pode sair antes de 13/11. O prazo final no contrato é o fim da execução (04/12). A copy final (S4 e S5) entra no site já publicado, então mantenha o conteúdo separado do layout.
 
 Ordem da virada:
 1. Copiar os registros de e-mail do DNS atual.

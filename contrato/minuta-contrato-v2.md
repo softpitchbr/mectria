@@ -1,6 +1,6 @@
 # Minuta v2 · Contrato de prestação de serviços
 
-> **Uso interno.** Versão de 06/10/2026, com as decisões do Lucas, o foro de Uberaba/MG e as disposições gerais completas. Antes de enviar à MecTRIA, preencher as marcações **[PREENCHER]** e resolver a única **[DECIDIR]** que sobrou (data de publicação do site). Ver `notas-v2.md`. CPFs só entram na versão de assinatura, fora do repositório.
+> **Uso interno.** Versão de 06/10/2026, com as decisões do Lucas, o foro de Uberaba/MG e as disposições gerais completas. Antes de enviar à MecTRIA, preencher as marcações **[PREENCHER]**. Ver `notas-v2.md`. CPFs só entram na versão de assinatura, fora do repositório.
 
 ---
 
@@ -197,7 +197,7 @@ Kick-off em **09/10/2026** (sexta). Semanas de segunda a sexta.
 | S8 | 30/11 a 04/12 | A · Acompanhamento | **Capacitação e roleplay. Fim da execução** |
 | Acompanhamento | 07/12/2026 a 05/02/2027 | A · Acompanhamento | Estrutura em uso. Apuração do resultado a partir de dezembro de 2026 |
 
-**Publicação do site:** [DECIDIR: depois da validação da copy, em 13/11/2026 | na S8].
+**Publicação do site:** depois da validação formal do site (S3), em data combinada com a CONTRATANTE, até o fim da execução (04/12/2026). A copy final da etapa R é aplicada no site já publicado.
 
 ### Entregáveis por etapa
 
