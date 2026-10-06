@@ -18,6 +18,7 @@ Meta: conversão entre proposta e fechamento de ~25% para **40%**. Execução de
 | [`docs/07-decisoes-e-pendencias.md`](docs/07-decisoes-e-pendencias.md) | O que já foi decidido e o que está em aberto |
 | [`docs/08-site-e-hospedagem.md`](docs/08-site-e-hospedagem.md) | Hospedagem própria: recomendação, domínio, saída do Wix, custos e perguntas do kick-off |
 | [`docs/09-briefing-tela-matheus.md`](docs/09-briefing-tela-matheus.md) | Briefing da frente Tela: perguntas ao Matheus, o que pedir à MecTRIA e como fazer a primeira entrega |
+| [`contrato/`](contrato/) | Minuta do contrato com a MecTRIA e notas das decisões em aberto |
 | [`docs/glossario.md`](docs/glossario.md) | Erros da transcrição e termos do projeto |
 | [`docs/reunioes/`](docs/reunioes/) | Resumos e transcrições completas das reuniões |
-| [`referencias/`](referencias/) | Escopo original em PDF e o deck institucional interativo da Triângulo |
+| [`referencias/`](referencias/) | Escopo original em PDF, deck institucional da Triângulo e a proposta do Marcelo para a cláusula de resultado |

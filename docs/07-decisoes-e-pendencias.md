@@ -33,6 +33,8 @@ O PDF de 21/09 não tem treinamento, roleplay, micro pactos, calculadora, roteir
 Detalhes e perguntas do kick-off em `08-site-e-hospedagem.md`.
 
 ### 3. Cláusula de pagamento por resultado (alta)
+**Atualização 06/10/2026:** minuta v1 pronta, com base na proposta do Marcelo (`contrato/`). Decisões em aberto: ganho líquido ou bruto, início da apuração, acompanhamento até jun/2027, proteção se a MecTRIA não usar o processo. Ver `contrato/notas-v1.md`.
+
 Métrica, linha de base, janela, fonte de dados, obrigações da MecTRIA, o que acontece se não bater e a troca de gestão. Lista completa em `05-comercial.md`.
 
 ### 4. Linha de base da conversão (média)
@@ -79,4 +81,10 @@ O PDF prevê a publicação na S8. A sugestão do briefing da Tela é publicar n
 - **Política de privacidade:** obrigatória pela LGPD, porque os formulários coletam dados pessoais. A MecTRIA fornece razão social, CNPJ e um e-mail de contato.
 - **Feed do Instagram no site:** exige conta profissional da MecTRIA e liberação de acesso, porque a API antiga de exibição foi desativada.
 - **Cases:** confirmar quais clientes podem ser citados. Projeto de engenharia costuma ter sigilo.
+
+### 14. Acompanhamento até junho de 2027 (alta)
+A proposta do Marcelo estende o serviço até jun/2027, contra 2 meses de pós-venda no escopo original. A recomendação é aceitar com o conteúdo limitado: 1 reunião por mês, ajuste mensal do roteiro, WhatsApp e pequenas correções. Ver `contrato/notas-v1.md` (D3).
+
+### 15. Registro e atividades da Triângulo (média)
+O contrato social de transformação em LTDA foi assinado em 05/10/2026. Confirmar o registro na JUCEMG antes de assinar com a MecTRIA. O objeto social não tem consultoria em gestão (CNAE 7020-4/00) nem treinamento (CNAE 8599-6/04). Ver com o contador como emitir a nota fiscal.
 

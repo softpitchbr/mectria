@@ -18,4 +18,6 @@ Repositório do projeto **MecTRIA · Reestruturação Comercial e Digital**, da 
 - **Etiquetas das tarefas:** `[Comercial]`, `[T]`, `[R]`, `[I]`, `[A]`, com a mesma numeração de `docs/03-plano-erp.md`.
 - **Pessoas:** Vinícius Miguel (MecTRIA) ≠ Vinicius Nicoletti/"Sunga" (Triângulo). Ver `docs/01-pessoas.md`.
 - **Decisões novas:** registrar em `docs/07-decisoes-e-pendencias.md` com a origem (reunião, data, quem decidiu).
+- **Dados pessoais:** não versionar CPF, RG ou endereço residencial (ex.: contrato social da Triângulo). Eles só entram na versão de assinatura do contrato, fora do repositório.
+- **Contrato:** a minuta vigente fica em `contrato/`. Cada rodada de negociação gera uma nova versão (`minuta-contrato-vN.md`) e notas correspondentes.
 - **Reuniões novas:** transcrição bruta em `docs/reunioes/transcricoes/` e resumo em `docs/reunioes/README.md`.

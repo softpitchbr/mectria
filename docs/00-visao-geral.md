@@ -19,7 +19,7 @@ Reestruturação comercial e digital da **MecTRIA** (Empresa Júnior de Engenhar
 | Início | 05/10/2026 (segunda) |
 | Prazo no ERP | 05/12/2026 (fim da S8 é 27/11/2026) |
 | Duração | 8 semanas de execução + 2 meses de pós-venda (até ~05/02/2027) |
-| Condição | Parceria MEJ: **R$ 4.500** (mercado sênior: R$ 18.000), com contrapartidas |
+| Condição | Parceria MEJ: **R$ 4.500** em 6 × R$ 750, pagas pelo resultado (mercado sênior: R$ 18.000), com contrapartidas. Minuta em `contrato/` |
 
 ## O problema
 

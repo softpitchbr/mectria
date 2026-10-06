@@ -43,6 +43,8 @@ Combinadas numa reunião anterior **que não foi gravada** (o "bench" depois da 
 - Objeção do Marcelo: "E se não trouxer resultado? Aí você não pagou nada." Ele mesmo disse acreditar que vai dar resultado e tratou como "questão contratual".
 - Resposta do Lucas: "Se não der, você não gastou nada."
 
+**Atualização 06/10/2026:** o Marcelo mandou uma proposta concreta: R$ 4.500 em 6 parcelas de R$ 750, cada uma liberada a cada R$ 1.250 vendidos acima da média mensal de 2026 (R$ 5.429), com no máximo 2 parcelas por mês, prazo de liberação até dez/2027 e serviço até jun/2027. A minuta está em `contrato/minuta-contrato-v1.md` e as decisões em aberto em `contrato/notas-v1.md`.
+
 O contrato (tarefa 3) precisa responder, no mínimo:
 
 1. **Qual métrica** conta como resultado: faturamento fechado pelo novo processo, taxa de conversão (40%) ou número de projetos?
