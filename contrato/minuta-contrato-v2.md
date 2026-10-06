@@ -1,6 +1,6 @@
 # Minuta v2 · Contrato de prestação de serviços
 
-> **Uso interno.** Versão de 06/10/2026, com as decisões do Lucas. Antes de enviar à MecTRIA, preencher as marcações **[PREENCHER]** e resolver a única **[DECIDIR]** que sobrou (data de publicação do site). Ver `notas-v2.md`. CPFs só entram na versão de assinatura, fora do repositório.
+> **Uso interno.** Versão de 06/10/2026, com as decisões do Lucas, o foro de Uberaba/MG e as disposições gerais completas. Antes de enviar à MecTRIA, preencher as marcações **[PREENCHER]** e resolver a única **[DECIDIR]** que sobrou (data de publicação do site). Ver `notas-v2.md`. CPFs só entram na versão de assinatura, fora do repositório.
 
 ---
 
@@ -139,11 +139,35 @@ As partes celebram este contrato, que se rege pelas cláusulas a seguir.
 
 ### Cláusula 13 · Disposições gerais
 
-13.1. Não há vínculo empregatício entre a CONTRATADA, seus sócios ou colaboradores e a CONTRATANTE.
-13.2. As comunicações formais são feitas pelos e-mails: CONTRATADA [PREENCHER: e-mail da Triângulo]; CONTRATANTE marcelo.zaiden@mectria.com.
-13.3. Alterações deste contrato só valem por escrito, assinadas pelas duas partes.
-13.4. As partes admitem a assinatura eletrônica deste contrato, nos termos da Lei nº 14.063/2020.
-13.5. Fica eleito o foro da Comarca de Uberaba/MG.
+13.1. **Independência das partes.** Este contrato não cria vínculo empregatício, societário ou de representação entre as partes. Os sócios, colaboradores e prestadores da CONTRATADA não têm qualquer vínculo com a CONTRATANTE, e cada parte responde pelas obrigações trabalhistas, previdenciárias e fiscais de quem contratar.
+
+13.2. **Comunicações.** As comunicações formais entre as partes são feitas por escrito, pelos e-mails: CONTRATADA [PREENCHER: e-mail da Triângulo]; CONTRATANTE marcelo.zaiden@mectria.com. A parte que mudar de e-mail deve informar a outra por escrito.
+
+13.3. **Alterações.** Qualquer alteração deste contrato só tem validade se feita por termo aditivo escrito, assinado pelas duas partes.
+
+13.4. **Integralidade.** Este contrato e seus anexos formam o acordo integral entre as partes sobre o seu objeto e substituem quaisquer propostas, escopos, apresentações e entendimentos anteriores, verbais ou escritos.
+
+13.5. **Prevalência.** Em caso de conflito entre o corpo deste contrato e os seus anexos, prevalece o corpo do contrato.
+
+13.6. **Tolerância.** A tolerância de uma parte quanto ao descumprimento de qualquer obrigação da outra é mera liberalidade e não implica novação, renúncia de direito ou alteração do que foi pactuado.
+
+13.7. **Nulidade parcial.** Se qualquer disposição deste contrato for considerada nula, anulável ou inexequível, as demais permanecem válidas, e as partes negociarão de boa-fé uma disposição substituta com efeito equivalente.
+
+13.8. **Cessão.** Nenhuma das partes pode ceder ou transferir, total ou parcialmente, os direitos e obrigações deste contrato sem a anuência prévia e por escrito da outra.
+
+13.9. **Caso fortuito e força maior.** Nenhuma das partes responde por atraso ou inexecução causados por caso fortuito ou força maior, nos termos do art. 393 do Código Civil, desde que comunique a outra parte por escrito em até 5 (cinco) dias da ocorrência. Os prazos afetados ficam suspensos enquanto durar o impedimento.
+
+13.10. **Sucessores.** Este contrato obriga as partes e os seus sucessores a qualquer título.
+
+13.11. **Poderes.** Os signatários declaram ter poderes para assinar este contrato em nome das partes que representam, na forma dos respectivos atos constitutivos.
+
+13.12. **Assinatura eletrônica e título executivo.** As partes reconhecem a validade da assinatura eletrônica deste contrato, nos termos da Lei nº 14.063/2020 e da Medida Provisória nº 2.200-2/2001. Este contrato constitui título executivo extrajudicial, nos termos do art. 784, inciso III e § 4º, do Código de Processo Civil.
+
+### Cláusula 14 · Foro
+
+14.1. Fica eleito o foro da Comarca de Uberaba, Estado de Minas Gerais, para dirimir quaisquer dúvidas ou controvérsias oriundas deste contrato, com renúncia expressa a qualquer outro, por mais privilegiado que seja.
+
+E, por estarem assim justas e contratadas, as partes assinam o presente instrumento eletronicamente, ou em 2 (duas) vias de igual teor e forma, na presença das 2 (duas) testemunhas abaixo, para que produza os seus jurídicos e legais efeitos.
 
 Uberaba/MG, [PREENCHER: data].
 

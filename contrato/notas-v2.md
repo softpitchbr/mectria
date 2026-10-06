@@ -11,6 +11,7 @@ Minuta: `minuta-contrato-v2.md`. A v1 está no histórico do git.
 | D3 | Acompanhamento | **Até fevereiro de 2027**, com 1 reunião por mês e ajuste mensal do roteiro | 2.3, Anexo I |
 | D4 | Proteção se a MecTRIA não usar o processo | **De acordo:** parcelas das etapas entregues ficam devidas (T 2, R 1, I 2, A 1) | 11.2 a 11.4 |
 | D6 | Responsável pela aprovação | **Marcelo Zaiden**, Vice-Presidente, marcelo.zaiden@mectria.com | 5.1, 13.2 |
+| D7 | Foro e disposições jurídicas | **Foro da Comarca de Uberaba/MG**, com renúncia a qualquer outro, e cláusulas gerais completas: integralidade, prevalência, tolerância, nulidade parcial, cessão, força maior, sucessores, poderes e título executivo | 13, 14 |
 
 ## Quando começa o "on-going"
 
