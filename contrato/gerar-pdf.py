@@ -107,12 +107,13 @@ def tabela(linhas):
     return [t, Spacer(1, 7)]
 
 
-def assinatura(rotulo, nome, cargo, entidade=None):
+def assinatura(rotulo, nome, cargo, entidade=None, cpf=True):
     partes = [Paragraph("_" * 42, E["assin"]), Paragraph(f"<b>{nome}</b>", E["assin"]),
               Paragraph(cargo, E["assin"])]
     if entidade:
         partes.append(Paragraph(entidade, E["assin"]))
-    partes.append(Paragraph(BRANCO_CPF, E["assin"]))
+    if cpf:
+        partes.append(Paragraph(BRANCO_CPF, E["assin"]))
     partes.append(Paragraph(rotulo, E["assin_rot"]))
     return partes
 
@@ -120,9 +121,9 @@ def assinatura(rotulo, nome, cargo, entidade=None):
 def bloco_assinaturas(fecho):
     col = UTIL / 2
     linha1 = Table([[assinatura("CONTRATADA", "Lucas Cruvinel Boaretto", "Sócio administrador",
-                                "Triângulo Solutions Brasil Ltda."),
+                                "Triângulo Solutions Brasil Ltda.", cpf=False),
                      assinatura("CONTRATANTE", "Arthur Menezes Jordão", "Presidente",
-                                "Empresa Jr Engenharia Mecânica do Triângulo Mineiro")]],
+                                "Empresa Jr Engenharia Mecânica do Triângulo Mineiro", cpf=False)]],
                    colWidths=[col, col])
     linha2 = Table([[assinatura("INTERVENIENTE", "Marcelo Zaiden",
                                 "Vice-Presidente e responsável pelo projeto")]], colWidths=[col])

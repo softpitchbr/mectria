@@ -57,13 +57,13 @@ Pelo escopo, a estrutura comercial nova só roda depois de três coisas: a apres
 **Recebido em 07/10:** razão social (EMPRESA JR ENGENHARIA MECANICA DO TRIANGULO MINEIRO), CNPJ 19.501.433/0001-59, sede na Av. Dr. Randolfo Borges Junior, 1250, Univerdecidade, CEP 38064-200, Uberaba/MG. No CNPJ, o administrador é **Arthur Menezes Jordão, Presidente, desde 27/03/2026**. Por isso o Arthur assina como representante, e o Marcelo entra como **interveniente** (responsável pelo projeto e provável próximo presidente). A natureza jurídica foi escrita de forma genérica ("pessoa jurídica de direito privado, empresa júnior nos termos da Lei nº 13.267/2016"). Conferir no cartão do CNPJ.
 
 1. Faturamento total de 2026 e número de meses usados na média (Anexo III).
-2. CPFs do Arthur e do Marcelo, só na versão de assinatura.
+2. CPF do Marcelo (interveniente), só na versão de assinatura. Lucas e Arthur assinam pelas empresas, sem CPF (decisão do Lucas, 07/10).
 3. **Quem assina (histórico).** A minuta põe Arthur Jordão (Presidente) e Marcelo Zaiden (Vice-Presidente), porque o contrato é assinado agora, antes da troca de gestão. Confirmar no estatuto se basta o presidente ou se são exigidas duas assinaturas. O Marcelo deve ser o próximo presidente (~90% de chance, ainda não sabatinado). A cláusula 12 garante que o contrato continua valendo com a nova diretoria.
 
 ### Da Triângulo
 1. **Registro do contrato social:** confirmar na JUCEMG e no cartão do CNPJ que o nome já é "TRIÂNGULO SOLUTIONS BRASIL LTDA". Se ainda não for, usar o nome que constar no CNPJ na assinatura.
 2. **Atividades no CNPJ (falar com o contador):** o objeto social não tem consultoria em gestão (CNAE 7020-4/00) nem treinamento (CNAE 8599-6/04). Ver como emitir a nota fiscal.
-3. CPFs dos signatários, só na versão de assinatura, fora do repositório.
+3. CPF do interveniente e das testemunhas, só na versão de assinatura, fora do repositório.
 
 > Antes de assinar, vale uma leitura de advogado ou do contador da Triângulo, principalmente das cláusulas 3, 9 e 11.
 
