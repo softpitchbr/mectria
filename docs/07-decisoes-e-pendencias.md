@@ -18,6 +18,7 @@ Atualizar este arquivo sempre que algo for decidido ou resolvido.
 | **Kick-off na sexta, 09/10/2026.** Execução de 12/10 a 04/12, acompanhamento de 07/12/2026 a 05/02/2027 | Lucas, 06/10/2026 |
 | **Contrato:** resultado líquido com trava; apuração a partir de dez/2026, quando a estrutura entra em uso; acompanhamento até fev/2027 com 1 reunião por mês e ajuste mensal do roteiro (contraproposta aos "até junho" do Marcelo); parcelas das etapas entregues devidas se a MecTRIA desistir ou não usar o processo (T 2, R 1, I 2, A 1) | Lucas, 06/10/2026 |
 | **Publicação do site:** depois da validação do site (S3), sem data fixa; prazo final no fim da execução (04/12). A copy entra no site já publicado | Lucas, 06/10/2026 |
+| **Quem assina pela MecTRIA:** Arthur Menezes Jordão, presidente e administrador no CNPJ desde 27/03/2026, e Marcelo Zaiden como interveniente | Dados do CNPJ enviados pelo Lucas, 07/10/2026 |
 | **Responsável da MecTRIA pelas aprovações:** Marcelo Zaiden (VP), marcelo.zaiden@mectria.com | Lucas, 06/10/2026 |
 | **Site novo fora do Wix, em hospedagem própria, criado pela Triângulo. Domínio pago pela MecTRIA.** A hospedagem será escolhida a partir das sugestões em `08-site-e-hospedagem.md` | Lucas, 05/10/2026 |
 

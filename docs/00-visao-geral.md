@@ -57,6 +57,6 @@ Na call foram ditos R$ 4.950 e R$ 54.900. **Esses valores estão errados** e nã
 - Protótipo da home do site já existe (mostrado na reunião 2).
 - **Site:** decidido em 05/10 que sai do Wix para hospedagem própria. A Triângulo cria o site e a MecTRIA paga o domínio. A hospedagem está em escolha (`08-site-e-hospedagem.md`).
 - **Kick-off marcado para sexta, 09/10/2026.**
-- **Contrato:** minuta v2 pronta com as decisões do Lucas (`contrato/`). Faltam os dados da MecTRIA e a confirmação de quem assina.
+- **Contrato:** minuta v2 com os dados da MecTRIA e PDF para revisão (`contrato/contrato-mectria-minuta-v2.pdf`). Assinam Arthur Menezes Jordão (presidente) e Marcelo Zaiden (interveniente). Faltam a base da média (Anexo III), os CPFs e a data.
 - **Pendente para fechar:** enviar material (gravação, link, PDF, TAP), formalizar contrapartidas, contrato com pagamento por resultado, aprovação de Marcelo e Arthur, kick-off.
 - O escopo em PDF é **anterior** ao que foi apresentado na call e precisa ser atualizado antes de ir para o Marcelo. Ver `07-decisoes-e-pendencias.md`.

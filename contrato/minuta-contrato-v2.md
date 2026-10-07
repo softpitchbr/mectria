@@ -1,6 +1,6 @@
 # Minuta v2 · Contrato de prestação de serviços
 
-> **Uso interno.** Versão de 06/10/2026, com as decisões do Lucas, o foro de Uberaba/MG e as disposições gerais completas. Antes de enviar à MecTRIA, preencher as marcações **[PREENCHER]**. Ver `notas-v2.md`. CPFs só entram na versão de assinatura, fora do repositório.
+> **Uso interno.** Versão de 07/10/2026, com as decisões do Lucas e os dados cadastrais da MecTRIA. Faltam a base da média (Anexo III), os CPFs e a data, que ficam em branco no PDF para preencher na assinatura. Ver `notas-v2.md`. CPFs nunca entram no repositório. O PDF é gerado por `gerar-pdf.py`.
 
 ---
 
@@ -8,7 +8,9 @@
 
 **CONTRATADA:** TRIÂNGULO SOLUTIONS BRASIL LTDA, sociedade empresária limitada, inscrita no CNPJ sob o nº 68.057.695/0001-81, com sede na Rua Doutor Paulo Pontes, 139, Apto. 106, Centro, CEP 38010-180, Uberaba/MG, neste ato representada por seu sócio administrador **Lucas Cruvinel Boaretto**, CPF [PREENCHER NA VERSÃO DE ASSINATURA].
 
-**CONTRATANTE:** [PREENCHER: RAZÃO SOCIAL DA MECTRIA], [PREENCHER: natureza jurídica, ex.: associação civil sem fins lucrativos, empresa júnior nos termos da Lei nº 13.267/2016], inscrita no CNPJ sob o nº [PREENCHER], com sede em [PREENCHER], Uberaba/MG, neste ato representada, na forma do seu estatuto, por **Arthur Jordão**, Presidente, CPF [PREENCHER NA VERSÃO DE ASSINATURA], e por **Marcelo Zaiden**, Vice-Presidente, CPF [PREENCHER NA VERSÃO DE ASSINATURA].
+**CONTRATANTE:** EMPRESA JR ENGENHARIA MECANICA DO TRIANGULO MINEIRO ("MecTRIA"), pessoa jurídica de direito privado, empresa júnior nos termos da Lei nº 13.267/2016, inscrita no CNPJ sob o nº 19.501.433/0001-59, com sede na Avenida Doutor Randolfo Borges Junior, 1250, Univerdecidade, CEP 38064-200, Uberaba/MG, neste ato representada por seu Presidente, **Arthur Menezes Jordão**, CPF [PREENCHER NA VERSÃO DE ASSINATURA].
+
+**INTERVENIENTE:** **Marcelo Zaiden**, Vice-Presidente da CONTRATANTE e responsável pelo projeto, CPF [PREENCHER NA VERSÃO DE ASSINATURA], que assina este contrato declarando conhecer e concordar com os seus termos.
 
 As partes celebram este contrato, que se rege pelas cláusulas a seguir.
 
@@ -173,7 +175,9 @@ Uberaba/MG, [PREENCHER: data].
 
 | CONTRATADA | CONTRATANTE |
 |---|---|
-| TRIÂNGULO SOLUTIONS BRASIL LTDA · Lucas Cruvinel Boaretto, sócio administrador | [RAZÃO SOCIAL DA MECTRIA] · Arthur Jordão, Presidente · Marcelo Zaiden, Vice-Presidente |
+| TRIÂNGULO SOLUTIONS BRASIL LTDA · Lucas Cruvinel Boaretto, sócio administrador | EMPRESA JR ENGENHARIA MECANICA DO TRIANGULO MINEIRO · Arthur Menezes Jordão, Presidente |
+
+INTERVENIENTE: Marcelo Zaiden, Vice-Presidente e responsável pelo projeto
 
 Testemunhas: 1. [nome e CPF] · 2. [nome e CPF]
 

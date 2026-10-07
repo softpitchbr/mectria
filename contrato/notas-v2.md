@@ -1,6 +1,6 @@
 # Notas da minuta v2
 
-Minuta: `minuta-contrato-v2.md`. A v1 está no histórico do git.
+Minuta: `minuta-contrato-v2.md`. PDF para revisão da MecTRIA: `contrato-mectria-minuta-v2.pdf`, gerado com `gerar-pdf.py`; os campos que faltam saem como linhas em branco. A v1 está no histórico do git.
 
 ## Decisões do Lucas (06/10/2026)
 
@@ -54,9 +54,11 @@ Pelo escopo, a estrutura comercial nova só roda depois de três coisas: a apres
 ## O que ainda falta
 
 ### Da MecTRIA
-1. Razão social, CNPJ, endereço e natureza jurídica.
-2. Faturamento total de 2026 e número de meses usados na média (Anexo III).
-3. **Quem assina.** A minuta põe Arthur Jordão (Presidente) e Marcelo Zaiden (Vice-Presidente), porque o contrato é assinado agora, antes da troca de gestão. Confirmar no estatuto se basta o presidente ou se são exigidas duas assinaturas. O Marcelo deve ser o próximo presidente (~90% de chance, ainda não sabatinado). A cláusula 12 garante que o contrato continua valendo com a nova diretoria.
+**Recebido em 07/10:** razão social (EMPRESA JR ENGENHARIA MECANICA DO TRIANGULO MINEIRO), CNPJ 19.501.433/0001-59, sede na Av. Dr. Randolfo Borges Junior, 1250, Univerdecidade, CEP 38064-200, Uberaba/MG. No CNPJ, o administrador é **Arthur Menezes Jordão, Presidente, desde 27/03/2026**. Por isso o Arthur assina como representante, e o Marcelo entra como **interveniente** (responsável pelo projeto e provável próximo presidente). A natureza jurídica foi escrita de forma genérica ("pessoa jurídica de direito privado, empresa júnior nos termos da Lei nº 13.267/2016"). Conferir no cartão do CNPJ.
+
+1. Faturamento total de 2026 e número de meses usados na média (Anexo III).
+2. CPFs do Arthur e do Marcelo, só na versão de assinatura.
+3. **Quem assina (histórico).** A minuta põe Arthur Jordão (Presidente) e Marcelo Zaiden (Vice-Presidente), porque o contrato é assinado agora, antes da troca de gestão. Confirmar no estatuto se basta o presidente ou se são exigidas duas assinaturas. O Marcelo deve ser o próximo presidente (~90% de chance, ainda não sabatinado). A cláusula 12 garante que o contrato continua valendo com a nova diretoria.
 
 ### Da Triângulo
 1. **Registro do contrato social:** confirmar na JUCEMG e no cartão do CNPJ que o nome já é "TRIÂNGULO SOLUTIONS BRASIL LTDA". Se ainda não for, usar o nome que constar no CNPJ na assinatura.

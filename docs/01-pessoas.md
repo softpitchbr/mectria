@@ -5,10 +5,15 @@
 | Pessoa | Papel | O que importa saber |
 |---|---|---|
 | **Marcelo Zaiden** | Vice-presidente. Responsável pela Casa de Dados. Candidato à presidência em 2027 (~90% de chance, ainda não sabatinado). **Responsável pelo projeto no contrato**: marcelo.zaiden@mectria.com | Principal interlocutor e decisor. Engenheiro de cabeça: quer dados, indicadores e ROI. Montou um sistema de filtragem de leads (API da Casa dos Dados + filtro por região e CNAE + score por IA que gera hipótese de dor, decisor e telefone). Está montando uma planilha de priorização de investimentos com score (o que agrega, o que desenvolve, ROI). Objetivo da gestão: reestruturar e subdividir todos os setores. Na presidência, foco em performance, faturamento e caixa. Levantou a objeção "e se não der resultado?" |
-| **Arthur Jordão** | Presidente (até a troca de gestão, no fim de 2026) | Decisor junto com o Marcelo. Assina o contrato com ele (a confirmar no estatuto). Não aparece nas transcrições. É quem decide, com o Marcelo, se quer acompanhamento das primeiras reuniões reais |
+| **Arthur Menezes Jordão** | Presidente desde 27/03/2026, conforme o CNPJ, até a troca de gestão no fim de 2026 | Decisor junto com o Marcelo. Assina o contrato como representante legal. O Marcelo entra como interveniente. Não aparece nas transcrições. É quem decide, com o Marcelo, se quer acompanhamento das primeiras reuniões reais |
 | **Vinícius Miguel** | Comercial / prospecção | Está começando no comercial. Participou da reunião de proposta em que "o cliente só ficou quieto". Foi quem procurou a Triângulo. Vê o visual e a organização da apresentação como gargalo |
 | **João Guilherme Freitas ("Castor")** | Marketing (meio de funil) | Ex-comercial. Fez o treinamento comercial inteiro. Confirma que repertório é o ponto fraco e que o cliente fica quieto mesmo com cases |
 | **João Vítor Monte Lima** | Comercial (ex-trainee) | Sugeriu falar de topo de funil. Citado como "irmão do Vinícius" (qual Vinícius: a confirmar) |
+
+### Dados da empresa
+- Razão social: **EMPRESA JR ENGENHARIA MECANICA DO TRIANGULO MINEIRO** (MecTRIA), CNPJ 19.501.433/0001-59.
+- Sede: Avenida Doutor Randolfo Borges Junior, 1250, Univerdecidade, CEP 38064-200, Uberaba/MG.
+- Administrador no CNPJ: Arthur Menezes Jordão, Presidente, desde 27/03/2026.
 
 ## Triângulo Solutions
 
