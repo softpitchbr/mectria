@@ -3,7 +3,7 @@
 Uso: python3 contrato/gerar-pdf.py contrato/minuta-contrato-vN.md saida.pdf [rótulo]
 
 Tira a nota interna do topo, troca as marcações [PREENCHER] por linhas em branco
-e monta o bloco de assinaturas. Depende de reportlab e das fontes Liberation.
+e monta o bloco de assinaturas (assinatura eletrônica: sem testemunhas nem rubricas). Depende de reportlab e das fontes Liberation.
 """
 import re
 import sys
@@ -127,13 +127,10 @@ def bloco_assinaturas(fecho):
                    colWidths=[col, col])
     linha2 = Table([[assinatura("INTERVENIENTE", "Marcelo Zaiden",
                                 "Vice-Presidente e responsável pelo projeto")]], colWidths=[col])
-    testemunha = lambda n: [Paragraph("_" * 42, E["assin"]), Paragraph("Nome: ______________________________", E["assin"]),
-                            Paragraph(BRANCO_CPF, E["assin"]), Paragraph(f"TESTEMUNHA {n}", E["assin_rot"])]
-    linha3 = Table([[testemunha(1), testemunha(2)]], colWidths=[col, col])
-    for t in (linha1, linha2, linha3):
+    for t in (linha1, linha2):
         t.setStyle(TableStyle([("VALIGN", (0, 0), (-1, -1), "TOP"), ("LEFTPADDING", (0, 0), (-1, -1), 4),
                                ("RIGHTPADDING", (0, 0), (-1, -1), 4)]))
-    return [KeepTogether(fecho + [Spacer(1, 26), linha1, linha2, Spacer(1, 6), linha3])]
+    return [KeepTogether(fecho + [Spacer(1, 26), linha1, linha2])]
 
 
 def montar(md):
@@ -214,7 +211,6 @@ class CanvasNumerado(canvas.Canvas):
         y_base = MARGEM_BASE - 1.0 * cm
         self.line(MARGEM_X, y_base + 11, LARGURA - MARGEM_X, y_base + 11)
         self.drawString(MARGEM_X, y_base, f"Página {self._pageNumber} de {total}")
-        self.drawRightString(LARGURA - MARGEM_X, y_base, "Rubricas:  ________   ________   ________")
 
 
 if __name__ == "__main__":

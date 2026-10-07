@@ -1,6 +1,6 @@
 # Minuta v2 · Contrato de prestação de serviços
 
-> **Uso interno.** Versão de 07/10/2026, com as decisões do Lucas e os dados cadastrais da MecTRIA. Faltam a base da média (Anexo III), o CPF do interveniente e a data, que ficam em branco no PDF para preencher na assinatura. Os representantes das empresas (Lucas e Arthur) assinam sem CPF, por decisão do Lucas. Ver `notas-v2.md`. CPFs nunca entram no repositório. O PDF é gerado por `gerar-pdf.py`.
+> **Uso interno.** Versão de 07/10/2026, com as decisões do Lucas e os dados cadastrais da MecTRIA. Faltam a base da média (Anexo III) e o CPF do interveniente, que ficam em branco no PDF. Assinatura só eletrônica: sem testemunhas, sem rubricas, com a data da última assinatura. Os representantes das empresas (Lucas e Arthur) assinam sem CPF, por decisão do Lucas. Ver `notas-v2.md`. CPFs nunca entram no repositório. O PDF é gerado por `gerar-pdf.py`.
 
 ---
 
@@ -163,23 +163,21 @@ As partes celebram este contrato, que se rege pelas cláusulas a seguir.
 
 13.11. **Poderes.** Os signatários declaram ter poderes para assinar este contrato em nome das partes que representam, na forma dos respectivos atos constitutivos.
 
-13.12. **Assinatura eletrônica e título executivo.** As partes reconhecem a validade da assinatura eletrônica deste contrato, nos termos da Lei nº 14.063/2020 e da Medida Provisória nº 2.200-2/2001. Este contrato constitui título executivo extrajudicial, nos termos do art. 784, inciso III e § 4º, do Código de Processo Civil.
+13.12. **Assinatura eletrônica e título executivo.** As partes reconhecem a validade da assinatura eletrônica deste contrato, nos termos da Lei nº 14.063/2020 e da Medida Provisória nº 2.200-2/2001. Este contrato é assinado eletronicamente e constitui título executivo extrajudicial, nos termos do art. 784, inciso III e § 4º, do Código de Processo Civil, dispensada a assinatura de testemunhas.
 
 ### Cláusula 14 · Foro
 
 14.1. Fica eleito o foro da Comarca de Uberaba, Estado de Minas Gerais, para dirimir quaisquer dúvidas ou controvérsias oriundas deste contrato, com renúncia expressa a qualquer outro, por mais privilegiado que seja.
 
-E, por estarem assim justas e contratadas, as partes assinam o presente instrumento eletronicamente, ou em 2 (duas) vias de igual teor e forma, na presença das 2 (duas) testemunhas abaixo, para que produza os seus jurídicos e legais efeitos.
+E, por estarem assim justas e contratadas, as partes assinam o presente instrumento eletronicamente, para que produza os seus jurídicos e legais efeitos.
 
-Uberaba/MG, [PREENCHER: data].
+Uberaba/MG, na data da última assinatura eletrônica.
 
 | CONTRATADA | CONTRATANTE |
 |---|---|
 | TRIÂNGULO SOLUTIONS BRASIL LTDA · Lucas Cruvinel Boaretto, sócio administrador | EMPRESA JR ENGENHARIA MECANICA DO TRIANGULO MINEIRO · Arthur Menezes Jordão, Presidente |
 
 INTERVENIENTE: Marcelo Zaiden, Vice-Presidente e responsável pelo projeto
-
-Testemunhas: 1. [nome e CPF] · 2. [nome e CPF]
 
 ---
 

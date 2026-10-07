@@ -13,6 +13,7 @@ Minuta: `minuta-contrato-v2.md`. PDF para revisão da MecTRIA: `contrato-mectria
 | D6 | Responsável pela aprovação | **Marcelo Zaiden**, Vice-Presidente, marcelo.zaiden@mectria.com | 5.1, 13.2 |
 | D5 | Publicação do site | **Depois da validação do site (S3)**, sem data fixa. Pode sair antes; o prazo final é o fim da execução (04/12). A copy entra no site já publicado | Anexo I |
 | D8 | E-mail da Triângulo para comunicações formais | triangulosolutionsbrasil@gmail.com | 13.2 |
+| D9 | Forma de assinatura | **Só eletrônica.** Sem via impressa, sem rubricas e sem testemunhas (dispensadas pelo art. 784, § 4º, do CPC). A data é a da última assinatura | 13.12, fecho |
 | D7 | Foro e disposições jurídicas | **Foro da Comarca de Uberaba/MG**, com renúncia a qualquer outro, e cláusulas gerais completas: integralidade, prevalência, tolerância, nulidade parcial, cessão, força maior, sucessores, poderes e título executivo | 13, 14 |
 
 ## Quando começa o "on-going"
@@ -63,7 +64,7 @@ Pelo escopo, a estrutura comercial nova só roda depois de três coisas: a apres
 ### Da Triângulo
 1. **Registro do contrato social:** confirmar na JUCEMG e no cartão do CNPJ que o nome já é "TRIÂNGULO SOLUTIONS BRASIL LTDA". Se ainda não for, usar o nome que constar no CNPJ na assinatura.
 2. **Atividades no CNPJ (falar com o contador):** o objeto social não tem consultoria em gestão (CNAE 7020-4/00) nem treinamento (CNAE 8599-6/04). Ver como emitir a nota fiscal.
-3. CPF do interveniente e das testemunhas, só na versão de assinatura, fora do repositório.
+3. CPF do interveniente, só na versão de assinatura, fora do repositório.
 
 > Antes de assinar, vale uma leitura de advogado ou do contador da Triângulo, principalmente das cláusulas 3, 9 e 11.
 
