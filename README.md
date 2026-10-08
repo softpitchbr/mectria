@@ -22,6 +22,7 @@ Meta: conversão entre proposta e fechamento de ~25% para **40%**. Kick-off em 0
 | [`docs/11-carta-de-servicos.md`](docs/11-carta-de-servicos.md) | Os 12 serviços da MecTRIA transcritos, cruzados com a precificação, e palavras-chave para o SEO |
 | [`docs/12-precificacao-mectria.md`](docs/12-precificacao-mectria.md) | Como a MecTRIA forma preço, briefing, fluxo de 3 dias, histórico e o que isso muda na apresentação |
 | [`docs/13-apresentacao-atual-mectria.md`](docs/13-apresentacao-atual-mectria.md) | Análise da apresentação de proposta atual (Ap Gallu) contra a sequência do Método TRIA |
+| [`docs/14-pedidos-a-mectria.md`](docs/14-pedidos-a-mectria.md) | Checklist do que falta pedir à MecTRIA, por prazo e por frente |
 | [`contrato/`](contrato/) | Minuta do contrato com a MecTRIA, notas das decisões, o PDF para envio e o script que gera o PDF |
 | [`docs/glossario.md`](docs/glossario.md) | Erros da transcrição e termos do projeto |
 | [`docs/reunioes/`](docs/reunioes/) | Resumos e transcrições completas das reuniões |
