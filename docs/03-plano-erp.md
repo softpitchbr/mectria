@@ -107,7 +107,7 @@ Triângulo: Pedro Mega (responsável), Lucas (comercial/treino), Vinicius/Sunga 
 **Post-it 3 · Comercial**
 Mercado sênior: R$ 18.000 (cortesias R$ 8.500)
 Parceria MEJ: R$ 4.500 = 6 × R$ 750, pagas pelo resultado
-1 parcela a cada R$ 1.250 vendidos acima da média (R$ 5.429/mês), líquido, máx. 2/mês
+1 parcela a cada R$ 1.250 vendidos acima da média (R$ 5.000/mês, faturamento de 2025), líquido, máx. 2/mês
 Apuração de dez/2026 a dez/2027
 Contrapartidas: troca de divulgação (collab + case no site), parcerias em projetos, indicações
 

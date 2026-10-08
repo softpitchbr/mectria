@@ -1,6 +1,6 @@
-# Minuta v2 · Contrato de prestação de serviços
+# Minuta v3 · Contrato de prestação de serviços
 
-> **Uso interno.** Versão de 07/10/2026, com as decisões do Lucas e os dados cadastrais da MecTRIA. Faltam a base da média (Anexo III) e o CPF do interveniente, que ficam em branco no PDF. Assinatura só eletrônica: sem testemunhas, sem rubricas, com a data da última assinatura. Os representantes das empresas (Lucas e Arthur) assinam sem CPF, por decisão do Lucas. Ver `notas-v2.md`. CPFs nunca entram no repositório. O PDF é gerado por `gerar-pdf.py`.
+> **Uso interno.** Versão de 08/10/2026. Muda da v2 só a média de referência: R$ 5.000,00 (faturamento de 2025), no lugar de R$ 5.429,00, com o Anexo III preenchido pelos números do Marcelo. Falta só o CPF do interveniente, que fica em branco no PDF. Assinatura só eletrônica: sem testemunhas, sem rubricas, com a data da última assinatura. Os representantes das empresas (Lucas e Arthur) assinam sem CPF, por decisão do Lucas. Ver `notas-v3.md`. CPFs nunca entram no repositório. O PDF é gerado por `gerar-pdf.py`.
 
 ---
 
@@ -46,7 +46,7 @@ As partes celebram este contrato, que se rege pelas cláusulas a seguir.
 
 3.2. **As parcelas só são devidas quando houver resultado**, conforme a regra do **Anexo II**. Em resumo:
 - a) A apuração começa em **dezembro de 2026**, primeiro mês com a nova estrutura comercial em uso, depois da capacitação da semana 8.
-- b) **Resultado** é o total vendido pela CONTRATANTE desde o início da apuração, menos a média mensal de referência (**R$ 5.429,00**) multiplicada pelo número de meses apurados.
+- b) **Resultado** é o total vendido pela CONTRATANTE desde o início da apuração, menos a média mensal de referência (**R$ 5.000,00**) multiplicada pelo número de meses apurados.
 - c) Cada parcela é liberada a cada **R$ 1.250,00 de resultado acumulado**, até 6 parcelas. **Parcela liberada não volta a ficar suspensa.**
 - d) São pagas no máximo **2 (duas) parcelas por mês**. As parcelas liberadas acima desse limite são pagas nos meses seguintes.
 - e) Parcela não liberada até **31/12/2027** deixa de ser devida.
@@ -229,7 +229,7 @@ Acessos ao Wix, ao domínio e às ferramentas do Google; e-mail institucional pa
 
 ### Definições
 - **Valor vendido no mês:** soma do valor total dos contratos e aditivos de prestação de serviço assinados pela CONTRATANTE no mês, pela data de assinatura, independentemente da forma de pagamento, do recebimento ou do canal de origem. Contrato cancelado em até 30 dias da assinatura é descontado no mês do cancelamento.
-- **Média de referência:** **R$ 5.429,00 por mês**, valor fixo, calculado pela CONTRATANTE como o faturamento total de 2026 até a assinatura dividido pelo número de meses (Anexo III).
+- **Média de referência:** **R$ 5.000,00 por mês**, valor fixo, correspondente ao faturamento da CONTRATANTE em 2025 dividido por 12 meses, conforme o Anexo III.
 - **Período de apuração:** de **01/12/2026 a 31/12/2027**.
 - **Resultado acumulado:** total vendido desde o início do período de apuração, menos a média de referência multiplicada pelo número de meses apurados. Meses abaixo da média descontam do resultado. É a mesma conta usada para calcular a média.
 
@@ -244,11 +244,10 @@ Acessos ao Wix, ao domínio e às ferramentas do Google; e-mail institucional pa
 
 | Mês | Vendido | Diferença para a média | Resultado acumulado | Parcelas liberadas | Paga no mês | Total pago |
 |---|---|---|---|---|---|---|
-| 1 | R$ 4.000 | −R$ 1.429 | −R$ 1.429 | 0 | 0 | 0 |
-| 2 | R$ 9.000 | +R$ 3.571 | R$ 2.142 | 1 | 1 | 1 (R$ 750) |
-| 3 | R$ 12.000 | +R$ 6.571 | R$ 8.713 | 6 | 2 (limite) | 3 (R$ 2.250) |
-| 4 | R$ 3.000 | −R$ 2.429 | R$ 6.284 | 6 (não volta) | 2 | 5 (R$ 3.750) |
-| 5 | R$ 6.000 | +R$ 571 | R$ 6.855 | 6 | 1 | **6 (R$ 4.500): quitado** |
+| 1 | R$ 4.000 | −R$ 1.000 | −R$ 1.000 | 0 | 0 | 0 |
+| 2 | R$ 9.000 | +R$ 4.000 | R$ 3.000 | 2 | 2 | 2 (R$ 1.500) |
+| 3 | R$ 10.000 | +R$ 5.000 | R$ 8.000 | 6 | 2 (limite) | 4 (R$ 3.000) |
+| 4 | R$ 2.000 | −R$ 3.000 | R$ 5.000 | 6 (não volta; a conta daria 4) | 2 | **6 (R$ 4.500): quitado** |
 
 ### Relatório mensal (até o dia 5)
 Para cada contrato assinado no mês: cliente, data de assinatura, valor total e serviço. Também os cancelamentos do mês. A CONTRATADA pode pedir cópia dos contratos ou o registro equivalente no portal da Brasil Júnior, e a CONTRATANTE os fornece em até 10 dias.
@@ -257,10 +256,11 @@ Para cada contrato assinado no mês: cliente, data de assinatura, valor total e 
 
 ## Anexo III · Base da média de referência
 
-Informado pela CONTRATANTE: faturamento total de 2026 até a assinatura, dividido pelo número de meses do período.
+Números informados pela CONTRATANTE em 07/10/2026.
 
 | Período | Faturamento total | Meses | Média mensal |
 |---|---|---|---|
-| Janeiro a [PREENCHER: mês] de 2026 | R$ [PREENCHER] | [PREENCHER] | **R$ 5.429,00** |
+| **2025 (base da média de referência)** | aproximadamente R$ 60.000,00 | 12 | **R$ 5.000,00** |
+| 2026, de janeiro a outubro (para registro) | R$ 40.800,00, sendo R$ 38.600,00 registrados no portal da Brasil Júnior e R$ 2.200,00 de projeto sem contrato | 10 | R$ 4.080,00 |
 
-A média é fixa durante todo o contrato e não é recalculada.
+As partes adotam como média de referência o faturamento de 2025, de R$ 5.000,00 por mês, compatível com a faixa de R$ 5.000,00 a R$ 6.000,00 mensais informada pela CONTRATANTE. A média é fixa durante todo o contrato e não é recalculada.

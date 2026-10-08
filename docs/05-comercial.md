@@ -43,7 +43,7 @@ Combinadas numa reunião anterior **que não foi gravada** (o "bench" depois da 
 - Objeção do Marcelo: "E se não trouxer resultado? Aí você não pagou nada." Ele mesmo disse acreditar que vai dar resultado e tratou como "questão contratual".
 - Resposta do Lucas: "Se não der, você não gastou nada."
 
-**Atualização 06/10/2026:** o Marcelo mandou uma proposta concreta: R$ 4.500 em 6 parcelas de R$ 750, cada uma liberada a cada R$ 1.250 vendidos acima da média mensal de 2026 (R$ 5.429), com no máximo 2 parcelas por mês, prazo de liberação até dez/2027 e serviço até jun/2027. **Decidido pelo Lucas no mesmo dia:** resultado líquido com trava, apuração de dez/2026 a dez/2027 (a estrutura entra em uso em 07/12) e acompanhamento até 05/02/2027. A minuta está em `contrato/minuta-contrato-v2.md` e as notas em `contrato/notas-v2.md`.
+**Atualização 06/10/2026:** o Marcelo mandou uma proposta concreta: R$ 4.500 em 6 parcelas de R$ 750, cada uma liberada a cada R$ 1.250 vendidos acima da média mensal de 2026 (R$ 5.429), com no máximo 2 parcelas por mês, prazo de liberação até dez/2027 e serviço até jun/2027. **Decidido pelo Lucas no mesmo dia:** resultado líquido com trava, apuração de dez/2026 a dez/2027 (a estrutura entra em uso em 07/12) e acompanhamento até 05/02/2027. **08/10/2026:** com os números do Marcelo (2025 ≈ R$ 60 mil; 2026 de jan. a out. = R$ 40.800), a média de referência passou para **R$ 5.000/mês** (2025). A minuta vigente é `contrato/minuta-contrato-v3.md` e as notas estão em `contrato/notas-v3.md`.
 
 O contrato (tarefa 3) precisa responder, no mínimo:
 

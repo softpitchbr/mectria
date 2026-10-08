@@ -19,6 +19,7 @@ Atualizar este arquivo sempre que algo for decidido ou resolvido.
 | **Contrato:** resultado líquido com trava; apuração a partir de dez/2026, quando a estrutura entra em uso; acompanhamento até fev/2027 com 1 reunião por mês e ajuste mensal do roteiro (contraproposta aos "até junho" do Marcelo); parcelas das etapas entregues devidas se a MecTRIA desistir ou não usar o processo (T 2, R 1, I 2, A 1) | Lucas, 06/10/2026 |
 | **Publicação do site:** depois da validação do site (S3), sem data fixa; prazo final no fim da execução (04/12). A copy entra no site já publicado | Lucas, 06/10/2026 |
 | **Quem assina pela MecTRIA:** Arthur Menezes Jordão, presidente e administrador no CNPJ desde 27/03/2026, e Marcelo Zaiden como interveniente | Dados do CNPJ enviados pelo Lucas, 07/10/2026 |
+| **Média de referência: R$ 5.000/mês** (faturamento de 2025, ~R$ 60 mil ÷ 12), no lugar de R$ 5.429. A média de 2026 (jan. a out.) é R$ 4.080 (R$ 40.800 ÷ 10), registrada no Anexo III | Lucas, 08/10/2026, com os números do Marcelo (WhatsApp, 07/10) |
 | **Assinatura só eletrônica:** sem via impressa, rubricas ou testemunhas; vale a data da última assinatura | Lucas, 07/10/2026 |
 | **CPF no contrato:** só do interveniente (Marcelo). Lucas e Arthur assinam como representantes das empresas, sem CPF | Lucas, 07/10/2026 |
 | **Responsável da MecTRIA pelas aprovações:** Marcelo Zaiden (VP), marcelo.zaiden@mectria.com | Lucas, 06/10/2026 |
@@ -40,7 +41,7 @@ O PDF de 21/09 não tem treinamento, roleplay, micro pactos, calculadora, roteir
 Detalhes e perguntas do kick-off em `08-site-e-hospedagem.md`.
 
 ### 3. Cláusula de pagamento por resultado (alta)
-**Atualização 06/10/2026:** minuta v2 com as decisões do Lucas (`contrato/minuta-contrato-v2.md`): resultado líquido com trava, apuração de dez/2026 a dez/2027, acompanhamento até 05/02/2027, proteção se a MecTRIA não usar o processo. Faltam dados da MecTRIA, a base da média e a confirmação de quem assina. Ver `contrato/notas-v2.md`.
+**Atualização 06/10/2026:** minuta v2 com as decisões do Lucas (hoje v3, `contrato/minuta-contrato-v3.md`): resultado líquido com trava, apuração de dez/2026 a dez/2027, acompanhamento até 05/02/2027, proteção se a MecTRIA não usar o processo. Faltam dados da MecTRIA, a base da média e a confirmação de quem assina. Ver `contrato/notas-v3.md`.
 
 Métrica, linha de base, janela, fonte de dados, obrigações da MecTRIA, o que acontece se não bater e a troca de gestão. Lista completa em `05-comercial.md`.
 
@@ -90,7 +91,7 @@ São usados no pitch e vão aparecer no case:
 - **Cases:** confirmar quais clientes podem ser citados. Projeto de engenharia costuma ter sigilo.
 
 ### 14. Acompanhamento: fevereiro × junho (média)
-**Decidido em 06/10:** até 05/02/2027. É uma contraproposta aos "até junho" do Marcelo. Argumento para ele: o acompanhamento tem duração fixa e é prestado inteiro, pague a EJ antes ou depois. Se ele insistir em junho, a extensão é orçada à parte. Ver `contrato/notas-v2.md`.
+**Decidido em 06/10:** até 05/02/2027. É uma contraproposta aos "até junho" do Marcelo. Argumento para ele: o acompanhamento tem duração fixa e é prestado inteiro, pague a EJ antes ou depois. Se ele insistir em junho, a extensão é orçada à parte. Ver `contrato/notas-v3.md`.
 
 ### 15. Registro e atividades da Triângulo (média)
 O contrato social de transformação em LTDA foi assinado em 05/10/2026. Confirmar o registro na JUCEMG antes de assinar com a MecTRIA. O objeto social não tem consultoria em gestão (CNAE 7020-4/00) nem treinamento (CNAE 8599-6/04). Ver com o contador como emitir a nota fiscal.

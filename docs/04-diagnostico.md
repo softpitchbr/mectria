@@ -16,6 +16,8 @@ O que se sabe da MecTRIA pelas reuniões 1 e 2. Os minutos entre parênteses apo
 | Perda de ligação até o decisor | 80% a 88% | R1 13:17 |
 | Origem dos projetos fechados | **Todos** vieram da prospecção passiva (inbound) | R1 13:17 |
 | Meta do projeto | 40% de conversão proposta → fechamento | R2 26:48 |
+| Faturamento 2025 | ~R$ 60.000 (≈ R$ 5.000/mês) | Marcelo, WhatsApp 07/10/2026 |
+| Faturamento 2026 (jan. a out.) | R$ 40.800: R$ 38.600 no portal da Brasil Júnior + R$ 2.200 da Uniube sem contrato (≈ R$ 4.080/mês) | Marcelo, WhatsApp 07/10/2026 |
 
 **Atenção:** a meta parte de 25% (histórico), mas o número do momento é ~0%. A linha de base usada para medir "resultado" precisa estar no contrato (ver `07-decisoes-e-pendencias.md`).
 

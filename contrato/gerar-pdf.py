@@ -34,7 +34,7 @@ DESTAQUE = colors.HexColor("#8A2A30")
 
 LARGURA, ALTURA = A4
 MARGEM_X, MARGEM_TOPO, MARGEM_BASE = 2.3 * cm, 2.4 * cm, 2.2 * cm
-UTIL = LARGURA - 2 * MARGEM_X
+UTIL = LARGURA - 2 * MARGEM_X - 12  # o frame do reportlab tem 6 pt de respiro de cada lado
 
 E = {
     "titulo": ParagraphStyle("titulo", fontName="Serif-B", fontSize=13.5, leading=18, alignment=TA_CENTER,

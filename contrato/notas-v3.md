@@ -1,6 +1,6 @@
-# Notas da minuta v2
+# Notas da minuta v3
 
-Minuta: `minuta-contrato-v2.md`. PDF para revisão da MecTRIA: `contrato-mectria-minuta-v2.pdf`, gerado com `gerar-pdf.py`; os campos que faltam saem como linhas em branco. A v1 está no histórico do git.
+Minuta: `minuta-contrato-v3.md`. PDF: `contrato-mectria-minuta-v3.pdf`, gerado com `gerar-pdf.py`; o CPF do interveniente sai em branco. A v3 muda da v2 só a média de referência (R$ 5.000,00). As versões anteriores estão no histórico do git.
 
 ## Decisões do Lucas (06/10/2026)
 
@@ -14,6 +14,7 @@ Minuta: `minuta-contrato-v2.md`. PDF para revisão da MecTRIA: `contrato-mectria
 | D5 | Publicação do site | **Depois da validação do site (S3)**, sem data fixa. Pode sair antes; o prazo final é o fim da execução (04/12). A copy entra no site já publicado | Anexo I |
 | D8 | E-mail da Triângulo para comunicações formais | triangulosolutionsbrasil@gmail.com | 13.2 |
 | D9 | Forma de assinatura | **Só eletrônica.** Sem via impressa, sem rubricas e sem testemunhas (dispensadas pelo art. 784, § 4º, do CPC). A data é a da última assinatura | 13.12, fecho |
+| D10 | Média de referência (08/10) | **R$ 5.000,00 por mês**, faturamento de 2025 (~R$ 60 mil ÷ 12). Substitui os R$ 5.429,00 da proposta do Marcelo | 3.2 b, Anexos II e III |
 | D7 | Foro e disposições jurídicas | **Foro da Comarca de Uberaba/MG**, com renúncia a qualquer outro, e cláusulas gerais completas: integralidade, prevalência, tolerância, nulidade parcial, cessão, força maior, sucessores, poderes e título executivo | 13, 14 |
 
 ## Quando começa o "on-going"
@@ -37,12 +38,29 @@ Pelo escopo, a estrutura comercial nova só roda depois de três coisas: a apres
 
 **Por que não contar desde outubro:** no modelo líquido, mês abaixo da média desconta. Em outubro e novembro a estrutura ainda não existe e a conversão estava perto de zero, então esses meses provavelmente começariam o acumulado no negativo. Contar desde outubro atrasaria os pagamentos da Triângulo.
 
-## Média de R$ 5.429
+## Média de referência: R$ 5.000
 
-- A MecTRIA somou o faturamento de 2026 até agora e dividiu pelo número de meses. Eles não vendem todo mês.
-- Isso **combina com o modelo líquido**: a média já inclui os meses fracos, e o resultado usa a mesma conta (total vendido − média × meses). É um bom argumento para apresentar ao Marcelo.
-- **Falta:** o faturamento total e quantos meses entraram (Anexo III). Se foram 9 meses (jan–set), o total é R$ 48.861; se foram 10, R$ 54.290.
-- A média foi calculada pelo **faturamento**, e a apuração usa o **vendido** (contratos assinados). Num período longo os dois ficam parecidos. O contrato fixa os R$ 5.429 como número e não recalcula, para não reabrir a discussão.
+**Números do Marcelo (WhatsApp, 07/10/2026):**
+- 2026, de janeiro a outubro: R$ 38.600 registrados no portal da Brasil Júnior, mais R$ 2.200 de um projeto da Uniube sem contrato, totalizando R$ 40.800. Média de **R$ 4.080/mês** (ou R$ 3.860 só com o portal).
+- 2025: cerca de R$ 60.000. Média de **R$ 5.000/mês**.
+- Nas palavras dele: "nós temos esse padrão de média de faturamento na faixa de 5–6k".
+
+**Por que mudou:** os R$ 5.429 da proposta original não batem com nenhum desses números. Devem ter saído de uns R$ 38 mil ÷ 7 meses. A v2 dizia que a média era "o faturamento de 2026 ÷ meses", e com os números reais essa conta dá R$ 4.080, então o contrato se contradizia.
+
+**Opções avaliadas em 08/10:**
+- R$ 4.080, a média de 2026.
+- **R$ 5.000, a média de 2025.** Foi a escolhida pelo Lucas.
+- Manter R$ 5.429 como "valor acordado".
+
+**Por que R$ 5.000 funciona:** é o meio-termo e usa o número que o próprio Marcelo citou ("média de 5k"), então ele não tem por que contestar. Fica abaixo da proposta dele (R$ 429/mês a menos de barreira) e acima de 2026, o que deixa claro que a Triângulo não está cobrando pela simples recuperação de um ano fraco.
+
+**O que isso significa:**
+- Se a MecTRIA voltar ao ritmo de 2025 (~R$ 5 mil/mês), o resultado fica zero.
+- Com a tese de lucro (+R$ 4.860/mês sobre o ritmo normal), os R$ 7.500 saem em menos de 2 meses de efeito.
+
+**Coerência com o líquido:** a média de 2025 também é total ÷ meses, incluindo meses fracos, a mesma conta do resultado acumulado.
+
+A média vem do **faturamento** e a apuração usa o **vendido** (contratos assinados). Num período longo os dois ficam parecidos. O contrato fixa os R$ 5.000 e não recalcula. O Anexo III registra os números de 2025 e de 2026 informados pela MecTRIA.
 
 ## Como apresentar ao Marcelo o que mudou em relação à proposta dele
 
@@ -57,7 +75,9 @@ Pelo escopo, a estrutura comercial nova só roda depois de três coisas: a apres
 ### Da MecTRIA
 **Recebido em 07/10:** razão social (EMPRESA JR ENGENHARIA MECANICA DO TRIANGULO MINEIRO), CNPJ 19.501.433/0001-59, sede na Av. Dr. Randolfo Borges Junior, 1250, Univerdecidade, CEP 38064-200, Uberaba/MG. No CNPJ, o administrador é **Arthur Menezes Jordão, Presidente, desde 27/03/2026**. Por isso o Arthur assina como representante, e o Marcelo entra como **interveniente** (responsável pelo projeto e provável próximo presidente). A natureza jurídica foi escrita de forma genérica ("pessoa jurídica de direito privado, empresa júnior nos termos da Lei nº 13.267/2016"). Conferir no cartão do CNPJ.
 
-1. Faturamento total de 2026 e número de meses usados na média (Anexo III).
+**Recebido em 07/10 (WhatsApp):** faturamento de 2025 e de 2026, usados no Anexo III. O Marcelo respondeu "fechou" depois da troca de áudios.
+
+1. ~~Faturamento e meses da média.~~ Resolvido: R$ 5.000 (2025).
 2. CPF do Marcelo (interveniente), só na versão de assinatura. Lucas e Arthur assinam pelas empresas, sem CPF (decisão do Lucas, 07/10).
 3. **Quem assina (histórico).** A minuta põe Arthur Jordão (Presidente) e Marcelo Zaiden (Vice-Presidente), porque o contrato é assinado agora, antes da troca de gestão. Confirmar no estatuto se basta o presidente ou se são exigidas duas assinaturas. O Marcelo deve ser o próximo presidente (~90% de chance, ainda não sabatinado). A cláusula 12 garante que o contrato continua valendo com a nova diretoria.
 
@@ -86,4 +106,4 @@ Imagem em `referencias/clausula-performance-marcelo.png`. Transcrição:
 
 **Contas conferidas:** 6 × R$ 750 = R$ 4.500. 6 × R$ 1.250 = R$ 7.500. R$ 1.000 × 0,9 × 0,9 = R$ 810. R$ 7.500 × 0,81 = R$ 6.075, ou seja, 35% acima de R$ 4.500. A Triângulo recebe 60% de cada real de resultado até quitar.
 
-**Por que o líquido foi escolhido:** no bruto, só os meses acima da média contam. Uma MecTRIA alternando meses de R$ 3.000 e R$ 7.858 (média de R$ 5.429, sem melhora) acumularia R$ 14.574 brutos em 12 meses e liberaria as 6 parcelas. No líquido, o mesmo cenário libera zero.
+**Por que o líquido foi escolhido:** no bruto, só os meses acima da média contam. Com a média de R$ 5.000, uma MecTRIA alternando meses de R$ 3.000 e R$ 7.000 (média de R$ 5.000, sem melhora) acumularia R$ 12.000 brutos em 12 meses e liberaria as 6 parcelas. No líquido, o mesmo cenário libera zero.
