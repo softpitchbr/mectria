@@ -14,6 +14,8 @@
 - Razão social: **EMPRESA JR ENGENHARIA MECANICA DO TRIANGULO MINEIRO** (MecTRIA), CNPJ 19.501.433/0001-59.
 - Sede: Avenida Doutor Randolfo Borges Junior, 1250, Univerdecidade, CEP 38064-200, Uberaba/MG.
 - Administrador no CNPJ: Arthur Menezes Jordão, Presidente, desde 27/03/2026.
+- Site: www.mectria.com · E-mail comercial: comercial@mectria.com.
+- Assinatura oficial: "Empresa Júnior de Engenharia Mecânica da UFTM" (manual de identidade, out/2026).
 
 ## Triângulo Solutions
 

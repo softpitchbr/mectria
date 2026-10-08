@@ -46,7 +46,9 @@ O que se sabe da MecTRIA pelas reuniões 1 e 2. Os minutos entre parênteses apo
 - **Comercial** reestruturado no início do ano no modelo da Projep (Receita Previsível): Casa de Dados, Hunters (BDR) e Closers. O plano original foi criado pelo Lucas na Projep. (R1 03:11, R2 03:53)
 - **Casa de Dados** (com o Marcelo): filtragem de leads pela API da Casa dos Dados, por região e CNAE, com score por IA que gera hipótese de dor, decisor e telefone. Terminado na semana da R1, o comercial ainda ia testar. A ideia é ligar direto para o decisor (top-down) e evitar o gatekeeper. (R1 14:12–15:24)
 - **Marketing** reestruturado pelo Marcelo: antes cada pessoa cuidava de uma rede. Agora tem estruturador, editor de vídeo, responsáveis por conteúdo e um diretor de indicadores. Vai ter gestor de tráfego pago no futuro. João Guilherme cuida do meio de funil. (R1 49:25)
-- Recuperaram um benefício do Google ("AdSense", provavelmente **Google Ad Grants**, confirmar) que a gestão passada tinha perdido. (R1 00:00)
+- Recuperaram o **Google Ad Grants** (na R1 o Marcelo disse "AdSense"; o manual de identidade confirma o Ad Grants) que a gestão passada tinha perdido. (R1 00:00)
+- Fundada em **2013**. Os projetos são orientados por professores da UFTM. (Manual de identidade, out/2026)
+- Precificação, briefing e histórico de projetos: ver `12-precificacao-mectria.md`. O histórico só registra projetos ganhos e está incompleto.
 - **Site**: Wix Premium, pago pela MecTRIA. Bonito (abas, provas sociais, serviços, formulário), mas o sitemap só tem `blog-post`, `blog-category` e `page`, sem palavras-chave locais. Chatbot com bug. (R1 00:32, 05:18–07:10)
 - **Documentos internos** (POP etc.) estão organizados e funcionam. O problema não está aí. (R1 01:06)
 - **Treinamento comercial** anterior: caro, quase 1 mês, de ponta a ponta (do cold call ao follow-up). Ajudou a organizar e visualizar o funil, mas não gerou vendas por prospecção ativa. Deixou a sensação de "testamos e não funciona". (R1 19:06–21:57)

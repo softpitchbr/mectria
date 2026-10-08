@@ -12,7 +12,8 @@
 | "o que a tela retorna? histórico, instrumento e acompanhamento" (R2 15:47) | Tela, Retórica, Instrumento e Acompanhamento |
 | Kinai, Kine | **CNAE** (código de atividade econômica, usado para filtrar leads) |
 | Casa de Dados / Casa dos Dados | Função do comercial que gera as listas de leads. Também é o nome da plataforma de dados de CNPJ cuja API o Marcelo assinou |
-| Google AdSense | Provavelmente **Google Ad Grants** (anúncios gratuitos para organizações sem fins lucrativos). Confirmar |
+| Google AdSense | **Google Ad Grants** (anúncios gratuitos para organizações sem fins lucrativos). Confirmado pelo manual de identidade da MecTRIA |
+| DP_, DT_, OT_, PT_, SIM_, NR_ | Prefixos dos projetos no Histórico da MecTRIA: Desenvolvimento de Produto, Desenho Técnico, Otimização, Prototipagem, Simulação, NR-12 |
 | Downwix, prêmio do Wix | **Wix Premium** |
 | Elon Ross | **Aaron Ross**, autor de *Receita Previsível* |
 | Digital Boom / Digital Bloom | Empresa de marketing de Curitiba (600+ clientes) onde Lucas e Vinicius Nicoletti trabalham. Grafia a confirmar |

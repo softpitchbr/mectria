@@ -15,6 +15,7 @@ Atualizar este arquivo sempre que algo for decidido ou resolvido.
 | Pós-venda de 2 meses. Depois a MecTRIA assume tudo | R2 19:18 |
 | Pagamento atrelado a resultado, a ser detalhado no contrato | Reunião não gravada, confirmado na R2 27:48 |
 | Começar pelo fechamento. Topo de funil, prospecção e pós-venda ficam para projetos futuros | R1 46:39, R2 30:42 |
+| **Contrato pausado até o CNPJ da Triângulo (LTDA) ficar ativo.** As demais entregas seguem. A versão para assinatura (v3) está pronta | Lucas, 08/10/2026 |
 | **Kick-off na sexta, 09/10/2026.** Execução de 12/10 a 04/12, acompanhamento de 07/12/2026 a 05/02/2027 | Lucas, 06/10/2026 |
 | **Contrato:** resultado líquido com trava; apuração a partir de dez/2026, quando a estrutura entra em uso; acompanhamento até fev/2027 com 1 reunião por mês e ajuste mensal do roteiro (contraproposta aos "até junho" do Marcelo); parcelas das etapas entregues devidas se a MecTRIA desistir ou não usar o processo (T 2, R 1, I 2, A 1) | Lucas, 06/10/2026 |
 | **Publicação do site:** depois da validação do site (S3), sem data fixa; prazo final no fim da execução (04/12). A copy entra no site já publicado | Lucas, 06/10/2026 |
@@ -95,4 +96,15 @@ São usados no pitch e vão aparecer no case:
 
 ### 15. Registro e atividades da Triângulo (média)
 O contrato social de transformação em LTDA foi assinado em 05/10/2026. Confirmar o registro na JUCEMG antes de assinar com a MecTRIA. O objeto social não tem consultoria em gestão (CNAE 7020-4/00) nem treinamento (CNAE 8599-6/04). Ver com o contador como emitir a nota fiscal.
+
+### 16. Materiais da MecTRIA recebidos em 08/10 (média)
+Manual de identidade visual, Carta de Serviços e planilhas de precificação (2026 e v4). Resumos em `10-identidade-visual-mectria.md`, `11-carta-de-servicos.md` e `12-precificacao-mectria.md`. Decisões que eles abrem:
+- **Lista oficial de serviços** para o site e a apresentação: a carta tem 11 ativos, a precificação v4 tem 7 abas e o protótipo fala em "sete frentes". Definir no kick-off.
+- **Logo vetorial:** só temos o PNG extraído do manual. Pedir SVG, PDF ou AI.
+- **Descritor do logo** ("Consultoria em Engenharia Mecânica") é diferente da assinatura oficial ("Empresa Júnior de Engenharia Mecânica da UFTM").
+- **Fonte do corpo no site:** o manual usa Calibri, que não é fonte web.
+- **Incentivo de fechamento:** a planilha antiga dava desconto para quem fechava em até 5 dias úteis; a v4 tirou. Decidir com o Marcelo se volta como gatilho do micro pacto de fechamento, respeitando o piso (desconto máximo de ~13%).
+- **Planilha de taxa de fechamento (tarefa 34):** ampliar o Histórico deles em vez de criar outra planilha.
+- **Status da planilha v4:** já está em uso? Quem montou?
+- **Apresentação atual (Ap Gallu):** analisada só pelo texto (`13-apresentacao-atual-mectria.md`). Falta o PDF para ver o visual, saber se é o modelo padrão e receber mais 2 ou 3 propostas (uma ganha e uma perdida).
 
