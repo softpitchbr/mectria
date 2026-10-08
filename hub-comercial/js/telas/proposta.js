@@ -1,20 +1,49 @@
-/* Playbook da apresentação de proposta: roteiro na sequência fixa, checklist de micro pactos,
-   o que foi coletado na diagnóstica ao lado e o guia rápido de objeções. No fim, registra o
-   resultado e manda a proposta para o follow-up. */
+/* Playbook da apresentação de proposta em modo reunião: um passo por vez, na sequência fixa,
+   com o micro pacto do passo em destaque. O coletado na diag e as objeções abrem no painel. */
 (function (H) {
+  var BASE = "#/playbooks/proposta/";
+  var CURTOS = {
+    abertura: "Abertura",
+    proposito: "Propósito",
+    numeros: "Números",
+    time: "Time",
+    "ceu-inferno": "Céu e inferno",
+    metodo: "Método",
+    "pacto-duvida": "Dúvidas",
+    "pacto-cliente": "Sem o preço",
+    "valor-preco": "Valor × preço",
+    provas: "Provas",
+    investimento: "Investimento",
+    fechamento: "Fechamento",
+  };
+
   function garantirProposta(lead) {
     if (!lead.proposta) {
-      lead.proposta = {
-        servico: (lead.servicos || [])[0] || "",
-        pactos: {},
-        objecoes: {},
-        antes: {},
-        usouNovaApresentacao: true,
-      };
+      lead.proposta = { servico: (lead.servicos || [])[0] || "", pactos: {}, objecoes: {}, antes: {}, usouNovaApresentacao: true };
     }
     lead.proposta.pactos = lead.proposta.pactos || {};
     lead.proposta.objecoes = lead.proposta.objecoes || {};
     return lead.proposta;
+  }
+
+  function novaSemDiag() {
+    H.gaveta("Proposta sem diagnóstica", function (corpo) {
+      corpo.innerHTML =
+        '<form style="display:grid;gap:14px">' +
+        H.rotulado("Empresa", '<input name="empresa" required>') +
+        H.rotulado("Contato", '<input name="contato">') +
+        H.rotulado("Serviço", "<select name=\"servico\">" + H.servicosAtivos().map(function (s) {
+          return '<option value="' + s.id + '">' + H.esc(s.nome) + "</option>";
+        }).join("") + "</select>") +
+        '<button type="submit">Começar</button></form>';
+      corpo.querySelector("form").addEventListener("submit", function (ev) {
+        ev.preventDefault();
+        var f = ev.target;
+        var lead = H.novoLead({ empresa: f.empresa.value.trim(), contato: f.contato.value.trim(), servicos: [f.servico.value] });
+        H.fecharGaveta();
+        H.ir(BASE + lead.id + "/0");
+      });
+    });
   }
 
   /* ---------- lista ---------- */
@@ -24,197 +53,174 @@
       return ((b.diag && b.diag.dataProposta) || "").localeCompare((a.diag && a.diag.dataProposta) || "");
     });
     el.innerHTML =
-      H.subnavPlaybooks("proposta") +
-      "<h1>Apresentação de proposta</h1>" +
-      '<p class="sub">Sempre a mesma sequência, com os mesmos micro pactos, para a decisão sair na reunião ou no mesmo dia. ' +
-      "Abra o lead para ver o roteiro com as dores dele, o checklist de pactos e o guia de objeções.</p>" +
-      '<div class="grade-2" style="margin-bottom:28px">' +
-      '<div class="painel-nevoa"><h2>A sequência</h2><ol class="pequeno" style="margin:0;padding-left:20px">' +
-      H.PROPOSTA.passos.map(function (p) {
-        return "<li>" + H.esc(p.titulo) + (p.pacto ? ' <span class="selo">pacto</span>' : "") + "</li>";
-      }).join("") +
-      "</ol></div>" +
-      '<div class="cartao"><h2>Regras de condição</h2><ul class="pequeno">' +
-      H.PROPOSTA.regrasCondicao.map(function (r) { return "<li>" + H.esc(r) + "</li>"; }).join("") +
-      "</ul>" + H.seloValidar("item 27") + "</div></div>" +
-      "<h2>Leads</h2>" +
+      '<div class="estreita"><a class="voltar" href="#/playbooks">' + H.icone("voltar") + "Playbooks</a>" +
+      '<div class="cabeca" style="margin-top:8px"><h1>Apresentação de proposta</h1>' +
+      '<button type="button" class="botao-sec" id="nova">' + H.icone("mais") + "Sem diagnóstica</button></div>" +
       (leads.length
-        ? '<div class="rolagem-x"><table class="tabela"><thead><tr><th>Empresa</th><th>Serviço</th><th>Apresentação</th><th>Situação</th></tr></thead><tbody>' +
-          leads.map(function (l) {
-            var sid = (l.proposta && l.proposta.servico) || (l.servicos || [])[0];
-            var s = sid && H.servico(sid);
+        ? '<div class="linhas">' + leads.map(function (l) {
             var quando = (l.proposta && l.proposta.data) || (l.diag && l.diag.dataProposta);
-            return '<tr class="clicavel" data-abrir="' + l.id + '"><td><a href="#/playbooks/proposta/' + l.id + '">' + H.esc(l.empresa || "Sem nome") +
-              "</a></td><td>" + H.esc(s ? s.nome : "") + "</td><td>" + H.data(quando) + "</td><td>" + H.seloStatus(l) + "</td></tr>";
-          }).join("") +
-          "</tbody></table></div>"
-        : '<p class="vazio">Nenhum lead ainda. A proposta começa na diagnóstica.</p>');
-
-    el.addEventListener("click", function (ev) {
-      var tr = ev.target.closest("[data-abrir]");
-      if (tr && !ev.target.closest("a")) H.ir("#/playbooks/proposta/" + tr.getAttribute("data-abrir"));
-    });
+            var meta = [H.siglas(l), quando ? H.data(quando) : ""].filter(Boolean).join(" · ");
+            return '<a class="linha" href="' + BASE + l.id + '/0"><div class="linha-texto"><strong>' + H.esc(l.empresa || "Sem nome") +
+              "</strong><small>" + H.esc(meta) + "</small></div>" + H.seloStatus(l) + H.icone("avancar") + "</a>";
+          }).join("") + "</div>"
+        : '<p class="vazio">A proposta começa na diagnóstica.</p>') +
+      "</div>";
+    el.querySelector("#nova").addEventListener("click", novaSemDiag);
   }
 
-  /* ---------- roteiro ---------- */
+  /* ---------- passos ---------- */
 
-  function extrasDoPasso(passo, s, lead) {
+  function passos(lead, atual) {
+    var P = H.PROPOSTA;
+    var prop = lead.proposta;
+    var antes = prop.antes || {};
+    var lista = [{ id: "antes", titulo: "Antes", feito: P.antes.every(function (x, i) { return antes[i]; }) }];
+    P.passos.forEach(function (p, i) {
+      lista.push({ id: p.id, titulo: CURTOS[p.id] || p.titulo, passo: p, feito: p.pacto ? !!prop.pactos[p.pacto] : i + 1 < atual });
+    });
+    lista.push({ id: "resultado", titulo: "Resultado", feito: !!prop.resultado });
+    return lista;
+  }
+
+  function extras(passo, s) {
     if (!s) return "";
-    var r = (lead.diag && lead.diag.respostas) || {};
+    function ul(itens) { return '<ul class="lista-simples">' + itens.map(function (x) { return "<li>" + H.esc(x) + "</li>"; }).join("") + "</ul>"; }
     if (passo.id === "ceu-inferno") {
-      return '<div class="entrega-foco"><div><h4>Hoje (inferno)</h4><ul>' +
-        (r["c-dor"] ? "<li>" + H.esc(r["c-dor"]) + "</li>" : "") +
-        (r["ci-negativa"] ? "<li>" + H.esc(r["ci-negativa"]) + "</li>" : "") +
-        s.ceuInferno.antes.map(function (x) { return '<li class="muted">' + H.esc(x) + "</li>"; }).join("") +
-        "</ul></div><div><h4>Com o projeto (céu)</h4><ul>" +
-        (r["g-resultado"] ? "<li>" + H.esc(r["g-resultado"]) + "</li>" : "") +
-        (r["ci-positiva"] ? "<li>" + H.esc(r["ci-positiva"]) + "</li>" : "") +
-        s.ceuInferno.depois.map(function (x) { return '<li class="muted">' + H.esc(x) + "</li>"; }).join("") +
-        '</ul></div></div><p class="dica">Em preto, o que o cliente disse. Em cinza, o padrão do serviço, para completar.</p>';
+      return '<details class="mais"><summary>Sugestões do serviço</summary><div class="duas-colunas">' +
+        '<div><p class="rotulo-pequeno">Hoje</p>' + ul(s.ceuInferno.antes) + "</div>" +
+        '<div><p class="rotulo-pequeno">Com o projeto</p>' + ul(s.ceuInferno.depois) + "</div></div></details>";
     }
-    if (passo.id === "metodo") {
-      return '<ol class="pequeno">' + s.metodo.map(function (m) { return "<li>" + H.esc(m) + "</li>"; }).join("") + "</ol>";
-    }
-    if (passo.id === "investimento") {
-      return '<details class="pequeno"><summary>Regras de condição</summary><ul>' +
-        H.PROPOSTA.regrasCondicao.map(function (x) { return "<li>" + H.esc(x) + "</li>"; }).join("") +
-        "</ul></details>";
-    }
+    if (passo.id === "metodo") return '<ol class="lista-simples">' + s.metodo.map(function (m) { return "<li>" + H.esc(m) + "</li>"; }).join("") + "</ol>";
+    if (passo.id === "investimento") return '<details class="mais"><summary>Regras de condição</summary>' + ul(H.PROPOSTA.regrasCondicao) + "</details>";
     return "";
   }
 
-  function editor(el, lead) {
+  function corpoPasso(lead, item, s, vars) {
+    var P = H.PROPOSTA;
+    var prop = lead.proposta;
+    if (item.id === "antes") {
+      return '<div class="etapa-titulo"><h2>Antes da reunião</h2></div><p class="etapa-intro">Confira antes de entrar.</p>' +
+        P.antes.map(function (t, i) {
+          return '<label class="check">' + H.campo(lead, "proposta.antes." + i, "checkbox") + "<span>" + H.esc(t) + "</span></label>";
+        }).join("");
+    }
+    if (item.id === "resultado") {
+      return '<div class="etapa-titulo"><h2>Como terminou?</h2></div><p class="etapa-intro">Registre para a proposta entrar no follow-up.</p>' +
+        '<div class="opcoes" style="margin-bottom:20px">' +
+        P.resultados.map(function (r) {
+          return '<label><input type="radio" name="resultado" value="' + r.id + '" data-bind="proposta.resultado"' +
+            (prop.resultado === r.id ? " checked" : "") + ">" + H.esc(r.rotulo) + "</label>";
+        }).join("") + "</div>" +
+        '<div class="campos">' +
+        H.rotulado("Valor da proposta (R$)", H.campo(lead, "proposta.valor", "text", ' inputmode="decimal" placeholder="Ex.: 4.500,00"')) +
+        H.rotulado("Data da apresentação", H.campo(lead, "proposta.data", "date")) +
+        H.rotulado("Decisão combinada para", H.campo(lead, "proposta.dataDecisao", "date")) +
+        H.rotulado("Se perdeu, por quê?", H.select(lead, "proposta.motivoPerda", H.FUP.motivosPerda)) +
+        "</div>" +
+        '<label class="check" style="margin-top:8px">' + H.campo(lead, "proposta.usouNovaApresentacao", "checkbox") + "<span>Usei a nova apresentação e o roteiro</span></label>" +
+        '<details class="mais"><summary>Notas</summary>' + H.campo(lead, "proposta.notas", "textarea", ' rows="3" aria-label="Notas"') + "</details>";
+    }
+    var p = item.passo;
+    var pacto = p.pacto && P.pactos.find(function (x) { return x.id === p.pacto; });
+    return '<div data-com-dica><div class="etapa-titulo"><h2 style="flex:1">' + H.esc(p.titulo) + "</h2>" + (p.dica ? H.botaoInfo() : "") + "</div>" +
+      '<p class="etapa-intro">' + H.esc(p.tempo) + " · " + H.esc(p.objetivo) +
+      (p.validar ? ' <span class="selo selo-validar" title="Depende da MecTRIA">validar</span>' : "") + "</p>" +
+      H.textoDica(p.dica) + "</div>" +
+      '<div class="fala">' + H.preencherHTML(p.fala, vars) + "</div>" +
+      extras(p, s) +
+      (pacto ? H.botaoPacto(lead, "proposta.pactos." + pacto.id, pacto.texto) : "");
+  }
+
+  function editor(el, lead, passoParam) {
     var P = H.PROPOSTA;
     var prop = garantirProposta(lead);
-    var opcoesServico = H.opcoesServicos();
+    var atual = parseInt(passoParam, 10) || 0;
+    var lista = passos(lead, atual);
+    atual = Math.max(0, Math.min(lista.length - 1, atual));
+    var item = lista[atual];
     var s = prop.servico && H.servico(prop.servico);
     var vars = H.variaveis(lead, prop.servico);
-    var linkApresentacao = "apresentacoes/proposta.html?servico=" + encodeURIComponent(prop.servico || "") + "&lead=" + encodeURIComponent(lead.id);
+    var hashBase = BASE + lead.id + "/";
+    var apresentacao = prop.servico && H.apresentacaoDoServico(prop.servico);
+    var feitos = P.pactos.filter(function (x) { return prop.pactos[x.id]; }).length;
 
     el.innerHTML =
-      H.subnavPlaybooks("proposta") +
-      '<div class="cabecalho-tela"><div><a class="pequeno" href="#/playbooks/proposta">← Todas as propostas</a>' +
-      "<h1>" + H.esc(lead.empresa || "Lead sem nome") + "</h1>" +
-      '<p class="sub">Apresentação de proposta · ' + H.esc(P.duracao) + " · " + H.seloStatus(lead) +
-      (lead.diag && lead.diag.dataProposta ? " · marcada para " + H.data(lead.diag.dataProposta) + (lead.diag.horaProposta ? " às " + H.esc(lead.diag.horaProposta) : "") : "") +
-      "</p></div>" +
-      '<div class="acoes"><label class="campo" style="min-width:240px"><span>Serviço apresentado</span>' + H.select(lead, "proposta.servico", opcoesServico) + "</label>" +
-      '<a class="botao" target="_blank" rel="noopener" href="' + linkApresentacao + '"' + (prop.servico ? "" : ' aria-disabled="true"') + ">Abrir apresentação</a></div></div>" +
-
-      '<div class="tres-colunas" style="grid-template-columns:280px minmax(0,1fr) 320px">' +
-      '<aside class="lateral coluna-fixa"><h3>Coletado na diagnóstica</h3>' +
-      (lead.diag && lead.diag.respostas && Object.keys(lead.diag.respostas).length
-        ? H.resumoDiag(lead, prop.servico)
-        : '<p class="muted pequeno">Sem diagnóstica registrada no hub.</p>') +
-      '<p><a class="pequeno" href="#/playbooks/diagnostica/' + lead.id + '">Abrir a diagnóstica →</a></p></aside>' +
-
-      "<div>" +
-      '<div class="cartao" style="position:sticky;top:76px;z-index:5;padding:12px 16px;margin-bottom:16px">' +
-      '<div class="acoes" style="justify-content:space-between"><span>Micro pactos: <span class="contador-pactos" id="contador-pactos"></span></span>' +
-      '<span class="pequeno muted">Marque cada pacto na hora em que o cliente concordar.</span></div></div>' +
-
-      '<div class="cartao"><h2>Antes da reunião</h2>' +
-      P.antes.map(function (t, i) {
-        return '<label class="check">' + H.campo(lead, "proposta.antes." + i, "checkbox") + "<span>" + H.esc(t) + "</span></label>";
-      }).join("") + "</div>" +
-
-      '<div class="cartao"><h2>Roteiro</h2>' +
-      (s ? "" : '<p class="vazio">Escolha o serviço apresentado (no alto) para o roteiro trazer o método e o escopo dele.</p>') +
-      P.passos.map(function (p, i) {
-        var feito = p.pacto && prop.pactos[p.pacto];
-        return '<div class="passo' + (feito ? " pacto-feito" : "") + '" data-passo="' + p.id + '">' +
-          '<span class="passo-num">' + (i + 1) + "</span><div>" +
-          "<h3 style=\"margin:4px 0 2px\">" + H.esc(p.titulo) + (p.validar ? H.seloValidar(p.validar) : "") + "</h3>" +
-          '<p class="passo-meta">' + H.esc(p.tempo) + " · " + H.esc(p.objetivo) + "</p>" +
-          '<div class="fala">' + H.preencherHTML(p.fala, vars) + "</div>" +
-          extrasDoPasso(p, s, lead) +
-          (p.dica ? '<p class="dica">' + H.esc(p.dica) + "</p>" : "") +
-          (p.pacto
-            ? '<p style="margin-top:10px"><label class="pacto-check">' + H.campo(lead, "proposta.pactos." + p.pacto, "checkbox") +
-              H.esc(P.pactos.find(function (x) { return x.id === p.pacto; }).texto) + "</label></p>"
-            : "") +
-          "</div></div>";
-      }).join("") +
-      "</div>" +
-
-      '<div class="cartao" id="resultado"><h2>Como terminou a reunião?</h2>' +
-      '<div class="opcoes" style="margin-bottom:14px">' +
-      P.resultados.map(function (r) {
-        return '<label><input type="radio" name="resultado" value="' + r.id + '" data-bind="proposta.resultado"' +
-          (prop.resultado === r.id ? " checked" : "") + ">" + H.esc(r.rotulo) + "</label>";
-      }).join("") + "</div>" +
-      '<div class="campos">' +
-      '<label class="campo"><span>Data da apresentação</span>' + H.campo(lead, "proposta.data", "date", ' placeholder="' + H.hoje() + '"') + "</label>" +
-      '<label class="campo"><span>Valor da proposta (R$)</span>' + H.campo(lead, "proposta.valor", "text", ' inputmode="decimal" placeholder="Ex.: 4.500,00"') + "</label>" +
-      '<label class="campo"><span>Data combinada para a decisão</span>' + H.campo(lead, "proposta.dataDecisao", "date") + "</label>" +
-      '<label class="campo"><span>Motivo, se perdeu</span>' + H.select(lead, "proposta.motivoPerda", H.FUP.motivosPerda) + "</label>" +
-      "</div>" +
-      '<label class="check">' + H.campo(lead, "proposta.usouNovaApresentacao", "checkbox") + "<span>Usou a nova apresentação e o roteiro</span></label>" +
-      '<div class="pergunta"><label for="notas-proposta">Notas</label>' + H.campo(lead, "proposta.notas", "textarea", ' id="notas-proposta" rows="3"') + "</div>" +
-      '<div class="acoes"><button type="button" id="salvar-resultado">Salvar resultado e ir para o follow-up</button></div>' +
-      "</div></div>" +
-
-      '<aside class="lateral coluna-fixa"><h3>Guia rápido de objeções</h3><div id="guia-proposta"></div></aside>' +
+      '<div class="reuniao-topo"><div class="reuniao-linha">' +
+      '<a class="botao-icone" href="#/playbooks/proposta" aria-label="Voltar">' + H.icone("voltar") + "</a>" +
+      "<h1>" + H.esc(lead.empresa || "Sem nome") + "</h1>" +
+      '<div class="acoes">' +
+      '<span class="contador-pactos" id="contador-pactos" title="Micro pactos">' + feitos + "/" + P.pactos.length + " pactos</span>" +
+      H.select(lead, "proposta.servico", H.servicosAtivos().map(function (x) { return { valor: x.id, rotulo: x.sigla + " · " + x.nome }; }), "Serviço",
+        ' aria-label="Serviço apresentado" style="width:auto;padding:6px 10px;font-size:13px"') +
+      (apresentacao
+        ? '<a class="botao botao-pequeno" target="_blank" rel="noopener" href="' + apresentacao.arquivo + "?lead=" + encodeURIComponent(lead.id) + '">' + H.icone("play") + "Apresentar</a>"
+        : "") +
+      '<button type="button" class="botao-icone" id="abrir-resumo" aria-label="Coletado na diagnóstica" title="Coletado na diagnóstica">' + H.icone("lista") + "</button>" +
+      '<button type="button" class="botao-icone" id="abrir-objecoes" aria-label="Objeções" title="Objeções">' + H.icone("escudo") + "</button>" +
+      "</div></div>" + H.barraPassos(lista, atual, hashBase) + "</div>" +
+      '<div class="estreita">' + corpoPasso(lead, item, s, vars) +
+      H.navegacaoPassos(atual, lista.length, hashBase, '<button type="button" id="salvar-resultado">Salvar e ir para o follow-up' + H.icone("avancar") + "</button>") +
       "</div>";
 
-    function contarPactos() {
-      var feitos = P.pactos.filter(function (p) { return prop.pactos[p.id]; }).length;
-      el.querySelector("#contador-pactos").textContent = feitos + " de " + P.pactos.length;
-    }
+    var chip = el.querySelector(".passo-chip.atual");
+    if (chip) chip.scrollIntoView({ block: "nearest", inline: "center" });
 
     H.ligarCampos(el, lead, function (caminho) {
       if (caminho === "proposta.servico") {
         H.salvar();
         H.rerender();
-        return;
-      }
-      if (caminho.indexOf("proposta.pactos.") === 0) {
-        var passo = el.querySelector('[data-passo] input[data-bind="' + caminho + '"]');
-        if (passo) passo.closest(".passo").classList.toggle("pacto-feito", !!H.obter(lead, caminho));
-        contarPactos();
       }
     });
-    contarPactos();
-
-    H.montarGuiaObjecoes(el.querySelector("#guia-proposta"), {
-      etapa: "proposta",
-      servicoId: prop.servico,
-      vars: vars,
-      lead: lead,
+    document.addEventListener("pacto-mudou", function aoMudar() {
+      if (!document.body.contains(el)) return document.removeEventListener("pacto-mudou", aoMudar);
+      var n = P.pactos.filter(function (x) { return prop.pactos[x.id]; }).length;
+      el.querySelector("#contador-pactos").textContent = n + "/" + P.pactos.length + " pactos";
+      passos(lead, atual).forEach(function (e, i) {
+        var c = el.querySelector('[data-passo-chip="' + i + '"]');
+        if (c) c.classList.toggle("feito", !!e.feito);
+      });
     });
 
-    el.querySelector("#salvar-resultado").addEventListener("click", function () {
-      if (!prop.resultado) {
-        H.aviso("Escolha como a reunião terminou.");
-        return;
-      }
-      prop.data = prop.data || H.hoje();
-      prop.valor = prop.valor ? H.paraNumero(prop.valor) : prop.valor;
-      var fup = lead.fup || { toques: {} };
-      fup.inicio = fup.inicio || prop.data;
-      fup.toques = fup.toques || {};
-      if (prop.resultado === "ganho") {
-        fup.status = "ganho";
-        fup.dataFechamento = fup.dataFechamento || prop.data;
-        fup.valorFechado = fup.valorFechado || prop.valor;
-      } else if (prop.resultado === "perdido") {
-        fup.status = "perdido";
-        fup.motivoPerda = prop.motivoPerda || fup.motivoPerda || "";
-      } else {
-        fup.status = "ativo";
-      }
-      lead.fup = fup;
-      H.tocar(lead);
-      H.salvar();
-      H.ir("#/fup/" + lead.id);
+    el.querySelector("#abrir-resumo").addEventListener("click", function () { H.abrirResumo(lead, prop.servico); });
+    el.querySelector("#abrir-objecoes").addEventListener("click", function () {
+      H.abrirObjecoes({ etapa: "proposta", vars: vars, lead: lead });
     });
+
+    var salvar = el.querySelector("#salvar-resultado");
+    if (salvar) {
+      salvar.addEventListener("click", function () {
+        if (!prop.resultado) {
+          H.aviso("Escolha como a reunião terminou.");
+          return;
+        }
+        prop.data = prop.data || H.hoje();
+        prop.valor = prop.valor ? H.paraNumero(prop.valor) : prop.valor;
+        var fup = lead.fup || { toques: {} };
+        fup.inicio = fup.inicio || prop.data;
+        fup.toques = fup.toques || {};
+        if (prop.resultado === "ganho") {
+          fup.status = "ganho";
+          fup.dataFechamento = fup.dataFechamento || prop.data;
+          fup.valorFechado = fup.valorFechado || prop.valor;
+        } else if (prop.resultado === "perdido") {
+          fup.status = "perdido";
+          fup.motivoPerda = prop.motivoPerda || fup.motivoPerda || "";
+        } else {
+          fup.status = "ativo";
+        }
+        lead.fup = fup;
+        H.tocar(lead);
+        H.salvar();
+        H.ir("#/fup/" + lead.id);
+      });
+    }
   }
 
   H.telas.proposta = {
-    render: function (el, id) {
+    render: function (el, id, passo) {
       var lead = id && H.lead(id);
       if (!lead) lista(el);
-      else editor(el, lead);
+      else editor(el, lead, passo);
     },
   };
 })(window.HUB);

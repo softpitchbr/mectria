@@ -2,20 +2,34 @@
 
 O "site do vendedor": o processo comercial da MecTRIA num lugar só, da primeira ligação ao fechamento. É a base da etapa R (Retórica), adiantada em paralelo com a T. Decisão de 08/10/2026 em `docs/07-decisoes-e-pendencias.md`.
 
-**Status:** versão 0.1, base para lapidar. Todo o conteúdo é rascunho até a validação com a MecTRIA. As marcações mostram o que falta (ver "Marcações").
+**Status:** versão 0.2 (08/10/2026), reorganizada para mostrar uma coisa por vez. Base para lapidar. Todo o conteúdo é rascunho até a validação com a MecTRIA. As marcações mostram o que falta (ver "Marcações").
 
-## O que tem
+## Como está organizado
 
-| Aba | Ferramenta | O que faz |
-|---|---|---|
-| **Início** | Processo visual | As 7 etapas, do hunter ao closer, com dono, saída e indicador (tarefa 18). Mostra o que fazer hoje: toques de follow-up, propostas marcadas, diagnósticas paradas |
-| **Apresentações** | Diagnóstica | Apoio curto para a reunião diagnóstica: combinado, quem somos, serviços, como trabalhamos, próximo passo |
-| | Portfólio | Página para mandar no WhatsApp (abre no celular e sai em PDF), com mensagem pronta |
-| | Proposta por serviço | Um modelo por serviço da Carta, na sequência fixa, com micro pactos clicáveis que gravam no lead. É a base da apresentação interativa da etapa I |
-| **Playbooks** | Cold call | Roteiro top-down para o decisor, ganchos por serviço, recepção, tentativas e objeções da ligação. Ao marcar a diagnóstica, cria o lead |
-| | Reunião diagnóstica | Roteiro e perguntas GPCTBA + C&I, roteador de serviços (o que o cliente fala → que serviço explorar), perguntas técnicas de cada serviço, fechamento com micro pacto e agenda da proposta. **Gera o briefing em PDF para Projetos** no formato do Briefing da planilha v4 |
-| | Apresentação de proposta | Roteiro dos 12 passos com as dores do cliente, checklist dos 6 micro pactos, o que foi coletado na diag ao lado e o guia rápido de objeções. Registra como a reunião terminou |
-| **Follow-up** | Cadência | Propostas apresentadas, com 7 toques em 15 dias úteis (D0, D1, D3, D5, D8, D12, D15), mensagem pronta, botão de WhatsApp e e-mail, e resultado (ganho, perdido com motivo, nutrição). Aceita propostas que já estão na rua |
+Uma coisa por vez. Cada tela mostra só o que o vendedor precisa naquele momento; dicas (ⓘ), objeções, resumo da diagnóstica e o roteador de serviços abrem num painel lateral (no celular, uma folha que sobe de baixo).
+
+| Aba | O que tem |
+|---|---|
+| **Início** | O que fazer hoje (toques de follow-up, propostas marcadas, diagnósticas do dia) e três atalhos |
+| **Apresentações** | Um cartão por apresentação: diagnóstica, portfólio para o WhatsApp e uma proposta por serviço. "Para" escolhe o cliente, e a apresentação já abre com o nome e as dores dele |
+| **Playbooks** | Cold call, reunião diagnóstica, apresentação de proposta e o processo comercial (do hunter ao closer) |
+| **Follow-up** | Propostas na rua com o próximo toque de cada uma. No detalhe, só o próximo toque fica aberto, com a mensagem pronta |
+
+**Modo reunião (diagnóstica e proposta):** uma etapa por vez, com "Anterior" e "Próximo" e a barra de etapas no topo.
+- **Diagnóstica:** Cliente · Abertura · Objetivos · Planos · Desafios · Prazo · Orçamento · Decisão · Impacto (GPCTBA + C&I) · Serviço · Fechamento. O botão "Serviço" abre o roteador a qualquer momento: o vendedor busca pelo que o cliente falou ("galpão", "fiscalização") e marca o serviço; as perguntas técnicas dele entram na etapa Serviço. No fim, o briefing em PDF para Projetos.
+- **Proposta:** Antes · os 12 passos da sequência fixa · Resultado. Cada passo mostra a fala com as dores do cliente e, quando tem, o micro pacto como um botão grande. "Apresentar" abre a apresentação do serviço já com o cliente; os pactos marcados nos slides aparecem no playbook.
+
+## Apresentações: um arquivo para cada uma
+
+```
+apresentacoes/diagnostica.html          reunião diagnóstica
+apresentacoes/portfolio.html            portfólio (o único que vai para o site público)
+apresentacoes/propostas/<serviço>.html  uma proposta por serviço
+apresentacoes/proposta-base.js          sequência padrão das propostas
+apresentacoes/deck.js                   motor dos slides (teclado, toque, tela cheia, PDF, pactos)
+```
+
+Cada proposta tem um `CONFIG` no topo do arquivo com o que é só dela: a frase da capa, os slides que ela não usa (`ocultar`) e os slides a mais (`extras`). O que é comum a todas fica em `proposta-base.js`; os dados do serviço (método, escopo, céu e inferno) ficam em `js/dados/servicos.js`. Para criar uma apresentação nova, copie um arquivo de `propostas/` e registre em `js/dados/apresentacoes.js`.
 
 ## Como abrir
 
@@ -25,7 +39,7 @@ O "site do vendedor": o processo comercial da MecTRIA num lugar só, da primeira
 
 ## Onde ficam os dados
 
-No `localStorage` do navegador de cada vendedor (chave `hub-mectria:v1`). O menu **Dados** exporta e importa o backup (.json; a importação junta os leads, e no mesmo lead vale o mais recente) e gera o **CSV das propostas** no formato do Histórico ampliado (tarefa 34): data, valor, status, motivo da perda, pactos feitos, se usou a nova apresentação.
+No `localStorage` do navegador de cada vendedor (chave `hub-mectria:v1`). O botão de **Ajustes** (no canto do topo) exporta e importa o backup (.json; a importação junta os leads, e no mesmo lead vale o mais recente) e gera o **CSV das propostas** no formato do Histórico ampliado (tarefa 34): data, valor, status, motivo da perda, pactos feitos, se usou a nova apresentação.
 
 Limite desta versão: os dados não são compartilhados entre vendedores. O próximo passo é uma base compartilhada (ver "Próximos passos").
 
@@ -37,6 +51,7 @@ Todo o texto fica em `js/dados/`. Não precisa mexer nas telas para mudar conte�
 |---|---|
 | `empresa.js` | Propósito, assinatura, diferenciais, números, fluxo de 3 dias, regras de condição (desconto, parcelas, validade) |
 | `servicos.js` | Os 12 serviços da Carta: pistas, dores, gancho, perguntas técnicas, o que entregamos e o que fica com o cliente, método, céu e inferno, âncora de valor |
+| `apresentacoes.js` | O catálogo de apresentações da aba Apresentações |
 | `diagnostica.js` | Roteiro e perguntas GPCTBA + C&I da diagnóstica, fechamento e resumo para o cliente |
 | `proposta.js` | Os 12 passos da apresentação, os 6 micro pactos e as regras de condição |
 | `objecoes.js` | O guia de objeções, por etapa |
@@ -61,9 +76,10 @@ css/briefing.css      PDF do briefing (folha padrão de documentos do manual)
 css/deck.css          apresentações em slides
 js/dados/             conteúdo (ver acima)
 js/base.js            estado, datas em dias úteis, variáveis, exportação
+js/telas/comum.js     ícones, painel lateral, dicas, campos, pactos, objeções
 js/telas/             uma tela por arquivo
-js/hub.js             rotas, campos ligados ao lead, menu Dados
-apresentacoes/        diagnóstica, portfólio e proposta (deck.js é o motor dos slides)
+js/hub.js             rotas e ajustes
+apresentacoes/        um arquivo por apresentação (ver acima)
 assets/               logo (principal e negativa) e símbolo, recortados do manual
 ```
 

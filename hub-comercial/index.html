@@ -2,8 +2,9 @@
 <html lang="pt-BR">
   <head>
     <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
     <meta name="robots" content="noindex, nofollow">
+    <meta name="theme-color" content="#780000">
     <title>Hub comercial · MecTRIA</title>
     <link rel="icon" href="assets/simbolo-mectria.png">
     <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -14,40 +15,22 @@
     <link rel="stylesheet" href="css/briefing.css">
   </head>
   <body>
-    <header class="topo">
-      <div class="topo-interno">
-        <a href="#/inicio" class="marca">
-          <img src="assets/logo-mectria.png" alt="MecTRIA" width="132" height="39">
-          <span>Hub comercial</span>
-        </a>
-        <nav class="abas" aria-label="Seções">
-          <a href="#/inicio" data-aba="inicio">Início</a>
-          <a href="#/apresentacoes" data-aba="apresentacoes">Apresentações</a>
-          <a href="#/playbooks/diagnostica" data-aba="playbooks">Playbooks</a>
-          <a href="#/fup" data-aba="fup">Follow-up<span class="contador" id="contador-fup" title="Toques de hoje e atrasados"></span></a>
-        </nav>
-        <div class="topo-acoes">
-          <label class="vendedor">Vendedor <input id="vendedor" type="text" placeholder="Seu nome" autocomplete="name"></label>
-          <details class="menu-dados">
-            <summary>Dados</summary>
-            <div>
-              <p>Os dados ficam só neste navegador. Exporte o backup toda semana.</p>
-              <button type="button" class="botao-texto" id="exportar-json">Exportar backup (.json)</button>
-              <button type="button" class="botao-texto" id="importar-json">Importar backup</button>
-              <button type="button" class="botao-texto" id="exportar-csv">Exportar propostas para a planilha (.csv)</button>
-              <input type="file" id="arquivo-importar" accept="application/json,.json" hidden>
-            </div>
-          </details>
-        </div>
+    <header class="app-topo">
+      <div class="app-topo-interno">
+        <a href="#/inicio" class="marca"><img src="assets/logo-mectria.png" alt="MecTRIA · Hub comercial" width="124" height="37"></a>
+        <nav class="nav-principal" aria-label="Seções" data-nav></nav>
+        <button type="button" class="botao-icone" id="abrir-ajustes" aria-label="Ajustes e dados" title="Ajustes e dados"></button>
       </div>
-      <hr class="filete">
     </header>
 
     <main id="conteudo" tabindex="-1"></main>
+
+    <nav class="nav-inferior" aria-label="Seções" data-nav></nav>
     <div id="impressao"></div>
 
     <script src="js/dados/empresa.js"></script>
     <script src="js/dados/servicos.js"></script>
+    <script src="js/dados/apresentacoes.js"></script>
     <script src="js/dados/diagnostica.js"></script>
     <script src="js/dados/proposta.js"></script>
     <script src="js/dados/objecoes.js"></script>
@@ -57,6 +40,7 @@
     <script src="js/telas/comum.js"></script>
     <script src="js/telas/inicio.js"></script>
     <script src="js/telas/apresentacoes.js"></script>
+    <script src="js/telas/playbooks.js"></script>
     <script src="js/telas/cold-call.js"></script>
     <script src="js/telas/diagnostica.js"></script>
     <script src="js/telas/proposta.js"></script>

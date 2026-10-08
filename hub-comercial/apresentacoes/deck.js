@@ -5,6 +5,7 @@ window.DECK = (function () {
   var slides = [];
   var atual = 0;
   var leadId = new URLSearchParams(location.search).get("lead");
+  var servicoDoDeck = "";
 
   function rodape(slide, i) {
     if (slide.classList.contains("sem-rodape") || slide.querySelector(".rodape-slide")) return;
@@ -93,7 +94,7 @@ window.DECK = (function () {
         b.classList.toggle("feito");
         var l = leadAtual();
         if (l) {
-          l.proposta = l.proposta || { servico: new URLSearchParams(location.search).get("servico") || "", pactos: {}, objecoes: {} };
+          l.proposta = l.proposta || { servico: servicoDoDeck, pactos: {}, objecoes: {} };
           l.proposta.pactos = l.proposta.pactos || {};
           l.proposta.pactos[id] = b.classList.contains("feito");
           HUB.tocar(l);
@@ -107,7 +108,8 @@ window.DECK = (function () {
 
   /* ---------- início ---------- */
 
-  function iniciar() {
+  function iniciar(opcoes) {
+    servicoDoDeck = (opcoes && opcoes.servico) || "";
     slides = Array.prototype.slice.call(document.querySelectorAll(".slide"));
     slides.forEach(rodape);
     controles();

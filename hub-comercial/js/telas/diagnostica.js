@@ -1,6 +1,333 @@
-/* Playbook da reunião diagnóstica: roteiro, perguntas GPCTBA + C&I, roteador de serviços,
-   perguntas técnicas por serviço e o briefing em PDF para Projetos. */
+/* Playbook da reunião diagnóstica em modo reunião: uma etapa por vez.
+   Etapas: Cliente · Abertura · G · P · C · T · B · A · C&I · Serviço · Fechamento.
+   Resumo, objeções e o roteador de serviços abrem no painel lateral. No fim, o briefing em PDF. */
 (function (H) {
+  var BASE = "#/playbooks/diagnostica/";
+  var TITULOS = { objetivos: "Objetivos", planos: "Planos", desafios: "Desafios", prazo: "Prazo", orcamento: "Orçamento", autoridade: "Decisão", consequencias: "Impacto" };
+
+  /* ---------- nova diagnóstica (também usada no Início) ---------- */
+
+  H.novaDiagnostica = function () {
+    var D = H.DIAGNOSTICA;
+    H.gaveta("Nova diagnóstica", function (corpo) {
+      corpo.innerHTML =
+        '<form style="display:grid;gap:14px">' +
+        H.rotulado("Empresa", '<input name="empresa" required>') +
+        H.rotulado("Contato", '<input name="contato">') +
+        H.rotulado("Telefone ou WhatsApp", '<input name="telefone" type="tel">') +
+        H.rotulado("Origem do lead", '<select name="origem"><option value="">Escolha</option>' +
+          D.origens.map(function (o) { return "<option>" + H.esc(o) + "</option>"; }).join("") + "</select>") +
+        H.rotulado("Data da diagnóstica", '<input name="data" type="date" value="' + H.hoje() + '">') +
+        '<button type="submit">Começar</button></form>';
+      corpo.querySelector("form").addEventListener("submit", function (ev) {
+        ev.preventDefault();
+        var f = ev.target;
+        var lead = H.novoLead({
+          empresa: f.empresa.value.trim(),
+          contato: f.contato.value.trim(),
+          telefone: f.telefone.value.trim(),
+          origem: f.origem.value,
+          diag: { respostas: {}, data: f.data.value },
+        });
+        H.fecharGaveta();
+        H.ir(BASE + lead.id + "/0");
+      });
+    });
+  };
+
+  /* ---------- lista ---------- */
+
+  function lista(el) {
+    var leads = H.estado.leads.slice().sort(function (a, b) {
+      return (b.atualizadoEm || "").localeCompare(a.atualizadoEm || "");
+    });
+    el.innerHTML =
+      '<div class="estreita"><a class="voltar" href="#/playbooks">' + H.icone("voltar") + "Playbooks</a>" +
+      '<div class="cabeca" style="margin-top:8px"><h1>Reunião diagnóstica</h1>' +
+      '<button type="button" id="nova">' + H.icone("mais") + "Nova</button></div>" +
+      (leads.length
+        ? '<div class="linhas">' + leads.map(function (l) {
+            var meta = [l.contato, H.siglas(l), H.data(l.diag && l.diag.data)].filter(Boolean).join(" · ");
+            return '<a class="linha" href="' + BASE + l.id + '/0"><div class="linha-texto"><strong>' + H.esc(l.empresa || "Sem nome") +
+              "</strong><small>" + H.esc(meta) + "</small></div>" + H.seloStatus(l) + H.icone("avancar") + "</a>";
+          }).join("") + "</div>"
+        : '<p class="vazio">Nenhuma diagnóstica ainda.</p>') +
+      "</div>";
+    el.querySelector("#nova").addEventListener("click", H.novaDiagnostica);
+  }
+
+  /* ---------- etapas ---------- */
+
+  function etapas(lead) {
+    var D = H.DIAGNOSTICA;
+    var r = lead.diag.respostas;
+    function algum(perguntas) { return perguntas.some(function (p) { return r[p.id]; }); }
+    var lista = [
+      { id: "cliente", titulo: "Cliente", feito: !!(lead.empresa && lead.contato) },
+      { id: "abertura", titulo: "Abertura", feito: !!lead.diag.pactoAgenda },
+    ];
+    D.blocos.forEach(function (b) {
+      lista.push({ id: b.id, titulo: TITULOS[b.id] || b.titulo, bloco: b, feito: algum(b.perguntas) });
+    });
+    var tecnicas = [];
+    lead.servicos.forEach(function (id) { var s = H.servico(id); if (s) tecnicas = tecnicas.concat(s.perguntas); });
+    lista.push({ id: "servico", titulo: "Serviço", feito: lead.servicos.length > 0 && algum(tecnicas) });
+    lista.push({ id: "fechamento", titulo: "Fechamento", feito: !!lead.diag.dataProposta });
+    return lista;
+  }
+
+  function qualificacao(lead) {
+    var r = lead.diag.respostas;
+    return [
+      { texto: "Dor real e com impacto", ok: !!(r["c-dor"] && r["ci-negativa"]) },
+      { texto: "Serviço da Carta identificado", ok: lead.servicos.length > 0 },
+      { texto: "Quem decide identificado", ok: !!r["a-decisores"] },
+      { texto: "Prazo definido", ok: !!r["t-prazo"] },
+      { texto: "Faixa de investimento compatível", ok: !!lead.diag.faixaCompativel },
+      { texto: "Apresentação da proposta marcada", ok: !!lead.diag.dataProposta },
+    ];
+  }
+
+  /* roteador: o vendedor busca pelo que o cliente falou e marca o serviço */
+  function roteador(lead, termo) {
+    var t = (termo || "").toLowerCase().trim();
+    return H.servicosAtivos().map(function (s) {
+      var bate = t && (s.nome + " " + s.pistas.join(" ")).toLowerCase().indexOf(t) !== -1;
+      var ativo = lead.servicos.indexOf(s.id) !== -1;
+      return '<button type="button" class="chip' + (ativo ? " ativo" : bate ? " sugerido" : "") + '" data-servico="' + s.id + '"' +
+        (t && !bate && !ativo ? ' style="opacity:.45"' : "") + ">" + H.esc(s.nome) + "</button>";
+    }).join("");
+  }
+
+  function alternarServico(lead, id) {
+    var i = lead.servicos.indexOf(id);
+    if (i === -1) lead.servicos.push(id);
+    else lead.servicos.splice(i, 1);
+    H.tocar(lead);
+    H.salvar();
+  }
+
+  function corpoEtapa(lead, etapa) {
+    var D = H.DIAGNOSTICA;
+    if (etapa.id === "cliente") {
+      var prep = lead.diag.prep || {};
+      var feitos = D.preparacao.filter(function (x, i) { return prep[i]; }).length;
+      return '<div class="etapa-titulo"><h2>Cliente</h2></div><p class="etapa-intro">Quem é e de onde veio.</p>' +
+        '<div class="campos">' +
+        H.rotulado("Empresa", H.campo(lead, "empresa", "text")) +
+        H.rotulado("Contato", H.campo(lead, "contato", "text")) +
+        H.rotulado("Telefone ou WhatsApp", H.campo(lead, "telefone", "tel")) +
+        H.rotulado("Origem do lead", H.select(lead, "origem", D.origens)) +
+        H.rotulado("Data da diagnóstica", H.campo(lead, "diag.data", "date")) +
+        H.rotulado("Formato", H.select(lead, "diag.formato", D.formatos)) +
+        "</div>" +
+        '<details class="mais" style="margin-top:12px"><summary>Mais dados</summary><div class="campos" style="margin-bottom:12px">' +
+        H.rotulado("Cargo", H.campo(lead, "cargo", "text")) +
+        H.rotulado("E-mail", H.campo(lead, "email", "email")) +
+        H.rotulado("Cidade", H.campo(lead, "cidade", "text")) +
+        H.rotulado("Segmento", H.campo(lead, "segmento", "text")) +
+        H.rotulado("Quem vai pela MecTRIA", H.campo(lead, "diag.participantes", "text"), true) +
+        "</div></details>" +
+        '<details class="mais"><summary>Preparação (' + feitos + "/" + D.preparacao.length + ")</summary>" +
+        D.preparacao.map(function (t, i) {
+          return '<label class="check">' + H.campo(lead, "diag.prep." + i, "checkbox") + "<span>" + H.esc(t) + "</span></label>";
+        }).join("") +
+        '<div style="margin:8px 0 12px">' + H.rotulado("Hipótese de dor", H.campo(lead, "diag.hipotese", "textarea")) + "</div></details>";
+    }
+
+    if (etapa.id === "abertura") {
+      return '<div class="etapa-titulo"><h2>Abertura</h2></div><p class="etapa-intro">Combine a reunião antes de perguntar.</p>' +
+        D.abertura.map(function (a) {
+          return '<div data-com-dica><div class="pergunta-texto"><span style="flex:1">' + H.esc(a.titulo) + "</span>" +
+            (a.dica ? H.botaoInfo() : "") + "</div>" + H.textoDica(a.dica) +
+            '<div class="fala" data-modelo="' + H.esc(a.fala) + '"></div>' +
+            (a.pacto ? H.botaoPacto(lead, "diag.pactoAgenda", a.pacto) : "") + "</div>";
+        }).join("");
+    }
+
+    if (etapa.bloco) {
+      var b = etapa.bloco;
+      return '<div class="etapa-titulo"><span class="letra">' + H.esc(b.letra) + "</span><h2>" + H.esc(b.titulo) + "</h2></div>" +
+        '<p class="etapa-intro">' + H.esc(b.intro) + "</p>" +
+        b.perguntas.map(function (p) { return H.pergunta(lead, p); }).join("");
+    }
+
+    if (etapa.id === "servico") {
+      return '<div class="etapa-titulo"><h2>Serviço</h2></div>' +
+        '<p class="etapa-intro">Busque pelo que o cliente falou e marque o serviço. As perguntas técnicas aparecem embaixo.</p>' +
+        '<input type="search" id="busca-servico" placeholder="Ex.: galpão, fiscalização, peça sem desenho" aria-label="O que o cliente falou">' +
+        '<div class="chips" id="roteador" style="margin:12px 0 28px">' + roteador(lead, "") + "</div>" +
+        lead.servicos.map(function (id) {
+          var s = H.servico(id);
+          if (!s) return "";
+          return '<div style="margin-bottom:28px"><div class="etapa-titulo"><span class="letra">' + H.esc(s.sigla) + "</span><h2 style=\"font-size:19px\">" + H.esc(s.nome) + "</h2></div>" +
+            '<details class="mais"><summary>O que entregamos e o que fica com o cliente</summary><div class="duas-colunas" style="margin-bottom:12px">' +
+            '<div><p class="rotulo-pequeno">Entregamos</p><ul class="lista-simples">' + s.entregamos.map(function (x) { return "<li>" + H.esc(x) + "</li>"; }).join("") + "</ul></div>" +
+            '<div><p class="rotulo-pequeno">Fica com o cliente</p><ul class="lista-simples">' + s.ficaComCliente.map(function (x) { return "<li>" + H.esc(x) + "</li>"; }).join("") + "</ul></div>" +
+            "</div></details>" +
+            s.perguntas.map(function (p) { return H.pergunta(lead, p); }).join("") + "</div>";
+        }).join("") +
+        '<details class="mais"><summary>Escopo geral</summary>' + D.escopoGeral.map(function (p) { return H.pergunta(lead, p); }).join("") + "</details>";
+    }
+
+    // fechamento
+    var q = qualificacao(lead);
+    return '<div class="etapa-titulo"><h2>Fechamento</h2></div><p class="etapa-intro">Resuma, faça o pacto e saia com a proposta marcada.</p>' +
+      '<p class="rotulo-pequeno">1 · Resumo</p><div class="fala" data-modelo="' + H.esc(D.fechamento.resumo) + '"></div>' +
+      '<label class="check">' + H.campo(lead, "diag.resumoConfirmado", "checkbox") + "<span>O cliente confirmou</span></label>" +
+      '<div data-com-dica style="margin-top:22px"><div class="pergunta-texto"><span class="rotulo-pequeno" style="flex:1;margin:0">2 · Micro pacto</span>' + H.botaoInfo() + "</div>" +
+      H.textoDica(D.fechamento.pactoDica) + '<div class="fala" data-modelo="' + H.esc(D.fechamento.pacto) + '"></div></div>' +
+      H.botaoPacto(lead, "diag.pactoCriterio", "Pacto feito") +
+      '<div data-com-dica style="margin-top:22px"><div class="pergunta-texto"><span class="rotulo-pequeno" style="flex:1;margin:0">3 · Marcar a proposta</span>' + H.botaoInfo() + "</div>" +
+      H.textoDica(D.fechamento.agendamentoDica) + '<div class="fala" data-modelo="' + H.esc(D.fechamento.agendamento) + '"></div></div>' +
+      '<div class="campos">' +
+      H.rotulado("Data", H.campo(lead, "diag.dataProposta", "date", ' id="data-proposta"')) +
+      H.rotulado("Hora", H.campo(lead, "diag.horaProposta", "time")) +
+      "</div>" +
+      '<p><button type="button" class="botao-texto botao-pequeno" id="sugerir-data">Sugerir pelo fluxo de ' + H.EMPRESA.regras.diasParaProposta + " dias úteis</button></p>" +
+      '<details class="mais"><summary>Qualificação (<span id="qualif-n">' + q.filter(function (x) { return x.ok; }).length + "</span>/" + q.length + ")</summary>" +
+      '<ul class="lista-simples" id="qualificacao"></ul>' +
+      '<label class="check">' + H.campo(lead, "diag.faixaCompativel", "checkbox") + "<span>A faixa de investimento é compatível com o piso da planilha</span></label></details>" +
+      '<details class="mais"><summary>Notas</summary>' + H.campo(lead, "diag.notas", "textarea", ' rows="4" aria-label="Notas"') + "</details>" +
+      '<div class="secao"><div class="acoes">' +
+      '<button type="button" class="botao-destaque" data-acao="pdf">' + H.icone("documento") + "PDF para Projetos</button>" +
+      '<button type="button" class="botao-sec" id="copiar-resumo">Copiar resumo para o cliente</button>' +
+      '<a class="botao botao-sec" id="whats-resumo" target="_blank" rel="noopener">WhatsApp</a></div></div>';
+  }
+
+  function editor(el, lead, passo) {
+    lead.diag = lead.diag || {};
+    lead.diag.respostas = lead.diag.respostas || {};
+    lead.servicos = lead.servicos || [];
+    var lista = etapas(lead);
+    var atual = Math.max(0, Math.min(lista.length - 1, parseInt(passo, 10) || 0));
+    var etapa = lista[atual];
+    var hashBase = BASE + lead.id + "/";
+    var rotuloServico = lead.servicos.length ? H.siglas(lead) : "Serviço";
+
+    el.innerHTML =
+      '<div class="reuniao-topo"><div class="reuniao-linha">' +
+      '<a class="botao-icone" href="#/playbooks/diagnostica" aria-label="Voltar">' + H.icone("voltar") + "</a>" +
+      "<h1>" + H.esc(lead.empresa || "Sem nome") + "</h1>" +
+      '<div class="acoes">' +
+      '<button type="button" class="botao-sec botao-pequeno" id="abrir-roteador" title="Marcar serviço">' + H.icone("engrenagem") + H.esc(rotuloServico) + "</button>" +
+      '<button type="button" class="botao-icone" id="abrir-resumo" aria-label="Resumo" title="Resumo">' + H.icone("lista") + "</button>" +
+      '<button type="button" class="botao-icone" id="abrir-objecoes" aria-label="Objeções" title="Objeções">' + H.icone("escudo") + "</button>" +
+      '<button type="button" class="botao-icone" data-acao="pdf" aria-label="PDF para Projetos" title="PDF para Projetos">' + H.icone("documento") + "</button>" +
+      "</div></div>" + H.barraPassos(lista, atual, hashBase) + "</div>" +
+      '<div class="estreita">' + corpoEtapa(lead, etapa) +
+      H.navegacaoPassos(atual, lista.length, hashBase, '<a class="botao" href="#/playbooks/proposta/' + lead.id + '/0">Ir para a proposta' + H.icone("avancar") + "</a>") +
+      "</div>";
+
+    // a etapa atual sempre visível na barra de passos
+    var chip = el.querySelector(".passo-chip.atual");
+    if (chip) chip.scrollIntoView({ block: "nearest", inline: "center" });
+
+    H.ligarCampos(el, lead, function (caminho) {
+      if (caminho === "empresa") el.querySelector(".reuniao-linha h1").textContent = lead.empresa || "Sem nome";
+      atualizar(el, lead);
+    });
+    document.addEventListener("pacto-mudou", function aoMudar() {
+      if (!document.body.contains(el)) return document.removeEventListener("pacto-mudou", aoMudar);
+      atualizar(el, lead);
+    });
+
+    el.addEventListener("click", function (ev) {
+      var s = ev.target.closest("[data-servico]");
+      if (s) {
+        alternarServico(lead, s.getAttribute("data-servico"));
+        H.rerender();
+        return;
+      }
+      if (ev.target.closest('[data-acao="pdf"]')) H.imprimirBriefing(lead);
+    });
+
+    var busca = el.querySelector("#busca-servico");
+    if (busca) {
+      busca.addEventListener("input", function () {
+        el.querySelector("#roteador").innerHTML = roteador(lead, busca.value);
+      });
+    }
+
+    el.querySelector("#abrir-roteador").addEventListener("click", function () {
+      H.gaveta("Qual serviço?", function (corpo) {
+        corpo.innerHTML =
+          '<p class="muted" style="margin-top:0">Busque pelo que o cliente falou.</p>' +
+          '<input type="search" placeholder="Ex.: galpão, fiscalização, peça sem desenho" aria-label="O que o cliente falou">' +
+          '<div class="chips" style="margin-top:14px">' + roteador(lead, "") + "</div>";
+        var campo = corpo.querySelector("input");
+        var chips = corpo.querySelector(".chips");
+        campo.addEventListener("input", function () { chips.innerHTML = roteador(lead, campo.value); });
+        corpo.addEventListener("click", function (ev) {
+          var b = ev.target.closest("[data-servico]");
+          if (!b) return;
+          alternarServico(lead, b.getAttribute("data-servico"));
+          chips.innerHTML = roteador(lead, campo.value);
+          var botao = el.querySelector("#abrir-roteador");
+          if (botao) botao.innerHTML = H.icone("engrenagem") + H.esc(lead.servicos.length ? H.siglas(lead) : "Serviço");
+        });
+        campo.focus();
+      });
+    });
+    el.querySelector("#abrir-resumo").addEventListener("click", function () { H.abrirResumo(lead, lead.servicos[0]); });
+    el.querySelector("#abrir-objecoes").addEventListener("click", function () {
+      H.abrirObjecoes({ etapa: "diagnostica", vars: H.variaveis(lead) });
+    });
+
+    var sugerir = el.querySelector("#sugerir-data");
+    if (sugerir) {
+      sugerir.addEventListener("click", function () {
+        lead.diag.dataProposta = H.somarDiasUteis(lead.diag.data || H.hoje(), H.EMPRESA.regras.diasParaProposta - 1);
+        el.querySelector("#data-proposta").value = lead.diag.dataProposta;
+        H.tocar(lead);
+        H.salvar();
+        atualizar(el, lead);
+      });
+    }
+    var copiar = el.querySelector("#copiar-resumo");
+    if (copiar) {
+      copiar.addEventListener("click", function () {
+        H.copiar(H.preencher(H.DIAGNOSTICA.resumoCliente, H.variaveis(lead)));
+      });
+    }
+
+    atualizar(el, lead);
+  }
+
+  /* Atualiza o que depende das respostas sem redesenhar a tela (mantém o foco). */
+  function atualizar(el, lead) {
+    var vars = H.variaveis(lead);
+    etapas(lead).forEach(function (e, i) {
+      var c = el.querySelector('[data-passo-chip="' + i + '"]');
+      if (c) c.classList.toggle("feito", !!e.feito);
+    });
+    el.querySelectorAll("[data-modelo]").forEach(function (f) {
+      f.innerHTML = H.preencherHTML(f.getAttribute("data-modelo"), vars);
+    });
+    var q = el.querySelector("#qualificacao");
+    if (q) {
+      var itens = qualificacao(lead);
+      q.innerHTML = itens.map(function (x) {
+        return "<li>" + (x.ok ? '<span class="var">✓</span> ' : '<span class="muted">○</span> ') + H.esc(x.texto) + "</li>";
+      }).join("");
+      el.querySelector("#qualif-n").textContent = itens.filter(function (x) { return x.ok; }).length;
+    }
+    var whats = el.querySelector("#whats-resumo");
+    if (whats) {
+      var link = H.linkWhatsApp(lead.telefone, H.preencher(H.DIAGNOSTICA.resumoCliente, vars));
+      if (link) {
+        whats.href = link;
+        whats.removeAttribute("aria-disabled");
+      } else {
+        whats.removeAttribute("href");
+        whats.setAttribute("aria-disabled", "true");
+        whats.title = "Preencha o telefone do contato";
+      }
+    }
+  }
+
+  /* ---------- briefing em PDF para Projetos ---------- */
+
   var ROTULOS_PDF = {
     "g-resultado": "Resultado esperado",
     "g-medida": "Como medir o sucesso",
@@ -31,403 +358,33 @@
     "e-custos": "Custos diretos",
   };
 
-  function campoRotulado(rotulo, html, largo) {
-    return '<label class="campo' + (largo ? " campo-largo" : "") + '"><span>' + H.esc(rotulo) + "</span>" + html + "</label>";
-  }
-
-  function pergunta(lead, p, letra) {
-    var caminho = "diag.respostas." + p.id;
-    var valor = H.obter(lead, caminho) || "";
-    var idq = "q-" + p.id;
-    var entrada;
-    if (p.tipo === "texto") entrada = H.campo(lead, caminho, "textarea", ' id="' + idq + '"');
-    else if (p.tipo === "numero") entrada = H.campo(lead, caminho, "number", ' id="' + idq + '" min="0" step="any" inputmode="decimal"');
-    else if (p.tipo === "opcoes") {
-      entrada =
-        '<div class="opcoes" role="radiogroup" aria-labelledby="r-' + p.id + '">' +
-        p.opcoes
-          .map(function (o) {
-            return '<label><input type="radio" name="' + idq + '" value="' + H.esc(o) + '" data-bind="' + caminho + '"' +
-              (valor === o ? " checked" : "") + ">" + H.esc(o) + "</label>";
-          })
-          .join("") +
-        "</div>";
-    } else entrada = H.campo(lead, caminho, "text", ' id="' + idq + '"');
-
-    var rotulo = p.tipo === "opcoes"
-      ? '<span class="rotulo" id="r-' + p.id + '">' + H.esc(p.texto) + "</span>"
-      : '<label for="' + idq + '">' + H.esc(p.texto) + "</label>";
-    return '<div class="pergunta">' + rotulo + entrada + (p.dica ? '<p class="dica">' + H.esc(p.dica) + "</p>" : "") + "</div>";
-  }
-
-  /* ---------- lista ---------- */
-
-  function lista(el) {
-    var D = H.DIAGNOSTICA;
-    var leads = H.estado.leads.slice().sort(function (a, b) {
-      return (b.atualizadoEm || "").localeCompare(a.atualizadoEm || "");
-    });
-    el.innerHTML =
-      H.subnavPlaybooks("diagnostica") +
-      "<h1>Reunião diagnóstica</h1>" +
-      '<p class="sub">O vendedor sabe desde o começo da conversa tudo o que precisa perguntar: as perguntas comerciais ' +
-      "(GPCTBA + C&amp;I) e as perguntas técnicas de cada serviço da Carta. No fim, sai o briefing em PDF para Projetos.</p>" +
-
-      '<div class="grade-2" style="margin-bottom:28px">' +
-      '<div class="cartao"><h2>Nova diagnóstica</h2>' +
-      '<form id="form-nova" class="campos">' +
-      '<label class="campo"><span>Empresa</span><input id="nova-empresa" required></label>' +
-      '<label class="campo"><span>Contato</span><input id="nova-contato"></label>' +
-      '<label class="campo"><span>Telefone ou WhatsApp</span><input id="nova-telefone" type="tel"></label>' +
-      '<label class="campo"><span>Origem do lead</span><select id="nova-origem"><option value="">Escolha</option>' +
-      D.origens.map(function (o) { return "<option>" + H.esc(o) + "</option>"; }).join("") + "</select></label>" +
-      '<label class="campo"><span>Data da diagnóstica</span><input id="nova-data" type="date" value="' + H.hoje() + '"></label>' +
-      '<div class="campo" style="align-self:end"><button type="submit">Começar</button></div>' +
-      "</form></div>" +
-
-      '<div class="painel-nevoa"><h2>O que perguntar</h2><ul class="lista-limpa pequeno">' +
-      D.blocos.map(function (b) {
-        return '<li style="margin-bottom:6px"><span class="letra" style="min-width:30px;height:24px;font-size:12px">' + H.esc(b.letra) +
-          "</span> <strong>" + H.esc(b.titulo) + ":</strong> " + H.esc(b.intro) + "</li>";
-      }).join("") +
-      '<li style="margin-top:10px">O <strong>roteador de serviços</strong> mostra, conforme o cliente fala, qual serviço explorar e o que perguntar.</li>' +
-      "</ul></div></div>" +
-
-      "<h2>Leads</h2>" +
-      (leads.length
-        ? '<div class="rolagem-x"><table class="tabela"><thead><tr><th>Empresa</th><th>Contato</th><th>Serviço</th><th>Diagnóstica</th><th>Situação</th></tr></thead><tbody>' +
-          leads.map(function (l) {
-            return '<tr class="clicavel" data-abrir="' + l.id + '"><td><a href="#/playbooks/diagnostica/' + l.id + '">' +
-              H.esc(l.empresa || "Sem nome") + "</a></td><td>" + H.esc(l.contato) + "</td><td>" +
-              H.esc((l.servicos || []).map(function (id) { var s = H.servico(id); return s ? s.sigla : id; }).join(", ")) +
-              "</td><td>" + H.data(l.diag && l.diag.data) + "</td><td>" + H.seloStatus(l) + "</td></tr>";
-          }).join("") +
-          "</tbody></table></div>"
-        : '<p class="vazio">Nenhum lead ainda. Comece uma diagnóstica acima ou marque uma pelo playbook de cold call.</p>');
-
-    el.querySelector("#form-nova").addEventListener("submit", function (ev) {
-      ev.preventDefault();
-      var lead = H.novoLead({
-        empresa: el.querySelector("#nova-empresa").value.trim(),
-        contato: el.querySelector("#nova-contato").value.trim(),
-        telefone: el.querySelector("#nova-telefone").value.trim(),
-        origem: el.querySelector("#nova-origem").value,
-        diag: { respostas: {}, data: el.querySelector("#nova-data").value },
-      });
-      H.ir("#/playbooks/diagnostica/" + lead.id);
-    });
-    el.addEventListener("click", function (ev) {
-      var tr = ev.target.closest("[data-abrir]");
-      if (tr && !ev.target.closest("a")) H.ir("#/playbooks/diagnostica/" + tr.getAttribute("data-abrir"));
-    });
-  }
-
-  /* ---------- editor ---------- */
-
-  function secoes(lead) {
-    var D = H.DIAGNOSTICA;
-    var r = lead.diag.respostas;
-    function respondidas(perguntas) {
-      return perguntas.filter(function (p) { return r[p.id]; }).length;
-    }
-    var perguntasServicos = D.escopoGeral.slice();
-    lead.servicos.forEach(function (id) {
-      var s = H.servico(id);
-      if (s) perguntasServicos = perguntasServicos.concat(s.perguntas);
-    });
-    var prep = lead.diag.prep || {};
-    var lista = [
-      { id: "identificacao", titulo: "Identificação", feito: ["empresa", "contato", "telefone", "origem"].filter(function (k) { return lead[k]; }).length + (lead.diag.data ? 1 : 0), total: 5 },
-      { id: "preparacao", titulo: "Preparação", feito: Object.keys(prep).filter(function (k) { return prep[k]; }).length, total: D.preparacao.length },
-      { id: "abertura", titulo: "Abertura", feito: lead.diag.pactoAgenda ? 1 : 0, total: 1 },
-    ];
-    D.blocos.forEach(function (b) {
-      lista.push({ id: b.id, titulo: b.letra + " · " + b.titulo, feito: respondidas(b.perguntas), total: b.perguntas.length });
-    });
-    lista.push({ id: "servicos", titulo: "Serviço e escopo", feito: respondidas(perguntasServicos), total: perguntasServicos.length });
-    lista.push({
-      id: "fechamento",
-      titulo: "Fechamento",
-      feito: (lead.diag.resumoConfirmado ? 1 : 0) + (lead.diag.pactoCriterio ? 1 : 0) + (lead.diag.dataProposta ? 1 : 0),
-      total: 3,
-    });
-    return lista;
-  }
-
-  function qualificacao(lead) {
-    var r = lead.diag.respostas;
-    return [
-      { texto: "Dor real e com impacto", ok: !!(r["c-dor"] && r["ci-negativa"]) },
-      { texto: "Serviço da Carta identificado", ok: lead.servicos.length > 0 },
-      { texto: "Quem decide identificado", ok: !!r["a-decisores"] },
-      { texto: "Prazo definido", ok: !!r["t-prazo"] },
-      { texto: "Faixa de investimento compatível", ok: !!lead.diag.faixaCompativel },
-      { texto: "Apresentação da proposta marcada", ok: !!lead.diag.dataProposta },
-    ];
-  }
-
-  function editor(el, lead) {
-    var D = H.DIAGNOSTICA;
-    lead.diag = lead.diag || {};
-    lead.diag.respostas = lead.diag.respostas || {};
-    lead.servicos = lead.servicos || [];
-    var ativos = H.servicosAtivos();
-
-    var secIdentificacao =
-      '<section class="bloco cartao" id="sec-identificacao"><div class="bloco-titulo"><h2>Identificação</h2></div><div class="campos">' +
-      campoRotulado("Empresa", H.campo(lead, "empresa", "text")) +
-      campoRotulado("Contato", H.campo(lead, "contato", "text")) +
-      campoRotulado("Cargo", H.campo(lead, "cargo", "text")) +
-      campoRotulado("Telefone ou WhatsApp", H.campo(lead, "telefone", "tel")) +
-      campoRotulado("E-mail", H.campo(lead, "email", "email")) +
-      campoRotulado("Cidade", H.campo(lead, "cidade", "text")) +
-      campoRotulado("Segmento", H.campo(lead, "segmento", "text")) +
-      campoRotulado("Origem do lead", H.select(lead, "origem", D.origens)) +
-      campoRotulado("Data da diagnóstica", H.campo(lead, "diag.data", "date")) +
-      campoRotulado("Formato", H.select(lead, "diag.formato", D.formatos)) +
-      campoRotulado("Quem vai pela MecTRIA", H.campo(lead, "diag.participantes", "text"), true) +
-      "</div></section>";
-
-    var secPreparacao =
-      '<section class="bloco cartao" id="sec-preparacao"><div class="bloco-titulo"><h2>Preparação</h2></div>' +
-      '<p class="muted pequeno">10 minutos antes da reunião.</p>' +
-      D.preparacao.map(function (t, i) {
-        return '<label class="check">' + H.campo(lead, "diag.prep." + i, "checkbox") + "<span>" + H.esc(t) + "</span></label>";
-      }).join("") +
-      '<div class="pergunta"><label for="hipotese">Hipótese de dor</label>' + H.campo(lead, "diag.hipotese", "textarea", ' id="hipotese"') + "</div>" +
-      "</section>";
-
-    var secAbertura =
-      '<section class="bloco cartao" id="sec-abertura"><div class="bloco-titulo"><h2>Abertura</h2></div>' +
-      D.abertura.map(function (a) {
-        return "<h3>" + H.esc(a.titulo) + '</h3><div class="fala" data-modelo="' + H.esc(a.fala) + '"></div>' +
-          (a.dica ? '<p class="dica">' + H.esc(a.dica) + "</p>" : "") +
-          (a.pacto ? '<p><label class="pacto-check">' + H.campo(lead, "diag.pactoAgenda", "checkbox") + H.esc(a.pacto) + "</label></p>" : "");
-      }).join("") +
-      "</section>";
-
-    var secBlocos = D.blocos.map(function (b) {
-      return '<section class="bloco cartao" id="sec-' + b.id + '"><div class="bloco-titulo"><span class="letra">' + H.esc(b.letra) +
-        "</span><h2>" + H.esc(b.titulo) + '</h2></div><p class="muted pequeno">' + H.esc(b.intro) + "</p>" +
-        b.perguntas.map(function (p) { return pergunta(lead, p, b.letra); }).join("") + "</section>";
-    }).join("");
-
-    var secServicos =
-      '<section class="bloco cartao" id="sec-servicos"><div class="bloco-titulo"><span class="letra">S</span><h2>Serviço e escopo técnico</h2></div>' +
-      '<p class="muted pequeno">Marque o serviço quando a dor apontar para ele (o roteador ao lado ajuda). As perguntas técnicas aparecem aqui e vão para o briefing de Projetos.</p>' +
-      '<div class="chips">' +
-      ativos.map(function (s) {
-        return '<button type="button" class="chip' + (lead.servicos.indexOf(s.id) !== -1 ? " ativo" : "") + '" data-servico="' + s.id + '">' + H.esc(s.nome) + "</button>";
-      }).join("") +
-      "</div>" +
-      (lead.servicos.length
-        ? lead.servicos.map(function (id) {
-            var s = H.servico(id);
-            if (!s) return "";
-            return '<div class="servico-bloco"><h3>' + H.esc(s.nome) + ' <span class="selo">' + H.esc(s.sigla) + "</span></h3>" +
-              '<div class="entrega-foco"><div><h4>O que entregamos</h4><ul>' +
-              s.entregamos.map(function (x) { return "<li>" + H.esc(x) + "</li>"; }).join("") +
-              "</ul></div><div><h4>Fica com o cliente" + (s.ficaComClienteValidar ? H.seloValidar() : "") + "</h4><ul>" +
-              s.ficaComCliente.map(function (x) { return "<li>" + H.esc(x) + "</li>"; }).join("") +
-              "</ul></div></div>" +
-              s.perguntas.map(function (p) { return pergunta(lead, p); }).join("") +
-              '<p class="dica">Na planilha: ' + H.esc(s.precificacao) + "</p></div>";
-          }).join("")
-        : '<p class="vazio" style="margin-top:12px">Nenhum serviço marcado ainda.</p>') +
-      '<h3 style="margin-top:18px">Escopo geral</h3>' +
-      D.escopoGeral.map(function (p) { return pergunta(lead, p); }).join("") +
-      "</section>";
-
-    var secFechamento =
-      '<section class="bloco cartao" id="sec-fechamento"><div class="bloco-titulo"><h2>Fechamento da diagnóstica</h2></div>' +
-      '<h3>1. Resumo</h3><div class="fala" data-modelo="' + H.esc(D.fechamento.resumo) + '"></div>' +
-      '<label class="check">' + H.campo(lead, "diag.resumoConfirmado", "checkbox") + "<span>O cliente confirmou o resumo</span></label>" +
-      '<h3 style="margin-top:16px">2. Micro pacto de critério</h3><div class="fala" data-modelo="' + H.esc(D.fechamento.pacto) + '"></div>' +
-      '<p class="dica">' + H.esc(D.fechamento.pactoDica) + "</p>" +
-      '<p><label class="pacto-check">' + H.campo(lead, "diag.pactoCriterio", "checkbox") + "Pacto feito</label></p>" +
-      '<h3 style="margin-top:16px">3. Apresentação da proposta marcada</h3><div class="fala" data-modelo="' + H.esc(D.fechamento.agendamento) + '"></div>' +
-      '<p class="dica">' + H.esc(D.fechamento.agendamentoDica) + "</p>" +
-      '<div class="campos">' +
-      campoRotulado("Data", H.campo(lead, "diag.dataProposta", "date", ' id="data-proposta"')) +
-      campoRotulado("Hora", H.campo(lead, "diag.horaProposta", "time")) +
-      campoRotulado("Formato", H.select(lead, "diag.formatoProposta", D.formatos)) +
-      campoRotulado("Quem participa", H.campo(lead, "diag.participantesProposta", "text")) +
-      "</div>" +
-      '<p><button type="button" class="botao-texto botao-pequeno" id="sugerir-data">Sugerir a data pelo fluxo de ' + H.EMPRESA.regras.diasParaProposta + " dias úteis</button></p>" +
-      '<h3 style="margin-top:16px">4. Qualificação</h3><ul class="lista-limpa" id="qualificacao"></ul>' +
-      '<label class="check">' + H.campo(lead, "diag.faixaCompativel", "checkbox") + "<span>A faixa de investimento é compatível com o piso da planilha</span></label>" +
-      '<p class="dica">Não qualificou agora? Combine uma data para retomar e registre nas notas.</p>' +
-      '<h3 style="margin-top:16px">5. Depois da reunião</h3>' +
-      D.depois.map(function (t, i) {
-        return '<label class="check">' + H.campo(lead, "diag.depois." + i, "checkbox") + "<span>" + H.esc(t) + "</span></label>";
-      }).join("") +
-      '<div class="fala mensagem" id="resumo-cliente"></div>' +
-      '<div class="acoes"><button type="button" class="botao-sec" id="copiar-resumo">Copiar resumo para o cliente</button>' +
-      '<a class="botao botao-sec" id="whats-resumo" target="_blank" rel="noopener">Abrir no WhatsApp</a>' +
-      '<button type="button" class="botao-destaque" data-acao="pdf">Gerar PDF para Projetos</button></div>' +
-      '<div class="pergunta" style="margin-top:16px"><label for="notas-diag">Notas</label>' + H.campo(lead, "diag.notas", "textarea", ' id="notas-diag" rows="4"') + "</div>" +
-      "</section>";
-
-    el.innerHTML =
-      H.subnavPlaybooks("diagnostica") +
-      '<div class="cabecalho-tela"><div><a class="pequeno" href="#/playbooks/diagnostica">← Todas as diagnósticas</a>' +
-      '<h1 id="titulo-lead">' + H.esc(lead.empresa || "Lead sem nome") + "</h1>" +
-      '<p class="sub">Reunião diagnóstica · ' + H.esc(D.duracao) + " · " + H.seloStatus(lead) + "</p></div>" +
-      '<div class="acoes"><button type="button" class="botao-destaque" data-acao="pdf">Gerar PDF para Projetos</button>' +
-      '<a class="botao botao-sec" href="#/playbooks/proposta/' + lead.id + '">Ir para a proposta</a></div></div>' +
-
-      '<div class="tres-colunas">' +
-      '<aside class="coluna-fixa"><nav class="nav-blocos" id="nav-blocos" aria-label="Blocos da diagnóstica"></nav>' +
-      '<p style="margin-top:16px"><button type="button" class="botao-texto botao-pequeno" id="excluir-lead">Excluir este lead</button></p></aside>' +
-      "<div>" + secIdentificacao + secPreparacao + secAbertura + secBlocos + secServicos + secFechamento + "</div>" +
-      '<aside class="lateral coluna-fixa">' +
-      "<h3>Roteador de serviços</h3>" +
-      '<p class="muted pequeno" style="margin-top:-4px">Se o cliente falar disso, explore o serviço. Clique para incluir as perguntas técnicas.</p>' +
-      '<div class="roteador">' +
-      ativos.map(function (s) {
-        return '<button type="button" class="' + (lead.servicos.indexOf(s.id) !== -1 ? "ativo" : "") + '" data-servico="' + s.id + '"><strong>' +
-          H.esc(s.nome) + "</strong><span>" + H.esc(s.pistas.slice(0, 4).join(" · ")) + "</span></button>";
-      }).join("") +
-      "</div>" +
-      '<h3>Resumo ao vivo</h3><div id="resumo-vivo"></div>' +
-      '<h3>Objeções na diagnóstica</h3><div id="guia-diag"></div>' +
-      "</aside></div>";
-
-    H.ligarCampos(el, lead, function (caminho) {
-      if (caminho === "empresa") el.querySelector("#titulo-lead").textContent = lead.empresa || "Lead sem nome";
-      atualizar(el, lead);
-    });
-
-    el.addEventListener("click", function (ev) {
-      var b = ev.target.closest("[data-servico]");
-      if (b) {
-        var id = b.getAttribute("data-servico");
-        var i = lead.servicos.indexOf(id);
-        if (i === -1) lead.servicos.push(id);
-        else lead.servicos.splice(i, 1);
-        H.tocar(lead);
-        H.salvar();
-        H.rerender();
-        return;
-      }
-      if (ev.target.closest('[data-acao="pdf"]')) H.imprimirBriefing(lead);
-    });
-
-    el.querySelector("#sugerir-data").addEventListener("click", function () {
-      var base = lead.diag.data || H.hoje();
-      lead.diag.dataProposta = H.somarDiasUteis(base, H.EMPRESA.regras.diasParaProposta - 1);
-      el.querySelector("#data-proposta").value = lead.diag.dataProposta;
-      H.tocar(lead);
-      H.salvar();
-      atualizar(el, lead);
-    });
-
-    el.querySelector("#copiar-resumo").addEventListener("click", function () {
-      H.copiar(H.preencher(D.resumoCliente, H.variaveis(lead)));
-    });
-
-    el.querySelector("#excluir-lead").addEventListener("click", function () {
-      if (confirm("Excluir " + (lead.empresa || "este lead") + "? Isso apaga a diagnóstica, a proposta e o follow-up dele.")) {
-        H.removerLead(lead.id);
-        H.ir("#/playbooks/diagnostica");
-      }
-    });
-
-    H.montarGuiaObjecoes(el.querySelector("#guia-diag"), { etapa: "diagnostica", vars: H.variaveis(lead) });
-    atualizar(el, lead);
-  }
-
-  /* Atualiza o que depende das respostas sem redesenhar a tela (mantém o foco). */
-  function atualizar(el, lead) {
-    var vars = H.variaveis(lead);
-    vars.dias = String(H.EMPRESA.regras.diasParaProposta);
-
-    el.querySelector("#nav-blocos").innerHTML = secoes(lead).map(function (s) {
-      var completo = s.total && s.feito >= s.total;
-      return '<a href="#sec-' + s.id + '" data-rolar="sec-' + s.id + '"><span>' + H.esc(s.titulo) + '</span><span class="progresso' +
-        (completo ? " completo" : "") + '">' + s.feito + "/" + s.total + "</span></a>";
-    }).join("");
-
-    el.querySelectorAll("[data-modelo]").forEach(function (f) {
-      f.innerHTML = H.preencherHTML(f.getAttribute("data-modelo"), vars);
-    });
-
-    el.querySelector("#qualificacao").innerHTML = qualificacao(lead).map(function (q) {
-      return '<li style="margin-bottom:4px">' + (q.ok ? '<span class="var">✓</span> ' : '<span class="muted">○</span> ') + H.esc(q.texto) + "</li>";
-    }).join("");
-
-    el.querySelector("#resumo-vivo").innerHTML = H.resumoDiag(lead, null, ["c-dor", "g-resultado", "ci-negativa", "t-prazo", "b-faixa", "a-decisores", "a-criterio"]);
-
-    var textoResumo = H.preencher(H.DIAGNOSTICA.resumoCliente, vars);
-    el.querySelector("#resumo-cliente").innerHTML = H.preencherHTML(H.DIAGNOSTICA.resumoCliente, vars);
-    var whats = el.querySelector("#whats-resumo");
-    var link = H.linkWhatsApp(lead.telefone, textoResumo);
-    if (link) {
-      whats.href = link;
-      whats.removeAttribute("aria-disabled");
-    } else {
-      whats.removeAttribute("href");
-      whats.setAttribute("aria-disabled", "true");
-      whats.title = "Preencha o telefone do contato";
-    }
-  }
-
-  /* Os links do menu lateral rolam até o bloco sem mexer na rota. */
-  document.addEventListener("click", function (ev) {
-    var a = ev.target.closest("[data-rolar]");
-    if (!a) return;
-    ev.preventDefault();
-    var alvo = document.getElementById(a.getAttribute("data-rolar"));
-    if (alvo) alvo.scrollIntoView({ behavior: "smooth", block: "start" });
-  });
-
-  /* ---------- briefing em PDF ---------- */
-
   H.imprimirBriefing = function (lead) {
-    var D = H.DIAGNOSTICA;
     var r = lead.diag.respostas || {};
-
-    function valor(v) {
-      return v ? H.esc(v) : '<span class="vazio-doc">não coletado</span>';
-    }
-    function linha(rotulo, v) {
-      return "<tr><th>" + H.esc(rotulo) + "</th><td>" + valor(v) + "</td></tr>";
-    }
-    function tabela(linhas) {
-      return "<table><tbody>" + linhas.join("") + "</tbody></table>";
-    }
-    function porIds(ids) {
-      return tabela(ids.map(function (id) { return linha(ROTULOS_PDF[id] || id, r[id]); }));
-    }
-    function porPerguntas(perguntas) {
-      return tabela(perguntas.map(function (p) { return linha(p.texto, r[p.id]); }));
-    }
+    function valor(v) { return v ? H.esc(v) : '<span class="vazio-doc">não coletado</span>'; }
+    function linha(rotulo, v) { return "<tr><th>" + H.esc(rotulo) + "</th><td>" + valor(v) + "</td></tr>"; }
+    function tabela(linhas) { return "<table><tbody>" + linhas.join("") + "</tbody></table>"; }
+    function porIds(ids) { return tabela(ids.map(function (id) { return linha(ROTULOS_PDF[id] || id, r[id]); })); }
+    function porPerguntas(perguntas) { return tabela(perguntas.map(function (p) { return linha(p.texto, r[p.id]); })); }
 
     var servicos = (lead.servicos || []).map(H.servico).filter(Boolean);
-    var nomes = servicos.map(function (s) { return s.nome; }).join(", ");
     var dataDiag = lead.diag.data || H.hoje();
     var vendedor = lead.vendedor || H.estado.vendedor;
 
     var escopo = servicos.map(function (s) {
-      return "<h3>" + H.esc(s.nome) + "</h3>" +
-        porPerguntas(s.perguntas.filter(function (p) { return p.bloco === "escopo"; })) +
+      return "<h3>" + H.esc(s.nome) + "</h3>" + porPerguntas(s.perguntas.filter(function (p) { return p.bloco === "escopo"; })) +
         '<p class="nota"><strong>Entregamos:</strong> ' + H.esc(s.entregamos.join("; ")) +
         ". <strong>Fica com o cliente:</strong> " + H.esc(s.ficaComCliente.join("; ")) + ".</p>";
     }).join("");
-
     var parametros = servicos.map(function (s) {
-      return "<h3>" + H.esc(s.nome) + "</h3>" +
-        porPerguntas(s.perguntas.filter(function (p) { return p.bloco === "parametros"; })) +
+      return "<h3>" + H.esc(s.nome) + "</h3>" + porPerguntas(s.perguntas.filter(function (p) { return p.bloco === "parametros"; })) +
         '<p class="nota">Na planilha: ' + H.esc(s.precificacao) + "</p>";
     }).join("");
 
     var html =
-      '<div class="briefing">' +
-      '<img class="logo" src="assets/logo-mectria.png" alt="MecTRIA">' +
+      '<div class="briefing"><img class="logo" src="assets/logo-mectria.png" alt="MecTRIA">' +
       '<div class="barra">Briefing da reunião diagnóstica</div>' +
       '<p class="meta">Para: Projetos · ' + H.esc(lead.empresa || "") + " · Diagnóstica em " + H.data(dataDiag) +
       " · Responsável comercial: " + H.esc(vendedor || "não informado") + " · Gerado em " + H.data(H.hoje()) + "</p>" +
-
       "<h2>1. Identificação</h2>" +
       tabela([
         linha("Cliente", lead.empresa),
@@ -439,44 +396,28 @@
         linha("Origem do lead", lead.origem),
         linha("Formato da reunião", lead.diag.formato),
         linha("Quem foi pela MecTRIA", lead.diag.participantes),
-        linha("Serviço provável", nomes),
+        linha("Serviço provável", servicos.map(function (s) { return s.nome; }).join(", ")),
       ]) +
-
       "<h2>2. Contexto e objetivo</h2>" +
       porIds(["c-dor", "c-exemplo", "c-impedimento", "g-resultado", "g-medida", "g-maior", "p-tentativas", "p-alternativa", "p-interno", "t-porque-agora", "ci-negativa", "ci-positiva", "ci-numeros"]) +
-
-      "<h2>3. Escopo técnico</h2>" +
-      (escopo || '<p class="vazio-doc">Nenhum serviço marcado na diagnóstica.</p>') +
+      "<h2>3. Escopo técnico</h2>" + (escopo || '<p class="vazio-doc">Nenhum serviço marcado na diagnóstica.</p>') +
       "<h3>Escopo geral</h3>" + porIds(["e-incluido", "e-normas", "e-art", "e-custos"]) +
-
-      "<h2>4. Parâmetros para a planilha</h2>" +
-      (parametros || '<p class="vazio-doc">Nenhum serviço marcado na diagnóstica.</p>') +
+      "<h2>4. Parâmetros para a planilha</h2>" + (parametros || '<p class="vazio-doc">Nenhum serviço marcado na diagnóstica.</p>') +
       tabela([linha("Prazo desejado", r["t-prazo"])]) +
-
-      "<h2>5. Comercial</h2>" +
-      porIds(["b-faixa", "b-pagamento", "b-concorrencia", "b-sensibilidade"]) +
-
-      "<h2>6. Decisão</h2>" +
-      porIds(["a-decisores", "a-processo", "a-criterio", "a-prazo-decisao", "a-presenca"]) +
-
+      "<h2>5. Comercial</h2>" + porIds(["b-faixa", "b-pagamento", "b-concorrencia", "b-sensibilidade"]) +
+      "<h2>6. Decisão</h2>" + porIds(["a-decisores", "a-processo", "a-criterio", "a-prazo-decisao", "a-presenca"]) +
       "<h2>Próximo passo</h2>" +
       tabela([
         linha("Apresentação da proposta", lead.diag.dataProposta ? H.data(lead.diag.dataProposta) + (lead.diag.horaProposta ? " às " + lead.diag.horaProposta : "") : ""),
-        linha("Formato", lead.diag.formatoProposta),
-        linha("Quem participa", lead.diag.participantesProposta),
         linha("Estimativa técnica (Projetos)", "Dia 1, à tarde: " + H.data(dataDiag)),
         linha("Precificação e validação", "Dia 2: " + H.data(H.somarDiasUteis(dataDiag, 1))),
       ]) +
-
       "<h2>Qualificação</h2>" +
       tabela(qualificacao(lead).map(function (q) { return "<tr><th>" + H.esc(q.texto) + "</th><td>" + (q.ok ? "Sim" : "Não") + "</td></tr>"; })) +
-
       "<h2>Hipótese inicial e notas</h2>" +
       tabela([linha("Hipótese de dor", lead.diag.hipotese), linha("Notas do vendedor", lead.diag.notas)]) +
-
       '<p class="rodape">MecTRIA · ' + H.esc(H.EMPRESA.assinatura) + " · " + H.esc(H.EMPRESA.site) + " · " + H.esc(H.EMPRESA.email) +
-      " · Documento interno, não enviar ao cliente.</p>" +
-      "</div>";
+      " · Documento interno, não enviar ao cliente.</p></div>";
 
     var area = document.getElementById("impressao");
     area.innerHTML = html;
@@ -493,10 +434,10 @@
   };
 
   H.telas.diagnostica = {
-    render: function (el, id) {
+    render: function (el, id, passo) {
       var lead = id && H.lead(id);
       if (!lead) lista(el);
-      else editor(el, lead);
+      else editor(el, lead, passo);
     },
   };
 })(window.HUB);

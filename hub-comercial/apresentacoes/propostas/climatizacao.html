@@ -1,0 +1,38 @@
+<!doctype html>
+<html lang="pt-BR">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="robots" content="noindex, nofollow">
+    <title>Proposta · MecTRIA</title>
+    <link rel="icon" href="../../assets/simbolo-mectria.png">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@500;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="../../css/marca.css">
+    <link rel="stylesheet" href="../../css/deck.css">
+  </head>
+  <body class="deck-pagina">
+    <main id="deck"></main>
+
+    <script src="../../js/dados/empresa.js"></script>
+    <script src="../../js/dados/servicos.js"></script>
+    <script src="../../js/dados/diagnostica.js"></script>
+    <script src="../../js/dados/fup.js"></script>
+    <script src="../../js/base.js"></script>
+    <script src="../deck.js"></script>
+    <script src="../proposta-base.js"></script>
+    <script>
+      /* Apresentação de proposta: Climatização.
+         O que é específico deste serviço fica aqui. A sequência padrão está em ../proposta-base.js
+         e os dados do serviço (método, escopo, céu e inferno) em js/dados/servicos.js. */
+      var CONFIG = {
+        servico: "climatizacao",
+        frase: "O ar certo para cada ambiente, sem equipamento a mais.",
+        ocultar: [],
+        extras: [],
+      };
+      montarProposta(CONFIG);
+    </script>
+  </body>
+</html>
