@@ -2,9 +2,13 @@
 
 Uso: python3 contrato/gerar-pdf.py contrato/minuta-contrato-vN.md saida.pdf [rótulo]
 
+Versão de assinatura: passe o CPF do interveniente pela variável de ambiente CPF_INTERVENIENTE
+e grave a saída fora do repositório (CPF não é versionado).
+
 Tira a nota interna do topo, troca as marcações [PREENCHER] por linhas em branco
 e monta o bloco de assinaturas (assinatura eletrônica: sem testemunhas nem rubricas). Depende de reportlab e das fontes Liberation.
 """
+import os
 import re
 import sys
 
@@ -61,11 +65,14 @@ E = {
 }
 
 BRANCO_CPF = "CPF nº ______________________"
+CPF_INTERVENIENTE = os.environ.get("CPF_INTERVENIENTE", "").strip()
+CPF_MARCELO = f"CPF nº {CPF_INTERVENIENTE}" if CPF_INTERVENIENTE else BRANCO_CPF
 BRANCO_CURTO = "______________"
 
 
 def preencher_brancos(texto):
-    texto = re.sub(r"CPF \[PREENCHER[^\]]*\]", BRANCO_CPF, texto)
+    # o único CPF que fica no contrato é o do interveniente
+    texto = re.sub(r"CPF \[PREENCHER[^\]]*\]", CPF_MARCELO, texto)
     texto = texto.replace("[PREENCHER: data]", "_____ de ____________________ de 2026")
     texto = texto.replace("[PREENCHER: mês]", "____________________")
     return re.sub(r"\[PREENCHER[^\]]*\]", BRANCO_CURTO, texto)
@@ -113,7 +120,7 @@ def assinatura(rotulo, nome, cargo, entidade=None, cpf=True):
     if entidade:
         partes.append(Paragraph(entidade, E["assin"]))
     if cpf:
-        partes.append(Paragraph(BRANCO_CPF, E["assin"]))
+        partes.append(Paragraph(cpf if isinstance(cpf, str) else BRANCO_CPF, E["assin"]))
     partes.append(Paragraph(rotulo, E["assin_rot"]))
     return partes
 
@@ -126,7 +133,7 @@ def bloco_assinaturas(fecho):
                                 "Empresa Jr Engenharia Mecânica do Triângulo Mineiro", cpf=False)]],
                    colWidths=[col, col])
     linha2 = Table([[assinatura("INTERVENIENTE", "Marcelo Zaiden",
-                                "Vice-Presidente e responsável pelo projeto")]], colWidths=[col])
+                                "Vice-Presidente e responsável pelo projeto", cpf=CPF_MARCELO)]], colWidths=[col])
     for t in (linha1, linha2):
         t.setStyle(TableStyle([("VALIGN", (0, 0), (-1, -1), "TOP"), ("LEFTPADDING", (0, 0), (-1, -1), 4),
                                ("RIGHTPADDING", (0, 0), (-1, -1), 4)]))

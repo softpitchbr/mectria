@@ -78,7 +78,7 @@ A média vem do **faturamento** e a apuração usa o **vendido** (contratos assi
 **Recebido em 07/10 (WhatsApp):** faturamento de 2025 e de 2026, usados no Anexo III. O Marcelo respondeu "fechou" depois da troca de áudios.
 
 1. ~~Faturamento e meses da média.~~ Resolvido: R$ 5.000 (2025).
-2. CPF do Marcelo (interveniente), só na versão de assinatura. Lucas e Arthur assinam pelas empresas, sem CPF (decisão do Lucas, 07/10).
+2. ~~CPF do Marcelo (interveniente).~~ Recebido em 08/10. A versão para assinatura foi gerada fora do repositório, com `CPF_INTERVENIENTE` (ver `gerar-pdf.py`). O CPF não fica salvo aqui. Lucas e Arthur assinam pelas empresas, sem CPF (decisão do Lucas, 07/10).
 3. **Quem assina (histórico).** A minuta põe Arthur Jordão (Presidente) e Marcelo Zaiden (Vice-Presidente), porque o contrato é assinado agora, antes da troca de gestão. Confirmar no estatuto se basta o presidente ou se são exigidas duas assinaturas. O Marcelo deve ser o próximo presidente (~90% de chance, ainda não sabatinado). A cláusula 12 garante que o contrato continua valendo com a nova diretoria.
 
 ### Da Triângulo
