@@ -30,11 +30,11 @@ for nome, arquivo in [("Serif", "LiberationSerif-Regular"), ("Serif-B", "Liberat
     pdfmetrics.registerFont(TTFont(nome, FONTES + arquivo + ".ttf"))
 pdfmetrics.registerFontFamily("Serif", normal="Serif", bold="Serif-B", italic="Serif-I", boldItalic="Serif-BI")
 
-TINTA = colors.HexColor("#1A1A1A")
-CINZA = colors.HexColor("#6B6B6B")
-LINHA = colors.HexColor("#BDBDBD")
-FUNDO = colors.HexColor("#F1F0EE")
-DESTAQUE = colors.HexColor("#8A2A30")
+# preto e branco, com cara de contrato oficial: só a tabela tem um cinza claro no cabeçalho
+TINTA = colors.black
+CINZA = colors.HexColor("#404040")
+LINHA = colors.HexColor("#808080")
+FUNDO = colors.HexColor("#EBEBEB")
 
 LARGURA, ALTURA = A4
 MARGEM_X, MARGEM_TOPO, MARGEM_BASE = 2.3 * cm, 2.4 * cm, 2.2 * cm
@@ -47,7 +47,7 @@ E = {
                                 textColor=CINZA, spaceAfter=16),
     "anexo": ParagraphStyle("anexo", fontName="Serif-B", fontSize=12.5, leading=17, alignment=TA_CENTER,
                             textColor=TINTA, spaceAfter=12),
-    "clausula": ParagraphStyle("clausula", fontName="Serif-B", fontSize=10.5, leading=14, textColor=DESTAQUE,
+    "clausula": ParagraphStyle("clausula", fontName="Serif-B", fontSize=10.5, leading=14, textColor=TINTA,
                                spaceBefore=11, spaceAfter=4, keepWithNext=True),
     "sub": ParagraphStyle("sub", fontName="Serif-B", fontSize=10.5, leading=14, textColor=TINTA,
                           spaceBefore=9, spaceAfter=4, keepWithNext=True),
