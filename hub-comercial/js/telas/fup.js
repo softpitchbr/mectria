@@ -105,10 +105,11 @@
         : '<p class="vazio">Nada aqui.</p>') +
       '<details class="mais" style="margin-top:20px"><summary>Regras do follow-up</summary><ul class="lista-simples">' +
       H.FUP.regras.map(function (r) { return "<li>" + H.esc(r) + "</li>"; }).join("") + "</ul></details>" +
-      '<p><button type="button" class="botao-texto botao-pequeno" id="csv">Exportar planilha (CSV)</button></p></div>';
+      (window.HUB_SEM_DOWNLOAD ? "" : '<p><button type="button" class="botao-texto botao-pequeno" id="csv">Exportar planilha (CSV)</button></p>') + "</div>";
 
     el.querySelector("#nova").addEventListener("click", novaProposta);
-    el.querySelector("#csv").addEventListener("click", H.exportarCSV);
+    var csv = el.querySelector("#csv");
+    if (csv) csv.addEventListener("click", H.exportarCSV);
     el.addEventListener("click", function (ev) {
       var b = ev.target.closest("[data-filtro]");
       if (b) {

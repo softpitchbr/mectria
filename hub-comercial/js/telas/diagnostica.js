@@ -419,6 +419,14 @@
       '<p class="rodape">MecTRIA · ' + H.esc(H.EMPRESA.assinatura) + " · " + H.esc(H.EMPRESA.site) + " · " + H.esc(H.EMPRESA.email) +
       " · Documento interno, não enviar ao cliente.</p></div>";
 
+    // onde não dá para imprimir (cópia publicada como artifact), o briefing abre na tela
+    if (window.HUB_SEM_IMPRESSAO) {
+      H.gaveta("Briefing para Projetos", function (corpo) {
+        corpo.innerHTML = '<p class="dica">Aqui o briefing só aparece na tela. Para salvar em PDF, abra o hub no computador (index.html) e use o mesmo botão.</p>' + html;
+      });
+      document.querySelector(".gaveta").classList.add("gaveta-larga");
+      return;
+    }
     var area = document.getElementById("impressao");
     area.innerHTML = html;
     var tituloOriginal = document.title;

@@ -95,11 +95,13 @@
     H.gaveta("Ajustes", function (corpo) {
       corpo.innerHTML =
         H.rotulado("Seu nome (vai nas mensagens)", '<input id="ajuste-nome" type="text" autocomplete="name" value="' + H.esc(H.estado.vendedor) + '">') +
-        '<div class="secao"><h2>Dados</h2><p class="pequeno muted">Ficam só neste navegador. Exporte o backup toda semana.</p>' +
+        '<div class="secao"><h2>Dados</h2><p class="pequeno muted">Ficam só neste navegador.' + (window.HUB_SEM_DOWNLOAD ? "" : " Exporte o backup toda semana.") + "</p>" +
         '<div style="display:grid;gap:8px">' +
-        '<button type="button" class="botao-sec" data-acao="exportar">Exportar backup</button>' +
+        (window.HUB_SEM_DOWNLOAD
+          ? '<p class="dica">Nesta cópia não dá para baixar arquivos. Para exportar o backup ou o CSV, abra o hub no computador (index.html).</p>'
+          : '<button type="button" class="botao-sec" data-acao="exportar">Exportar backup</button>' +
+            '<button type="button" class="botao-sec" data-acao="csv">Planilha das propostas (CSV)</button>') +
         '<button type="button" class="botao-sec" data-acao="importar">Importar backup</button>' +
-        '<button type="button" class="botao-sec" data-acao="csv">Planilha das propostas (CSV)</button>' +
         '<input type="file" accept="application/json,.json" hidden></div></div>';
       corpo.querySelector("#ajuste-nome").addEventListener("input", function (ev) {
         H.estado.vendedor = ev.target.value.trim();

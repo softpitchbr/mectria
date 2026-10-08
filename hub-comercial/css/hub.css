@@ -13,7 +13,7 @@ body {
 
 .app-topo {
   position: sticky;
-  top: 0;
+  top: env(safe-area-inset-top, 0px);
   z-index: 30;
   background: var(--branco);
   border-bottom: 2px solid var(--vinho);
@@ -597,7 +597,7 @@ details.mais[open] > summary::before {
 
 .reuniao-topo {
   position: sticky;
-  top: 66px;
+  top: calc(66px + env(safe-area-inset-top, 0px));
   z-index: 20;
   background: var(--branco);
   padding: 12px 0 0;
@@ -881,6 +881,10 @@ mark.falta {
   display: flex;
   flex-direction: column;
   box-shadow: -8px 0 32px rgba(48, 48, 48, 0.15);
+}
+
+.gaveta.gaveta-larga {
+  width: min(820px, 100%);
 }
 
 .gaveta-cabeca {
