@@ -14,7 +14,8 @@ Atualizar este arquivo sempre que algo for decidido ou resolvido.
 | Acompanhamento das primeiras reuniões reais é opcional (decisão de Marcelo e Arthur) | R2 15:07, 17:54 |
 | Pós-venda de 2 meses. Depois a MecTRIA assume tudo | R2 19:18 |
 | Pagamento atrelado a resultado, a ser detalhado no contrato | Reunião não gravada, confirmado na R2 27:48 |
-| Começar pelo fechamento. Topo de funil, prospecção e pós-venda ficam para projetos futuros | R1 46:39, R2 30:42 |
+| Começar pelo fechamento. Topo de funil, prospecção e pós-venda ficam para projetos futuros. **Revisto em 08/10:** a prospecção (cold call) entra na R, dentro do hub do vendedor; o pós-venda continua fora | R1 46:39, R2 30:42 · revisão: Lucas, 08/10/2026 |
+| **Etapa R ampliada e adiantada.** Além do que está no contrato (proposta de valor, textos, processo visual e objeções), a R monta o processo comercial completo num **hub do vendedor** (`hub-comercial/`): apresentações (diagnóstica, portfólio para o WhatsApp, proposta por serviço), playbooks (cold call; diagnóstica com perguntas GPCTBA × Carta de Serviços e briefing em PDF para Projetos; proposta com checklist de micro pactos e guia de objeções) e cadência de follow-up. Começa já, em paralelo com a T, que está com o Matheus. A validação formal da copy continua em 12/11 | Lucas, 08/10/2026 |
 | **Contrato pausado até o CNPJ da Triângulo (LTDA) ficar ativo.** As demais entregas seguem. A versão para assinatura (v3) está pronta | Lucas, 08/10/2026 |
 | **Kick-off na sexta, 09/10/2026.** Execução de 12/10 a 04/12, acompanhamento de 07/12/2026 a 05/02/2027 | Lucas, 06/10/2026 |
 | **Contrato:** resultado líquido com trava; apuração a partir de dez/2026, quando a estrutura entra em uso; acompanhamento até fev/2027 com 1 reunião por mês e ajuste mensal do roteiro (contraproposta aos "até junho" do Marcelo); parcelas das etapas entregues devidas se a MecTRIA desistir ou não usar o processo (T 2, R 1, I 2, A 1) | Lucas, 06/10/2026 |
@@ -107,4 +108,13 @@ Manual de identidade visual, Carta de Serviços e planilhas de precificação (2
 - **Planilha de taxa de fechamento (tarefa 34):** ampliar o Histórico deles em vez de criar outra planilha.
 - **Status da planilha v4:** já está em uso? Quem montou?
 - **Apresentação atual (Ap Gallu):** analisada só pelo texto (`13-apresentacao-atual-mectria.md`). Falta o PDF para ver o visual, saber se é o modelo padrão e receber mais 2 ou 3 propostas (uma ganha e uma perdida).
+
+### 17. Etapa R ampliada: escopo, contrato e uso do hub (média)
+**Decidido em 08/10 (Lucas):** a R monta o processo comercial completo no hub do vendedor (`hub-comercial/`). Falta resolver:
+- **Contrato e TAP:** o Anexo I da minuta v3 lista para a R só "processo comercial visual" e "mapa de objeções". Cold call, roteiro da diagnóstica, cadência de follow-up e o hub vão além. Como o contrato está pausado, dá para escolher agora: registrar como cortesia ou ajustar o Anexo I numa minuta v4. O topo de funil era a "oportunidade futura" do post-it 7 (`03-plano-erp.md`).
+- **Argumento a favor:** o Anexo II conta todo o valor vendido no mês, de qualquer canal. Mais propostas pela prospecção ativa também ajudam a liberar as parcelas, não só a conversão.
+- **Dados do hub:** nesta versão ficam no navegador de cada vendedor (com backup e CSV). Decidir a base compartilhada e o login antes de o time inteiro usar.
+- **Hospedagem do hub:** privada (tem regras internas de preço). Só o portfólio vai para o site público.
+- **Uso antes da S8:** se o processo vai rodar já, combinar com o Marcelo uma apresentação curta do hub ao comercial antes da capacitação formal.
+- **Conteúdo:** tudo é rascunho até a validação. Os pedidos novos estão em `14-pedidos-a-mectria.md` (itens 38 a 43).
 

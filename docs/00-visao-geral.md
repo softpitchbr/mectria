@@ -39,7 +39,7 @@ Detalhes em `04-diagnostico.md`.
 | Etapa | Semanas | Período | Entrega principal |
 |---|---|---|---|
 | **T · Tela** | S1–S3 | 12/10–30/10 | Site novo, SEO local (sitemap por palavra-chave, robots.txt, llms.txt), CTAs, formulários, chatbot novo |
-| **R · Retórica** | S4–S5 | 02/11–13/11 | Proposta de valor, tom, mensagens-chave (Primal Branding), textos do site, processo comercial visual hunter→closer, objeções e contornos |
+| **R · Retórica** | S4–S5 (adiantada desde 08/10) | 02/11–13/11 | Proposta de valor, tom, mensagens-chave (Primal Branding), textos do site, processo comercial visual hunter→closer, objeções e contornos. Desde 08/10, também o processo completo no hub do vendedor: cold call, diagnóstica, proposta e follow-up |
 | **I · Instrumento** | S6–S7 | 16/11–27/11 | Apresentação web interativa com narrativa fixa e micro pactos, bloco valor × preço, calculadora, versão PDF, roteiro do vendedor slide a slide |
 | **A · Acompanhamento** | S8 + acompanhamento | 30/11–04/12, depois até 05/02/2027 | Capacitação, roleplay, planilha de taxa de fechamento proposta a proposta, ajuste mensal do roteiro, grupo de WhatsApp, reuniões periódicas |
 
@@ -58,6 +58,7 @@ Na call foram ditos R$ 4.950 e R$ 54.900. **Esses valores estão errados** e nã
 - **Site:** decidido em 05/10 que sai do Wix para hospedagem própria. A Triângulo cria o site e a MecTRIA paga o domínio. A hospedagem está em escolha (`08-site-e-hospedagem.md`).
 - **Kick-off marcado para sexta, 09/10/2026.**
 - **Contrato:** minuta v3 (`contrato/contrato-mectria-minuta-v3.pdf`), com média de referência de R$ 5.000/mês. O Marcelo respondeu "fechou" no WhatsApp (07/10). Assinam Arthur Menezes Jordão (presidente) e Marcelo Zaiden (interveniente), só por assinatura eletrônica. **Versão para assinatura gerada em 08/10** (com o CPF do Marcelo, fora do repositório). **Pausado** até o CNPJ da Triângulo (LTDA) ficar ativo; as demais entregas seguem.
+- **R adiantada (08/10):** com o Matheus na T, a R começou já. Base do **hub do vendedor** em `hub-comercial/` (apresentações, playbooks de cold call, diagnóstica e proposta, follow-up). Conteúdo em rascunho até a validação com a MecTRIA.
 - **Materiais da MecTRIA recebidos (08/10):** manual de identidade visual, Carta de Serviços e planilhas de precificação. Ver `10-identidade-visual-mectria.md`, `11-carta-de-servicos.md` e `12-precificacao-mectria.md`.
 - **Pendente para fechar:** enviar material (gravação, link, PDF, TAP), formalizar contrapartidas, contrato com pagamento por resultado, aprovação de Marcelo e Arthur, kick-off.
 - O escopo em PDF é **anterior** ao que foi apresentado na call e precisa ser atualizado antes de ir para o Marcelo. Ver `07-decisoes-e-pendencias.md`.

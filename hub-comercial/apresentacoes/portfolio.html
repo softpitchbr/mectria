@@ -1,0 +1,118 @@
+<!doctype html>
+<html lang="pt-BR">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>MecTRIA · Empresa Júnior de Engenharia Mecânica da UFTM</title>
+    <meta name="description" content="Projetos de engenharia mecânica orientados por professores da UFTM, com o valor acessível de uma empresa júnior. Uberaba/MG.">
+    <link rel="icon" href="../assets/simbolo-mectria.png">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@500;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="../css/marca.css">
+    <style>
+      /* Portfólio para mandar no WhatsApp: abre no celular e sai em PDF (A4).
+         Rascunho de copy da etapa R, a validar com a MecTRIA. */
+      body { background: var(--branco); }
+      .faixa { padding: 56px 20px; }
+      .faixa > div { max-width: 980px; margin: 0 auto; }
+      .faixa.nevoa { background: var(--nevoa); }
+      .topo-port { background: var(--vinho); color: var(--branco); padding: 40px 20px 56px; }
+      .topo-port > div { max-width: 980px; margin: 0 auto; }
+      .topo-port img { width: 230px; display: block; margin-bottom: 36px; }
+      .topo-port h1 { font-size: clamp(30px, 5vw, 48px); color: var(--branco); max-width: 760px; }
+      .topo-port p { font-size: 18px; max-width: 720px; color: rgba(255, 255, 255, 0.92); }
+      h2 { color: var(--vinho); font-size: clamp(24px, 3.4vw, 32px); }
+      .rotulo { font-family: var(--fonte-titulo); font-weight: 500; font-size: 13px; letter-spacing: 0.08em;
+        text-transform: uppercase; color: var(--cinza); margin: 0 0 6px; }
+      .grade { display: grid; gap: 16px; grid-template-columns: repeat(auto-fill, minmax(260px, 1fr)); }
+      .item { background: var(--branco); border-radius: 10px; padding: 18px 20px; border-left: 4px solid var(--vinho); }
+      .faixa:not(.nevoa) .item { background: var(--nevoa); }
+      .item h3 { font-size: 17px; margin-bottom: 4px; }
+      .item p { margin: 0; font-size: 15px; color: var(--grafite); }
+      .item .entrega { margin-top: 8px; font-size: 13px; color: var(--cinza); }
+      ol.passos { padding: 0; list-style: none; counter-reset: p; display: grid; gap: 14px; }
+      ol.passos li { counter-increment: p; display: flex; gap: 14px; align-items: baseline; font-size: 17px; }
+      ol.passos li::before { content: counter(p); flex: none; width: 32px; height: 32px; border-radius: 50%;
+        background: var(--vinho); color: var(--branco); font-family: var(--fonte-titulo); font-weight: 700; display: grid; place-items: center; }
+      mark.falta { background: transparent; color: var(--vermelho); border-bottom: 1px dashed var(--vermelho); }
+      .contato { display: flex; flex-wrap: wrap; gap: 10px; margin-top: 18px; }
+      .contato a { text-decoration: none; border-radius: 8px; padding: 12px 18px; font-weight: 600;
+        border: 1px solid var(--vinho); color: var(--vinho); background: var(--branco); }
+      .contato a.principal { background: var(--vermelho); border-color: var(--vermelho); color: var(--branco); }
+      footer { border-top: 2px solid var(--vinho); padding: 16px 20px 28px; font-size: 13px; color: var(--cinza); }
+      footer > div { max-width: 980px; margin: 0 auto; }
+      @media print {
+        @page { size: A4; margin: 12mm; }
+        .faixa, .topo-port { padding: 24px 0; break-inside: avoid; }
+        .topo-port, .item, ol.passos li::before { -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+        .contato a { border: 0; padding: 0 12px 0 0; background: none !important; color: var(--vinho) !important; }
+      }
+    </style>
+  </head>
+  <body>
+    <div id="portfolio"></div>
+
+    <script src="../js/dados/empresa.js"></script>
+    <script src="../js/dados/servicos.js"></script>
+    <script>
+      (function (H) {
+        var E = H.EMPRESA;
+        function esc(s) {
+          return String(s == null ? "" : s).replace(/[&<>"']/g, function (c) {
+            return { "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[c];
+          });
+        }
+        var whats = E.whatsapp
+          ? '<a class="principal" href="https://wa.me/' + esc(E.whatsapp.replace(/\D/g, "")) + '">Falar no WhatsApp</a>'
+          : '<a class="principal" href="mailto:' + esc(E.email) + '">Pedir uma reunião diagnóstica</a>';
+
+        document.getElementById("portfolio").innerHTML =
+          '<header class="topo-port"><div>' +
+          '<img src="../assets/logo-mectria-negativa.png" alt="MecTRIA">' +
+          "<h1>Projetos de engenharia mecânica orientados por professores da UFTM</h1>" +
+          "<p>Somos a MecTRIA, a " + esc(E.assinatura) + ". Desde 2013, desenvolvemos projetos reais para empresas da região, " +
+          "com documentação pronta para fabricar e o valor acessível de uma empresa júnior.</p>" +
+          "</div></header>" +
+
+          '<section class="faixa"><div><p class="rotulo">Quem somos</p><h2>Engenharia de verdade, feita por estudantes, com propósito</h2>' +
+          '<p style="font-size:17px;max-width:760px">' + esc(E.proposito) + "</p></div></section>" +
+
+          '<section class="faixa nevoa"><div><p class="rotulo">O que fazemos</p><h2>Serviços</h2><div class="grade">' +
+          H.servicosAtivos().map(function (s) {
+            return '<div class="item"><h3>' + esc(s.nome) + "</h3><p>" + esc(s.resumo) + '</p><p class="entrega">Entregamos: ' +
+              esc(s.entregamos.join("; ").toLowerCase()) + ".</p></div>";
+          }).join("") +
+          "</div></div></section>" +
+
+          '<section class="faixa"><div><p class="rotulo">Como trabalhamos</p><h2>Do primeiro contato à entrega</h2><ol class="passos">' +
+          "<li>Reunião diagnóstica para entender o cenário e o escopo</li>" +
+          "<li>Proposta em até " + E.regras.diasParaProposta + " dias úteis, com escopo, prazo e investimento</li>" +
+          "<li>Projeto com orientação de professor, etapa por etapa</li>" +
+          "<li>Entrega documentada, pronta para fabricar ou instalar</li></ol>" +
+          '<p style="max-width:760px;color:var(--cinza)">' + esc(E.foco) + "</p></div></section>" +
+
+          '<section class="faixa nevoa"><div><p class="rotulo">Por que a MecTRIA</p><h2>O que a gente garante</h2><div class="grade">' +
+          E.diferenciais.map(function (d) {
+            return '<div class="item"><h3>' + esc(d.titulo) + "</h3><p>" + esc(d.texto) + "</p></div>";
+          }).join("") +
+          "</div></div></section>" +
+
+          '<section class="faixa"><div><p class="rotulo">Casos</p><h2>Projetos que já entregamos</h2><div class="grade">' +
+          '<div class="item"><mark class="falta">[caso 1: problema, solução e resultado, com autorização do cliente]</mark></div>' +
+          '<div class="item"><mark class="falta">[caso 2]</mark></div>' +
+          '<div class="item"><mark class="falta">[caso 3]</mark></div>' +
+          "</div></div></section>" +
+
+          '<section class="faixa nevoa"><div><p class="rotulo">Contato</p><h2>Vamos conversar sobre o seu projeto?</h2>' +
+          '<p style="font-size:17px">Uma reunião diagnóstica de 30 minutos, sem compromisso, para entender o seu cenário.</p>' +
+          '<div class="contato">' + whats + '<a href="mailto:' + esc(E.email) + '">' + esc(E.email) + '</a><a href="https://' + esc(E.site) + '">' + esc(E.site) + "</a></div>" +
+          "</div></section>" +
+
+          "<footer><div>MecTRIA · " + esc(E.assinatura) + " · " + esc(E.cidade) + "</div></footer>";
+
+        if (new URLSearchParams(location.search).get("imprimir")) window.addEventListener("load", function () { window.print(); });
+      })(window.HUB);
+    </script>
+  </body>
+</html>

@@ -1,0 +1,63 @@
+/* Tokens da marca MecTRIA (manual de identidade v1.0, out/2026).
+   Proporção numa peça: branco/névoa 60%, vinho 25%, grafite 10%, vermelho 5%.
+   Vermelho só para destacar (uma palavra, um botão) e nunca sobre vinho ou grafite.
+   Nada de azul, nem em links. Texto sempre alinhado à esquerda. */
+:root {
+  --vinho: #780000;
+  --vermelho: #c1272d;
+  --grafite: #303030;
+  --cinza: #606060;
+  --nevoa: #f3f1ee;
+  --branco: #ffffff;
+
+  /* derivados neutros (sem criar outro tom de vinho) */
+  --linha: #dcd8d2;
+  --linha-forte: #bdb7ae;
+
+  --fonte-titulo: "Poppins", "Segoe UI", Roboto, Arial, sans-serif;
+  --fonte-texto: "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+  --fonte-documento: Calibri, Carlito, "Segoe UI", Arial, sans-serif;
+
+  --raio: 8px;
+  --sombra: 0 1px 2px rgba(48, 48, 48, 0.08), 0 4px 16px rgba(48, 48, 48, 0.06);
+}
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  font-family: var(--fonte-texto);
+  color: var(--grafite);
+  background: var(--branco);
+  line-height: 1.5;
+  text-align: left;
+}
+
+h1,
+h2,
+h3,
+h4 {
+  font-family: var(--fonte-titulo);
+  font-weight: 700;
+  line-height: 1.25;
+  margin: 0 0 0.5em;
+}
+
+a {
+  color: var(--vinho);
+}
+
+:focus-visible {
+  outline: 2px solid var(--vinho);
+  outline-offset: 2px;
+}
+
+.filete {
+  border: 0;
+  border-top: 2px solid var(--vinho);
+  margin: 0;
+}

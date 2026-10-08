@@ -1,0 +1,89 @@
+<!doctype html>
+<html lang="pt-BR">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="robots" content="noindex, nofollow">
+    <title>Reunião diagnóstica · MecTRIA</title>
+    <link rel="icon" href="../assets/simbolo-mectria.png">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@500;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="../css/marca.css">
+    <link rel="stylesheet" href="../css/deck.css">
+  </head>
+  <body class="deck-pagina">
+    <main id="deck"></main>
+
+    <script src="../js/dados/empresa.js"></script>
+    <script src="../js/dados/servicos.js"></script>
+    <script src="../js/dados/diagnostica.js"></script>
+    <script src="../js/dados/fup.js"></script>
+    <script src="../js/base.js"></script>
+    <script src="deck.js"></script>
+    <script>
+      /* Apoio visual curto para a reunião diagnóstica (?lead=id). A conversa segue o playbook do hub:
+         aqui só entram o combinado da reunião, quem somos, o que fazemos e o próximo passo. */
+      (function (H) {
+        var q = new URLSearchParams(location.search);
+        var lead = q.get("lead") ? H.lead(q.get("lead")) : null;
+        var E = H.EMPRESA;
+        function falta(rotulo) { return '<mark class="falta">[' + H.esc(rotulo) + "]</mark>"; }
+        var empresa = lead && lead.empresa ? H.esc(lead.empresa) : falta("empresa do cliente");
+        var dataProposta = lead && lead.diag && lead.diag.dataProposta ? H.data(lead.diag.dataProposta) : falta("data");
+        if (lead && lead.empresa) document.title = "Diagnóstica · " + lead.empresa + " · MecTRIA";
+
+        var slides = [
+          '<section class="slide vinho sem-rodape">' +
+            '<img class="logo-capa" src="../assets/logo-mectria-negativa.png" alt="MecTRIA">' +
+            '<p class="rotulo">Reunião diagnóstica</p><h1>Vamos entender o cenário de vocês</h1>' +
+            '<p class="grande">' + empresa + " · " + H.data((lead && lead.diag && lead.diag.data) || H.hoje()) + "</p></section>",
+
+          '<section class="slide"><p class="rotulo">O combinado para hoje</p><h2>Como vai ser a nossa conversa</h2>' +
+            '<ol class="etapas" style="font-size:34px">' +
+            "<li>Entender o cenário de vocês <span style=\"color:var(--cinza)\">· 20 a 30 min</span></li>" +
+            "<li>Mostrar como a gente trabalha <span style=\"color:var(--cinza)\">· 5 min</span></li>" +
+            "<li>Decidir juntos o próximo passo <span style=\"color:var(--cinza)\">· 5 min</span></li></ol>" +
+            '<p class="grande" style="margin-top:50px">Se no fim não fizer sentido, vocês falam sem problema nenhum.</p></section>',
+
+          '<section class="slide"><p class="rotulo">Quem somos</p><h2>' + H.esc(E.assinatura) + "</h2>" +
+            '<div class="colunas"><p style="font-size:30px">' + H.esc(E.proposito) + "</p>" +
+            '<div style="display:grid;gap:20px">' +
+            '<div class="caixa"><strong>Desde 2013</strong><br>Projetos reais para empresas da região</div>' +
+            '<div class="caixa vinho"><strong>Orientação de professores</strong><br>Em todas as decisões técnicas</div>' +
+            '<div class="caixa"><strong>A gente projeta e documenta</strong><br>Fabricação e instalação ficam com vocês ou com um parceiro</div>' +
+            "</div></div></section>",
+
+          '<section class="slide nevoa"><p class="rotulo">O que fazemos</p><h2>Projetos de engenharia mecânica</h2>' +
+            '<div class="grade-servicos">' +
+            H.servicosAtivos().map(function (s) {
+              return "<div><strong>" + H.esc(s.nome) + "</strong>" + H.esc(s.resumo) + "</div>";
+            }).join("") +
+            "</div></section>",
+
+          '<section class="slide"><p class="rotulo">Como trabalhamos</p><h2>Do primeiro contato à entrega</h2><div class="colunas">' +
+            '<ol class="etapas">' +
+            "<li>Reunião diagnóstica: o cenário e o escopo</li>" +
+            "<li>Proposta em até " + E.regras.diasParaProposta + " dias úteis, com escopo, prazo e investimento</li>" +
+            "<li>Projeto com orientação de professor, etapa por etapa</li>" +
+            "<li>Entrega documentada, pronta para fabricar ou instalar</li></ol>" +
+            '<div class="caixa"><p>' + H.esc(E.foco) + "</p></div></div></section>",
+
+          '<section class="slide"><p class="rotulo">Por que a MecTRIA</p><h2>O que a gente garante</h2><div class="colunas-3">' +
+            E.diferenciais.map(function (d) {
+              return '<div class="caixa"><h3>' + H.esc(d.titulo) + '</h3><p style="font-size:23px">' + H.esc(d.texto) + "</p></div>";
+            }).join("") +
+            "</div></section>",
+
+          '<section class="slide vinho"><p class="rotulo">Próximo passo</p><h2>Apresentação da proposta</h2>' +
+            '<p class="grande">' + dataProposta + (lead && lead.diag && lead.diag.horaProposta ? " às " + H.esc(lead.diag.horaProposta) : "") +
+            " · uns 40 minutos, com quem decide.</p>" +
+            '<p class="grande" style="margin-top:40px">Até lá, se puderem, mandem fotos, desenhos ou plantas que ajudem o nosso time de projetos.</p></section>',
+        ];
+
+        document.getElementById("deck").innerHTML = slides.join("");
+        DECK.iniciar();
+      })(window.HUB);
+    </script>
+  </body>
+</html>

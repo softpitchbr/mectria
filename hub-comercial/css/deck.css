@@ -1,0 +1,442 @@
+/* Apresentações em slides (diagnóstica e proposta). Slide desenhado em 1600 × 900 e escalado
+   para a tela. No celular vira rolagem vertical. Na impressão, um slide por página (PDF). */
+
+html,
+body {
+  height: 100%;
+}
+
+body.deck-pagina {
+  background: var(--grafite);
+  overflow: hidden;
+}
+
+.slide {
+  width: 1600px;
+  height: 900px;
+  background: var(--branco);
+  color: var(--grafite);
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  transform-origin: center center;
+  display: none;
+  overflow: hidden;
+  padding: 90px 110px 80px;
+  font-size: 28px;
+  line-height: 1.45;
+}
+
+.slide.atual {
+  display: block;
+}
+
+.slide::after {
+  /* filete vinho no rodapé de todo slide claro */
+  content: "";
+  position: absolute;
+  left: 110px;
+  right: 110px;
+  bottom: 56px;
+  border-top: 2px solid var(--vinho);
+}
+
+.slide .rodape-slide {
+  position: absolute;
+  left: 110px;
+  right: 110px;
+  bottom: 18px;
+  display: flex;
+  justify-content: space-between;
+  font-size: 18px;
+  color: var(--cinza);
+}
+
+.slide.nevoa {
+  background: var(--nevoa);
+}
+
+.slide.vinho {
+  background: var(--vinho);
+  color: var(--branco);
+}
+
+.slide.vinho::after {
+  border-top-color: rgba(255, 255, 255, 0.5);
+}
+
+.slide.vinho .rodape-slide {
+  color: rgba(255, 255, 255, 0.8);
+}
+
+.slide h1 {
+  font-size: 68px;
+  color: var(--vinho);
+  margin-bottom: 24px;
+}
+
+.slide h2 {
+  font-size: 54px;
+  color: var(--vinho);
+  margin-bottom: 36px;
+}
+
+.slide h3 {
+  font-size: 30px;
+  margin-bottom: 10px;
+}
+
+.slide.vinho h1,
+.slide.vinho h2,
+.slide.vinho h3 {
+  color: var(--branco);
+}
+
+.slide .rotulo {
+  font-family: var(--fonte-titulo);
+  font-weight: 500;
+  font-size: 22px;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--cinza);
+  margin-bottom: 12px;
+}
+
+.slide.vinho .rotulo {
+  color: rgba(255, 255, 255, 0.8);
+}
+
+.slide .grande {
+  font-size: 36px;
+  max-width: 1200px;
+}
+
+.slide .colunas {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 60px;
+}
+
+.slide .colunas-3 {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 36px;
+}
+
+.slide .caixa {
+  background: var(--nevoa);
+  border-radius: 12px;
+  padding: 32px 36px;
+}
+
+.slide.nevoa .caixa {
+  background: var(--branco);
+}
+
+.slide .caixa.vinho {
+  background: var(--vinho);
+  color: var(--branco);
+}
+
+.slide ul,
+.slide ol {
+  margin: 0;
+  padding-left: 1.1em;
+}
+
+.slide li {
+  margin-bottom: 12px;
+}
+
+.slide .numero-grande {
+  font-family: var(--fonte-titulo);
+  font-weight: 700;
+  font-size: 84px;
+  color: var(--vinho);
+  line-height: 1;
+}
+
+.slide .etapas {
+  list-style: none;
+  padding: 0;
+  counter-reset: etapa;
+  display: grid;
+  gap: 14px;
+}
+
+.slide .etapas li {
+  counter-increment: etapa;
+  display: flex;
+  gap: 20px;
+  align-items: baseline;
+  margin: 0;
+}
+
+.slide .etapas li::before {
+  content: counter(etapa);
+  flex: none;
+  width: 48px;
+  height: 48px;
+  border-radius: 50%;
+  background: var(--vinho);
+  color: var(--branco);
+  font-family: var(--fonte-titulo);
+  font-weight: 700;
+  font-size: 24px;
+  display: grid;
+  place-items: center;
+}
+
+.slide .grade-servicos {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 18px;
+  font-size: 21px;
+}
+
+.slide .grade-servicos div {
+  border-left: 4px solid var(--vinho);
+  padding: 6px 0 6px 14px;
+}
+
+.slide .grade-servicos strong {
+  display: block;
+  font-size: 23px;
+}
+
+.slide mark.falta {
+  background: transparent;
+  color: var(--vermelho);
+  border-bottom: 2px dashed var(--vermelho);
+}
+
+.slide.vinho mark.falta {
+  color: var(--branco);
+  border-bottom-color: var(--branco);
+}
+
+.slide .logo-capa {
+  width: 360px;
+  margin-bottom: 70px;
+}
+
+.slide .pergunta-pacto {
+  font-family: var(--fonte-titulo);
+  font-weight: 700;
+  font-size: 76px;
+  line-height: 1.15;
+  max-width: 1250px;
+  margin-top: 120px;
+}
+
+/* botão de micro pacto: o vendedor clica quando o cliente concorda */
+.pacto-botao {
+  font: inherit;
+  font-family: var(--fonte-titulo);
+  font-weight: 500;
+  font-size: 22px;
+  border: 2px solid currentColor;
+  background: transparent;
+  color: var(--vinho);
+  border-radius: 999px;
+  padding: 10px 26px;
+  cursor: pointer;
+  margin-top: 36px;
+}
+
+.slide.vinho .pacto-botao {
+  color: var(--branco);
+}
+
+.pacto-botao.feito {
+  background: var(--vinho);
+  border-color: var(--vinho);
+  color: var(--branco);
+}
+
+.slide.vinho .pacto-botao.feito {
+  background: var(--branco);
+  border-color: var(--branco);
+  color: var(--vinho);
+}
+
+.resumo-pactos {
+  font-family: var(--fonte-titulo);
+  font-weight: 500;
+  color: var(--vinho);
+  font-size: 24px;
+}
+
+/* controles */
+.controles {
+  position: fixed;
+  right: 16px;
+  top: 14px;
+  opacity: 0.35;
+  transition: opacity 0.2s;
+  display: flex;
+  gap: 8px;
+  align-items: center;
+  z-index: 10;
+  font: 14px var(--fonte-texto);
+  color: var(--branco);
+}
+
+.controles:hover,
+.controles:focus-within {
+  opacity: 1;
+}
+
+.controles .contador {
+  background: var(--grafite);
+  border-radius: 6px;
+  padding: 6px 10px;
+}
+
+.controles button {
+  font: inherit;
+  background: var(--grafite);
+  color: var(--branco);
+  border: 1px solid var(--grafite);
+  border-radius: 6px;
+  padding: 6px 12px;
+  cursor: pointer;
+}
+
+.barra-progresso {
+  position: fixed;
+  left: 0;
+  bottom: 0;
+  height: 4px;
+  background: var(--vinho);
+  z-index: 10;
+  transition: width 0.2s;
+}
+
+/* celular e telas estreitas: rolagem vertical */
+body.deck-rolagem {
+  background: var(--nevoa);
+  overflow: auto;
+}
+
+body.deck-rolagem .slide {
+  display: block;
+  position: relative;
+  left: auto;
+  top: auto;
+  transform: none !important;
+  width: auto;
+  height: auto;
+  min-height: 0;
+  padding: 36px 20px 64px;
+  margin: 0 0 12px;
+  font-size: 17px;
+}
+
+body.deck-rolagem .slide::after {
+  left: 20px;
+  right: 20px;
+  bottom: 40px;
+}
+
+body.deck-rolagem .slide .rodape-slide {
+  left: 20px;
+  right: 20px;
+  bottom: 12px;
+  font-size: 12px;
+}
+
+body.deck-rolagem .slide h1 {
+  font-size: 32px;
+}
+
+body.deck-rolagem .slide h2 {
+  font-size: 26px;
+  margin-bottom: 18px;
+}
+
+body.deck-rolagem .slide h3 {
+  font-size: 19px;
+}
+
+body.deck-rolagem .slide .grande {
+  font-size: 19px;
+}
+
+body.deck-rolagem .slide .rotulo {
+  font-size: 13px;
+}
+
+body.deck-rolagem .slide .colunas,
+body.deck-rolagem .slide .colunas-3,
+body.deck-rolagem .slide .grade-servicos {
+  grid-template-columns: 1fr;
+  gap: 16px;
+}
+
+body.deck-rolagem .slide .caixa {
+  padding: 18px;
+}
+
+body.deck-rolagem .slide .numero-grande {
+  font-size: 44px;
+}
+
+body.deck-rolagem .slide .pergunta-pacto {
+  font-size: 30px;
+  margin-top: 10px;
+}
+
+body.deck-rolagem .slide .logo-capa {
+  width: 200px;
+  margin-bottom: 30px;
+}
+
+body.deck-rolagem .slide .etapas li::before {
+  width: 32px;
+  height: 32px;
+  font-size: 16px;
+}
+
+body.deck-rolagem .pacto-botao {
+  font-size: 15px;
+  margin-top: 18px;
+}
+
+body.deck-rolagem .controles,
+body.deck-rolagem .barra-progresso {
+  display: none;
+}
+
+@media print {
+  @page {
+    size: 1600px 900px;
+    margin: 0;
+  }
+  body.deck-pagina,
+  body.deck-rolagem {
+    background: var(--branco);
+    overflow: visible;
+  }
+  .slide,
+  body.deck-rolagem .slide {
+    display: block !important;
+    position: relative;
+    left: auto;
+    top: auto;
+    transform: none !important;
+    width: 1600px;
+    height: 900px;
+    padding: 90px 110px 80px;
+    margin: 0;
+    font-size: 28px;
+    break-after: page;
+    -webkit-print-color-adjust: exact;
+    print-color-adjust: exact;
+  }
+  .controles,
+  .barra-progresso,
+  .pacto-botao {
+    display: none !important;
+  }
+}

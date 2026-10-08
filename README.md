@@ -11,7 +11,7 @@ Meta: conversão entre proposta e fechamento de ~25% para **40%**. Kick-off em 0
 | [`docs/00-visao-geral.md`](docs/00-visao-geral.md) | Resumo de uma página: ficha, problema, solução, números e status |
 | [`docs/01-pessoas.md`](docs/01-pessoas.md) | Quem é quem na MecTRIA e na Triângulo |
 | [`docs/02-escopo.md`](docs/02-escopo.md) | Escopo formal (PDF), escopo apresentado (TRIA) e as diferenças |
-| [`docs/03-plano-erp.md`](docs/03-plano-erp.md) | Calendário, descrição, as tarefas do Kanban (37 + 7 novas da hospedagem) e os post-its, prontos para colar |
+| [`docs/03-plano-erp.md`](docs/03-plano-erp.md) | Calendário, descrição, as tarefas do Kanban (37 + 7 da hospedagem + 6 da R ampliada) e os post-its, prontos para colar |
 | [`docs/04-diagnostico.md`](docs/04-diagnostico.md) | Dores, números do funil e contexto da EJ |
 | [`docs/05-comercial.md`](docs/05-comercial.md) | Preço, contrapartidas, pagamento por resultado e tese de lucro |
 | [`docs/06-referencias-de-execucao.md`](docs/06-referencias-de-execucao.md) | Protótipo do site, sequência da apresentação com micro pactos e o deck de referência |
@@ -23,6 +23,7 @@ Meta: conversão entre proposta e fechamento de ~25% para **40%**. Kick-off em 0
 | [`docs/12-precificacao-mectria.md`](docs/12-precificacao-mectria.md) | Como a MecTRIA forma preço, briefing, fluxo de 3 dias, histórico e o que isso muda na apresentação |
 | [`docs/13-apresentacao-atual-mectria.md`](docs/13-apresentacao-atual-mectria.md) | Análise da apresentação de proposta atual (Ap Gallu) contra a sequência do Método TRIA |
 | [`docs/14-pedidos-a-mectria.md`](docs/14-pedidos-a-mectria.md) | Checklist do que falta pedir à MecTRIA, por prazo e por frente |
+| [`hub-comercial/`](hub-comercial/) | Hub do vendedor (etapa R): apresentações, playbooks de cold call, diagnóstica e proposta, e follow-up. Abrir `index.html` no navegador |
 | [`contrato/`](contrato/) | Minuta do contrato com a MecTRIA, notas das decisões, o PDF para envio e o script que gera o PDF |
 | [`docs/glossario.md`](docs/glossario.md) | Erros da transcrição e termos do projeto |
 | [`docs/reunioes/`](docs/reunioes/) | Resumos e transcrições completas das reuniões |

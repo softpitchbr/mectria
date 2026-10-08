@@ -1,0 +1,66 @@
+<!doctype html>
+<html lang="pt-BR">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="robots" content="noindex, nofollow">
+    <title>Hub comercial · MecTRIA</title>
+    <link rel="icon" href="assets/simbolo-mectria.png">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@500;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="css/marca.css">
+    <link rel="stylesheet" href="css/hub.css">
+    <link rel="stylesheet" href="css/briefing.css">
+  </head>
+  <body>
+    <header class="topo">
+      <div class="topo-interno">
+        <a href="#/inicio" class="marca">
+          <img src="assets/logo-mectria.png" alt="MecTRIA" width="132" height="39">
+          <span>Hub comercial</span>
+        </a>
+        <nav class="abas" aria-label="Seções">
+          <a href="#/inicio" data-aba="inicio">Início</a>
+          <a href="#/apresentacoes" data-aba="apresentacoes">Apresentações</a>
+          <a href="#/playbooks/diagnostica" data-aba="playbooks">Playbooks</a>
+          <a href="#/fup" data-aba="fup">Follow-up<span class="contador" id="contador-fup" title="Toques de hoje e atrasados"></span></a>
+        </nav>
+        <div class="topo-acoes">
+          <label class="vendedor">Vendedor <input id="vendedor" type="text" placeholder="Seu nome" autocomplete="name"></label>
+          <details class="menu-dados">
+            <summary>Dados</summary>
+            <div>
+              <p>Os dados ficam só neste navegador. Exporte o backup toda semana.</p>
+              <button type="button" class="botao-texto" id="exportar-json">Exportar backup (.json)</button>
+              <button type="button" class="botao-texto" id="importar-json">Importar backup</button>
+              <button type="button" class="botao-texto" id="exportar-csv">Exportar propostas para a planilha (.csv)</button>
+              <input type="file" id="arquivo-importar" accept="application/json,.json" hidden>
+            </div>
+          </details>
+        </div>
+      </div>
+      <hr class="filete">
+    </header>
+
+    <main id="conteudo" tabindex="-1"></main>
+    <div id="impressao"></div>
+
+    <script src="js/dados/empresa.js"></script>
+    <script src="js/dados/servicos.js"></script>
+    <script src="js/dados/diagnostica.js"></script>
+    <script src="js/dados/proposta.js"></script>
+    <script src="js/dados/objecoes.js"></script>
+    <script src="js/dados/fup.js"></script>
+    <script src="js/dados/cold-call.js"></script>
+    <script src="js/base.js"></script>
+    <script src="js/telas/comum.js"></script>
+    <script src="js/telas/inicio.js"></script>
+    <script src="js/telas/apresentacoes.js"></script>
+    <script src="js/telas/cold-call.js"></script>
+    <script src="js/telas/diagnostica.js"></script>
+    <script src="js/telas/proposta.js"></script>
+    <script src="js/telas/fup.js"></script>
+    <script src="js/hub.js"></script>
+  </body>
+</html>

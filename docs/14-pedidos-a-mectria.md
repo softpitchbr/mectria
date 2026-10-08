@@ -1,6 +1,6 @@
 # O que pedir à MecTRIA para executar o escopo
 
-Levantamento de 08/10/2026. Cruza o escopo do contrato (Anexo I da minuta v3), as 44 tarefas do plano e o que já foi recebido. Atualizar o status a cada entrega.
+Levantamento de 08/10/2026. Cruza o escopo do contrato (Anexo I da minuta v3), as tarefas do plano (44, mais as 6 da R ampliada) e o que já foi recebido. Atualizar o status a cada entrega.
 
 **Legenda de status:** Recebido · Parcial · Falta
 
@@ -35,6 +35,19 @@ Levantamento de 08/10/2026. Cruza o escopo do contrato (Anexo I da minuta v3), a
 | 11 | **Chatbot:** o que deve fazer (dúvidas, qualificação, WhatsApp), quem responde, quanto podem pagar, qual ferramenta é a atual | Especificar e implantar (tarefa 13) | Falta |
 | 12 | **Instagram:** conta profissional e alguém que libere o acesso | Feed dentro do site | Falta |
 
+### 1b. Também no kick-off · Retórica adiantada (decisão de 08/10)
+
+A R começou em paralelo com a T (`hub-comercial/`). Por isso os itens 24 e 25 passam a ser pedidos no kick-off, e entram os itens abaixo. Sem eles, os roteiros do hub ficam como hipótese.
+
+| # | Pedido | Para quê | Status |
+|---|---|---|---|
+| 38 | **ART e professor orientador:** quem assina a ART e como o professor atua (revisa, assina, participa de reunião?) | Resposta à objeção "vocês são estudantes?" | Falta |
+| 39 | **Políticas que respondem objeções:** revisões incluídas, suporte depois da entrega, termo de confidencialidade, como o projeto segue nas férias e na troca de gestão, se indicam parceiros de fabricação | Guia de objeções do hub | Falta |
+| 40 | **Missão, visão e valores oficiais**, se existirem | A home do protótipo tem uma seção "Valores"; Primal Branding | Falta |
+| 41 | **Lacunas da Carta:** o que fica com o cliente em Tratamento Acústico, Simulação e Prototipagem; se Emissão de Carbono aparece no site | Páginas de serviço e diagnóstica | Falta |
+| 42 | **A planilha v4 e o fluxo de 3 dias já estão em uso?** (parte do item 27, antecipada) | O hub promete "proposta em até 3 dias úteis" | Falta |
+| 43 | **Propostas em aberto hoje** (empresa, contato, serviço, valor, data), **quantas ligações por dia cada hunter consegue fazer** e **a origem dos telefones da Casa de Dados** | Colocar as propostas no follow-up já; meta diária de cold call; resposta a "onde conseguiu meu número?" | Falta |
+
 ### 2. Até 23/10 · conteúdo real para validar o site (S3)
 
 | # | Pedido | Para quê | Status |
@@ -55,8 +68,8 @@ Levantamento de 08/10/2026. Cruza o escopo do contrato (Anexo I da minuta v3), a
 |---|---|---|---|
 | 22 | **Sessão de Primal Branding** com o Marcelo e o Marketing (João Guilherme), 1 h: história de criação, propósito, valores, rituais, palavras internas, o que não são | Proposta de valor, tom e mensagens-chave (tarefas 15 e 16) | Falta |
 | 23 | **Cliente ideal:** segmentos, porte, região, quem decide, e **os filtros de CNAE e região da Casa de Dados** | Definir o público | Falta |
-| 24 | **Objeções reais:** conversa de 30 min com os closers (Vinícius Miguel, João Guilherme) sobre o que o cliente diz quando não fecha, mais os motivos das propostas perdidas | Mapa de objeções (tarefa 19) | Falta |
-| 25 | **Processo comercial atual:** POP comercial, materiais do treinamento que fizeram, roteiro de ligação, cadência, planilha do funil (os 80–88% de perda até o decisor) | Processo visual hunter → closer (tarefa 18) | Falta |
+| 24 | **Objeções reais:** conversa de 30 min com os closers (Vinícius Miguel, João Guilherme) sobre o que o cliente diz quando não fecha, mais os motivos das propostas perdidas | Mapa de objeções (tarefa 19) | Falta · antecipado para o kick-off |
+| 25 | **Processo comercial atual:** POP comercial, materiais do treinamento que fizeram, roteiro de ligação, cadência, planilha do funil (os 80–88% de perda até o decisor) | Processo visual hunter → closer (tarefa 18) | Falta · antecipado para o kick-off |
 
 ### 4. Até 13/11 · insumos do Instrumento (S6 começa em 16/11)
 

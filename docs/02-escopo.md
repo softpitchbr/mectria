@@ -152,6 +152,7 @@ Identidade visual nova (usa a atual com Primal Branding), gestão de redes, dom�
 | Chatbot | Não fala | Chatbot novo (plano pago pela MecTRIA) | Incluir especificação e implantação; assinatura é do cliente |
 | Processo comercial visual | Não tem | Hunter→closer (cortesia) | Incluir como cortesia |
 | Objeções | Não tem | Mapa de objeções e contornos | Incluir |
+| Processo comercial completo | Não tem | Só o processo visual. O topo de funil foi apresentado como projeto futuro (R2 31:01–31:27) | **Decidido em 08/10:** entra na R, no hub do vendedor (`hub-comercial/`): cold call, diagnóstica com briefing para Projetos, proposta com micro pactos e follow-up. Incluir no TAP e no Anexo I, ou registrar como cortesia |
 | Plataforma do site | "Plataforma atual" (Wix); migração excluída | Protótipo fora do Wix (servidor em Washington, mover para Guarulhos) | **Decidido em 05/10:** hospedagem própria, site feito pela Triângulo. Reescrever a premissa 3 e incluir a migração do blog e das URLs. Ver `08-site-e-hospedagem.md` |
 | Hospedagem | Custo do cliente | Sem cobrança durante o projeto (cortesia) | Contas no nome da MecTRIA. Depois do projeto o custo é dela (R$ 0 na opção recomendada). Domínio: MecTRIA |
 | Pagamento | "Vai no contrato" | Pagamento só após resultado | Cláusula de resultado no contrato |

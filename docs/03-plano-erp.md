@@ -85,6 +85,16 @@ A numeração continua a partir de 37 para não mexer no que já está no ERP. D
 43. [T] Virada: apontar o domínio, enviar o sitemap no Search Console, conferir formulários, chatbot e anúncios
 44. [A] Entregar contas e repositório à MecTRIA e cancelar o Wix Premium antes da renovação
 
+### Tarefas a acrescentar (decisão de 08/10: R ampliada e adiantada)
+A R começa já, em paralelo com a T, e monta o processo comercial completo no hub do vendedor (`hub-comercial/`). As tarefas 18 e 19 passam a ser feitas dentro do hub.
+
+45. [R] Hub comercial do vendedor: apresentações, playbooks e follow-up (base em 08/10)
+46. [R] Playbook de cold call: roteiro top-down, ganchos por serviço e tentativas
+47. [R] Roteiro da reunião diagnóstica: perguntas GPCTBA × Carta de Serviços e briefing em PDF para Projetos
+48. [R] Roteiro da apresentação de proposta com checklist de micro pactos (base das tarefas 23, 24 e 28)
+49. [R] Cadência de follow-up das propostas apresentadas
+50. [R] Portfólio da MecTRIA para mandar no WhatsApp (publicar no site com a frente T)
+
 Se a hospedagem recomendada (Cloudflare) for aceita, a tarefa **8** passa a ser "Publicar na hospedagem definitiva, com entrega a partir de São Paulo": nessa opção não há servidor para mudar de região.
 
 ## 3. Anotações · um post-it por bloco
