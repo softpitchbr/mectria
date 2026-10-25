@@ -1,6 +1,12 @@
-# Notas da minuta v3
+# Notas da minuta v4
 
-Minuta: `minuta-contrato-v3.md`. PDF: `contrato-mectria-minuta-v3.pdf`, gerado com `gerar-pdf.py`; o CPF do interveniente sai em branco. A v3 muda da v2 só a média de referência (R$ 5.000,00). As versões anteriores estão no histórico do git.
+Minuta: `minuta-contrato-v4.md`. PDF: `contrato-mectria-minuta-v4.pdf`, gerado com `gerar-pdf.py`; o CPF do interveniente sai em branco. As versões anteriores estão no histórico do git.
+
+## O que mudou da v3 (25/10/2026)
+- **Contrato social da Triângulo registrado na JUCEMG** em 23/10/2026, com efeitos desde 08/10/2026 (NIRE 31218662179, protocolo 26/711.400-1). Razão social, CNPJ e sede iguais aos da minuta. Os três sócios continuam administrando isoladamente, então o Lucas assina sozinho.
+- O NIRE entrou na qualificação da CONTRATADA.
+- **Cláusula 2.6:** ratifica os serviços prestados desde o kick-off de 09/10/2026, porque o contrato vai ser assinado com a execução já em andamento. **Supõe que o kick-off aconteceu em 09/10. Se foi em outra data, ajustar 2.1, 2.2, 2.6 e o Anexo I.**
+- O objeto social novo inclui **Consultoria em Gestão Empresarial** e **Treinamento em Desenvolvimento Profissional e Gerencial**. A questão da nota fiscal está resolvida.
 
 ## Decisões do Lucas (06/10/2026)
 
@@ -82,8 +88,8 @@ A média vem do **faturamento** e a apuração usa o **vendido** (contratos assi
 3. **Quem assina (histórico).** A minuta põe Arthur Jordão (Presidente) e Marcelo Zaiden (Vice-Presidente), porque o contrato é assinado agora, antes da troca de gestão. Confirmar no estatuto se basta o presidente ou se são exigidas duas assinaturas. O Marcelo deve ser o próximo presidente (~90% de chance, ainda não sabatinado). A cláusula 12 garante que o contrato continua valendo com a nova diretoria.
 
 ### Da Triângulo
-1. **Registro do contrato social:** confirmar na JUCEMG e no cartão do CNPJ que o nome já é "TRIÂNGULO SOLUTIONS BRASIL LTDA". Se ainda não for, usar o nome que constar no CNPJ na assinatura.
-2. **Atividades no CNPJ (falar com o contador):** o objeto social não tem consultoria em gestão (CNAE 7020-4/00) nem treinamento (CNAE 8599-6/04). Ver como emitir a nota fiscal.
+1. ~~Registro do contrato social.~~ Registrado na JUCEMG em 23/10/2026 (NIRE 31218662179). Vale conferir se o cartão do CNPJ na Receita já mostra "TRIÂNGULO SOLUTIONS BRASIL LTDA".
+2. ~~Atividades no CNPJ.~~ O objeto social novo inclui consultoria em gestão empresarial e treinamento.
 3. CPF do interveniente, só na versão de assinatura, fora do repositório.
 
 > Antes de assinar, vale uma leitura de advogado ou do contador da Triângulo, principalmente das cláusulas 3, 9 e 11.

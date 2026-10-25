@@ -15,7 +15,8 @@ Atualizar este arquivo sempre que algo for decidido ou resolvido.
 | Pós-venda de 2 meses. Depois a MecTRIA assume tudo | R2 19:18 |
 | Pagamento atrelado a resultado, a ser detalhado no contrato | Reunião não gravada, confirmado na R2 27:48 |
 | Começar pelo fechamento. Topo de funil, prospecção e pós-venda ficam para projetos futuros | R1 46:39, R2 30:42 |
-| **Contrato pausado até o CNPJ da Triângulo (LTDA) ficar ativo.** As demais entregas seguem. A versão para assinatura (v3) está pronta | Lucas, 08/10/2026 |
+| **Contrato retomado:** contrato social da Triângulo registrado na JUCEMG em 23/10/2026 (NIRE 31218662179). Minuta v4 com o NIRE e a ratificação dos serviços desde o kick-off | Lucas, 25/10/2026 |
+| Contrato pausado até o CNPJ da Triângulo (LTDA) ficar ativo (superado em 25/10) | Lucas, 08/10/2026 |
 | **Kick-off na sexta, 09/10/2026.** Execução de 12/10 a 04/12, acompanhamento de 07/12/2026 a 05/02/2027 | Lucas, 06/10/2026 |
 | **Contrato:** resultado líquido com trava; apuração a partir de dez/2026, quando a estrutura entra em uso; acompanhamento até fev/2027 com 1 reunião por mês e ajuste mensal do roteiro (contraproposta aos "até junho" do Marcelo); parcelas das etapas entregues devidas se a MecTRIA desistir ou não usar o processo (T 2, R 1, I 2, A 1) | Lucas, 06/10/2026 |
 | **Publicação do site:** depois da validação do site (S3), sem data fixa; prazo final no fim da execução (04/12). A copy entra no site já publicado | Lucas, 06/10/2026 |
@@ -42,7 +43,7 @@ O PDF de 21/09 não tem treinamento, roleplay, micro pactos, calculadora, roteir
 Detalhes e perguntas do kick-off em `08-site-e-hospedagem.md`.
 
 ### 3. Cláusula de pagamento por resultado (alta)
-**Atualização 06/10/2026:** minuta v2 com as decisões do Lucas (hoje v3, `contrato/minuta-contrato-v3.md`): resultado líquido com trava, apuração de dez/2026 a dez/2027, acompanhamento até 05/02/2027, proteção se a MecTRIA não usar o processo. Faltam dados da MecTRIA, a base da média e a confirmação de quem assina. Ver `contrato/notas-v3.md`.
+**Atualização 06/10/2026:** minuta v2 com as decisões do Lucas (hoje v4, `contrato/minuta-contrato-v4.md`): resultado líquido com trava, apuração de dez/2026 a dez/2027, acompanhamento até 05/02/2027, proteção se a MecTRIA não usar o processo. Faltam dados da MecTRIA, a base da média e a confirmação de quem assina. Ver `contrato/notas-v3.md`.
 
 Métrica, linha de base, janela, fonte de dados, obrigações da MecTRIA, o que acontece se não bater e a troca de gestão. Lista completa em `05-comercial.md`.
 
@@ -94,7 +95,10 @@ São usados no pitch e vão aparecer no case:
 ### 14. Acompanhamento: fevereiro × junho (média)
 **Decidido em 06/10:** até 05/02/2027. É uma contraproposta aos "até junho" do Marcelo. Argumento para ele: o acompanhamento tem duração fixa e é prestado inteiro, pague a EJ antes ou depois. Se ele insistir em junho, a extensão é orçada à parte. Ver `contrato/notas-v3.md`.
 
-### 15. Registro e atividades da Triângulo (média)
+### 15. Registro e atividades da Triângulo (resolvido em 25/10)
+Contrato social registrado na JUCEMG em 23/10/2026, NIRE 31218662179, com consultoria em gestão e treinamento no objeto social. O texto abaixo é o histórico.
+
+
 O contrato social de transformação em LTDA foi assinado em 05/10/2026. Confirmar o registro na JUCEMG antes de assinar com a MecTRIA. O objeto social não tem consultoria em gestão (CNAE 7020-4/00) nem treinamento (CNAE 8599-6/04). Ver com o contador como emitir a nota fiscal.
 
 ### 16. Materiais da MecTRIA recebidos em 08/10 (média)

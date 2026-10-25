@@ -1,6 +1,6 @@
 # O que pedir à MecTRIA para executar o escopo
 
-Levantamento de 08/10/2026. Cruza o escopo do contrato (Anexo I da minuta v3), as 44 tarefas do plano e o que já foi recebido. Atualizar o status a cada entrega.
+Levantamento de 08/10/2026. Cruza o escopo do contrato (Anexo I da minuta do contrato), as 44 tarefas do plano e o que já foi recebido. Atualizar o status a cada entrega.
 
 **Legenda de status:** Recebido · Parcial · Falta
 
