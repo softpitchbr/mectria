@@ -23,6 +23,7 @@ Meta: conversão entre proposta e fechamento de ~25% para **40%**. Kick-off em 0
 | [`docs/12-precificacao-mectria.md`](docs/12-precificacao-mectria.md) | Como a MecTRIA forma preço, briefing, fluxo de 3 dias, histórico e o que isso muda na apresentação |
 | [`docs/13-apresentacao-atual-mectria.md`](docs/13-apresentacao-atual-mectria.md) | Análise da apresentação de proposta atual (Ap Gallu) contra a sequência do Método TRIA |
 | [`docs/14-pedidos-a-mectria.md`](docs/14-pedidos-a-mectria.md) | Checklist do que falta pedir à MecTRIA, por prazo e por frente |
+| [`docs/15-hub-template.md`](docs/15-hub-template.md) | Especificação do template novo do hub comercial: arquitetura, telas por cargo, modo reunião, sistema visual Prancheta, dados, erros e testes |
 | [`hub-comercial/`](hub-comercial/) | Hub do vendedor (etapa R): apresentações, playbooks de cold call, diagnóstica e proposta, e follow-up. Abrir `index.html` no navegador |
 | [`contrato/`](contrato/) | Minuta do contrato com a MecTRIA, notas das decisões, o PDF para envio e o script que gera o PDF |
 | [`docs/glossario.md`](docs/glossario.md) | Erros da transcrição e termos do projeto |
