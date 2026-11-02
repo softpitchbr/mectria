@@ -3,7 +3,8 @@ import { useNavigate } from "react-router";
 import Icone from "../componentes/Icone";
 import type { Eu } from "../sessao/useEu";
 import { buscar } from "./buscar";
-import { FONTES } from "./fontes";
+import { FONTES, FONTES_ASSINCRONAS } from "./fontes";
+import type { ItemDeBusca } from "./buscar";
 import estilos from "./Busca.module.css";
 
 /** Busca geral (Ctrl K): navegação, tema e conta; as fases seguintes acrescentam fontes. */
@@ -15,7 +16,17 @@ export default function Busca({ eu, aoFechar }: { eu: Eu; aoFechar: () => void }
   const idLista = useId();
   const idTitulo = useId();
 
-  const itens = useMemo(() => FONTES.flatMap((fonte) => fonte({ eu, navegar: (c) => navegar(c) })), [eu, navegar]);
+  const [daApi, setDaApi] = useState<ItemDeBusca[]>([]);
+  useEffect(() => {
+    let viva = true;
+    Promise.allSettled(FONTES_ASSINCRONAS.map((fonte) => fonte({ eu, navegar: (c) => navegar(c) }))).then((r) => {
+      if (viva) setDaApi(r.flatMap((x) => (x.status === "fulfilled" ? x.value : [])));
+    });
+    return () => {
+      viva = false;
+    };
+  }, [eu, navegar]);
+  const itens = useMemo(() => [...FONTES.flatMap((fonte) => fonte({ eu, navegar: (c) => navegar(c) })), ...daApi], [eu, navegar, daApi]);
   const resultados = useMemo(() => buscar(consulta, itens), [consulta, itens]);
 
   useEffect(() => {

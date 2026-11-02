@@ -57,7 +57,7 @@ test("Esc fecha", async () => {
 test("um hunter não vê Ir para Time", async () => {
   const dialogo = await abrirBusca("hunter");
   await userEvent.keyboard("ir para");
-  expect(titulos(dialogo)).toEqual(["Ir para Hoje", "Ir para Playbooks", "Ir para Rotinas"]);
+  expect(titulos(dialogo).filter((t) => t?.startsWith("Ir para"))).toEqual(["Ir para Hoje", "Ir para Playbooks", "Ir para Rotinas"]);
 });
 
 test("busca sem resultado diz que não achou", async () => {
@@ -79,4 +79,38 @@ test("clicar numa área vazia da caixa mantém o foco no campo", async () => {
   await userEvent.keyboard("xyzw");
   await userEvent.click(within(dialogo).getByText("Nada encontrado para “xyzw”."));
   expect(within(dialogo).getByRole("combobox")).toHaveFocus();
+});
+
+test("acha o cliente pelo nome sem acento e abre", async () => {
+  fingirApi({
+    "/api/eu": { corpo: PESSOAS.closer },
+    "GET /api/oportunidades": { corpo: [{ id: 3, empresa: "Fundição Ômega", contato: "Rui", situacao: "em_followup", servico: "nr-12" }] },
+    "GET /api/followup": { corpo: [] },
+  });
+  abrir("/");
+  await screen.findByRole("navigation", { name: "Seções" });
+  await userEvent.keyboard("{Control>}k{/Control}");
+  const dialogo = screen.getByRole("dialog", { name: "Buscar no hub" });
+  await userEvent.keyboard("fundicao");
+  expect(await within(dialogo).findByText("Fundição Ômega")).toBeInTheDocument();
+  await userEvent.keyboard("{Enter}");
+  expect(window.location.pathname).toBe("/follow-up");
+});
+
+test("acha a objeção pelo texto e abre no playbook", async () => {
+  const dialogo = await abrirBusca("closer");
+  await userEvent.keyboard("esta caro");
+  expect(within(dialogo).getAllByRole("option")[0]).toHaveTextContent("Está caro.");
+  await userEvent.keyboard("{Enter}");
+  expect(window.location.pathname).toBe("/playbooks/objecoes");
+  expect(window.location.search).toBe("?o=caro");
+});
+
+test("fonte assíncrona que falha não derruba a busca", async () => {
+  fingirApi({ "/api/eu": { corpo: PESSOAS.closer }, "GET /api/oportunidades": { status: 500, corpo: { erro: "x", mensagem: "x" } } });
+  abrir("/");
+  await screen.findByRole("navigation", { name: "Seções" });
+  await userEvent.keyboard("{Control>}k{/Control}");
+  await userEvent.keyboard("follow");
+  expect(within(screen.getByRole("dialog")).getAllByRole("option")[0]).toHaveTextContent("Ir para Follow-up");
 });

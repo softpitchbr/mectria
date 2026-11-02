@@ -13,6 +13,9 @@ export interface ItemDeBusca {
 /** Cada fonte entrega os itens que a pessoa pode buscar. As fases seguintes só acrescentam fontes. */
 export type FonteDeBusca = (ctx: { eu: Eu; navegar: (caminho: string) => void }) => ItemDeBusca[];
 
+/** Fonte que busca dados na API quando a busca abre (clientes). Se falhar, a busca segue sem ela. */
+export type FonteAssincrona = (ctx: { eu: Eu; navegar: (caminho: string) => void }) => Promise<ItemDeBusca[]>;
+
 /** Plural do português para o singular, numa palavra já normalizada (objecoes → objecao). */
 function singular(palavra: string): string {
   if (palavra.length <= 3) return palavra;
