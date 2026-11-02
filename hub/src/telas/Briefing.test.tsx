@@ -50,3 +50,10 @@ test("marcar como enviado chama a API e avisa", async () => {
   expect(chamou).toBe(true);
   expect(await screen.findByRole("status")).toHaveTextContent("Briefing marcado como enviado para Projetos.");
 });
+
+test("o título da página (nome do PDF) traz o cliente e o dia", async () => {
+  api();
+  abrir("/reunioes/5/briefing");
+  await screen.findByRole("heading", { name: "Briefing para Projetos" });
+  expect(document.title).toBe("Briefing · Usinagem Alfa · Sex, 13/11");
+});

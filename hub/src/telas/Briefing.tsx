@@ -27,6 +27,11 @@ export default function Briefing() {
       .catch((e: unknown) => setErro(mensagemDe(e)));
   }, [id]);
 
+  // O título da página vira o nome do arquivo no "Salvar como PDF".
+  useEffect(() => {
+    if (ficha?.oportunidade) document.title = `Briefing · ${ficha.oportunidade.empresa} · ${formatarDia(ficha.reuniao.dataHora.slice(0, 10))}`;
+  }, [ficha]);
+
   if (erro) return <p role="alert" className={estilos.erro}>{erro}</p>;
   if (!ficha) return <p className="mono suave">Abrindo o briefing…</p>;
 

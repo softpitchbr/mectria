@@ -45,6 +45,9 @@
   padding: 8px 12px;
   background: #780000;
   color: #ffffff;
+  /* Sem isso, o "Salvar como PDF" (sem gráficos de fundo) tira a caixa vinho e o texto branco some. */
+  -webkit-print-color-adjust: exact;
+  print-color-adjust: exact;
   font-family: "Poppins", sans-serif;
   font-weight: 600;
   border-radius: 4px;
@@ -77,9 +80,9 @@
   font-weight: 500;
 }
 
+/* A seção pode continuar na página seguinte (uma seção longa não empurra tudo); o que não quebra é cada resposta. */
 .secao {
   margin-top: 18px;
-  break-inside: avoid;
 }
 
 .secao h2 {
@@ -88,6 +91,7 @@
   border-bottom: 1px solid #e2dfd9;
   padding-bottom: 4px;
   margin-bottom: 8px;
+  break-after: avoid;
 }
 
 .item {
@@ -119,9 +123,10 @@
 }
 
 @media print {
+  /* A margem fica na página (repete em todas); a folha da tela perde o recuo. */
   @page {
     size: A4;
-    margin: 0;
+    margin: 18mm;
   }
 
   :global(body) {
@@ -141,7 +146,9 @@
   }
 
   .folha {
-    width: 210mm;
+    width: auto;
+    min-height: auto;
+    padding: 0;
     box-shadow: none;
     border-radius: 0;
   }
