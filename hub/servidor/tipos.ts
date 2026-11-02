@@ -20,3 +20,8 @@ export interface Pessoa {
   criadoEm: string;
   atualizadoEm: string;
 }
+
+/** O que o middleware de /api deixa em context.data para as rotas. */
+export interface DadosApi extends Record<string, unknown> {
+  pessoa: Pessoa;
+}

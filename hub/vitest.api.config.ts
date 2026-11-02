@@ -6,7 +6,8 @@ export default defineWorkersConfig(async () => {
   return {
     test: {
       globals: true,
-      include: ["servidor/**/*.test.ts", "functions/**/*.test.ts"],
+      // Testes de rota ficam em servidor/rotas/: tudo em functions/ vira rota no Pages.
+      include: ["servidor/**/*.test.ts"],
       poolOptions: {
         workers: {
           singleWorker: true,
