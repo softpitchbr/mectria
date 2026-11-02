@@ -109,3 +109,37 @@ export interface ItemFollowup {
 }
 
 export type ResultadoProposta = { resultado: "ganha"; valor: number } | { resultado: "perdida"; motivo: string } | { resultado: "nutricao" };
+
+export interface ItemRotina {
+  chave: string;
+  titulo: string;
+  origem: "fixo" | "gerado";
+  feito: boolean;
+  /** Marca sozinho (ligações, toques): não tem checkbox. */
+  automatico: boolean;
+  contagem?: { feitas: number; meta: number };
+  link?: string;
+}
+
+export interface DiaDeRotina {
+  dia: string;
+  itens: ItemRotina[];
+  feitos: number;
+  total: number;
+}
+
+export interface ResumoPessoa {
+  pessoa: { id: number; nome: string; cargo: string };
+  rotina: { feitos: number; total: number };
+  atrasados: number;
+}
+
+export interface ContagemLigacoes {
+  total: number;
+  naoAtendeu: number;
+  atendeu: number;
+  marcou: number;
+  meta: number;
+}
+
+export type ResultadoLigacao = "nao_atendeu" | "atendeu" | "marcou";
