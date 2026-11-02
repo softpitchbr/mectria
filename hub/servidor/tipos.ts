@@ -1,4 +1,6 @@
-import type { Cargo } from "../compartilhado/cargos";
+import type { Pessoa } from "../compartilhado/pessoa";
+
+export type { Pessoa };
 
 export interface Env {
   DB: D1Database;
@@ -9,16 +11,6 @@ export interface Env {
   ACCESS_AUD?: string;
   /** E-mail do primeiro diretor, criado no primeiro acesso com o banco vazio. */
   DIRETOR_INICIAL?: string;
-}
-
-export interface Pessoa {
-  id: number;
-  nome: string;
-  email: string;
-  cargo: Cargo;
-  ativo: boolean;
-  criadoEm: string;
-  atualizadoEm: string;
 }
 
 /** O que o middleware de /api deixa em context.data para as rotas. */
