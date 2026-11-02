@@ -12,6 +12,7 @@ import Layout from "./shell/Layout";
 import SemAcesso from "./shell/SemAcesso";
 import Briefing from "./telas/Briefing";
 import FollowUp from "./telas/FollowUp";
+import Playbooks from "./telas/Playbooks";
 import Hoje from "./telas/Hoje";
 import Reunioes from "./telas/Reunioes";
 import Rotinas from "./telas/Rotinas";
@@ -36,6 +37,7 @@ function PaginaDaSecao({ secao }: { secao: Secao }) {
   if (secao === "followup") return <FollowUp eu={eu} />;
   if (secao === "rotinas") return <Rotinas eu={eu} />;
   if (secao === "reunioes") return <Reunioes eu={eu} />;
+  if (secao === "playbooks") return <Playbooks eu={eu} />;
   return <EmConstrucao secao={info.rotulo} fase={info.fase} icone={info.icone} />;
 }
 
@@ -88,7 +90,14 @@ function criarRotas(): RouteObject[] {
       path: "/",
       element: <Raiz />,
       children: [
-        { element: <ComBarras />, children: [...secoes, { path: "*", element: <NaoEncontrada /> }] },
+        {
+          element: <ComBarras />,
+          children: [
+            ...secoes,
+            { path: "playbooks/:aba", element: <PaginaDaSecao secao="playbooks" /> },
+            { path: "*", element: <NaoEncontrada /> },
+          ],
+        },
         { path: "reunioes/:id/diagnostica", element: <PainelDaDiagnostica /> },
         { path: "reunioes/:id/briefing", element: <Briefing /> },
       ],
