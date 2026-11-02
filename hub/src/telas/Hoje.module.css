@@ -1,0 +1,28 @@
+.hoje {
+  display: grid;
+  gap: 32px;
+}
+
+.cabeca {
+  display: grid;
+  gap: 8px;
+}
+
+.cabeca .mono {
+  font-size: 13px;
+}
+
+.cabeca h1 {
+  font-size: clamp(26px, 4vw, 34px);
+}
+
+.aviso {
+  max-width: 640px;
+  display: grid;
+  gap: 8px;
+}
+
+.aviso .mono {
+  font-size: 12px;
+  letter-spacing: 0.08em;
+}

@@ -1,0 +1,22 @@
+.cartao {
+  max-width: 560px;
+  display: grid;
+  gap: 8px;
+  padding: 28px;
+}
+
+.icone {
+  display: inline-grid;
+  place-items: center;
+  width: 44px;
+  height: 44px;
+  margin-bottom: 6px;
+  border-radius: 11px;
+  border: 1px solid var(--linha-viva);
+  background: var(--painel-alto);
+  color: var(--texto);
+}
+
+.cartao h1 {
+  font-size: 22px;
+}

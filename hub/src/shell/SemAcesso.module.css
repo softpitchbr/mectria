@@ -1,0 +1,36 @@
+.tela {
+  min-height: 100vh;
+  display: grid;
+  place-items: center;
+  padding: 24px 16px;
+}
+
+.cartao {
+  width: min(440px, 100%);
+  display: grid;
+  gap: 14px;
+  padding: 32px;
+}
+
+.cartao h1 {
+  font-size: 22px;
+}
+
+.secao {
+  max-width: 560px;
+  display: grid;
+  gap: 10px;
+}
+
+.secao .mono {
+  font-size: 12px;
+  letter-spacing: 0.08em;
+}
+
+.cartao a,
+.secao a {
+  color: var(--texto);
+  font-weight: 500;
+  text-underline-offset: 3px;
+  text-decoration-color: var(--linha-viva);
+}

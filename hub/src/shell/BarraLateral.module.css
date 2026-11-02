@@ -1,0 +1,94 @@
+.barra {
+  position: sticky;
+  top: 0;
+  height: 100vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 20px;
+  padding: 14px 0;
+  border-right: 1px solid var(--linha);
+  background: color-mix(in srgb, var(--painel) 82%, transparent);
+  backdrop-filter: blur(8px);
+  z-index: 20;
+}
+
+.marca {
+  display: inline-flex;
+  border-radius: 10px;
+  text-decoration: none;
+}
+
+.barra ul {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: grid;
+  gap: 6px;
+}
+
+.item {
+  position: relative;
+  display: grid;
+  place-items: center;
+  width: 44px;
+  height: 44px;
+  border-radius: 11px;
+  color: var(--suave);
+  border: 1px solid transparent;
+  transition:
+    color var(--rapido) var(--curva),
+    background var(--rapido) var(--curva),
+    border-color var(--rapido) var(--curva);
+}
+
+.item:hover {
+  color: var(--texto);
+  background: var(--painel-alto);
+}
+
+.item[aria-current="page"] {
+  color: var(--texto);
+  background: var(--painel-alto);
+  border-color: var(--linha-viva);
+  box-shadow: inset 0 1px 0 var(--realce);
+}
+
+/* Traço vinho à esquerda da seção atual, como a cota de um desenho técnico. */
+.item[aria-current="page"]::before {
+  content: "";
+  position: absolute;
+  left: -14px;
+  top: 12px;
+  bottom: 12px;
+  width: 2px;
+  border-radius: 2px;
+  background: var(--vermelho);
+}
+
+.dica {
+  position: absolute;
+  left: calc(100% + 12px);
+  top: 50%;
+  padding: 5px 10px;
+  border-radius: 8px;
+  border: 1px solid var(--linha-viva);
+  background: var(--painel-alto);
+  color: var(--texto);
+  font-size: 13px;
+  font-weight: 500;
+  white-space: nowrap;
+  box-shadow: var(--sombra);
+  pointer-events: none;
+  opacity: 0;
+  transform: translate(-4px, -50%);
+  transition:
+    opacity var(--rapido) var(--curva),
+    transform var(--rapido) var(--curva);
+}
+
+.item:hover .dica,
+.item:focus-visible .dica {
+  opacity: 1;
+  transform: translate(0, -50%);
+}

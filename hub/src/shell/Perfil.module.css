@@ -1,0 +1,140 @@
+.perfil {
+  position: relative;
+}
+
+.botao {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 3px 10px 3px 3px;
+  border: 1px solid var(--linha);
+  border-radius: 999px;
+  background: var(--painel);
+  color: var(--texto);
+  font: inherit;
+  font-size: 14px;
+  font-weight: 500;
+  cursor: pointer;
+  box-shadow: inset 0 1px 0 var(--realce);
+  transition: border-color var(--rapido) var(--curva);
+}
+
+.botao:hover,
+.botao[aria-expanded="true"] {
+  border-color: var(--linha-viva);
+}
+
+.avatar,
+.avatarGrande {
+  display: inline-grid;
+  place-items: center;
+  border-radius: 50%;
+  background: var(--painel-alto);
+  border: 1px solid var(--linha-viva);
+  font-family: "IBM Plex Mono", monospace;
+  font-weight: 500;
+  font-size: 11px;
+  color: var(--texto);
+}
+
+.avatar {
+  width: 28px;
+  height: 28px;
+}
+
+.avatarGrande {
+  width: 40px;
+  height: 40px;
+  font-size: 13px;
+}
+
+.painel {
+  position: absolute;
+  right: 0;
+  top: calc(100% + 8px);
+  z-index: 40;
+  width: min(320px, calc(100vw - 32px));
+  display: grid;
+  gap: 16px;
+  padding: 16px;
+  border: 1px solid var(--linha-viva);
+  border-radius: 14px;
+  background: var(--painel-alto);
+  box-shadow: inset 0 1px 0 var(--realce), var(--sombra);
+  transform-origin: top right;
+  animation: abrir var(--medio) var(--curva);
+}
+
+.quem {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  min-width: 0;
+}
+
+.quem > div {
+  min-width: 0;
+}
+
+.quem .mono {
+  font-size: 12px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.nome {
+  font-weight: 500;
+}
+
+.dados {
+  display: flex;
+  justify-content: space-between;
+  margin: 0;
+  padding-top: 12px;
+  border-top: 1px solid var(--linha);
+  font-size: 14px;
+}
+
+.dados dd {
+  margin: 0;
+  font-weight: 500;
+}
+
+.tema {
+  display: grid;
+  gap: 8px;
+  font-size: 14px;
+}
+
+.sair {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding-top: 12px;
+  border-top: 1px solid var(--linha);
+  color: var(--suave);
+  font-size: 14px;
+  text-decoration: none;
+}
+
+.sair:hover {
+  color: var(--texto);
+}
+
+@media (max-width: 760px) {
+  .nomeCurto {
+    display: none;
+  }
+
+  .botao {
+    padding: 3px;
+  }
+}
+
+@keyframes abrir {
+  from {
+    opacity: 0;
+    transform: translateY(-6px) scale(0.98);
+  }
+}
