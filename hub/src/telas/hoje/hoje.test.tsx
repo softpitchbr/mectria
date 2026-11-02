@@ -118,3 +118,22 @@ test("Projetos vê o aviso da fase 6", async () => {
   abrir("/");
   expect(await screen.findByText("Briefings e pendências técnicas chegam na fase 6.")).toBeInTheDocument();
 });
+
+test("segurar a tecla no bloco não registra várias ligações", async () => {
+  const enviados: string[] = [];
+  fingirApi({
+    "/api/eu": { corpo: PESSOAS.hunter },
+    "GET /api/ligacoes": { corpo: contagem(0, 0, 0) },
+    "POST /api/ligacoes": (init) => {
+      enviados.push(JSON.parse(String(init?.body)).resultado);
+      return { corpo: contagem(1, 1, 0) };
+    },
+    "GET /api/rotina": { corpo: ROTINA_VAZIA },
+    "GET /api/reunioes": { corpo: [] },
+  });
+  abrir("/");
+  await userEvent.click(await screen.findByRole("button", { name: "Começar o bloco" }));
+  await userEvent.keyboard("{1>5/}"); // segura o 1: um keydown normal e quatro repetidos
+  await screen.findByText("1 sem resposta");
+  expect(enviados).toEqual(["nao_atendeu"]);
+});

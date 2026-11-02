@@ -88,6 +88,27 @@ test.describe("closer", () => {
   });
 });
 
+test.describe("aviso sobre o foco", () => {
+  test.use(como("clo@mectria.com"));
+
+  test("o aviso aparece por cima do modo foco", async ({ page }) => {
+    await page.goto("/follow-up");
+    await page.getByRole("button", { name: /Usinagem E2E/ }).click();
+    await page.getByRole("dialog").getByRole("button", { name: "Copiar mensagem" }).click();
+    const aviso = page.getByRole("status").locator("p");
+    await expect(aviso).toBeVisible();
+    const noTopo = await aviso.evaluate((el) => {
+      // O aviso não recebe cliques (pointer-events: none); só para medir quem está por cima.
+      (el as HTMLElement).style.pointerEvents = "auto";
+      (el.parentElement as HTMLElement).style.pointerEvents = "auto";
+      const r = el.getBoundingClientRect();
+      const topo = document.elementFromPoint(r.left + r.width / 2, r.top + r.height / 2);
+      return !!topo && el.contains(topo);
+    });
+    expect(noTopo).toBe(true);
+  });
+});
+
 test.describe("diretor", () => {
   test.use(como("dir@mectria.com"));
 

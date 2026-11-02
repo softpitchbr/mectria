@@ -117,3 +117,15 @@ test("números do mês: propostas apresentadas e ganhas no mês", async () => {
   expect(await numerosDoMes(env.DB, diretor, "2026-11-20")).toMatchObject({ propostas: 2 });
   expect((await numerosDoMes(env.DB, closer, `${mesAtual}-15`)).ganhas).toBe(1);
 });
+
+test("volume: o follow-up do diretor funciona com 120 propostas na rua", async () => {
+  for (let i = 0; i < 120; i++) await registrarProposta(env.DB, proposta(`Empresa ${i}`, "2026-11-09"), i % 2 ? closer : closer2);
+  expect(await listarFollowup(env.DB, diretor, "2026-11-18")).toHaveLength(120);
+});
+
+test("resultado só muda proposta em follow-up e limpa o campo oposto", async () => {
+  const { proposta: p } = await registrarProposta(env.DB, proposta("Encerrada", "2026-11-09"), closer);
+  await registrarResultado(env.DB, p.oportunidadeId, { resultado: "perdida", motivo: "Preço" }, closer);
+  await expect(registrarResultado(env.DB, p.oportunidadeId, { resultado: "ganha", valor: 500 }, closer)).rejects.toThrow("ja_encerrada");
+  expect(await buscarOportunidade(env.DB, p.oportunidadeId)).toMatchObject({ situacao: "perdida", motivoPerda: "Preço", valorFechado: null });
+});

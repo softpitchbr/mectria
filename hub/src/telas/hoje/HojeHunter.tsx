@@ -47,7 +47,7 @@ export default function HojeHunter({ eu }: { eu: Eu }) {
           </>
         )}
         <Botao
-          variante="primario"
+          variante={emFoco ? "secundario" : "primario"}
           onClick={(e) => {
             setOrigem(e.currentTarget.closest("div") as HTMLElement);
             setEmFoco(true);

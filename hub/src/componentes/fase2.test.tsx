@@ -88,3 +88,19 @@ test("NumeroRolante mostra o valor novo", () => {
   expect(screen.getByText("4")).toBeInTheDocument();
   expect(screen.queryByText("3")).not.toBeInTheDocument();
 });
+
+test("Esc dentro de um campo só tira o cursor do campo; o segundo Esc sai do foco", async () => {
+  const aoSair = vi.fn();
+  render(
+    <Foco titulo="Nova proposta" aoSair={aoSair}>
+      <input aria-label="Empresa" />
+    </Foco>,
+  );
+  const campo = screen.getByRole("textbox", { name: "Empresa" });
+  campo.focus();
+  await userEvent.keyboard("{Escape}");
+  expect(aoSair).not.toHaveBeenCalled();
+  expect(campo).not.toHaveFocus();
+  await userEvent.keyboard("{Escape}");
+  expect(aoSair).toHaveBeenCalledTimes(1);
+});

@@ -55,7 +55,7 @@ export default function Resultado({ item, aoRegistrar }: { item: ItemFollowup; a
       {escolha === "perdida" && (
         <Selecao rotulo="Motivo" vazio="Escolha o motivo" value={motivo} onChange={(e) => setMotivo(e.target.value)} opcoes={MOTIVOS_PERDA.map((m) => ({ valor: m, rotulo: m }))} />
       )}
-      {escolha === "nutricao" && <p className="suave">A oportunidade sai do follow-up e volta a ser procurada em 45 dias.</p>}
+      {escolha === "nutricao" && <p className="suave">A oportunidade sai do follow-up e fica em nutrição.</p>}
       {erro && (
         <p role="alert" className={estilos.erro}>
           {erro}

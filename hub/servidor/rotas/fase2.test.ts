@@ -197,3 +197,32 @@ test("closers da lista e números do mês", async () => {
   expect(await corpo(await chamar(g(getNumeros), "clo@mectria.com"))).toEqual({ propostas: 1, ganhas: 0 });
   expect((await chamar(g(getNumeros), "hun@mectria.com")).status).toBe(403);
 });
+
+test("histórico conta o toque e a ligação feitos depois de abrir a rotina", async () => {
+  await chamar(g(getRotina), "clo@mectria.com");
+  const { toques } = await corpo<{ toques: { id: number }[] }>(await chamar(g(postProposta), "clo@mectria.com", { corpo: novaProposta("Teta") }));
+  await chamar(g(getRotina), "clo@mectria.com");
+  await chamar(g(patchToque), "clo@mectria.com", { metodo: "PATCH", corpo: { canal: "WhatsApp", resultado: "ok" }, params: { id: String(toques[0].id) } });
+  const [hojeC] = await corpo<{ feitos: number }[]>(await chamar(g(getHistorico), "clo@mectria.com"));
+  expect(hojeC.feitos).toBe(1);
+
+  await chamar(g(getRotina), "hun@mectria.com");
+  await chamar(g(postLigacao), "hun@mectria.com", { corpo: { resultado: "atendeu" } });
+  const [hojeH] = await corpo<{ feitos: number }[]>(await chamar(g(getHistorico), "hun@mectria.com"));
+  expect(hojeH.feitos).toBe(1);
+});
+
+test("resultado de proposta já encerrada dá 409; assumir oportunidade encerrada também", async () => {
+  const { proposta } = await corpo<{ proposta: { oportunidadeId: number } }>(await chamar(g(postProposta), "clo@mectria.com", { corpo: novaProposta("Iota") }));
+  const params = { id: String(proposta.oportunidadeId) };
+  await chamar(g(postResultado), "clo@mectria.com", { corpo: { resultado: "perdida", motivo: "Preço" }, params });
+  const segunda = await chamar(g(postResultado), "clo@mectria.com", { corpo: { resultado: "ganha", valor: "5,00" }, params });
+  expect(segunda.status).toBe(409);
+  expect(await corpo(segunda)).toEqual({ erro: "conflito", mensagem: "Essa proposta já foi encerrada." });
+  const assumir = await chamar(g(patchOportunidade), "clo2@mectria.com", { metodo: "PATCH", corpo: { assumir: true }, params });
+  expect(assumir.status).toBe(409);
+});
+
+test("projetos não lista closers", async () => {
+  expect((await chamar(g(getCloser), "pro@mectria.com")).status).toBe(403);
+});

@@ -74,17 +74,18 @@ export default function FollowUp({ eu }: { eu: Eu }) {
     void carregar();
   }, [carregar]);
 
-  // Link da rotina: /follow-up?toque=ID abre o toque direto.
+  // Links da rotina e do Hoje: ?proposta=ID abre o próximo toque da proposta (?toque=ID também funciona).
+  const propostaPedida = busca.get("proposta");
   const toquePedido = busca.get("toque");
   useEffect(() => {
-    if (!lista || !toquePedido) return;
-    const item = lista.find((i) => String(i.proximo?.id) === toquePedido);
-    if (item) setAberto({ tipo: "toque", item, origem: null });
-  }, [lista, toquePedido]);
+    if (!lista || (!propostaPedida && !toquePedido)) return;
+    const item = lista.find((i) => String(i.proposta.id) === propostaPedida || String(i.proximo?.id) === toquePedido);
+    if (item) setAberto(item.proximo ? { tipo: "toque", item, origem: null } : { tipo: "resultado", item, origem: null });
+  }, [lista, propostaPedida, toquePedido]);
 
   function fechar() {
     setAberto(null);
-    if (toquePedido) setBusca({}, { replace: true });
+    if (propostaPedida || toquePedido) setBusca({}, { replace: true });
   }
 
   function depoisDeRegistrar() {
@@ -109,7 +110,7 @@ export default function FollowUp({ eu }: { eu: Eu }) {
             </p>
           )}
         </div>
-        <Botao variante="primario" onClick={(e) => setAberto({ tipo: "nova", origem: e.currentTarget })}>
+        <Botao variante={aberto ? "secundario" : "primario"} onClick={(e) => setAberto({ tipo: "nova", origem: e.currentTarget })}>
           Registrar proposta apresentada
         </Botao>
       </header>
@@ -161,7 +162,7 @@ export default function FollowUp({ eu }: { eu: Eu }) {
       )}
       {aberto?.tipo === "nova" && (
         <Foco titulo="Registrar proposta apresentada" origem={aberto.origem} aoSair={fechar}>
-          <NovaProposta aoRegistrar={depoisDeRegistrar} />
+          <NovaProposta eu={eu} aoRegistrar={depoisDeRegistrar} />
         </Foco>
       )}
     </div>

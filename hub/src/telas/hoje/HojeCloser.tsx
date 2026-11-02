@@ -112,7 +112,7 @@ export default function HojeCloser() {
             {followups.slice(0, 5).map((f) => (
               <li key={f.proposta.id}>
                 <span className="mono">{f.proximo?.codigo ?? "—"}</span>
-                <Link to={f.proximo ? `/follow-up?toque=${f.proximo.id}` : "/follow-up"}>{f.oportunidade.empresa}</Link>
+                <Link to={`/follow-up?proposta=${f.proposta.id}`}>{f.oportunidade.empresa}</Link>
                 {f.estado === "atrasado" ? <Tag tipo="atrasado">Atrasado</Tag> : f.estado === "hoje" ? <Tag tipo="hoje">Hoje</Tag> : <span />}
               </li>
             ))}

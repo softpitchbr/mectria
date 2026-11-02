@@ -7,11 +7,12 @@ import { avisar } from "../../componentes/Aviso";
 import Botao from "../../componentes/Botao";
 import Campo from "../../componentes/Campo";
 import Selecao from "../../componentes/Selecao";
+import type { Eu } from "../../sessao/useEu";
 import { mensagemDe, OPCOES_SERVICO } from "./comum";
 import estilos from "./followup.module.css";
 
 /** Registra uma proposta apresentada (até a fase 4, e depois para as apresentadas fora do hub). */
-export default function NovaProposta({ aoRegistrar }: { aoRegistrar: () => void }) {
+export default function NovaProposta({ eu, aoRegistrar }: { eu: Eu; aoRegistrar: () => void }) {
   const [oportunidades, setOportunidades] = useState<Oportunidade[]>([]);
   const [oportunidadeId, setOportunidadeId] = useState("");
   const [campos, setCampos] = useState({
@@ -42,6 +43,10 @@ export default function NovaProposta({ aoRegistrar }: { aoRegistrar: () => void 
     if (o) setCampos((c) => ({ ...c, servico: o.servico }));
   }
 
+  const escolhida = oportunidades.find((x) => String(x.id) === oportunidadeId);
+  const deColega = !!escolhida && eu.cargo === "closer" && escolhida.closerId !== null && escolhida.closerId !== eu.id;
+  const primeiro = (nome: string | null) => (nome ?? "").trim().split(/\s+/)[0];
+
   async function registrar(e: FormEvent) {
     e.preventDefault();
     setErro("");
@@ -58,6 +63,8 @@ export default function NovaProposta({ aoRegistrar }: { aoRegistrar: () => void 
     if (campos.dor.trim()) corpo.dor = campos.dor;
     if (campos.validade) corpo.validade = campos.validade;
     try {
+      // A oportunidade de um colega é assumida antes (spec: o closer assume a de um colega).
+      if (deColega) await api(`/api/oportunidades/${oportunidadeId}`, { method: "PATCH", body: JSON.stringify({ assumir: true }) });
       const { toques } = await api<{ toques: unknown[] }>("/api/propostas", { method: "POST", body: JSON.stringify(corpo) });
       avisar(`Proposta registrada. ${toques.length} toques na agenda.`);
       aoRegistrar();
@@ -76,8 +83,15 @@ export default function NovaProposta({ aoRegistrar }: { aoRegistrar: () => void 
         rotulo="Oportunidade"
         value={oportunidadeId}
         onChange={(e) => escolherOportunidade(e.target.value)}
-        opcoes={[{ valor: "", rotulo: "Empresa nova" }, ...oportunidades.map((o) => ({ valor: String(o.id), rotulo: `${o.empresa} · ${o.contato}` }))]}
+        opcoes={[
+          { valor: "", rotulo: "Empresa nova" },
+          ...oportunidades.map((o) => ({
+            valor: String(o.id),
+            rotulo: `${o.empresa} · ${o.contato}${o.closerId !== null && o.closerId !== eu.id ? ` · de ${primeiro(o.closerNome)}` : ""}`,
+          })),
+        ]}
       />
+      {deColega && <p className="suave">Essa oportunidade está com {primeiro(escolhida!.closerNome)}. Ao registrar, você assume.</p>}
       <div className={estilos.grade}>
         {oportunidadeId === "" && (
           <>

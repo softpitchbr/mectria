@@ -153,3 +153,64 @@ test("o 409 de toque já feito aparece no foco", async () => {
   await userEvent.click(within(foco).getByRole("button", { name: "Registrar toque" }));
   expect(await within(foco).findByRole("alert")).toHaveTextContent("Esse toque já foi registrado.");
 });
+
+test("abrir com ?proposta=ID mostra o próximo toque dessa proposta", async () => {
+  fingirApi({ "/api/eu": { corpo: PESSOAS.closer }, "GET /api/followup": { corpo: [ATRASADA, DE_HOJE] } });
+  abrir("/follow-up?proposta=20");
+  expect(await screen.findByRole("dialog", { name: "Toque D0 · Metalúrgica Beta" })).toBeInTheDocument();
+});
+
+test("com o foco aberto, o botão da página deixa de ser vermelho", async () => {
+  fingirApi({ "/api/eu": { corpo: PESSOAS.closer }, "GET /api/followup": { corpo: [DE_HOJE] } });
+  abrir("/follow-up");
+  const botao = await screen.findByRole("button", { name: "Registrar proposta apresentada" });
+  expect(botao).toHaveClass("primario");
+  await userEvent.click(await screen.findByRole("button", { name: /Metalúrgica Beta/ }));
+  expect(botao).not.toHaveClass("primario");
+});
+
+test("nutrição não promete lembrete que o hub não faz", async () => {
+  fingirApi({ "/api/eu": { corpo: PESSOAS.closer }, "GET /api/followup": { corpo: [ATRASADA] } });
+  abrir("/follow-up");
+  await userEvent.click(await screen.findByRole("button", { name: /Usinagem Alfa/ }));
+  await userEvent.click(screen.getByRole("button", { name: "Registrar resultado da proposta" }));
+  await userEvent.click(screen.getByRole("radio", { name: "Nutrição" }));
+  expect(screen.getByText("A oportunidade sai do follow-up e fica em nutrição.")).toBeInTheDocument();
+});
+
+test("proposta de oportunidade de colega: assume e depois registra", async () => {
+  const chamadas: string[] = [];
+  const daClara = {
+    ...ATRASADA.oportunidade,
+    id: 7,
+    empresa: "Torno Ômega",
+    contato: "Rui",
+    situacao: "diagnostica_marcada",
+    closerId: 9,
+    closerNome: "Clara Closer",
+  };
+  fingirApi({
+    "/api/eu": { corpo: PESSOAS.closer },
+    "GET /api/followup": { corpo: [] },
+    "GET /api/oportunidades": { corpo: [daClara] },
+    "PATCH /api/oportunidades/7": () => {
+      chamadas.push("assumir");
+      return { corpo: { ...daClara, closerId: 2 } };
+    },
+    "POST /api/propostas": () => {
+      chamadas.push("proposta");
+      return { status: 201, corpo: { proposta: {}, toques: [1, 2, 3, 4, 5, 6, 7] } };
+    },
+  });
+  abrir("/follow-up");
+  await userEvent.click(await screen.findByRole("button", { name: "Registrar proposta apresentada" }));
+  const foco = screen.getByRole("dialog", { name: "Registrar proposta apresentada" });
+  await within(foco).findByRole("option", { name: "Torno Ômega · Rui · de Clara" });
+  await userEvent.selectOptions(within(foco).getByLabelText("Oportunidade"), "7");
+  expect(within(foco).getByText("Essa oportunidade está com Clara. Ao registrar, você assume.")).toBeInTheDocument();
+  await userEvent.type(within(foco).getByLabelText("Valor"), "9.000,00");
+  await userEvent.type(within(foco).getByLabelText("Quem decide"), "Rui");
+  await userEvent.click(within(foco).getByRole("button", { name: "Registrar proposta" }));
+  await screen.findByRole("status");
+  expect(chamadas).toEqual(["assumir", "proposta"]);
+});

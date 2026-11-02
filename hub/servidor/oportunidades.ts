@@ -159,14 +159,19 @@ export async function mudarSituacao(
   return (await buscarOportunidade(db, id))!;
 }
 
-/** Um closer assume a oportunidade de um colega. */
+/** Um closer assume a oportunidade de um colega (só enquanto ela está aberta). */
 export async function assumir(db: D1Database, id: number, closer: Pessoa): Promise<Oportunidade> {
   const atual = await buscarOportunidade(db, id);
   if (!atual) throw new Error("nao_encontrada");
-  await db.batch([
-    db.prepare("UPDATE oportunidades SET closer_id = ?, atualizado_em = datetime('now') WHERE id = ?").bind(closer.id, id),
-    registrarHistorico(db, id, atual.situacao, atual.situacao, closer.id, `assumida por ${closer.nome}`),
-  ]);
+  const mudou = await db
+    .prepare(
+      `UPDATE oportunidades SET closer_id = ?, atualizado_em = datetime('now')
+       WHERE id = ? AND situacao IN ('diagnostica_marcada', 'proposta_marcada', 'em_followup') RETURNING id`,
+    )
+    .bind(closer.id, id)
+    .first();
+  if (!mudou) throw new Error("ja_encerrada");
+  await registrarHistorico(db, id, atual.situacao, atual.situacao, closer.id, `assumida por ${closer.nome}`).run();
   return (await buscarOportunidade(db, id))!;
 }
 

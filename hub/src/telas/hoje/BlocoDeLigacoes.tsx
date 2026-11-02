@@ -37,7 +37,7 @@ export default function BlocoDeLigacoes({ eu, inicial, aoMudar }: { eu: Eu; inic
     if (marcando) return;
     const aoTeclar = (e: KeyboardEvent) => {
       const alvo = e.target as HTMLElement;
-      if (alvo.closest("input, textarea, select") || e.ctrlKey || e.metaKey || e.altKey) return;
+      if (e.repeat || alvo.closest("input, textarea, select") || e.ctrlKey || e.metaKey || e.altKey) return;
       if (e.key === "1") void registrar("nao_atendeu");
       else if (e.key === "2") void registrar("atendeu");
       else if (e.key === "3") setMarcando(true);

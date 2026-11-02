@@ -1,7 +1,7 @@
 import { hojeEmSaoPaulo } from "../../compartilhado/datas";
 import { podeContarLigacoes } from "../../compartilhado/permissoes";
 import { erro, json } from "../../servidor/respostas";
-import { contarLigacoes, registrarLigacao } from "../../servidor/rotina";
+import { atualizarRotinaDe, contarLigacoes, registrarLigacao } from "../../servidor/rotina";
 import type { DadosApi, Env } from "../../servidor/tipos";
 import { lerCorpo, validarLigacao } from "../../servidor/validacao";
 
@@ -18,5 +18,8 @@ export const onRequestPost: PagesFunction<Env, string, DadosApi> = async ({ requ
   if (!podeContarLigacoes(data.pessoa.cargo)) return erro("sem_permissao", SEM_PERMISSAO);
   const validado = validarLigacao(await lerCorpo(request));
   if (!validado.ok) return erro("invalido", validado.mensagem);
-  return json(await registrarLigacao(env.DB, data.pessoa.id, hojeEmSaoPaulo(), validado.dados));
+  const hoje = hojeEmSaoPaulo();
+  const contagem = await registrarLigacao(env.DB, data.pessoa.id, hoje, validado.dados);
+  await atualizarRotinaDe(env.DB, data.pessoa.id, hoje);
+  return json(contagem);
 };

@@ -117,33 +117,28 @@ const ORDEM_ESTADO: Record<EstadoFollowup, number> = { atrasado: 0, hoje: 1, em_
  */
 export async function listarFollowup(db: D1Database, quem: Pessoa, hoje: string): Promise<ItemFollowup[]> {
   const soDele = quem.cargo !== "diretor";
-  const { results: oportunidades } = await db
-    .prepare(`${SELECT_OPORTUNIDADE} WHERE o.situacao = 'em_followup' ${soDele ? "AND o.closer_id = ?" : ""}`)
-    .bind(...(soDele ? [quem.id] : []))
-    .all<Parameters<typeof oportunidadeDeLinha>[0]>();
-  if (oportunidades.length === 0) return [];
-
-  const ids = oportunidades.map((o) => o.id);
-  const marcas = ids.map(() => "?").join(", ");
-  const { results: propostas } = await db
-    .prepare(
-      `SELECT p.* FROM propostas p
-       WHERE p.oportunidade_id IN (${marcas})
-         AND p.id = (SELECT MAX(id) FROM propostas WHERE oportunidade_id = p.oportunidade_id)`,
-    )
-    .bind(...ids)
-    .all<LinhaProposta>();
-  const idsPropostas = propostas.map((p) => p.id);
-  const { results: toques } = idsPropostas.length
-    ? await db
-        .prepare(`SELECT * FROM toques WHERE proposta_id IN (${idsPropostas.map(() => "?").join(", ")}) ORDER BY previsto_para, id`)
-        .bind(...idsPropostas)
-        .all<LinhaToque>()
-    : { results: [] as LinhaToque[] };
+  const filtro = soDele ? "AND o.closer_id = ?" : "";
+  const extra = soDele ? [quem.id] : [];
+  // Sem listas de ids na consulta: o D1 aceita no máximo 100 parâmetros.
+  const ultimaProposta = `
+    SELECT p.id FROM propostas p JOIN oportunidades o ON o.id = p.oportunidade_id
+    WHERE o.situacao = 'em_followup' ${filtro}
+      AND p.id = (SELECT MAX(id) FROM propostas WHERE oportunidade_id = o.id)`;
+  const [{ results: oportunidades }, { results: propostas }, { results: toques }] = await db.batch([
+    db.prepare(`${SELECT_OPORTUNIDADE} WHERE o.situacao = 'em_followup' ${filtro}`).bind(...extra),
+    db.prepare(`SELECT * FROM propostas WHERE id IN (${ultimaProposta})`).bind(...extra),
+    db.prepare(`SELECT * FROM toques WHERE proposta_id IN (${ultimaProposta}) ORDER BY previsto_para, id`).bind(...extra),
+  ]) as unknown as [
+    { results: Parameters<typeof oportunidadeDeLinha>[0][] },
+    { results: LinhaProposta[] },
+    { results: LinhaToque[] },
+  ];
 
   const itens: ItemFollowup[] = [];
   for (const linha of propostas) {
-    const oportunidade = oportunidadeDeLinha(oportunidades.find((o) => o.id === linha.oportunidade_id)!);
+    const o = oportunidades.find((x) => x.id === linha.oportunidade_id);
+    if (!o) continue;
+    const oportunidade = oportunidadeDeLinha(o);
     const pendentes = toques.filter((t) => t.proposta_id === linha.id && !t.feito_em).map(toqueDeLinha);
     const atrasados = pendentes.filter((t) => t.previstoPara < hoje).length;
     const proximo = pendentes[0] ?? null;
@@ -191,17 +186,34 @@ export async function registrarToque(
   throw new Error(existe ? "toque_ja_feito" : "nao_encontrado");
 }
 
-/** Encerra a proposta: ganha (com valor), perdida (com motivo) ou nutrição. */
+/**
+ * Encerra a proposta: ganha (com valor), perdida (com motivo) ou nutrição.
+ * Só muda oportunidade em follow-up (uma gravação só); o campo do outro resultado fica vazio.
+ */
 export async function registrarResultado(
   db: D1Database,
   oportunidadeId: number,
   r: ResultadoProposta,
   autor: Pessoa,
 ): Promise<Oportunidade> {
-  if (!(await buscarOportunidade(db, oportunidadeId))) throw new Error("nao_encontrado");
-  if (r.resultado === "ganha") return mudarSituacao(db, oportunidadeId, "ganha", autor.id, { valorFechado: r.valor });
-  if (r.resultado === "perdida") return mudarSituacao(db, oportunidadeId, "perdida", autor.id, { motivoPerda: r.motivo });
-  return mudarSituacao(db, oportunidadeId, "nutricao", autor.id);
+  const valor = r.resultado === "ganha" ? r.valor : null;
+  const motivo = r.resultado === "perdida" ? r.motivo : null;
+  const mudou = await db
+    .prepare(
+      `UPDATE oportunidades SET situacao = ?, valor_fechado = ?, motivo_perda = ?, atualizado_em = datetime('now')
+       WHERE id = ? AND situacao = 'em_followup' RETURNING id`,
+    )
+    .bind(r.resultado, valor, motivo, oportunidadeId)
+    .first<{ id: number }>();
+  if (!mudou) {
+    if (!(await buscarOportunidade(db, oportunidadeId))) throw new Error("nao_encontrado");
+    throw new Error("ja_encerrada");
+  }
+  await db
+    .prepare("INSERT INTO historico (oportunidade_id, de, para, autor_id) VALUES (?, 'em_followup', ?, ?)")
+    .bind(oportunidadeId, r.resultado, autor.id)
+    .run();
+  return (await buscarOportunidade(db, oportunidadeId))!;
 }
 
 /** Propostas apresentadas no mês e oportunidades ganhas no mês (hora de São Paulo). */

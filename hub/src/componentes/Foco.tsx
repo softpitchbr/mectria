@@ -52,10 +52,15 @@ export default function Foco({
     const primeiro = conteudo.current?.querySelector<HTMLElement>(FOCAVEIS) ?? caixa.current?.querySelector<HTMLElement>(FOCAVEIS);
     primeiro?.focus();
     const aoTeclar = (e: globalThis.KeyboardEvent) => {
-      if (e.key === "Escape") {
-        e.preventDefault();
-        aoSairAtual.current();
+      if (e.key !== "Escape" || e.defaultPrevented) return;
+      e.preventDefault();
+      // Esc num campo só sai do campo (spec: "Esc sai do campo ou do foco"); o próximo Esc sai do foco.
+      const ativo = document.activeElement as HTMLElement | null;
+      if (ativo && caixa.current?.contains(ativo) && ativo.matches("input, textarea, select")) {
+        ativo.blur();
+        return;
       }
+      aoSairAtual.current();
     };
     document.addEventListener("keydown", aoTeclar);
     return () => {

@@ -1,5 +1,7 @@
 import { eDonoDaOportunidade, podeCuidarDoFollowup } from "../../../compartilhado/permissoes";
+import { hojeEmSaoPaulo } from "../../../compartilhado/datas";
 import { donoDoToque, registrarToque } from "../../../servidor/followup";
+import { atualizarRotinaDe } from "../../../servidor/rotina";
 import { erro, json } from "../../../servidor/respostas";
 import type { DadosApi, Env } from "../../../servidor/tipos";
 import { lerCorpo, validarToque } from "../../../servidor/validacao";
@@ -16,7 +18,10 @@ export const onRequestPatch: PagesFunction<Env, "id", DadosApi> = async ({ reque
   const validado = validarToque(await lerCorpo(request));
   if (!validado.ok) return erro("invalido", validado.mensagem);
   try {
-    return json(await registrarToque(env.DB, id, validado.dados, data.pessoa));
+    const toque = await registrarToque(env.DB, id, validado.dados, data.pessoa);
+    // O histórico da rotina é de quem é dono da proposta (o diretor também registra).
+    await atualizarRotinaDe(env.DB, dono.closerId, hojeEmSaoPaulo());
+    return json(toque);
   } catch (e) {
     if (e instanceof Error && e.message === "toque_ja_feito") return erro("conflito", "Esse toque já foi registrado.");
     throw e;

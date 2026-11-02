@@ -59,7 +59,7 @@ test("closer ganha um item por toque do dia, e o toque feito marca o item", asyn
     `toque:${toques[1].id}`,
   ]);
   const item = dia.itens.find((i) => i.chave === `toque:${toques[0].id}`)!;
-  expect(item).toMatchObject({ titulo: "D0 · WhatsApp + e-mail · Alfa", automatico: true, feito: false, link: `/follow-up?toque=${toques[0].id}` });
+  expect(item).toMatchObject({ titulo: "D0 · WhatsApp + e-mail · Alfa", automatico: true, feito: false });
 
   await registrarToque(env.DB, toques[0].id, { canal: "WhatsApp", resultado: "ok" }, closer);
   dia = await rotinaDoDia(env.DB, closer, "2026-11-16");
@@ -126,4 +126,29 @@ test("toque feito hoje antes de abrir a rotina aparece como feito", async () => 
   await registrarToque(env.DB, toques[0].id, { canal: "WhatsApp", resultado: "Mandei" }, closer);
   const dia = await rotinaDoDia(env.DB, closer, hoje);
   expect(dia.itens.find((i) => i.chave === `toque:${toques[0].id}`)).toMatchObject({ feito: true });
+});
+
+test("volume: closer com 15 propostas inteiras vencidas ainda tem rotina", async () => {
+  for (let i = 0; i < 15; i++) await registrarProposta(env.DB, proposta(`Vencida ${i}`, "2026-10-01"), closer);
+  const dia = await rotinaDoDia(env.DB, closer, "2026-11-18");
+  expect(dia.itens.filter((i) => i.chave.startsWith("toque:"))).toHaveLength(105);
+  const denovo = await rotinaDoDia(env.DB, closer, "2026-11-18");
+  expect(denovo.total).toBe(109);
+});
+
+test("o link do item de toque abre a proposta", async () => {
+  const { proposta: p, toques } = await registrarProposta(env.DB, proposta("Link", "2026-11-13"), closer);
+  const dia = await rotinaDoDia(env.DB, closer, "2026-11-16");
+  expect(dia.itens.find((i) => i.chave === `toque:${toques[1].id}`)?.link).toBe(`/follow-up?proposta=${p.id}`);
+});
+
+test("o dia de hoje entra no histórico mesmo em feriado", async () => {
+  await rotinaDoDia(env.DB, hunter, "2026-11-02");
+  await marcarItem(env.DB, hunter, "2026-11-02", "whatsapp-tentativas", true);
+  const h = await historicoDeRotina(env.DB, hunter.id, "2026-11-02", 3);
+  expect(h).toEqual([
+    { dia: "2026-11-02", feitos: 1, total: 3 },
+    { dia: "2026-10-30", feitos: 0, total: 0 },
+    { dia: "2026-10-29", feitos: 0, total: 0 },
+  ]);
 });

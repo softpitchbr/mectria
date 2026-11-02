@@ -15,5 +15,10 @@ export const onRequestPost: PagesFunction<Env, "id", DadosApi> = async ({ reques
   }
   const validado = validarResultado(await lerCorpo(request));
   if (!validado.ok) return erro("invalido", validado.mensagem);
-  return json(await registrarResultado(env.DB, oportunidade.id, validado.dados, data.pessoa));
+  try {
+    return json(await registrarResultado(env.DB, oportunidade.id, validado.dados, data.pessoa));
+  } catch (e) {
+    if (e instanceof Error && e.message === "ja_encerrada") return erro("conflito", "Essa proposta já foi encerrada.");
+    throw e;
+  }
 };

@@ -3,7 +3,7 @@ import { META_LIGACOES_DIA, MINIMO_LIGACOES_DIA, ROTINA_FIXA } from "../comparti
 import { ehDiaUtil } from "../compartilhado/datas";
 import type { ContagemLigacoes, DiaDeRotina, ItemRotina, ResultadoLigacao, ResumoPessoa } from "../compartilhado/oportunidade";
 import { listarReunioes } from "./oportunidades";
-import { listar } from "./pessoas";
+import { buscarPorId, listar } from "./pessoas";
 import type { Pessoa } from "./tipos";
 
 export async function registrarLigacao(db: D1Database, pessoaId: number, dia: string, resultado: ResultadoLigacao): Promise<ContagemLigacoes> {
@@ -42,17 +42,19 @@ interface ToqueDoDia {
   empresa: string;
   feito_em: string | null;
   situacao: string;
+  proposta_id: number;
 }
 
 const CANAL_DO_TOQUE = new Map(CADENCIA.map((t) => [t.codigo, t.canal]));
 
-/** Toques do closer que entram no dia: os pendentes até o dia, os feitos no dia (hora de São Paulo) e os que já estão na rotina do dia. */
-async function toquesDoDia(db: D1Database, closerId: number, dia: string, chavesNoDia: string[]): Promise<ToqueDoDia[]> {
-  const idsNoDia = chavesNoDia.filter((c) => c.startsWith("toque:")).map((c) => Number(c.slice(6)));
-  const marcas = idsNoDia.map(() => "?").join(", ");
+/**
+ * Toques do closer que entram no dia: os pendentes até o dia, os feitos no dia (hora de São Paulo)
+ * e os que já estão na rotina do dia. Sem lista de ids na consulta (o D1 aceita no máximo 100 parâmetros).
+ */
+async function toquesDoDia(db: D1Database, closerId: number, dia: string): Promise<ToqueDoDia[]> {
   const { results } = await db
     .prepare(
-      `SELECT t.id, t.codigo, o.empresa, t.feito_em, o.situacao
+      `SELECT t.id, t.codigo, o.empresa, t.feito_em, o.situacao, p.id AS proposta_id
        FROM toques t
        JOIN propostas p ON p.id = t.proposta_id
        JOIN oportunidades o ON o.id = p.oportunidade_id
@@ -60,10 +62,11 @@ async function toquesDoDia(db: D1Database, closerId: number, dia: string, chaves
          AND p.id = (SELECT MAX(id) FROM propostas WHERE oportunidade_id = o.id)
          AND ((t.feito_em IS NULL AND t.previsto_para <= ? AND o.situacao = 'em_followup')
               OR (t.feito_em IS NOT NULL AND date(t.feito_em, '-3 hours') = ?)
-              ${idsNoDia.length ? `OR t.id IN (${marcas})` : ""})
+              OR t.id IN (SELECT CAST(substr(chave, 7) AS INTEGER) FROM rotinas
+                          WHERE pessoa_id = ? AND dia = ? AND chave LIKE 'toque:%'))
        ORDER BY t.previsto_para, t.id`,
     )
-    .bind(closerId, dia, dia, ...idsNoDia)
+    .bind(closerId, dia, dia, closerId, dia)
     .all<ToqueDoDia>();
   // Toque pendente de proposta que já terminou sai do dia; o que foi feito fica.
   return results.filter((t) => t.feito_em !== null || t.situacao === "em_followup");
@@ -109,14 +112,14 @@ export async function rotinaDoDia(db: D1Database, pessoa: Pessoa, dia: string, p
         feito: !!salvo.get(chave)?.feito_em,
       });
     }
-    for (const t of await toquesDoDia(db, pessoa.id, dia, [...salvo.keys()])) {
+    for (const t of await toquesDoDia(db, pessoa.id, dia)) {
       itens.push({
         chave: `toque:${t.id}`,
         titulo: `${t.codigo} · ${CANAL_DO_TOQUE.get(t.codigo as never) ?? ""} · ${t.empresa}`,
         origem: "gerado",
         automatico: true,
         feito: t.feito_em !== null,
-        link: `/follow-up?toque=${t.id}`,
+        link: `/follow-up?proposta=${t.proposta_id}`,
       });
     }
   }
@@ -127,9 +130,9 @@ export async function rotinaDoDia(db: D1Database, pessoa: Pessoa, dia: string, p
       db
         .prepare(
           `DELETE FROM rotinas WHERE pessoa_id = ? AND dia = ? AND origem = 'gerado' AND feito_em IS NULL
-           AND chave NOT IN (${atuais.map(() => "?").join(", ") || "''"})`,
+           AND chave NOT IN (SELECT value FROM json_each(?))`,
         )
-        .bind(pessoa.id, dia, ...atuais),
+        .bind(pessoa.id, dia, JSON.stringify(atuais)),
       ...itens.map((i) =>
         db
           .prepare(
@@ -151,6 +154,13 @@ export async function rotinaDoDia(db: D1Database, pessoa: Pessoa, dia: string, p
   return { dia, itens, feitos, total: itens.length };
 }
 
+/** Regrava a rotina do dia de uma pessoa depois de algo que marca item sozinho (toque, ligação). */
+export async function atualizarRotinaDe(db: D1Database, pessoaId: number | null, dia: string): Promise<void> {
+  if (pessoaId === null) return;
+  const pessoa = await buscarPorId(db, pessoaId);
+  if (pessoa && pessoa.ativo && ROTINA_FIXA[pessoa.cargo].length > 0) await rotinaDoDia(db, pessoa, dia);
+}
+
 /** Marca ou desmarca um item manual do dia. */
 export async function marcarItem(db: D1Database, pessoa: Pessoa, dia: string, chave: string, feito: boolean): Promise<DiaDeRotina> {
   const atual = await rotinaDoDia(db, pessoa, dia);
@@ -164,14 +174,17 @@ export async function marcarItem(db: D1Database, pessoa: Pessoa, dia: string, ch
   return rotinaDoDia(db, pessoa, dia);
 }
 
-/** Os últimos dias úteis até `ate`, do mais recente para o mais antigo; 0/0 quando a pessoa não abriu o hub. */
+/**
+ * O dia `ate` (sempre, mesmo em feriado ou fim de semana) e os dias úteis antes dele, do mais
+ * recente para o mais antigo; 0/0 quando a pessoa não abriu o hub.
+ */
 export async function historicoDeRotina(db: D1Database, pessoaId: number, ate: string, dias = 14): Promise<{ dia: string; feitos: number; total: number }[]> {
-  const lista: string[] = [];
+  const lista: string[] = [ate];
   let cursor = new Date(`${ate}T12:00:00Z`);
   while (lista.length < dias) {
+    cursor = new Date(cursor.getTime() - 86_400_000);
     const dia = cursor.toISOString().slice(0, 10);
     if (ehDiaUtil(dia)) lista.push(dia);
-    cursor = new Date(cursor.getTime() - 86_400_000);
   }
   const { results } = await db
     .prepare(
