@@ -1,3 +1,5 @@
+import type { CodigoToque } from "./cadencia";
+
 export type Situacao = "diagnostica_marcada" | "proposta_marcada" | "em_followup" | "ganha" | "perdida" | "nutricao";
 
 export const SITUACOES: Situacao[] = ["diagnostica_marcada", "proposta_marcada", "em_followup", "ganha", "perdida", "nutricao"];
@@ -57,3 +59,53 @@ export interface NovaDiagnostica {
   dataHora: string;
   formato: "online" | "presencial";
 }
+
+export interface Proposta {
+  id: number;
+  oportunidadeId: number;
+  servico: string;
+  /** Centavos. */
+  valor: number;
+  apresentadaEm: string;
+  dataDecisao: string | null;
+  quemDecide: string;
+  dor: string;
+  validade: string | null;
+}
+
+export interface NovaProposta {
+  oportunidadeId?: number;
+  empresa?: string;
+  contato?: string;
+  telefone?: string;
+  servico: string;
+  /** Centavos. */
+  valor: number;
+  apresentadaEm: string;
+  dataDecisao?: string;
+  quemDecide: string;
+  dor?: string;
+  validade?: string;
+}
+
+export interface Toque {
+  id: number;
+  propostaId: number;
+  codigo: CodigoToque;
+  previstoPara: string;
+  feitoEm: string | null;
+  canal: string | null;
+  resultado: string | null;
+}
+
+export type EstadoFollowup = "atrasado" | "hoje" | "em_dia" | "sem_toque";
+
+export interface ItemFollowup {
+  oportunidade: Oportunidade;
+  proposta: Proposta;
+  proximo: Toque | null;
+  atrasados: number;
+  estado: EstadoFollowup;
+}
+
+export type ResultadoProposta = { resultado: "ganha"; valor: number } | { resultado: "perdida"; motivo: string } | { resultado: "nutricao" };
