@@ -33,6 +33,11 @@ export function somarDiasUteis(dia: string, n: number, feriados: readonly string
   return paraTexto(atual);
 }
 
+/** Dia + n dias de calendário. */
+export function diasDepois(dia: string, n: number): string {
+  return paraTexto(new Date(paraData(dia).getTime() + n * UM_DIA));
+}
+
 /** Lê "AAAA-MM-DDTHH:MM" como hora de São Paulo (UTC−3, sem horário de verão). */
 export function instanteLocal(dataHora: string): Date {
   return new Date(`${dataHora}:00-03:00`);

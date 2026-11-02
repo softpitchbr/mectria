@@ -1,4 +1,4 @@
-import { ehDiaUtil, formatarDia, formatarReais, hojeEmSaoPaulo, instanteLocal, lerReais, somarDiasUteis } from "./datas";
+import { diasDepois, ehDiaUtil, formatarDia, formatarReais, hojeEmSaoPaulo, instanteLocal, lerReais, somarDiasUteis } from "./datas";
 
 test("hoje é o dia de São Paulo", () => {
   expect(hojeEmSaoPaulo(new Date("2026-11-03T02:30:00Z"))).toBe("2026-11-02");
@@ -26,4 +26,8 @@ test("dinheiro do jeito brasileiro", () => {
   expect(lerReais("-10")).toBeNull();
   expect(formatarReais(1250000)).toBe("R$ 12.500,00");
   expect(formatarDia("2026-11-09")).toBe("Seg, 9/11");
+});
+
+test("dias depois conta dias de calendário", () => {
+  expect(diasDepois("2026-11-27", 6)).toBe("2026-12-03");
 });

@@ -38,3 +38,34 @@ export function secoesDoCargo(cargo: Cargo): Secao[] {
 export function podeGerenciarPessoas(cargo: Cargo): boolean {
   return cargo === "diretor";
 }
+
+// Fase 2 ------------------------------------------------------------------------
+
+/** Marca diagnóstica e vê oportunidades (o hunter, só as que marcou). */
+export function podeMarcarDiagnostica(cargo: Cargo): boolean {
+  return cargo === "hunter" || cargo === "closer" || cargo === "diretor";
+}
+
+/** Assume oportunidades, registra propostas, toques e resultados, e vê o follow-up. */
+export function podeCuidarDoFollowup(cargo: Cargo): boolean {
+  return cargo === "closer" || cargo === "diretor";
+}
+
+/** Tem checklist de rotina do dia. */
+export function temRotina(cargo: Cargo): boolean {
+  return cargo === "hunter" || cargo === "closer";
+}
+
+export function podeContarLigacoes(cargo: Cargo): boolean {
+  return cargo === "hunter" || cargo === "diretor";
+}
+
+export function podeVerResumoDoTime(cargo: Cargo): boolean {
+  return cargo === "diretor";
+}
+
+/** O closer mexe nas oportunidades dele (ou sem closer); o diretor, em todas. */
+export function eDonoDaOportunidade(pessoa: { id: number; cargo: Cargo }, closerId: number | null): boolean {
+  if (pessoa.cargo === "diretor") return true;
+  return pessoa.cargo === "closer" && (closerId === null || closerId === pessoa.id);
+}
