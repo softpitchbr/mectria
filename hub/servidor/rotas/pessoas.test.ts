@@ -36,7 +36,7 @@ const patch = (email: string, id: number, corpo: unknown) => chamar(onRequestPat
 test("closer chamando GET /api/pessoas recebe 403", async () => {
   const r = await chamar(onRequestGet as Manipulador, "clo@mectria.com");
   expect(r.status).toBe(403);
-  expect(await r.json()).toMatchObject({ erro: "sem_acesso" });
+  expect(await r.json()).toMatchObject({ erro: "sem_permissao" });
 });
 
 test("closer não cria nem altera pessoas", async () => {
@@ -67,11 +67,19 @@ test.each([
   [{ nome: "R", email: "rita@mectria.com", cargo: "hunter" }],
   [{ nome: "Rita", email: "rita@", cargo: "hunter" }],
   [{ nome: "Rita", email: "rita @mectria.com", cargo: "hunter" }],
+  [{ nome: "Rita", email: "rita@mectria..com", cargo: "hunter" }],
   ["texto solto"],
 ])("dados inválidos dão 400 invalido: %j", async (corpo) => {
   const r = await chamar(onRequestPost as Manipulador, "dir@mectria.com", corpo);
   expect(r.status).toBe(400);
   expect(await r.json()).toMatchObject({ erro: "invalido" });
+});
+
+test("e-mail colado com caractere invisível é gravado limpo", async () => {
+  const r = await chamar(onRequestPost as Manipulador, "dir@mectria.com", { nome: "Rita", email: "rita@mectria.com\u200b", cargo: "hunter" });
+  expect(r.status).toBe(201);
+  expect(await r.json()).toMatchObject({ email: "rita@mectria.com" });
+  expect(await buscarPorEmail(env.DB, "rita@mectria.com")).not.toBeNull();
 });
 
 test("o diretor desativando a si mesmo recebe conflito e continua ativo", async () => {

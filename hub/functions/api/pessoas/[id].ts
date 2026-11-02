@@ -7,7 +7,7 @@ import { lerCorpo, validarMudancas } from "../../../servidor/validacao";
 /** PATCH /api/pessoas/:id: muda nome, cargo ou se a pessoa está ativa. Ninguém é apagado. */
 export const onRequestPatch: PagesFunction<Env, "id", DadosApi> = async ({ request, env, data, params }) => {
   const eu = data.pessoa;
-  if (!podeGerenciarPessoas(eu.cargo)) return erro("sem_acesso", "Só o diretor comercial gerencia o time.");
+  if (!podeGerenciarPessoas(eu.cargo)) return erro("sem_permissao", "Só o diretor comercial gerencia o time.");
 
   const id = Number(params.id);
   const alvo = Number.isInteger(id) && id > 0 ? await buscarPorId(env.DB, id) : null;

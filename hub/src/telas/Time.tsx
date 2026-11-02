@@ -1,4 +1,4 @@
-import { useEffect, useState, type FormEvent } from "react";
+import { useEffect, useState, type FormEvent, type KeyboardEvent } from "react";
 import { CARGOS, ROTULO_CARGO, type Cargo } from "../../compartilhado/cargos";
 import type { Pessoa } from "../../compartilhado/pessoa";
 import { api, ErroApi } from "../api/cliente";
@@ -28,6 +28,55 @@ function SeletorDeCargo(props: { id?: string; rotulo: string; valor: Cargo; aoMu
         </option>
       ))}
     </select>
+  );
+}
+
+/** Nome da pessoa com "Renomear": Enter salva, Esc desiste. */
+function NomeEditavel({ pessoa, aoSalvar }: { pessoa: Pessoa; aoSalvar: (nome: string) => Promise<boolean> }) {
+  const [editando, setEditando] = useState(false);
+  const [rascunho, setRascunho] = useState(pessoa.nome);
+
+  async function aoTeclar(e: KeyboardEvent<HTMLInputElement>) {
+    if (e.key === "Escape") {
+      e.preventDefault();
+      setEditando(false);
+    } else if (e.key === "Enter") {
+      e.preventDefault();
+      const nome = rascunho.trim();
+      if (!nome || nome === pessoa.nome) return setEditando(false);
+      if (await aoSalvar(nome)) setEditando(false);
+    }
+  }
+
+  if (editando) {
+    return (
+      <input
+        className={estilos.renomear}
+        aria-label={`Novo nome de ${pessoa.nome}`}
+        value={rascunho}
+        onChange={(e) => setRascunho(e.target.value)}
+        onKeyDown={aoTeclar}
+        onBlur={() => setEditando(false)}
+        autoFocus
+      />
+    );
+  }
+  return (
+    <>
+      <span className={estilos.nome}>{pessoa.nome}</span>
+      <button
+        type="button"
+        className={estilos.lapis}
+        aria-label={`Renomear ${pessoa.nome}`}
+        title="Renomear"
+        onClick={() => {
+          setRascunho(pessoa.nome);
+          setEditando(true);
+        }}
+      >
+        Renomear
+      </button>
+    </>
   );
 }
 
@@ -98,7 +147,7 @@ export default function Time({ eu }: { eu: Eu }) {
       .catch((e: unknown) => setErroLista(mensagemDe(e)));
   }, []);
 
-  async function mudar(pessoa: Pessoa, mudancas: Partial<Pick<Pessoa, "cargo" | "ativo">>, aviso: string) {
+  async function mudar(pessoa: Pessoa, mudancas: Partial<Pick<Pessoa, "nome" | "cargo" | "ativo">>, aviso: string) {
     setErroLista("");
     try {
       const nova = await api<Pessoa>(`/api/pessoas/${pessoa.id}`, { method: "PATCH", body: JSON.stringify(mudancas) });
@@ -106,8 +155,10 @@ export default function Time({ eu }: { eu: Eu }) {
       avisar(aviso);
       // Quem mudou o próprio cargo passa a ver outras seções.
       if (nova.id === eu.id && nova.cargo !== eu.cargo) window.location.assign("/");
+      return true;
     } catch (e) {
       setErroLista(mensagemDe(e));
+      return false;
     }
   }
 
@@ -141,7 +192,7 @@ export default function Time({ eu }: { eu: Eu }) {
           {pessoas.map((p) => (
             <li key={p.id} className={p.ativo ? estilos.linha : `${estilos.linha} ${estilos.inativa}`}>
               <div className={estilos.quem}>
-                <span className={estilos.nome}>{p.nome}</span>
+                <NomeEditavel pessoa={p} aoSalvar={(nome) => mudar(p, { nome }, `Nome trocado para ${nome}.`)} />
                 {p.id === eu.id && <Tag>Você</Tag>}
                 <span className={`mono suave ${estilos.email}`}>{p.email}</span>
               </div>

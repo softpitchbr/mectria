@@ -113,6 +113,52 @@
   font-weight: 500;
 }
 
+.lapis {
+  padding: 2px 6px;
+  border: 0;
+  border-radius: 6px;
+  background: transparent;
+  color: var(--suave);
+  font: inherit;
+  font-size: 12px;
+  cursor: pointer;
+  opacity: 0;
+  transition: opacity var(--rapido) var(--curva), color var(--rapido) var(--curva);
+}
+
+.linha:hover .lapis,
+.lapis:focus-visible {
+  opacity: 1;
+}
+
+.lapis:hover {
+  color: var(--texto);
+}
+
+.renomear {
+  min-width: 0;
+  width: min(280px, 100%);
+  min-height: 32px;
+  padding: 0 10px;
+  border: 1px solid var(--linha-viva);
+  border-radius: 8px;
+  background: var(--fundo);
+  color: var(--texto);
+  font: inherit;
+  font-weight: 500;
+}
+
+.renomear:focus {
+  outline: none;
+  box-shadow: 0 0 0 3px var(--luz), 0 0 0 1px var(--vermelho-texto);
+}
+
+@media (pointer: coarse) {
+  .lapis {
+    opacity: 1;
+  }
+}
+
 .email {
   flex-basis: 100%;
   font-size: 13px;

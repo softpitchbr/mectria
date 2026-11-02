@@ -8,13 +8,13 @@ const SO_DIRETOR = "Só o diretor comercial gerencia o time.";
 
 /** GET /api/pessoas: o time inteiro, ativas primeiro. */
 export const onRequestGet: PagesFunction<Env, string, DadosApi> = async ({ env, data }) => {
-  if (!podeGerenciarPessoas(data.pessoa.cargo)) return erro("sem_acesso", SO_DIRETOR);
+  if (!podeGerenciarPessoas(data.pessoa.cargo)) return erro("sem_permissao", SO_DIRETOR);
   return json(await listar(env.DB));
 };
 
 /** POST /api/pessoas: cadastra alguém no time. */
 export const onRequestPost: PagesFunction<Env, string, DadosApi> = async ({ request, env, data }) => {
-  if (!podeGerenciarPessoas(data.pessoa.cargo)) return erro("sem_acesso", SO_DIRETOR);
+  if (!podeGerenciarPessoas(data.pessoa.cargo)) return erro("sem_permissao", SO_DIRETOR);
   const validado = validarNovaPessoa(await lerCorpo(request));
   if (!validado.ok) return erro("invalido", validado.mensagem);
   try {

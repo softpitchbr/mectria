@@ -95,3 +95,31 @@ test("erro ao trocar cargo aparece acima da lista", async () => {
   expect(await screen.findByText("O time precisa de pelo menos um diretor comercial ativo.")).toBeInTheDocument();
   expect(screen.getByRole("combobox", { name: "Cargo de Diana Diretora" })).toHaveDisplayValue("Diretor comercial");
 });
+
+test("Renomear troca o nome com Enter e chama o PATCH com o nome novo", async () => {
+  let enviado: unknown;
+  fingirApi({
+    "/api/eu": { corpo: PESSOAS.diretor },
+    "GET /api/pessoas": { corpo: LISTA },
+    "PATCH /api/pessoas/2": (init) => {
+      enviado = JSON.parse(String(init?.body));
+      return { corpo: { ...LISTA[0], nome: "Vinícius Miguel Souza" } };
+    },
+  });
+  abrir("/time");
+  await userEvent.click(await screen.findByRole("button", { name: "Renomear Vinícius Miguel" }));
+  const campo = screen.getByRole("textbox", { name: "Novo nome de Vinícius Miguel" });
+  await userEvent.clear(campo);
+  await userEvent.type(campo, "Vinícius Miguel Souza{Enter}");
+  expect(enviado).toEqual({ nome: "Vinícius Miguel Souza" });
+  expect(await screen.findByText("Vinícius Miguel Souza")).toBeInTheDocument();
+});
+
+test("Esc desiste de renomear sem chamar a API", async () => {
+  const falso = fingirApi({ "/api/eu": { corpo: PESSOAS.diretor }, "GET /api/pessoas": { corpo: LISTA } });
+  abrir("/time");
+  await userEvent.click(await screen.findByRole("button", { name: "Renomear Vinícius Miguel" }));
+  await userEvent.keyboard("{Escape}");
+  expect(screen.queryByRole("textbox", { name: "Novo nome de Vinícius Miguel" })).not.toBeInTheDocument();
+  expect(falso.mock.calls.some(([, init]) => init?.method === "PATCH")).toBe(false);
+});

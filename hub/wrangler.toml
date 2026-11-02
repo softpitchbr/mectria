@@ -31,8 +31,9 @@ AMBIENTE = "producao"
 ACCESS_EQUIPE = "PREENCHER"
 ACCESS_AUD = "PREENCHER"
 
+# As prévias (um endereço por branch) usam um banco à parte, para teste não sujar os dados reais.
 [[env.preview.d1_databases]]
 binding = "DB"
-database_name = "hub-mectria"
-database_id = "PREENCHER"
+database_name = "hub-mectria-previa"
+database_id = "PREENCHER-PREVIA"
 migrations_dir = "migrations"

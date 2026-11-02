@@ -47,15 +47,15 @@ test("pessoa desativada, 403 sem_acesso", async () => {
 });
 
 test("DIRETOR_INICIAL com a tabela vazia entra como diretor e fica gravado", async () => {
-  const r = await chamarEu({ "X-Dev-Email": "Marcelo@MecTRIA.com" }, { DIRETOR_INICIAL: "marcelo@mectria.com" });
+  const r = await chamarEu({ "X-Dev-Email": "Diretor.Inicial@MecTRIA.com" }, { DIRETOR_INICIAL: "diretor.inicial@mectria.com" });
   expect(r.status).toBe(200);
-  expect(await r.json()).toMatchObject({ nome: "marcelo", email: "marcelo@mectria.com", cargo: "diretor" });
-  const gravada = await env.DB.prepare("SELECT cargo FROM pessoas WHERE email = 'marcelo@mectria.com'").first();
+  expect(await r.json()).toMatchObject({ nome: "Diretor Inicial", email: "diretor.inicial@mectria.com", cargo: "diretor" });
+  const gravada = await env.DB.prepare("SELECT cargo FROM pessoas WHERE email = 'diretor.inicial@mectria.com'").first();
   expect(gravada).toEqual({ cargo: "diretor" });
 });
 
 test("DIRETOR_INICIAL não entra quando já existe diretor ativo", async () => {
   await criar(env.DB, { nome: "Outra Diretora", email: "outra@mectria.com", cargo: "diretor" });
-  const r = await chamarEu({ "X-Dev-Email": "marcelo@mectria.com" }, { DIRETOR_INICIAL: "marcelo@mectria.com" });
+  const r = await chamarEu({ "X-Dev-Email": "diretor.inicial@mectria.com" }, { DIRETOR_INICIAL: "diretor.inicial@mectria.com" });
   expect(r.status).toBe(403);
 });

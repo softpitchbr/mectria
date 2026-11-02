@@ -10,60 +10,74 @@ Pré-requisito: Node 22 e o repositório do hub clonado. Os comandos rodam dentr
 2. Ficar no plano Free. Não cadastrar cartão.
 3. No terminal: `npx wrangler login` (abre o navegador para autorizar a conta da MecTRIA).
 
-## 2. Banco de dados (D1)
+## 2. Bancos de dados (D1)
+
+São dois: o de produção e o das prévias (os endereços de teste que o Pages cria para cada branch). Assim, teste nunca suja os dados reais.
 
 ```bash
 npx wrangler d1 create hub-mectria
+npx wrangler d1 create hub-mectria-previa
 ```
 
-O comando mostra um `database_id`. No `wrangler.toml`, trocar os dois `database_id = "PREENCHER"` (seções `env.production` e `env.preview`) por esse valor. A seção de cima, com `database_id = "local"`, é do desenvolvimento e fica como está.
+Cada comando mostra um `database_id`. No `wrangler.toml`:
+
+- o de `hub-mectria` entra no lugar de `PREENCHER`, na seção `env.production`;
+- o de `hub-mectria-previa` entra no lugar de `PREENCHER-PREVIA`, na seção `env.preview`.
+
+A seção de cima, com `database_id = "local"`, é do desenvolvimento e fica como está.
 
 ## 3. Tabelas
 
 ```bash
 npx wrangler d1 migrations apply hub-mectria --remote
+npx wrangler d1 migrations apply hub-mectria-previa --remote
 ```
 
-Rodar de novo sempre que uma fase nova trouxer arquivos em `migrations/`.
+Rodar de novo sempre que uma fase nova trouxer arquivos em `migrations/`: primeiro na prévia, depois em produção.
 
-## 4. Projeto no Pages
+## 4. Login (Cloudflare Zero Trust)
+
+1. Abrir Zero Trust no painel e criar a equipe (por exemplo, `mectria`). O plano Free cobre até 50 pessoas. Anotar o nome da equipe: é o que vem antes de `.cloudflareaccess.com`.
+2. Settings → Authentication → Login methods: deixar **One-time PIN** (a pessoa digita o e-mail e recebe um código).
+3. Access → Applications → Add an application → Self-hosted:
+   - domínios: `hub.mectria.com`, `hub-mectria.pages.dev` e `*.hub-mectria.pages.dev` (as prévias);
+   - em **Cookie settings**, ligar **SameSite: Lax** (protege contra sites de fora que tentem agir com a sessão de quem está logado);
+   - copiar o **Application Audience (AUD) Tag**: ele vai no passo 6.
+4. Política da aplicação (Allow):
+   - e-mails terminados em `@mectria.com`;
+   - e os e-mails avulsos de quem for cadastrado no Time sem e-mail institucional.
+
+O Access deixa entrar quem está na política; o hub ainda confere se a pessoa está cadastrada e ativa no Time. As duas listas precisam andar juntas.
+
+## 5. Projeto no Pages
 
 1. Criar o repositório do hub no GitHub da MecTRIA e subir o código.
-2. No painel da Cloudflare: Workers & Pages → Create → Pages → conectar o GitHub da MecTRIA e escolher o repositório.
+2. No painel da Cloudflare: Workers & Pages → Create → Pages → conectar o GitHub da MecTRIA e escolher o repositório. Usar `hub-mectria` como nome do projeto (os comandos abaixo usam esse nome).
 3. Configuração do build:
    - pasta raiz (root directory): `hub`;
    - comando de build: `npm ci && npm run build`;
    - pasta de saída: `dist`.
 4. Variável de ambiente do build: `NODE_VERSION = 22`.
 
-## 5. Variáveis de produção
+Enquanto o passo 6 não for feito, o hub publicado recusa todo mundo. É de propósito.
+
+## 6. Variáveis de produção
 
 Com o `wrangler.toml` no repositório, o Pages lê as variáveis dele (o painel mostra, mas não deixa editar). Por isso:
 
 - **No `wrangler.toml`** (seções `env.production.vars` e `env.preview.vars`), trocar `PREENCHER` em:
-  - `ACCESS_EQUIPE`: o nome da equipe do Zero Trust (o que vem antes de `.cloudflareaccess.com`, passo 6);
-  - `ACCESS_AUD`: o "Application Audience (AUD) Tag" da aplicação do Access (passo 6).
+  - `ACCESS_EQUIPE`: o nome da equipe do passo 4;
+  - `ACCESS_AUD`: o AUD Tag do passo 4.
   - `AMBIENTE` já está como `producao`. **Nunca** trocar para `dev` fora da máquina local.
-- **Como segredo** (não vai para o repositório): o e-mail do primeiro diretor.
+- **Como segredo** (não vai para o repositório): o e-mail do primeiro diretor, em produção e na prévia.
 
 ```bash
 npx wrangler pages secret put DIRETOR_INICIAL --project-name hub-mectria
 ```
 
-Enquanto `ACCESS_EQUIPE` e `ACCESS_AUD` estiverem como `PREENCHER`, ninguém entra: o hub recusa toda chamada. É de propósito.
+Para a prévia, pelo painel: projeto `hub-mectria` → Settings → Variables and Secrets → ambiente **Preview** → Add → tipo **Secret**, nome `DIRETOR_INICIAL`.
 
-## 6. Login (Cloudflare Zero Trust)
-
-1. Abrir Zero Trust no painel e criar a equipe (por exemplo, `mectria`). O plano Free cobre até 50 pessoas.
-2. Settings → Authentication → Login methods: deixar **One-time PIN** (a pessoa digita o e-mail e recebe um código).
-3. Access → Applications → Add an application → Self-hosted:
-   - domínios: `hub.mectria.com` e `hub-mectria.pages.dev` (e `*.hub-mectria.pages.dev`, para as prévias);
-   - copiar o **Application Audience (AUD) Tag** para o `ACCESS_AUD` do passo 5.
-4. Política da aplicação (Allow):
-   - e-mails terminados em `@mectria.com`;
-   - e os e-mails avulsos de quem for cadastrado no Time sem e-mail institucional.
-
-O Access deixa entrar quem está na política; o hub ainda confere se a pessoa está cadastrada e ativa no Time. As duas listas precisam andar juntas.
+Fazer o commit do `wrangler.toml` com os valores e o push: o Pages publica de novo.
 
 ## 7. Domínio próprio
 
@@ -71,9 +85,8 @@ No projeto do Pages: Custom domains → `hub.mectria.com`. Isso depende do acess
 
 ## 8. Primeiro acesso
 
-1. Publicar (um push no repositório já dispara o build).
-2. A pessoa do `DIRETOR_INICIAL` abre o hub, entra com o código do e-mail e vira diretor comercial automaticamente (só acontece quando ainda não há diretor ativo).
-3. Em Time, o diretor cadastra o resto do time com nome, e-mail e cargo.
+1. A pessoa do `DIRETOR_INICIAL` abre o hub, entra com o código do e-mail e vira diretor comercial automaticamente (só acontece quando ainda não há diretor ativo). O nome entra a partir do e-mail (`marcelo.silva@` vira "Marcelo Silva") e pode ser corrigido em Time → Renomear.
+2. Em Time, o diretor cadastra o resto do time com nome, e-mail e cargo.
 
 ## 9. Triângulo
 

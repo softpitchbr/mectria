@@ -33,7 +33,7 @@ export function validarNovaPessoa(corpo: unknown): Validado<{ nome: string; emai
   const nome = nomeValido(corpo.nome);
   if (!nome) return { ok: false, mensagem: MENSAGEM.nome };
   const email = typeof corpo.email === "string" ? normalizarEmail(corpo.email) : "";
-  if (!FORMATO_EMAIL.test(email)) return { ok: false, mensagem: MENSAGEM.email };
+  if (!FORMATO_EMAIL.test(email) || email.includes("..")) return { ok: false, mensagem: MENSAGEM.email };
   const cargo = cargoValido(corpo.cargo);
   if (!cargo) return { ok: false, mensagem: MENSAGEM.cargo };
   return { ok: true, dados: { nome, email, cargo } };
