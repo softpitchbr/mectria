@@ -1,0 +1,121 @@
+.veu {
+  position: fixed;
+  inset: 0;
+  z-index: 60;
+  display: grid;
+  place-items: start center;
+  padding: 14vh 16px 0;
+  background: color-mix(in srgb, var(--fundo) 55%, transparent);
+  -webkit-backdrop-filter: blur(6px);
+  backdrop-filter: blur(6px);
+  opacity: 1;
+  transition: opacity var(--medio) var(--curva);
+}
+
+.caixa {
+  width: min(580px, 100%);
+  overflow: hidden;
+  border: 1px solid var(--linha-viva);
+  border-radius: 14px;
+  background: var(--painel-alto);
+  box-shadow: inset 0 1px 0 var(--realce), var(--sombra);
+  transform: none;
+  transition: transform var(--medio) var(--curva);
+}
+
+@starting-style {
+  .veu {
+    opacity: 0;
+  }
+
+  .caixa {
+    transform: translateY(-8px) scale(0.97);
+  }
+}
+
+.entrada {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 0 16px;
+  border-bottom: 1px solid var(--linha);
+  color: var(--suave);
+}
+
+.entrada input {
+  flex: 1;
+  min-width: 0;
+  height: 56px;
+  border: 0;
+  background: transparent;
+  color: var(--texto);
+  font: inherit;
+  font-size: 16px;
+  outline: none;
+}
+
+.entrada input::placeholder {
+  color: var(--suave);
+}
+
+.entrada kbd {
+  padding: 2px 6px;
+  border: 1px solid var(--linha);
+  border-radius: 6px;
+  font-size: 11px;
+}
+
+.lista {
+  list-style: none;
+  margin: 0;
+  padding: 6px;
+  max-height: min(420px, 60vh);
+  overflow-y: auto;
+}
+
+.item {
+  display: grid;
+  grid-template-columns: 96px minmax(0, 1fr);
+  align-items: center;
+  gap: 12px;
+  padding: 11px 12px;
+  border-radius: 9px;
+  cursor: pointer;
+  font-size: 15px;
+}
+
+.item[aria-selected="true"] {
+  background: var(--painel);
+  box-shadow: inset 0 0 0 1px var(--linha-viva);
+}
+
+.grupo {
+  font-size: 11px;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--suave);
+}
+
+.vazio {
+  padding: 20px 18px 24px;
+  font-size: 14px;
+}
+
+.escondido {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+  clip: rect(0 0 0 0);
+  white-space: nowrap;
+}
+
+@media (max-width: 760px) {
+  .veu {
+    padding-top: 10vh;
+  }
+
+  .item {
+    grid-template-columns: 80px minmax(0, 1fr);
+  }
+}
