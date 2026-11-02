@@ -120,6 +120,7 @@ Manual de identidade visual, Carta de Serviços e planilhas de precificação (2
 - **Argumento a favor:** o Anexo II conta todo o valor vendido no mês, de qualquer canal. Mais propostas pela prospecção ativa também ajudam a liberar as parcelas, não só a conversão.
 - ~~**Dados do hub:** decidir a base compartilhada e o login.~~ Decidido em 01/11: banco e login na Cloudflare, no nome da MecTRIA (`docs/15-hub-template.md`).
 - **Hospedagem do hub:** privada (tem regras internas de preço). Só o portfólio vai para o site público.
+- **Publicação do hub novo (`hub/`):** a fase 1 (base) está pronta e testada no repositório, mas só vai para o ar com as contas Cloudflare e GitHub criadas no e-mail institucional da MecTRIA. Previsão do Lucas em 02/11: terça-feira. Passo a passo em `hub/IMPLANTACAO.md`; precisa também do e-mail do diretor inicial e da lista de pessoas e cargos.
 - **Uso antes da S8:** se o processo vai rodar já, combinar com o Marcelo uma apresentação curta do hub ao comercial antes da capacitação formal.
 - **Conteúdo:** tudo é rascunho até a validação. Os pedidos novos estão em `14-pedidos-a-mectria.md` (itens 38 a 43).
 
