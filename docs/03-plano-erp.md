@@ -102,7 +102,7 @@ O hub novo (`hub/`) substitui a versão 0.2 do hub do vendedor (tarefa 45). Espe
 52. [R] Hub novo · fase 1 (base): login por e-mail, cargos, navegação, busca Ctrl K, Time e temas claro e escuro · feita em 02/11
 53. [R] Publicar o hub novo nas contas da MecTRIA (Cloudflare, GitHub, login do Access e hub.mectria.com) · aguardando as contas
 54. [R] Hub novo · fase 2: Hoje de cada cargo, Rotinas, Follow-up com atraso e modo foco dos toques · feita em 02/11 (revisada e corrigida)
-55. [R] Hub novo · fase 3: diagnóstica com ficha, perguntas no painel, anotações e briefing em PDF
+55. [R] Hub novo · fase 3: diagnóstica com ficha, perguntas no painel, anotações e briefing em PDF · construída em 02/11, em revisão
 56. [R] Hub novo · fase 4: reunião de proposta em duas janelas, com pactos, quem está na sala e tempo por bloco
 57. [R] Hub novo · fase 5: celular como controle da reunião (QR code)
 58. [R] Hub novo · fase 6: números do diretor, Briefings e pendências técnicas de Projetos

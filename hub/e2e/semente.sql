@@ -1,5 +1,8 @@
 -- Pessoas e dados fictícios para o teste ponta a ponta e para usar o hub localmente.
 -- Nenhum destes e-mails é de membro real da MecTRIA.
+DELETE FROM pendencias;
+DELETE FROM anotacoes;
+DELETE FROM fichas;
 DELETE FROM historico;
 DELETE FROM toques;
 DELETE FROM propostas;
@@ -34,3 +37,16 @@ INSERT INTO toques (proposta_id, codigo, previsto_para) SELECT p.id, 'D15', date
 
 INSERT INTO historico (oportunidade_id, de, para, detalhe)
 VALUES ((SELECT id FROM oportunidades WHERE empresa = 'Fundição Atrasada'), NULL, 'em_followup', 'semente do teste');
+
+-- Fase 3: duas diagnósticas do Carlos marcadas para hoje (hora de São Paulo), pela Helena.
+INSERT INTO oportunidades (empresa, contato, telefone, origem, servico, hunter_id, closer_id, situacao)
+VALUES ('Torno Hoje', 'Bia', '34999990002', 'cold call', 'climatizacao',
+        (SELECT id FROM pessoas WHERE email = 'hun@mectria.com'), (SELECT id FROM pessoas WHERE email = 'clo@mectria.com'), 'diagnostica_marcada');
+INSERT INTO reunioes (oportunidade_id, tipo, data_hora, formato)
+VALUES ((SELECT id FROM oportunidades WHERE empresa = 'Torno Hoje'), 'diagnostica', date('now', '-3 hours') || 'T23:00', 'online');
+
+INSERT INTO oportunidades (empresa, contato, telefone, origem, servico, hunter_id, closer_id, situacao)
+VALUES ('Prensa Fria', 'Caio', '34999990003', 'cold call', 'nr-12',
+        (SELECT id FROM pessoas WHERE email = 'hun@mectria.com'), (SELECT id FROM pessoas WHERE email = 'clo@mectria.com'), 'diagnostica_marcada');
+INSERT INTO reunioes (oportunidade_id, tipo, data_hora, formato)
+VALUES ((SELECT id FROM oportunidades WHERE empresa = 'Prensa Fria'), 'diagnostica', date('now', '-3 hours') || 'T23:30', 'online');

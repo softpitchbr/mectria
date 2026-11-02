@@ -30,3 +30,10 @@ test("falha de rede vira ErroApi com mensagem em português", async () => {
   vi.stubGlobal("fetch", vi.fn(async () => Promise.reject(new TypeError("Failed to fetch"))));
   await expect(api("/api/eu")).rejects.toMatchObject({ status: 0, codigo: "rede" });
 });
+
+test("POST sem corpo também manda Content-Type JSON (a proteção contra CSRF exige)", async () => {
+  const falso = fingirApi({ "POST /api/reunioes/5/iniciar": { corpo: { ok: true } } });
+  await api("/api/reunioes/5/iniciar", { method: "POST" });
+  const [, init] = falso.mock.calls[0];
+  expect((init?.headers as Record<string, string>)["Content-Type"]).toBe("application/json");
+});

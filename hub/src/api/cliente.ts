@@ -18,7 +18,8 @@ export async function api<T>(caminho: string, init: RequestInit = {}): Promise<T
       credentials: "same-origin",
       headers: {
         Accept: "application/json",
-        ...(init.body ? { "Content-Type": "application/json" } : {}),
+        // Todo pedido que muda dados vai como JSON: a proteção contra CSRF do servidor exige.
+        ...(init.body || (init.method && init.method !== "GET") ? { "Content-Type": "application/json" } : {}),
         ...init.headers,
       },
     });

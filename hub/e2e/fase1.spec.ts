@@ -80,7 +80,7 @@ test.describe("closer", () => {
     await page.getByRole("combobox").fill("playbooks");
     await page.keyboard.press("Enter");
     await expect(page).toHaveURL(/\/playbooks$/);
-    await expect(page.getByText("Playbooks chega na fase 3.")).toBeVisible();
+    await expect(page.getByRole("heading", { level: 1, name: "Playbooks" })).toBeVisible();
   });
 
   test("a busca abre com transição de 240 ms", async ({ page }) => {
