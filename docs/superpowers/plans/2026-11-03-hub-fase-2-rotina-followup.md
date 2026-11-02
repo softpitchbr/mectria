@@ -10,11 +10,11 @@
 
 **Spec:** `docs/15-hub-template.md` (seções 4, 5, 7, 8, 9, 10 e 11, fase 2). Registro da fase 1: `docs/superpowers/registros/2026-11-02-hub-fase-1-base.md`.
 
-## Decisões deste plano (o Lucas confirma na revisão do plano)
+## Decisões deste plano (confirmadas pelo Lucas em 02/11/2026)
 
-1. **Ponte até a fase 4.** O fechamento obrigatório da reunião de proposta, que cria os toques, só chega na fase 4. Até lá, o closer usa "Registrar proposta apresentada" no Follow-up (empresa ou oportunidade existente, serviço, valor, data em que apresentou, data combinada para a decisão e quem decide). Isso cria a proposta e os toques da cadência. Depois da fase 4, o botão fica para propostas apresentadas fora do hub.
+1. **Ponte até a fase 4.** O fechamento obrigatório da reunião de proposta, que cria os toques, só chega na fase 4. Até lá, o closer usa "Registrar proposta apresentada" no Follow-up (empresa ou oportunidade existente, serviço, valor, data em que apresentou, data combinada para a decisão e quem decide). Isso cria a proposta e os toques da cadência. Na fase 4, o fechamento da reunião de proposta passa a criar os toques sozinho (pedido do Lucas ao confirmar); o botão continua para propostas apresentadas fora do hub.
 2. **Bloco de ligações do hunter.** A lista de prospecção continua fora do hub. O hub só conta as ligações do dia por resultado (não atendeu, atendeu, marcou diagnóstica), numa tabela `ligacoes` que não está na seção 8 da spec. "Tentativas pendentes" é o número de "não atendeu" do dia, que alimenta o item "Mandar WhatsApp nas tentativas sem resposta".
-3. **Meta diária de ligações:** 30, provisória, no arquivo de dados, até o Marcelo validar (pedido 43).
+3. **Meta diária de ligações:** de 1 a 2 por dia, no máximo (Lucas, 02/11). O item da rotina fica cumprido com 1 ligação; o medidor vai até 2, a meta do dia. Os valores ficam no arquivo de dados.
 4. **Reuniões nesta fase:** só agenda (oportunidade, tipo, data e hora, formato, situação). "Iniciar reunião" aparece desligado com "chega na fase 3".
 5. **Números do diretor nesta fase:** rotina de hoje por pessoa, follow-ups atrasados por pessoa e reuniões da semana. Conversão, valor vendido e o resto dos números ficam para a fase 6. No Hoje do closer, "propostas" e "fechadas" do mês entram agora; "pactos por reunião" mostra "—" até a fase 4.
 6. **Busca:** clientes, roteiros e objeções entram como fontes na fase 3, junto com os Playbooks.
@@ -28,7 +28,7 @@
 - Cadência (dias úteis contados da apresentação, D0 = dia da reunião): D0 WhatsApp + e-mail; D1 WhatsApp; D3 Ligação; D5 WhatsApp; D8 Ligação; D12 E-mail; D15 WhatsApp. Nutrição: 45 dias. Textos dos modelos, motivos de perda e regras: os de `hub-comercial/js/dados/fup.js`, sem mudar uma palavra.
 - Feriados (não contam como dia útil): 2026-10-12, 2026-11-02, 2026-11-20, 2026-12-25, 2027-01-01, 2027-02-08, 2027-02-09, 2027-03-26, 2027-04-21, 2027-05-01, 2027-05-27, 2027-09-07, 2027-10-12, 2027-11-02, 2027-11-15, 2027-11-20, 2027-12-25.
 - Situações da oportunidade: `diagnostica_marcada`, `proposta_marcada`, `em_followup`, `ganha`, `perdida`, `nutricao`. Atrasado = toque com data prevista antes de hoje, ainda não feito, de proposta cuja oportunidade está `em_followup`.
-- Rotinas fixas (spec, seção 5), meta de ligações 30 (provisória):
+- Rotinas fixas (spec, seção 5); ligações: mínimo 1 e meta 2 por dia (Lucas, 02/11):
   - hunter: "Fazer o bloco de ligações", "Mandar WhatsApp nas tentativas sem resposta", "Registrar as diagnósticas marcadas";
   - closer: "Confirmar as reuniões do dia", "Escrever a hipótese de dor das diagnósticas", "Mandar os briefings para Projetos no mesmo dia", "Registrar o resultado de cada reunião". Os toques do dia entram como itens gerados, um por toque.
 - Permissões (spec, seção 4), sempre conferidas no servidor:
@@ -134,7 +134,7 @@ hub/
     - `NUTRICAO: { dias: 45; modelo: string }`, `MOTIVOS_PERDA: readonly string[]`, `REGRAS_FOLLOWUP: readonly string[]`;
     - `VARIAVEIS: Record<string, string>` (rótulo de cada `{chave}`: contato → "nome do contato", servico → "serviço", dor → "dor do cliente", data_decisao → "data da decisão", vendedor → "seu nome", decisores → "quem decide", validade → "validade da proposta", link_conteudo → "link do conteúdo");
     - `SERVICOS: { id: string; nome: string }[]` (os 12 de `servicos.js`, mesmos ids e nomes);
-    - `META_LIGACOES_DIA = 30`, `ROTINA_FIXA: Record<Cargo, { chave: string; titulo: string }[]>` (chaves `ligacoes`, `whatsapp-tentativas`, `registrar-diagnosticas`, `confirmar-reunioes`, `hipotese-de-dor`, `briefings`, `resultado-reunioes`; diretor e projetos sem itens);
+    - `MINIMO_LIGACOES_DIA = 1`, `META_LIGACOES_DIA = 2`, `ROTINA_FIXA: Record<Cargo, { chave: string; titulo: string }[]>` (chaves `ligacoes`, `whatsapp-tentativas`, `registrar-diagnosticas`, `confirmar-reunioes`, `hipotese-de-dor`, `briefings`, `resultado-reunioes`; diretor e projetos sem itens);
     - `ROTEIRO_COLD_CALL: { titulo: string; fala: string; dica?: string }[]` (os 5 passos de `cold-call.js`).
 
 - [ ] **Step 1: Escrever os testes que falham**
@@ -309,7 +309,7 @@ CREATE TABLE historico (id, oportunidade_id NOT NULL REFERENCES oportunidades(id
 - Modify: `hub/compartilhado/oportunidade.ts`
 
 **Interfaces:**
-- Consumes: `ROTINA_FIXA`, `META_LIGACOES_DIA` (Task 2); `listarFollowup`, `listarReunioes` (Tasks 3 e 4).
+- Consumes: `ROTINA_FIXA`, `MINIMO_LIGACOES_DIA`, `META_LIGACOES_DIA` (Task 2); `listarFollowup`, `listarReunioes` (Tasks 3 e 4).
 - Produces:
   - Tipos:
     - `ItemRotina { chave: string; titulo: string; origem: "fixo" | "gerado"; feito: boolean; automatico: boolean; contagem?: { feitas: number; meta: number }; link?: string }`;
@@ -321,14 +321,14 @@ CREATE TABLE historico (id, oportunidade_id NOT NULL REFERENCES oportunidades(id
     - junta os itens fixos do cargo com os gerados:
       - closer: um item por toque das suas propostas `em_followup` com `previstoPara <= dia`, chave `toque:{id}`, título `"{código} · {canal} · {empresa}"`, `automatico: true`, `link "/follow-up?toque={id}"`, feito quando o toque está feito;
       - closer: um item por reunião dele no dia, chave `reuniao:{id}`, título `"Confirmar a {diagnóstica|apresentação} com {empresa} às HH:MM"`;
-    - `ligacoes` é automático e fica feito quando `total >= meta`;
+    - `ligacoes` é automático e fica feito quando `total >= MINIMO_LIGACOES_DIA`; a contagem mostra `feitas` contra `META_LIGACOES_DIA`;
     - grava os itens em `rotinas` (insere os que faltam, atualiza `feito_em` dos automáticos), para o histórico ficar estável.
   - `marcarItem(db, pessoaId, dia, chave, feito: boolean): Promise<DiaDeRotina>`. Lança `Error("item_automatico")` para itens automáticos e `Error("item_inexistente")` para chave que não está no dia.
   - `historicoDeRotina(db, pessoaId, ate: string, dias = 14): Promise<{ dia: string; feitos: number; total: number }[]>`: só dias úteis, do mais recente para o mais antigo, com `0/0` quando a pessoa não abriu o hub.
   - `resumoDoTime(db, hoje: string): Promise<ResumoPessoa[]>`: hunters e closers ativos, em ordem de nome (pt-BR).
 
 - [ ] **Step 1: Escrever os testes que falham** em `rotina.test.ts`:
-  - "rotina fixa do hunter e contador de ligações": 3 itens fixos; 29 ligações deixam `ligacoes` não feito; a 30ª deixa feito; `contarLigacoes` separa `naoAtendeu`, `atendeu` e `marcou`.
+  - "rotina fixa do hunter e contador de ligações": 3 itens fixos; sem ligação, `ligacoes` não está feito; com 1, fica feito e a contagem é `{ feitas: 1, meta: 2 }`; `contarLigacoes` separa `naoAtendeu`, `atendeu` e `marcou`, com `meta: 2`.
   - "closer ganha um item por toque do dia, e o toque feito marca o item": com 2 toques vencidos, `itens` traz `toque:{id}` para os dois; depois de `registrarToque` num deles, ele aparece `feito: true`.
   - "proposta encerrada não gera item": depois de `registrarResultado`, os toques dela somem da rotina do dia.
   - "marcar item manual e recusar automático": `marcarItem(…, "confirmar-reunioes", true)` deixa feito; `marcarItem(…, "toque:1", true)` lança `item_automatico`.
@@ -508,7 +508,7 @@ Tela:
   - o checklist (`ChecklistDaRotina`):
     - cada item manual é um checkbox; ao marcar, a linha se fecha e o check se desenha;
     - os automáticos mostram "marca sozinho" e, quando têm `link`, viram link;
-    - o item de ligações mostra a contagem (`12/30`);
+    - o item de ligações mostra a contagem (`1/2`);
   - abaixo, "Últimos 14 dias úteis": uma linha por dia com a barra de segmentos `feitos/total` e "Cumprida" quando completa.
 - **Diretor:** a tela mostra "Rotina do time hoje", com o resumo de cada pessoa (nome, cargo, `feitos/total`, atrasados), em vez do próprio checklist.
 
@@ -554,7 +554,7 @@ Telas:
   - um cartão "Conversão e valor vendido chegam na fase 6".
 
 - [ ] **Step 1: Escrever os testes que falham** em `hoje.test.tsx`:
-  - "hunter registra ligações pelo teclado no bloco em foco": abrir o bloco, apertar 1, 1 e 2; o POST recebe `nao_atendeu`, `nao_atendeu` e `atendeu`; o contador mostra 3; "2 sem resposta".
+  - "hunter registra ligações pelo teclado no bloco em foco": abrir o bloco, apertar 1 e 2; o POST recebe `nao_atendeu` e `atendeu`; o contador mostra 2, o medidor `2/2` e "Meta do dia batida"; "1 sem resposta".
   - "marcar diagnóstica cria a oportunidade e conta a ligação": o POST `/api/oportunidades` recebe empresa, serviço `"climatizacao"`, closer e `dataHora "2026-11-10T14:00"`; depois, um POST `/api/ligacoes` com `marcou`; o aviso cita o closer.
   - "closer vê a próxima reunião com a contagem": às `2026-11-09T11:45` locais, com reunião às 14:00, aparece "faltam 2 h 15 min"; o botão "Iniciar reunião" está desligado.
   - "diretor vê atrasados por pessoa em ordem": "Carlos · 3" antes de "Clara · 1"; quem não tem atraso não aparece.

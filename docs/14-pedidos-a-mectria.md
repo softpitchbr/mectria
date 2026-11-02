@@ -46,7 +46,7 @@ A R começou em paralelo com a T (`hub-comercial/`). Por isso os itens 24 e 25 p
 | 40 | **Missão, visão e valores oficiais**, se existirem | A home do protótipo tem uma seção "Valores"; Primal Branding | Falta |
 | 41 | **Lacunas da Carta:** o que fica com o cliente em Tratamento Acústico, Simulação e Prototipagem; se Emissão de Carbono aparece no site | Páginas de serviço e diagnóstica | Falta |
 | 42 | **A planilha v4 e o fluxo de 3 dias já estão em uso?** (parte do item 27, antecipada) | O hub promete "proposta em até 3 dias úteis" | Falta |
-| 43 | **Propostas em aberto hoje** (empresa, contato, serviço, valor, data), **quantas ligações por dia cada hunter consegue fazer** e **a origem dos telefones da Casa de Dados** | Colocar as propostas no follow-up já; meta diária de cold call; resposta a "onde conseguiu meu número?" | Falta |
+| 43 | **Propostas em aberto hoje** (empresa, contato, serviço, valor, data), **quantas ligações por dia cada hunter consegue fazer** e **a origem dos telefones da Casa de Dados** | Colocar as propostas no follow-up já; meta diária de cold call; resposta a "onde conseguiu meu número?" | Falta (a meta diária foi definida pelo Lucas em 02/11: 1 a 2 ligações por hunter, no máximo; o Marcelo ainda valida as rotinas) |
 
 ### 2. Até 23/10 · conteúdo real para validar o site (S3)
 
