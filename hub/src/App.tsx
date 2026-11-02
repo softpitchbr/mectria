@@ -10,6 +10,7 @@ import { useEu, type Eu } from "./sessao/useEu";
 import EmConstrucao from "./shell/EmConstrucao";
 import Layout from "./shell/Layout";
 import SemAcesso from "./shell/SemAcesso";
+import Briefing from "./telas/Briefing";
 import FollowUp from "./telas/FollowUp";
 import Hoje from "./telas/Hoje";
 import Rotinas from "./telas/Rotinas";
@@ -87,6 +88,7 @@ function criarRotas(): RouteObject[] {
       children: [
         { element: <ComBarras />, children: [...secoes, { path: "*", element: <NaoEncontrada /> }] },
         { path: "reunioes/:id/diagnostica", element: <PainelDaDiagnostica /> },
+        { path: "reunioes/:id/briefing", element: <Briefing /> },
       ],
     },
   ];
