@@ -11,6 +11,7 @@ import Layout from "./shell/Layout";
 import SemAcesso from "./shell/SemAcesso";
 import FollowUp from "./telas/FollowUp";
 import Hoje from "./telas/Hoje";
+import Rotinas from "./telas/Rotinas";
 import Time from "./telas/Time";
 import Vitrine from "./telas/Vitrine";
 import estilos from "./App.module.css";
@@ -30,6 +31,7 @@ function PaginaDaSecao({ secao }: { secao: Secao }) {
   if (secao === "hoje") return <Hoje eu={eu} />;
   if (secao === "time") return <Time eu={eu} />;
   if (secao === "followup") return <FollowUp eu={eu} />;
+  if (secao === "rotinas") return <Rotinas eu={eu} />;
   return <EmConstrucao secao={info.rotulo} fase={info.fase} icone={info.icone} />;
 }
 
