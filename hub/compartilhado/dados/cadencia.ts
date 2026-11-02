@@ -94,5 +94,19 @@ export const VARIAVEIS: Record<string, string> = {
   "link_conteudo": "link do conteúdo",
   "decisor": "nome do decisor",
   "dor1": "primeira dor",
-  "dor2": "segunda dor"
+  "dor2": "segunda dor",
+  "objetivo": "objetivo",
+  "tentativas": "o que já tentaram",
+  "porqueAgora": "por que agora",
+  "prazo": "prazo",
+  "orcamento": "orçamento",
+  "pagamento": "forma de pagamento",
+  "concorrencia": "concorrência",
+  "criterio": "critério de decisão",
+  "prazoDecisao": "prazo da decisão",
+  "impacto": "impacto",
+  "numeros": "números",
+  "ganho": "ganho",
+  "dias": "dias",
+  "data_proposta": "data da apresentação"
 };
