@@ -1,4 +1,5 @@
 import { applyD1Migrations, env } from "cloudflare:test";
+import { hojeEmSaoPaulo } from "../compartilhado/datas";
 import { criarDiagnostica } from "./oportunidades";
 import { registrarProposta, registrarResultado, registrarToque } from "./followup";
 import { contarLigacoes, historicoDeRotina, marcarItem, registrarLigacao, resumoDoTime, rotinaDoDia } from "./rotina";
@@ -117,4 +118,12 @@ test("resumo do time: hunters e closers ativos, atrasados só de propostas em fo
   ]);
   // O resumo não grava a rotina de ninguém: o histórico continua "não abriu".
   expect((await historicoDeRotina(env.DB, closer.id, "2026-11-18", 1))[0]).toEqual({ dia: "2026-11-18", feitos: 0, total: 0 });
+});
+
+test("toque feito hoje antes de abrir a rotina aparece como feito", async () => {
+  const hoje = hojeEmSaoPaulo();
+  const { toques } = await registrarProposta(env.DB, proposta("Antes", hoje), closer);
+  await registrarToque(env.DB, toques[0].id, { canal: "WhatsApp", resultado: "Mandei" }, closer);
+  const dia = await rotinaDoDia(env.DB, closer, hoje);
+  expect(dia.itens.find((i) => i.chave === `toque:${toques[0].id}`)).toMatchObject({ feito: true });
 });

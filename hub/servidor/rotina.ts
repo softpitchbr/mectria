@@ -46,7 +46,7 @@ interface ToqueDoDia {
 
 const CANAL_DO_TOQUE = new Map(CADENCIA.map((t) => [t.codigo, t.canal]));
 
-/** Toques do closer que entram no dia: os pendentes até o dia e os que já estão na rotina do dia. */
+/** Toques do closer que entram no dia: os pendentes até o dia, os feitos no dia (hora de São Paulo) e os que já estão na rotina do dia. */
 async function toquesDoDia(db: D1Database, closerId: number, dia: string, chavesNoDia: string[]): Promise<ToqueDoDia[]> {
   const idsNoDia = chavesNoDia.filter((c) => c.startsWith("toque:")).map((c) => Number(c.slice(6)));
   const marcas = idsNoDia.map(() => "?").join(", ");
@@ -59,10 +59,11 @@ async function toquesDoDia(db: D1Database, closerId: number, dia: string, chaves
        WHERE o.closer_id = ?
          AND p.id = (SELECT MAX(id) FROM propostas WHERE oportunidade_id = o.id)
          AND ((t.feito_em IS NULL AND t.previsto_para <= ? AND o.situacao = 'em_followup')
+              OR (t.feito_em IS NOT NULL AND date(t.feito_em, '-3 hours') = ?)
               ${idsNoDia.length ? `OR t.id IN (${marcas})` : ""})
        ORDER BY t.previsto_para, t.id`,
     )
-    .bind(closerId, dia, ...idsNoDia)
+    .bind(closerId, dia, dia, ...idsNoDia)
     .all<ToqueDoDia>();
   // Toque pendente de proposta que já terminou sai do dia; o que foi feito fica.
   return results.filter((t) => t.feito_em !== null || t.situacao === "em_followup");
