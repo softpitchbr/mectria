@@ -1,4 +1,8 @@
+import { useState } from "react";
 import Botao from "../componentes/Botao";
+import Foco from "../componentes/Foco";
+import Medidor from "../componentes/Medidor";
+import NumeroRolante from "../componentes/NumeroRolante";
 import Campo from "../componentes/Campo";
 import Icone from "../componentes/Icone";
 import Painel from "../componentes/Painel";
@@ -25,6 +29,8 @@ const ICONES: NomeIcone[] = [
 
 /** Conferência visual dos componentes (só em desenvolvimento). */
 export default function Vitrine() {
+  const [origem, setOrigem] = useState<HTMLElement | null>(null);
+  const [contador, setContador] = useState(1);
   return (
     <main className={estilos.pagina}>
       <header className={estilos.cabeca}>
@@ -78,6 +84,34 @@ export default function Vitrine() {
           <Campo rotulo="E-mail" type="email" placeholder="nome@mectria.com" />
           <Campo rotulo="Nome" placeholder="Nome completo" />
         </div>
+      </section>
+
+      <section className={estilos.bloco}>
+        <h2>Modo foco, medidor e número</h2>
+        <div className={estilos.grade}>
+          <Painel>
+            <p className="mono suave">D3 · LIGAÇÃO · QUA, 18/11</p>
+            <h3>Usinagem Triângulo Ltda.</h3>
+            <p className="suave">O toque cresce a partir deste cartão.</p>
+            <Botao onClick={(e) => setOrigem(e.currentTarget.closest("div") as HTMLElement)}>Abrir em foco</Botao>
+          </Painel>
+          <Painel>
+            <Medidor rotulo="Ligações de hoje" valor={contador} total={2} texto={`${contador}/2`} />
+            <p style={{ marginTop: 16 }}>
+              <NumeroRolante valor={contador} /> ligações{" "}
+              <Botao variante="fantasma" onClick={() => setContador((c) => c + 1)}>
+                +1
+              </Botao>
+            </p>
+          </Painel>
+        </div>
+        {origem && (
+          <Foco titulo="Toque D3 · Ligação" origem={origem} aoSair={() => setOrigem(null)}>
+            <h2>Saber em que pé está a decisão</h2>
+            <p className="suave" style={{ margin: "8px 0 16px" }}>Na ligação: “Oi, Ana, é o Carlos, da MecTRIA…”</p>
+            <Botao variante="primario">Registrar toque</Botao>
+          </Foco>
+        )}
       </section>
 
       <section className={estilos.bloco}>
