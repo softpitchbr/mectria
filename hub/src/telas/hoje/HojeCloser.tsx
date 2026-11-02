@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { Link, useNavigate } from "react-router";
-import { formatarDia, instanteLocal } from "../../../compartilhado/datas";
+import { formatarDia } from "../../../compartilhado/datas";
 import type { ItemFollowup, Reuniao } from "../../../compartilhado/oportunidade";
 import { api } from "../../api/cliente";
 import Botao from "../../componentes/Botao";
@@ -9,7 +9,7 @@ import NumeroRolante from "../../componentes/NumeroRolante";
 import Painel from "../../componentes/Painel";
 import Tag from "../../componentes/Tag";
 import { ChecklistDaRotina, useRotinaDeHoje } from "../Rotinas";
-import { quantoFalta } from "./comum";
+import { proximaReuniao, quantoFalta } from "./comum";
 import estilos from "./hoje.module.css";
 
 function ProximaReuniao({ reuniao }: { reuniao: Reuniao }) {
@@ -31,7 +31,7 @@ function ProximaReuniao({ reuniao }: { reuniao: Reuniao }) {
       <div className={estilos.botoes}>
         {reuniao.tipo === "diagnostica" ? (
           <Botao variante="primario" onClick={() => navegar(`/reunioes/${reuniao.id}/diagnostica`)}>
-            Iniciar reunião
+            {reuniao.situacao === "em_andamento" ? "Continuar reunião" : "Iniciar reunião"}
           </Botao>
         ) : (
           <>
@@ -65,8 +65,7 @@ export default function HojeCloser() {
       .catch(() => setNumeros(null));
   }, []);
 
-  const agora = Date.now();
-  const proxima = reunioes?.find((r) => r.situacao !== "cancelada" && instanteLocal(r.dataHora).getTime() > agora);
+  const proxima = reunioes ? proximaReuniao(reunioes) : undefined;
 
   return (
     <div className={estilos.colunas}>

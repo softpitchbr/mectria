@@ -74,8 +74,8 @@ test("closer vê a próxima reunião com a contagem", async () => {
     "/api/eu": { corpo: PESSOAS.closer },
     "GET /api/reunioes": {
       corpo: [
-        { id: 1, oportunidadeId: 1, empresa: "Já passou", tipo: "diagnostica", dataHora: "2026-11-09T09:00", formato: "online", situacao: "marcada", closerId: 2, closerNome: "Vinícius Miguel" },
-        { id: 2, oportunidadeId: 2, empresa: "Usinagem Alfa", tipo: "diagnostica", dataHora: "2026-11-09T14:00", formato: "online", situacao: "marcada", closerId: 2, closerNome: "Vinícius Miguel" },
+        { id: 1, oportunidadeId: 1, empresa: "Já passou", tipo: "diagnostica", dataHora: "2026-11-09T09:00", formato: "online", situacao: "marcada", closerId: 2, closerNome: "Vinícius Miguel", oportunidadeSituacao: "diagnostica_marcada" },
+        { id: 2, oportunidadeId: 2, empresa: "Usinagem Alfa", tipo: "diagnostica", dataHora: "2026-11-09T14:00", formato: "online", situacao: "marcada", closerId: 2, closerNome: "Vinícius Miguel", oportunidadeSituacao: "diagnostica_marcada" },
       ],
     },
     "GET /api/rotina": { corpo: ROTINA_VAZIA },
@@ -88,6 +88,46 @@ test("closer vê a próxima reunião com a contagem", async () => {
   expect(within(cartao).getByRole("button", { name: "Iniciar reunião" })).toBeEnabled();
   expect(screen.queryByText("Já passou")).not.toBeInTheDocument();
   expect(await screen.findByRole("region", { name: "Este mês" })).toHaveTextContent("3");
+});
+
+const reuniaoDoCloser = (id: number, empresa: string, dataHora: string, situacao = "marcada", oportunidadeSituacao = "diagnostica_marcada") => ({
+  id, oportunidadeId: id, empresa, tipo: "diagnostica", dataHora, formato: "online", situacao, closerId: 2, closerNome: "Vinícius Miguel", oportunidadeSituacao,
+});
+
+function hojeDoCloser(reunioes: unknown[]) {
+  fingirApi({
+    "/api/eu": { corpo: PESSOAS.closer },
+    "GET /api/reunioes": { corpo: reunioes },
+    "GET /api/rotina": { corpo: ROTINA_VAZIA },
+    "GET /api/followup": { corpo: [] },
+    "GET /api/numeros/mes": { corpo: { propostas: 0, ganhas: 0 } },
+  });
+  abrir("/");
+}
+
+test("a reunião que acabou de começar continua como a próxima; concluídas e as que já passaram da diagnóstica ficam de fora", async () => {
+  vi.useFakeTimers({ toFake: ["Date"] });
+  vi.setSystemTime(new Date("2026-11-09T14:10:00-03:00"));
+  hojeDoCloser([
+    reuniaoDoCloser(1, "Usinagem Alfa", "2026-11-09T14:00"),
+    reuniaoDoCloser(2, "Concluída antes", "2026-11-09T15:00", "concluida", "proposta_marcada"),
+    reuniaoDoCloser(3, "Já tem proposta", "2026-11-09T16:00", "marcada", "em_followup"),
+    reuniaoDoCloser(4, "Metalúrgica Beta", "2026-11-10T10:00"),
+  ]);
+  const cartao = (await screen.findByText("Usinagem Alfa")).closest("section") as HTMLElement;
+  expect(within(cartao).getByText("começou")).toBeInTheDocument();
+  expect(within(cartao).getByRole("button", { name: "Iniciar reunião" })).toBeEnabled();
+  vi.useRealTimers();
+});
+
+test("reunião em andamento aparece com Continuar, mesmo passada a primeira hora", async () => {
+  vi.useFakeTimers({ toFake: ["Date"] });
+  vi.setSystemTime(new Date("2026-11-09T15:30:00-03:00"));
+  hojeDoCloser([reuniaoDoCloser(1, "Usinagem Alfa", "2026-11-09T14:00", "em_andamento"), reuniaoDoCloser(4, "Metalúrgica Beta", "2026-11-10T10:00")]);
+  const cartao = (await screen.findByText("Usinagem Alfa")).closest("section") as HTMLElement;
+  await userEvent.click(within(cartao).getByRole("button", { name: "Continuar reunião" }));
+  expect(window.location.pathname).toBe("/reunioes/1/diagnostica");
+  vi.useRealTimers();
 });
 
 test("diretor vê atrasados por pessoa em ordem", async () => {
@@ -144,7 +184,7 @@ test("o Iniciar reunião do Hoje leva ao painel da diagnóstica", async () => {
   fingirApi({
     "/api/eu": { corpo: PESSOAS.closer },
     "GET /api/reunioes": {
-      corpo: [{ id: 2, oportunidadeId: 2, empresa: "Usinagem Alfa", tipo: "diagnostica", dataHora: "2026-11-09T14:00", formato: "online", situacao: "marcada", closerId: 2, closerNome: "Vinícius Miguel" }],
+      corpo: [{ id: 2, oportunidadeId: 2, empresa: "Usinagem Alfa", tipo: "diagnostica", dataHora: "2026-11-09T14:00", formato: "online", situacao: "marcada", closerId: 2, closerNome: "Vinícius Miguel", oportunidadeSituacao: "diagnostica_marcada" }],
     },
     "GET /api/rotina": { corpo: ROTINA_VAZIA },
     "GET /api/followup": { corpo: [] },
