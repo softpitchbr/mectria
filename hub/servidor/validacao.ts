@@ -1,7 +1,7 @@
 import { lerReais } from "../compartilhado/datas";
 import { MOTIVOS_PERDA } from "../compartilhado/dados/cadencia";
 import { SERVICOS } from "../compartilhado/dados/servicos";
-import type { NovaDiagnostica, NovaProposta, ResultadoLigacao, ResultadoProposta } from "../compartilhado/oportunidade";
+import { CANAIS_DE_TOQUE, type NovaDiagnostica, type NovaProposta, type ResultadoLigacao, type ResultadoProposta } from "../compartilhado/oportunidade";
 import { CARGOS, type Cargo } from "../compartilhado/cargos";
 import { normalizarEmail } from "../compartilhado/texto";
 
@@ -75,8 +75,6 @@ export async function lerCorpo(req: Request): Promise<unknown> {
 
 // Fase 2 ------------------------------------------------------------------------
 
-
-export const CANAIS_DE_TOQUE = ["WhatsApp", "Ligação", "E-mail", "Presencial"] as const;
 
 const DIA = /^\d{4}-\d{2}-\d{2}$/;
 const DIA_E_HORA = /^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}$/;

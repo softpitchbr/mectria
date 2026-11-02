@@ -9,6 +9,7 @@ import { useEu, type Eu } from "./sessao/useEu";
 import EmConstrucao from "./shell/EmConstrucao";
 import Layout from "./shell/Layout";
 import SemAcesso from "./shell/SemAcesso";
+import FollowUp from "./telas/FollowUp";
 import Hoje from "./telas/Hoje";
 import Time from "./telas/Time";
 import Vitrine from "./telas/Vitrine";
@@ -28,6 +29,7 @@ function PaginaDaSecao({ secao }: { secao: Secao }) {
   if (!podeVer(eu.cargo, secao)) return <SemAcesso secao={info.rotulo} />;
   if (secao === "hoje") return <Hoje eu={eu} />;
   if (secao === "time") return <Time eu={eu} />;
+  if (secao === "followup") return <FollowUp eu={eu} />;
   return <EmConstrucao secao={info.rotulo} fase={info.fase} icone={info.icone} />;
 }
 

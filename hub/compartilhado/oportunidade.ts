@@ -1,5 +1,7 @@
 import type { CodigoToque } from "./cadencia";
 
+export const CANAIS_DE_TOQUE = ["WhatsApp", "Ligação", "E-mail", "Presencial"] as const;
+
 export type Situacao = "diagnostica_marcada" | "proposta_marcada" | "em_followup" | "ganha" | "perdida" | "nutricao";
 
 export const SITUACOES: Situacao[] = ["diagnostica_marcada", "proposta_marcada", "em_followup", "ganha", "perdida", "nutricao"];

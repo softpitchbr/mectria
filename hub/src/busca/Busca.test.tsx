@@ -34,7 +34,7 @@ test("digitar follow e Enter navega para /follow-up e fecha", async () => {
   await userEvent.keyboard("follow{Enter}");
   expect(window.location.pathname).toBe("/follow-up");
   expect(screen.queryByRole("dialog")).not.toBeInTheDocument();
-  expect(await screen.findByText("Follow-up chega na fase 2.")).toBeInTheDocument();
+  expect(await screen.findByRole("heading", { level: 1, name: "Follow-up" })).toBeInTheDocument();
 });
 
 test("as setas mudam o item selecionado", async () => {
