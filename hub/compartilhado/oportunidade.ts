@@ -53,6 +53,8 @@ export interface Reuniao {
   resultado: "proposta_marcada" | "nao_qualificou" | null;
   motivo: string | null;
   briefingEnviadoEm: string | null;
+  /** Em que situação está a oportunidade agora (a diagnóstica só anda enquanto ela está em diagnostica_marcada). */
+  oportunidadeSituacao: Situacao;
 }
 
 export interface NovaDiagnostica {

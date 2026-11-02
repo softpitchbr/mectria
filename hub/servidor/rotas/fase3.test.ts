@@ -6,6 +6,7 @@ import { onRequestPost as postBriefing } from "../../functions/api/reunioes/[id]
 import { onRequestPost as postEncerrar } from "../../functions/api/reunioes/[id]/encerrar";
 import { onRequestPost as postIniciar } from "../../functions/api/reunioes/[id]/iniciar";
 import { onRequestPut as putRespostas } from "../../functions/api/reunioes/[id]/respostas";
+import { registrarProposta } from "../followup";
 import { criarDiagnostica } from "../oportunidades";
 import { criar } from "../pessoas";
 import type { DadosApi, Env } from "../tipos";
@@ -95,4 +96,16 @@ test("encerrar: sem resultado 400; certo 200; de novo 409", async () => {
   expect(denovo.status).toBe(409);
   expect(await corpo(denovo)).toEqual({ erro: "conflito", mensagem: "Essa reunião já foi encerrada." });
   expect((await chamar(g(postBriefing), "clo@mectria.com", {})).status).toBe(200);
+});
+
+test("diagnóstica de oportunidade que já passou dela: iniciar e encerrar dão 409", async () => {
+  const closer = (await env.DB.prepare("SELECT * FROM pessoas WHERE email = 'clo@mectria.com'").first())!;
+  const op = (await env.DB.prepare("SELECT oportunidade_id FROM reunioes WHERE id = ?").bind(Number(params.id)).first<{ oportunidade_id: number }>())!;
+  await registrarProposta(env.DB, { oportunidadeId: op.oportunidade_id, servico: "climatizacao", valor: 900000, apresentadaEm: "2026-11-10", quemDecide: "Ana" }, closer as never);
+  const iniciar = await chamar(g(postIniciar), "clo@mectria.com", {});
+  expect(iniciar.status).toBe(409);
+  expect(await corpo(iniciar)).toEqual({ erro: "conflito", mensagem: "Essa oportunidade já passou da diagnóstica." });
+  const encerrar = await chamar(g(postEncerrar), "clo@mectria.com", { corpo: { resultado: "nao_qualificou", motivo: "Outro" } });
+  expect(encerrar.status).toBe(409);
+  expect(await corpo(encerrar)).toEqual({ erro: "conflito", mensagem: "Essa oportunidade já passou da diagnóstica." });
 });

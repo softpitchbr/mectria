@@ -5,6 +5,7 @@ import { abrir, fingirApi, PESSOAS } from "../teste/ajuda";
 const R = (id: number, empresa: string, dataHora: string, situacao = "marcada", tipo = "diagnostica") => ({
   id, oportunidadeId: id, empresa, tipo, dataHora, formato: "online", situacao, closerId: 2, closerNome: "Vinícius Miguel",
   quemDecide: null, iniciadaEm: null, encerradaEm: null, resultado: situacao === "concluida" ? "proposta_marcada" : null, motivo: null, briefingEnviadoEm: null,
+  oportunidadeSituacao: situacao === "concluida" ? "proposta_marcada" : "diagnostica_marcada",
 });
 
 const AGENDA = [
@@ -34,4 +35,15 @@ test("Iniciar leva ao painel; em andamento mostra Continuar; concluída mostra o
   expect(within(delta).getByRole("button", { name: "Iniciar" })).toBeDisabled();
   await userEvent.click(within(alfa).getByRole("button", { name: "Iniciar" }));
   expect(window.location.pathname).toBe("/reunioes/1/diagnostica");
+});
+
+test("diagnóstica cuja oportunidade já passou dela não oferece Iniciar, e a passada sai da lista de sem resultado", async () => {
+  const andou = { ...R(5, "Fundição Épsilon", "2099-11-10T11:00"), oportunidadeSituacao: "em_followup" };
+  const passada = { ...R(6, "Caldeiraria Zeta", "2020-01-10T11:00"), oportunidadeSituacao: "ganha" };
+  fingirApi({ "/api/eu": { corpo: PESSOAS.closer }, "GET /api/reunioes": { corpo: [...AGENDA, andou, passada] } });
+  abrir("/reunioes");
+  const epsilon = (await screen.findByText("Fundição Épsilon")).closest("li") as HTMLElement;
+  expect(within(epsilon).queryByRole("button", { name: /Iniciar|Continuar/ })).not.toBeInTheDocument();
+  expect(within(epsilon).getByText("A oportunidade já passou da diagnóstica")).toBeInTheDocument();
+  expect(screen.queryByText("Caldeiraria Zeta")).not.toBeInTheDocument();
 });

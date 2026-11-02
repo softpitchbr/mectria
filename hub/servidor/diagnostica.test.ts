@@ -1,5 +1,6 @@
 import { applyD1Migrations, env } from "cloudflare:test";
 import { encerrarDiagnostica, fichaDaReuniao, iniciarReuniao, marcarBriefingEnviado, salvarAnotacao, salvarRespostas } from "./diagnostica";
+import { listarFollowup, registrarProposta } from "./followup";
 import { buscarOportunidade, criarDiagnostica, listarReunioes } from "./oportunidades";
 import { criar } from "./pessoas";
 import type { Pessoa } from "./tipos";
@@ -70,4 +71,32 @@ test("não qualificou vai para nutrição com o motivo", async () => {
 test("briefing marcado como enviado", async () => {
   await marcarBriefingEnviado(env.DB, reuniaoId);
   expect((await fichaDaReuniao(env.DB, reuniaoId))?.reuniao.briefingEnviadoEm).toBeTruthy();
+});
+
+test("diagnóstica cuja oportunidade já passou dela não inicia nem encerra, e a situação não muda", async () => {
+  await registrarProposta(env.DB, { oportunidadeId, servico: "climatizacao", valor: 900000, apresentadaEm: "2026-11-10", quemDecide: "Ana" }, closer);
+  await expect(iniciarReuniao(env.DB, reuniaoId)).rejects.toThrow("ja_passou");
+  await expect(encerrarDiagnostica(env.DB, reuniaoId, { resultado: "nao_qualificou", motivo: "Outro" }, closer)).rejects.toThrow("ja_passou");
+  expect((await buscarOportunidade(env.DB, oportunidadeId))?.situacao).toBe("em_followup");
+  expect(await listarFollowup(env.DB, closer, "2026-11-10")).toHaveLength(1);
+  expect((await fichaDaReuniao(env.DB, reuniaoId))?.reuniao).toMatchObject({ situacao: "marcada", resultado: null });
+});
+
+test("encerrar grava tudo de uma vez: reunião concluída, proposta marcada e histórico", async () => {
+  await encerrarDiagnostica(env.DB, reuniaoId, { resultado: "proposta_marcada", dataHora: "2026-11-18T14:00", formato: "online", quemDecide: "Ana" }, closer);
+  const historico = await env.DB.prepare("SELECT de, para, autor_id FROM historico WHERE oportunidade_id = ? ORDER BY id").bind(oportunidadeId).all();
+  expect(historico.results.at(-1)).toEqual({ de: "diagnostica_marcada", para: "proposta_marcada", autor_id: closer.id });
+  const propostas = await env.DB.prepare("SELECT COUNT(*) AS n FROM reunioes WHERE oportunidade_id = ? AND tipo = 'proposta'").bind(oportunidadeId).first<{ n: number }>();
+  expect(propostas?.n).toBe(1);
+});
+
+test("anotação técnica repetida depois de uma queda no meio cria a pendência uma vez só", async () => {
+  const a = { idCliente: "n-3", minuto: 20, passo: "cl-area", marcacao: "tecnico" as const, texto: "Telhado de fibrocimento" };
+  // A primeira tentativa gravou a anotação e caiu antes da pendência.
+  await env.DB.prepare("INSERT INTO anotacoes (reuniao_id, id_cliente, minuto, passo, marcacao, texto, autor_id) VALUES (?, ?, ?, ?, ?, ?, ?)")
+    .bind(reuniaoId, a.idCliente, a.minuto, a.passo, a.marcacao, a.texto, closer.id)
+    .run();
+  await salvarAnotacao(env.DB, reuniaoId, a, closer, "2026-11-13");
+  await salvarAnotacao(env.DB, reuniaoId, a, closer, "2026-11-13");
+  expect((await fichaDaReuniao(env.DB, reuniaoId))?.pendencias).toEqual([expect.objectContaining({ texto: "Telhado de fibrocimento", prazo: "2026-11-16" })]);
 });

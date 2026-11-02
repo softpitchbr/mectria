@@ -11,11 +11,14 @@ import estilos from "./Reunioes.module.css";
 
 const TIPO = { diagnostica: "Diagnóstica", proposta: "Proposta" };
 
+/** A diagnóstica que ainda não encerrou, mas cuja oportunidade já andou (a proposta foi registrada por outro caminho). */
+const jaPassou = (r: Reuniao) => r.tipo === "diagnostica" && r.situacao !== "concluida" && r.oportunidadeSituacao !== "diagnostica_marcada";
+
 /** O que mostrar: os próximos 7 dias e as diagnósticas passadas ainda sem resultado. */
 function daAgenda(r: Reuniao, hoje: string): boolean {
   if (r.situacao === "cancelada") return false;
   if (r.dataHora.slice(0, 10) >= hoje) return true;
-  return r.tipo === "diagnostica" && r.situacao !== "concluida";
+  return r.tipo === "diagnostica" && r.situacao !== "concluida" && !jaPassou(r);
 }
 
 function AcaoDaReuniao({ r }: { r: Reuniao }) {
@@ -23,6 +26,7 @@ function AcaoDaReuniao({ r }: { r: Reuniao }) {
   if (r.situacao === "concluida") {
     return r.tipo === "diagnostica" ? <Link to={`/reunioes/${r.id}/briefing`}>Briefing</Link> : <span className="suave">Concluída</span>;
   }
+  if (jaPassou(r)) return <span className="suave">A oportunidade já passou da diagnóstica</span>;
   if (r.tipo === "proposta") {
     return (
       <Botao disabled title="A reunião de proposta chega na fase 4">

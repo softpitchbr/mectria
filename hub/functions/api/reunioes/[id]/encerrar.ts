@@ -15,6 +15,8 @@ export const onRequestPost: PagesFunction<Env, "id", DadosApi> = async ({ reques
     return json(await encerrarDiagnostica(env.DB, acesso.reuniao.id, validado.dados, data.pessoa));
   } catch (e) {
     if (e instanceof Error && e.message === "ja_encerrada") return erro("conflito", "Essa reunião já foi encerrada.");
+    if (e instanceof Error && e.message === "ja_passou") return erro("conflito", "Essa oportunidade já passou da diagnóstica.");
+    if (e instanceof Error && e.message === "nao_e_diagnostica") return erro("invalido", "Essa reunião não é uma diagnóstica.");
     throw e;
   }
 };
