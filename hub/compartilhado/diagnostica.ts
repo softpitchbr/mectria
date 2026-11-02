@@ -87,9 +87,14 @@ export function resumoDoFechamento(respostas: Respostas, contato: string): strin
   return preencherModelo(DIAGNOSTICA.fechamento.resumo, { ...valoresDasRespostas(respostas), contato });
 }
 
-/** O resumo que vai para o cliente no mesmo dia. */
-export function resumoParaCliente(respostas: Respostas, contato: string): string {
-  return preencherModelo(DIAGNOSTICA.resumoCliente, { ...valoresDasRespostas(respostas), contato });
+/** O resumo que vai para o cliente no mesmo dia (com a data da proposta e o nome de quem vende, quando o hub sabe). */
+export function resumoParaCliente(respostas: Respostas, contato: string, extra: { dataProposta?: string; vendedor?: string } = {}): string {
+  return preencherModelo(DIAGNOSTICA.resumoCliente, {
+    ...valoresDasRespostas(respostas),
+    contato,
+    data_proposta: extra.dataProposta,
+    vendedor: extra.vendedor,
+  });
 }
 
 export interface SecaoBriefing {

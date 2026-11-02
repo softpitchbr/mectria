@@ -100,3 +100,9 @@ test("anotação técnica repetida depois de uma queda no meio cria a pendência
   await salvarAnotacao(env.DB, reuniaoId, a, closer, "2026-11-13");
   expect((await fichaDaReuniao(env.DB, reuniaoId))?.pendencias).toEqual([expect.objectContaining({ texto: "Telhado de fibrocimento", prazo: "2026-11-16" })]);
 });
+
+test("a ficha traz a reunião de proposta combinada no fechamento", async () => {
+  expect((await fichaDaReuniao(env.DB, reuniaoId))?.proximaReuniao).toBeNull();
+  await encerrarDiagnostica(env.DB, reuniaoId, { resultado: "proposta_marcada", dataHora: "2026-11-18T14:00", formato: "presencial", quemDecide: "Ana e o sócio" }, closer);
+  expect((await fichaDaReuniao(env.DB, reuniaoId))?.proximaReuniao).toMatchObject({ tipo: "proposta", dataHora: "2026-11-18T14:00", formato: "presencial", quemDecide: "Ana e o sócio" });
+});

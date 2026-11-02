@@ -33,6 +33,12 @@ test("resumo do fechamento usa as respostas e mostra o que falta", () => {
   expect(texto).toContain("[impacto]");
 });
 
+test("resumo para o cliente traz a data da proposta e o nome de quem vende", () => {
+  const texto = resumoParaCliente({ [idDe("dor")]: "calor" }, "Ana", { dataProposta: "Qua, 18/11 às 14:00", vendedor: "Carlos Closer" });
+  expect(texto).toContain("a gente apresenta a proposta em Qua, 18/11 às 14:00.");
+  expect(texto).toMatch(/Carlos Closer · MecTRIA$/);
+});
+
 test("resumo para o cliente começa pelo contato", () => {
   expect(resumoParaCliente({ [idDe("dor")]: "calor" }, "Ana")).toMatch(/^Oi, Ana!/);
 });

@@ -79,11 +79,16 @@ export async function salvarAnotacao(db: D1Database, reuniaoId: number, a: Anota
 export async function fichaDaReuniao(db: D1Database, reuniaoId: number): Promise<FichaCompleta | null> {
   const reuniao = await buscarReuniao(db, reuniaoId);
   if (!reuniao) return null;
-  const [respostas, anotacoes, pendencias] = await db.batch([
+  const [respostas, anotacoes, pendencias, proxima] = await db.batch([
     db.prepare("SELECT pergunta_id, resposta FROM fichas WHERE reuniao_id = ?").bind(reuniaoId),
     db.prepare("SELECT id_cliente, minuto, passo, marcacao, texto, criado_em FROM anotacoes WHERE reuniao_id = ? ORDER BY id").bind(reuniaoId),
     db.prepare("SELECT * FROM pendencias WHERE oportunidade_id = ? ORDER BY id").bind(reuniao.oportunidadeId),
+    // A proposta combinada no fechamento: a primeira reunião de proposta criada depois desta.
+    db
+      .prepare(`${SELECT_REUNIAO} WHERE r.oportunidade_id = ? AND r.tipo = 'proposta' AND r.id > ? AND r.situacao != 'cancelada' ORDER BY r.id LIMIT 1`)
+      .bind(reuniao.oportunidadeId, reuniaoId),
   ]);
+  const linhaProxima = (proxima.results as LinhaReuniao[])[0];
   return {
     reuniao,
     oportunidade: (await buscarOportunidade(db, reuniao.oportunidadeId))!,
@@ -107,6 +112,7 @@ export async function fichaDaReuniao(db: D1Database, reuniaoId: number): Promise
         resposta: p.resposta as string | null,
       }),
     ),
+    proximaReuniao: linhaProxima ? reuniaoDeLinha(linhaProxima) : null,
   };
 }
 

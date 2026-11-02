@@ -174,4 +174,6 @@ export interface FichaCompleta {
   respostas: Record<string, string>;
   anotacoes: import("./diagnostica").Anotacao[];
   pendencias: Pendencia[];
+  /** A reunião de proposta combinada no fechamento (null enquanto não há). */
+  proximaReuniao: Reuniao | null;
 }

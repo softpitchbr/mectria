@@ -35,12 +35,15 @@ export default function Briefing() {
   if (erro) return <p role="alert" className={estilos.erro}>{erro}</p>;
   if (!ficha) return <p className="mono suave">Abrindo o briefing…</p>;
 
-  const { reuniao, oportunidade } = ficha;
+  const { reuniao, oportunidade, proximaReuniao: proxima } = ficha;
   const secoes = briefingDaFicha(ficha);
+  const quandoProposta = proxima ? `${formatarDia(proxima.dataHora.slice(0, 10))} às ${proxima.dataHora.slice(11, 16)}` : undefined;
 
   async function copiarResumo() {
     try {
-      await navigator.clipboard.writeText(resumoParaCliente(ficha!.respostas, oportunidade.contato));
+      await navigator.clipboard.writeText(
+        resumoParaCliente(ficha!.respostas, oportunidade.contato, { dataProposta: quandoProposta, vendedor: reuniao.closerNome ?? undefined }),
+      );
       avisar("Resumo copiado para mandar ao cliente.");
     } catch {
       avisar("Não deu para copiar. Selecione o texto e copie.");
@@ -102,6 +105,20 @@ export default function Briefing() {
             <dt>Resultado</dt>
             <dd>{resultadoEmTexto(reuniao)}</dd>
           </div>
+          {proxima && (
+            <>
+              <div>
+                <dt>Apresentação da proposta</dt>
+                <dd>
+                  {quandoProposta} · {proxima.formato === "online" ? "online" : "presencial"}
+                </dd>
+              </div>
+              <div>
+                <dt>Quem decide</dt>
+                <dd>{proxima.quemDecide || "—"}</dd>
+              </div>
+            </>
+          )}
         </dl>
 
         {secoes.length === 0 && <p className={estilos.vazio}>Nenhuma resposta registrada ainda.</p>}

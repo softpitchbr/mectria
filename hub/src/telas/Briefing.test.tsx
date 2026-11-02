@@ -57,3 +57,23 @@ test("o título da página (nome do PDF) traz o cliente e o dia", async () => {
   await screen.findByRole("heading", { name: "Briefing para Projetos" });
   expect(document.title).toBe("Briefing · Usinagem Alfa · Sex, 13/11");
 });
+
+test("o briefing mostra o próximo passo e o resumo copiado leva a data e o closer", async () => {
+  const escrever = vi.fn(async () => {});
+  Object.defineProperty(navigator, "clipboard", { value: { writeText: escrever }, configurable: true });
+  fingirApi({
+    "/api/eu": { corpo: PESSOAS.closer },
+    "GET /api/reunioes/5": {
+      corpo: { ...FICHA, proximaReuniao: { ...FICHA.reuniao, id: 6, tipo: "proposta", dataHora: "2026-11-18T14:00", formato: "presencial", situacao: "marcada", quemDecide: "Ana e o sócio", resultado: null } },
+    },
+  } as never);
+  abrir("/reunioes/5/briefing");
+  const valorDe = (rotulo: string) => screen.getByText(rotulo, { selector: "dt" }).nextElementSibling;
+  await screen.findByText("Apresentação da proposta");
+  expect(valorDe("Apresentação da proposta")).toHaveTextContent("Qua, 18/11 às 14:00 · presencial");
+  expect(valorDe("Quem decide")).toHaveTextContent("Ana e o sócio");
+  await userEvent.click(screen.getByRole("button", { name: "Copiar resumo para o cliente" }));
+  const copiado = (escrever.mock.calls[0] as unknown as [string])[0];
+  expect(copiado).toContain("apresenta a proposta em Qua, 18/11 às 14:00.");
+  expect(copiado).toMatch(/Vinícius Miguel · MecTRIA$/);
+});
