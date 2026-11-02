@@ -2,6 +2,7 @@ name = "hub-mectria"
 pages_build_output_dir = "dist"
 compatibility_date = "2025-09-01"
 
+# Desenvolvimento local (wrangler pages dev e testes).
 [vars]
 AMBIENTE = "dev"
 
@@ -9,4 +10,29 @@ AMBIENTE = "dev"
 binding = "DB"
 database_name = "hub-mectria"
 database_id = "local"
+migrations_dir = "migrations"
+
+# Produção e prévias no Cloudflare Pages. Com este arquivo no repositório, o Pages lê
+# as variáveis daqui; os valores PREENCHER são trocados na implantação (IMPLANTACAO.md).
+# DIRETOR_INICIAL não fica aqui: entra como segredo do projeto.
+[env.production.vars]
+AMBIENTE = "producao"
+ACCESS_EQUIPE = "PREENCHER"
+ACCESS_AUD = "PREENCHER"
+
+[[env.production.d1_databases]]
+binding = "DB"
+database_name = "hub-mectria"
+database_id = "PREENCHER"
+migrations_dir = "migrations"
+
+[env.preview.vars]
+AMBIENTE = "producao"
+ACCESS_EQUIPE = "PREENCHER"
+ACCESS_AUD = "PREENCHER"
+
+[[env.preview.d1_databases]]
+binding = "DB"
+database_name = "hub-mectria"
+database_id = "PREENCHER"
 migrations_dir = "migrations"

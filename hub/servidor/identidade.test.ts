@@ -29,9 +29,11 @@ function assinar(claims: Record<string, unknown>, audiencia = AUD) {
     .sign(privada);
 }
 
-function requisicao(cabecalhos: Record<string, string>) {
-  return new Request("https://hub.exemplo.com/api/eu", { headers: cabecalhos });
+function requisicao(cabecalhos: Record<string, string>, endereco = "https://hub.exemplo.com/api/eu") {
+  return new Request(endereco, { headers: cabecalhos });
 }
+
+const LOCAL = "http://localhost:8788/api/eu";
 
 test("em produção, JWT válido do Access devolve o e-mail normalizado", async () => {
   const jwt = await assinar({ email: "Ana@MecTRIA.com" });
@@ -62,6 +64,20 @@ test("em produção sem equipe ou audience configuradas, ninguém entra", async 
 
 test("em dev, X-Dev-Email com espaços e maiúsculas devolve o e-mail normalizado", async () => {
   const dev: Env = { ...env, AMBIENTE: "dev" };
-  expect(await emailDaRequisicao(requisicao({ "X-Dev-Email": " Ana@mectria.com " }), dev)).toBe("ana@mectria.com");
+  expect(await emailDaRequisicao(requisicao({ "X-Dev-Email": " Ana@mectria.com " }, LOCAL), dev)).toBe("ana@mectria.com");
+  expect(await emailDaRequisicao(requisicao({}, LOCAL), dev)).toBeNull();
+});
+
+test("AMBIENTE=dev esquecido num endereço público não aceita o cabeçalho de dev", async () => {
+  const dev: Env = { ...env, AMBIENTE: "dev", DEV_EMAIL: "dir@mectria.com" };
+  expect(await emailDaRequisicao(requisicao({ "X-Dev-Email": "dir@mectria.com" }), dev)).toBeNull();
   expect(await emailDaRequisicao(requisicao({}), dev)).toBeNull();
+});
+
+test("em dev local sem cabeçalho, usa o DEV_EMAIL do .dev.vars", async () => {
+  const dev: Env = { ...env, AMBIENTE: "dev", DEV_EMAIL: " Dir@MecTRIA.com " };
+  expect(await emailDaRequisicao(requisicao({}, LOCAL), dev)).toBe("dir@mectria.com");
+  expect(await emailDaRequisicao(requisicao({ "X-Dev-Email": "hun@mectria.com" }, "http://127.0.0.1:8788/api/eu"), dev)).toBe(
+    "hun@mectria.com",
+  );
 });

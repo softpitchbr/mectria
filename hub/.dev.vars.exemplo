@@ -1,3 +1,6 @@
-# Copie para .dev.vars (que não vai para o git) e ajuste.
+# Copie para .dev.vars (que não vai para o git) e ajuste. Vale só no wrangler pages dev local.
 # E-mail que vira diretor no primeiro acesso, se ainda não houver diretor.
-DIRETOR_INICIAL=diretor@exemplo.com
+DIRETOR_INICIAL=dir@mectria.com
+# Quem você é no navegador local (o Cloudflare Access só existe em produção).
+# Use um dos e-mails de e2e/semente.sql para ver o hub como cada cargo.
+DEV_EMAIL=dir@mectria.com

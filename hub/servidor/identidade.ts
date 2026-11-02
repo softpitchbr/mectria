@@ -13,9 +13,13 @@ function chavesDoAccess(emissor: string): JWTVerifyGetKey {
   return chaves;
 }
 
+const ENDERECOS_LOCAIS = new Set(["localhost", "127.0.0.1", "[::1]"]);
+
 /**
  * E-mail de quem fez a requisição, já normalizado, ou null.
- * Em produção vem só do JWT do Cloudflare Access; o cabeçalho X-Dev-Email vale só em dev.
+ * Em produção vem só do JWT do Cloudflare Access. Em dev, vem do cabeçalho X-Dev-Email
+ * ou do DEV_EMAIL do .dev.vars, e só para endereços locais: se AMBIENTE=dev for esquecido
+ * num endereço público, ninguém entra.
  */
 export async function emailDaRequisicao(
   req: Request,
@@ -23,7 +27,8 @@ export async function emailDaRequisicao(
   opcoes: { jwks?: JWTVerifyGetKey } = {},
 ): Promise<string | null> {
   if (env.AMBIENTE === "dev") {
-    const email = req.headers.get("X-Dev-Email");
+    if (!ENDERECOS_LOCAIS.has(new URL(req.url).hostname)) return null;
+    const email = req.headers.get("X-Dev-Email") || env.DEV_EMAIL;
     return email?.trim() ? normalizarEmail(email) : null;
   }
 
