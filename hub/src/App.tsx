@@ -1,9 +1,10 @@
 import { useEffect, useState } from "react";
-import { createBrowserRouter, Link, RouterProvider, useOutletContext, type RouteObject } from "react-router";
+import { createBrowserRouter, Link, Outlet, RouterProvider, useOutletContext, type RouteObject } from "react-router";
 import { podeVer, SECOES, type Secao } from "../compartilhado/permissoes";
 import { Avisos } from "./componentes/Aviso";
 import Botao from "./componentes/Botao";
 import Painel from "./componentes/Painel";
+import PainelDaDiagnostica from "./diagnostica/Painel";
 import { useLuzDoCursor } from "./efeitos/luz";
 import { useEu, type Eu } from "./sessao/useEu";
 import EmConstrucao from "./shell/EmConstrucao";
@@ -65,7 +66,12 @@ function Raiz() {
       </main>
     );
   }
-  return <Layout eu={sessao.eu} />;
+  return <Outlet context={sessao.eu} />;
+}
+
+/** As telas com as barras do hub (o painel da reunião e o briefing ficam fora). */
+function ComBarras() {
+  return <Layout eu={useOutletContext<Eu>()} />;
 }
 
 function criarRotas(): RouteObject[] {
@@ -75,7 +81,14 @@ function criarRotas(): RouteObject[] {
       : { path: s.caminho.slice(1), element: <PaginaDaSecao secao={s.id} /> },
   );
   const rotas: RouteObject[] = [
-    { path: "/", element: <Raiz />, children: [...secoes, { path: "*", element: <NaoEncontrada /> }] },
+    {
+      path: "/",
+      element: <Raiz />,
+      children: [
+        { element: <ComBarras />, children: [...secoes, { path: "*", element: <NaoEncontrada /> }] },
+        { path: "reunioes/:id/diagnostica", element: <PainelDaDiagnostica /> },
+      ],
+    },
   ];
   if (import.meta.env.DEV) rotas.unshift({ path: "/vitrine", element: <Vitrine /> });
   return rotas;

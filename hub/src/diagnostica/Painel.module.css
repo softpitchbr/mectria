@@ -1,0 +1,351 @@
+.painel {
+  min-height: 100vh;
+  display: grid;
+  grid-template-rows: auto auto 1fr;
+  background: var(--fundo);
+}
+
+.carregando {
+  min-height: 100vh;
+  display: grid;
+  place-items: center;
+}
+
+.topo {
+  display: flex;
+  align-items: center;
+  gap: 20px;
+  padding: 14px 24px;
+  border-bottom: 1px solid var(--linha);
+  background: var(--painel);
+}
+
+.topo > div {
+  flex: 1;
+  min-width: 0;
+}
+
+.sobre {
+  font-size: 11px;
+  letter-spacing: 0.08em;
+  color: var(--suave);
+}
+
+.empresa {
+  font-size: 20px;
+}
+
+.semInternet {
+  font-family: "IBM Plex Mono", monospace;
+  font-size: 13px;
+  font-weight: 500;
+  color: var(--vermelho-texto);
+}
+
+.sair {
+  padding: 8px 12px;
+  border: 1px solid var(--linha);
+  border-radius: 9px;
+  background: transparent;
+  color: var(--suave);
+  font: inherit;
+  font-size: 14px;
+  cursor: pointer;
+}
+
+.sair:hover {
+  color: var(--texto);
+  border-color: var(--linha-viva);
+}
+
+.segmentos {
+  display: flex;
+  gap: 4px;
+  padding: 10px 24px;
+  border-bottom: 1px solid var(--linha);
+  overflow-x: auto;
+}
+
+.segmento {
+  flex: 1;
+  min-width: 44px;
+  padding: 6px 4px 8px;
+  border: 0;
+  border-bottom: 3px solid var(--linha);
+  background: transparent;
+  color: var(--suave);
+  font: inherit;
+  font-family: "IBM Plex Mono", monospace;
+  font-size: 12px;
+  cursor: pointer;
+  transition: border-color var(--medio) var(--curva), color var(--rapido) var(--curva);
+}
+
+.segmento[data-cheio="sim"] {
+  border-bottom-color: var(--suave);
+}
+
+.segmento[aria-current="step"] {
+  color: var(--texto);
+  border-bottom-color: var(--vermelho);
+}
+
+.corpo {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) 340px;
+  min-height: 0;
+}
+
+.passo {
+  display: grid;
+  gap: 16px;
+  align-content: start;
+  max-width: 820px;
+  width: 100%;
+  margin: 0 auto;
+  padding: 40px 32px;
+}
+
+.passo h2 {
+  font-size: 18px;
+  color: var(--suave);
+}
+
+.pergunta {
+  font-family: "Poppins", sans-serif;
+  font-weight: 600;
+  font-size: clamp(22px, 2.6vw, 30px);
+  line-height: 1.3;
+}
+
+.fala {
+  font-size: 19px;
+  line-height: 1.6;
+}
+
+.dica {
+  font-size: 14px;
+}
+
+.resposta {
+  width: 100%;
+  padding: 12px 14px;
+  border: 1px solid var(--linha);
+  border-radius: 10px;
+  background: var(--painel);
+  color: var(--texto);
+  font: inherit;
+  font-size: 16px;
+  line-height: 1.5;
+  resize: vertical;
+}
+
+.resposta:focus {
+  outline: none;
+  border-color: var(--linha-viva);
+  box-shadow: 0 0 0 3px var(--luz), 0 0 0 1px var(--vermelho-texto);
+}
+
+.opcoes {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.opcao,
+.opcaoMarcada {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 10px 16px;
+  border: 1px solid var(--linha);
+  border-radius: 10px;
+  background: var(--painel);
+  color: var(--texto);
+  font: inherit;
+  cursor: pointer;
+}
+
+.opcao[aria-pressed="true"],
+.opcaoMarcada {
+  border-color: var(--linha-viva);
+  box-shadow: inset 0 0 0 1px var(--texto);
+}
+
+.navegacao {
+  display: flex;
+  justify-content: space-between;
+  margin-top: 8px;
+}
+
+.navegar {
+  padding: 10px 14px;
+  border: 1px solid var(--linha);
+  border-radius: 10px;
+  background: var(--painel);
+  color: var(--texto);
+  font: inherit;
+  cursor: pointer;
+}
+
+.navegar:disabled {
+  opacity: 0.4;
+  cursor: default;
+}
+
+.anotacoes {
+  display: grid;
+  grid-template-rows: auto auto 1fr;
+  gap: 12px;
+  padding: 24px 20px;
+  border-left: 1px solid var(--linha);
+  background: var(--painel);
+  min-height: 0;
+}
+
+.anotacoesTopo {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.anotacoesTopo h3 {
+  font-size: 15px;
+}
+
+.botaoAnotar {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 6px 10px;
+  border: 1px solid var(--linha);
+  border-radius: 8px;
+  background: transparent;
+  color: var(--suave);
+  font: inherit;
+  font-size: 13px;
+  cursor: pointer;
+}
+
+.botaoAnotar kbd {
+  font-size: 11px;
+}
+
+.novaAnotacao {
+  display: grid;
+  gap: 8px;
+}
+
+.marcacoes {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+}
+
+.marcacao {
+  padding: 4px 9px;
+  border: 1px solid var(--linha);
+  border-radius: 6px;
+  background: transparent;
+  color: var(--suave);
+  font: inherit;
+  font-family: "IBM Plex Mono", monospace;
+  font-size: 11px;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  cursor: pointer;
+}
+
+.marcacao[aria-pressed="true"] {
+  color: var(--texto);
+  border-color: var(--texto);
+}
+
+.listaAnotacoes {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: grid;
+  gap: 10px;
+  align-content: start;
+  overflow-y: auto;
+}
+
+.listaAnotacoes li {
+  display: grid;
+  gap: 2px;
+  padding: 10px 12px;
+  border: 1px solid var(--linha);
+  border-radius: 10px;
+  font-size: 14px;
+}
+
+.listaAnotacoes li[data-marcacao="tecnico"] {
+  border-left: 2px solid var(--vinho);
+}
+
+.listaAnotacoes .mono {
+  font-size: 11px;
+}
+
+.fechamento {
+  display: grid;
+  gap: 20px;
+}
+
+.fechamento section {
+  display: grid;
+  gap: 6px;
+}
+
+.resultados {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin: 0;
+  padding: 0;
+  border: 0;
+}
+
+.resultados legend {
+  margin-bottom: 8px;
+  font-size: 13px;
+}
+
+.grade {
+  display: grid;
+  gap: 14px;
+  grid-template-columns: repeat(auto-fill, minmax(min(100%, 200px), 1fr));
+}
+
+.erro {
+  color: var(--vermelho-texto);
+  font-weight: 500;
+}
+
+@media (max-width: 900px) {
+  .corpo {
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  .anotacoes {
+    border-left: 0;
+    border-top: 1px solid var(--linha);
+  }
+}
+
+@media (max-width: 760px) {
+  .topo {
+    flex-wrap: wrap;
+    gap: 10px;
+    padding: 12px 16px;
+  }
+
+  .segmentos {
+    padding: 8px 16px;
+  }
+
+  .passo {
+    padding: 24px 16px;
+  }
+}
