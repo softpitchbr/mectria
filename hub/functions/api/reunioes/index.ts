@@ -1,8 +1,8 @@
-import { diasDepois, hojeEmSaoPaulo } from "../../compartilhado/datas";
-import { podeMarcarDiagnostica } from "../../compartilhado/permissoes";
-import { listarReunioes } from "../../servidor/oportunidades";
-import { erro, json } from "../../servidor/respostas";
-import type { DadosApi, Env } from "../../servidor/tipos";
+import { diasDepois, hojeEmSaoPaulo } from "../../../compartilhado/datas";
+import { podeMarcarDiagnostica } from "../../../compartilhado/permissoes";
+import { listarReunioes } from "../../../servidor/oportunidades";
+import { erro, json } from "../../../servidor/respostas";
+import type { DadosApi, Env } from "../../../servidor/tipos";
 
 const DIA = /^\d{4}-\d{2}-\d{2}$/;
 

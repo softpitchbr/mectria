@@ -9,7 +9,7 @@ import { onRequestPatch as patchOportunidade } from "../../functions/api/oportun
 import { onRequestPost as postResultado } from "../../functions/api/oportunidades/[id]/resultado";
 import { onRequestGet as getOportunidades, onRequestPost as postOportunidade } from "../../functions/api/oportunidades/index";
 import { onRequestPost as postProposta } from "../../functions/api/propostas";
-import { onRequestGet as getReunioes } from "../../functions/api/reunioes";
+import { onRequestGet as getReunioes } from "../../functions/api/reunioes/index";
 import { onRequestPut as putItem } from "../../functions/api/rotina/[chave]";
 import { onRequestGet as getHistorico } from "../../functions/api/rotina/historico";
 import { onRequestGet as getRotina } from "../../functions/api/rotina/index";

@@ -1,7 +1,9 @@
 import { lerReais } from "../compartilhado/datas";
 import { MOTIVOS_PERDA } from "../compartilhado/dados/cadencia";
+import { MOTIVOS_NAO_QUALIFICOU } from "../compartilhado/dados/diagnostica";
+import type { Anotacao, Marcacao } from "../compartilhado/diagnostica";
 import { SERVICOS } from "../compartilhado/dados/servicos";
-import { CANAIS_DE_TOQUE, type NovaDiagnostica, type NovaProposta, type ResultadoLigacao, type ResultadoProposta } from "../compartilhado/oportunidade";
+import { CANAIS_DE_TOQUE, type FechamentoDiagnostica, type NovaDiagnostica, type NovaProposta, type ResultadoLigacao, type ResultadoProposta } from "../compartilhado/oportunidade";
 import { CARGOS, type Cargo } from "../compartilhado/cargos";
 import { normalizarEmail } from "../compartilhado/texto";
 
@@ -202,4 +204,55 @@ export function validarLigacao(corpo: unknown): Validado<ResultadoLigacao> {
 
 export function validarFeito(corpo: unknown): Validado<boolean> {
   return ehObjeto(corpo) && typeof corpo.feito === "boolean" ? { ok: true, dados: corpo.feito } : { ok: false, mensagem: MENSAGEM.corpo };
+}
+
+// Fase 3 ------------------------------------------------------------------------
+
+const MARCACOES: Marcacao[] = ["objecao", "tecnico", "escopo", "proximo_passo"];
+
+export function validarRespostas(corpo: unknown): Validado<{ perguntaId: string; resposta: string }[]> {
+  if (!ehObjeto(corpo) || !Array.isArray(corpo.respostas)) return { ok: false, mensagem: MENSAGEM.corpo };
+  if (corpo.respostas.length > 200) return { ok: false, mensagem: "Respostas demais num pedido só." };
+  const lista: { perguntaId: string; resposta: string }[] = [];
+  for (const r of corpo.respostas) {
+    if (!ehObjeto(r) || typeof r.perguntaId !== "string" || !r.perguntaId || r.perguntaId.length > 60 || typeof r.resposta !== "string") {
+      return { ok: false, mensagem: MENSAGEM.corpo };
+    }
+    if (r.resposta.length > 2000) return { ok: false, mensagem: "Cada resposta tem até 2.000 caracteres." };
+    lista.push({ perguntaId: r.perguntaId, resposta: r.resposta });
+  }
+  return { ok: true, dados: lista };
+}
+
+export function validarAnotacao(corpo: unknown): Validado<Anotacao> {
+  if (!ehObjeto(corpo)) return { ok: false, mensagem: MENSAGEM.corpo };
+  const { idCliente, minuto, passo, marcacao, texto } = corpo;
+  if (typeof idCliente !== "string" || !idCliente || idCliente.length > 80) return { ok: false, mensagem: MENSAGEM.corpo };
+  if (typeof minuto !== "number" || !Number.isInteger(minuto) || minuto < 0) return { ok: false, mensagem: MENSAGEM.corpo };
+  if (marcacao !== null && marcacao !== undefined && !MARCACOES.includes(marcacao as Marcacao)) return { ok: false, mensagem: "Marcação inválida." };
+  const t = typeof texto === "string" ? texto.trim() : "";
+  if (!t || t.length > 2000) return { ok: false, mensagem: "Escreva a anotação (até 2.000 caracteres)." };
+  return {
+    ok: true,
+    dados: { idCliente, minuto, passo: typeof passo === "string" ? passo.slice(0, 60) : "", marcacao: (marcacao as Marcacao | undefined) ?? null, texto: t },
+  };
+}
+
+export function validarFechamento(corpo: unknown): Validado<FechamentoDiagnostica> {
+  if (!ehObjeto(corpo)) return { ok: false, mensagem: MENSAGEM.corpo };
+  if (corpo.resultado === "proposta_marcada") {
+    if (typeof corpo.dataHora !== "string" || !DIA_E_HORA.test(corpo.dataHora) || Number.isNaN(Date.parse(`${corpo.dataHora}:00-03:00`))) {
+      return { ok: false, mensagem: "Informe a data e a hora da apresentação da proposta." };
+    }
+    if (corpo.formato !== "online" && corpo.formato !== "presencial") return { ok: false, mensagem: "Escolha online ou presencial." };
+    const quemDecide = textoEntre(corpo.quemDecide, 2, 120);
+    if (!quemDecide) return { ok: false, mensagem: "Informe quem decide." };
+    return { ok: true, dados: { resultado: "proposta_marcada", dataHora: corpo.dataHora, formato: corpo.formato, quemDecide } };
+  }
+  if (corpo.resultado === "nao_qualificou") {
+    return typeof corpo.motivo === "string" && MOTIVOS_NAO_QUALIFICOU.includes(corpo.motivo)
+      ? { ok: true, dados: { resultado: "nao_qualificou", motivo: corpo.motivo } }
+      : { ok: false, mensagem: "Escolha o motivo." };
+  }
+  return { ok: false, mensagem: "Escolha como a diagnóstica terminou." };
 }
