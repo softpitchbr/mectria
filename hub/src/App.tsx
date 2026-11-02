@@ -13,6 +13,7 @@ import SemAcesso from "./shell/SemAcesso";
 import Briefing from "./telas/Briefing";
 import FollowUp from "./telas/FollowUp";
 import Hoje from "./telas/Hoje";
+import Reunioes from "./telas/Reunioes";
 import Rotinas from "./telas/Rotinas";
 import Time from "./telas/Time";
 import Vitrine from "./telas/Vitrine";
@@ -34,6 +35,7 @@ function PaginaDaSecao({ secao }: { secao: Secao }) {
   if (secao === "time") return <Time eu={eu} />;
   if (secao === "followup") return <FollowUp eu={eu} />;
   if (secao === "rotinas") return <Rotinas eu={eu} />;
+  if (secao === "reunioes") return <Reunioes eu={eu} />;
   return <EmConstrucao secao={info.rotulo} fase={info.fase} icone={info.icone} />;
 }
 

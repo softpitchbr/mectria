@@ -41,8 +41,8 @@ test("hunter abrindo /time direto vê que a seção não é do cargo dele", asyn
 
 test("closer abrindo uma seção de fase futura vê quando ela chega", async () => {
   fingirApi({ "/api/eu": { corpo: PESSOAS.closer } });
-  abrir("/reunioes");
-  expect(await screen.findByText("Reuniões chega na fase 3.")).toBeInTheDocument();
+  abrir("/apresentacoes");
+  expect(await screen.findByText("Apresentações chega na fase 4.")).toBeInTheDocument();
 });
 
 test("/api/eu respondendo 403 mostra a tela de sem acesso", async () => {

@@ -1,0 +1,79 @@
+.reunioes {
+  display: grid;
+  gap: 24px;
+  max-width: 860px;
+}
+
+.reunioes header {
+  display: grid;
+  gap: 6px;
+}
+
+.dia {
+  display: grid;
+  gap: 10px;
+}
+
+.dia h2 {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-size: 13px;
+  font-weight: 500;
+  letter-spacing: 0.04em;
+}
+
+.dia ul {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  border: 1px solid var(--linha);
+  border-radius: 14px;
+  background: var(--painel);
+  box-shadow: inset 0 1px 0 var(--realce), var(--sombra);
+}
+
+.reuniao {
+  display: grid;
+  grid-template-columns: 64px minmax(0, 1fr) auto;
+  align-items: center;
+  gap: 14px;
+  padding: 14px 18px;
+  border-top: 1px solid var(--linha);
+}
+
+.reuniao:first-child {
+  border-top: 0;
+}
+
+.reuniao a {
+  color: var(--texto);
+  font-weight: 500;
+  text-underline-offset: 3px;
+}
+
+.quem {
+  display: grid;
+  gap: 2px;
+  min-width: 0;
+}
+
+.quem strong {
+  font-weight: 500;
+}
+
+.erro {
+  color: var(--vermelho-texto);
+  font-weight: 500;
+}
+
+@media (max-width: 760px) {
+  .reuniao {
+    grid-template-columns: 52px minmax(0, 1fr);
+  }
+
+  .reuniao > :last-child {
+    grid-column: 2;
+    justify-self: start;
+  }
+}

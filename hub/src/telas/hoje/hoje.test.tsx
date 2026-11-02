@@ -85,7 +85,7 @@ test("closer vê a próxima reunião com a contagem", async () => {
   abrir("/");
   const cartao = (await screen.findByText("Usinagem Alfa")).closest("section") as HTMLElement;
   expect(within(cartao).getByText("faltam 2 h 15 min")).toBeInTheDocument();
-  expect(within(cartao).getByRole("button", { name: "Iniciar reunião" })).toBeDisabled();
+  expect(within(cartao).getByRole("button", { name: "Iniciar reunião" })).toBeEnabled();
   expect(screen.queryByText("Já passou")).not.toBeInTheDocument();
   expect(await screen.findByRole("region", { name: "Este mês" })).toHaveTextContent("3");
 });
@@ -136,4 +136,21 @@ test("segurar a tecla no bloco não registra várias ligações", async () => {
   await userEvent.keyboard("{1>5/}"); // segura o 1: um keydown normal e quatro repetidos
   await screen.findByText("1 sem resposta");
   expect(enviados).toEqual(["nao_atendeu"]);
+});
+
+test("o Iniciar reunião do Hoje leva ao painel da diagnóstica", async () => {
+  vi.useFakeTimers({ toFake: ["Date"] });
+  vi.setSystemTime(new Date("2026-11-09T11:45:00-03:00"));
+  fingirApi({
+    "/api/eu": { corpo: PESSOAS.closer },
+    "GET /api/reunioes": {
+      corpo: [{ id: 2, oportunidadeId: 2, empresa: "Usinagem Alfa", tipo: "diagnostica", dataHora: "2026-11-09T14:00", formato: "online", situacao: "marcada", closerId: 2, closerNome: "Vinícius Miguel" }],
+    },
+    "GET /api/rotina": { corpo: ROTINA_VAZIA },
+    "GET /api/followup": { corpo: [] },
+    "GET /api/numeros/mes": { corpo: { propostas: 0, ganhas: 0 } },
+  });
+  abrir("/");
+  await userEvent.click(await screen.findByRole("button", { name: "Iniciar reunião" }));
+  expect(window.location.pathname).toBe("/reunioes/2/diagnostica");
 });

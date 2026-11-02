@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { Link } from "react-router";
+import { Link, useNavigate } from "react-router";
 import { formatarDia, instanteLocal } from "../../../compartilhado/datas";
 import type { ItemFollowup, Reuniao } from "../../../compartilhado/oportunidade";
 import { api } from "../../api/cliente";
@@ -13,6 +13,7 @@ import { quantoFalta } from "./comum";
 import estilos from "./hoje.module.css";
 
 function ProximaReuniao({ reuniao }: { reuniao: Reuniao }) {
+  const navegar = useNavigate();
   const [agora, setAgora] = useState(() => new Date());
   useEffect(() => {
     const id = setInterval(() => setAgora(new Date()), 30_000);
@@ -28,10 +29,18 @@ function ProximaReuniao({ reuniao }: { reuniao: Reuniao }) {
       </p>
       <Medidor rotulo="Até a reunião" valor={Math.max(0, 1440 - falta.minutos)} total={1440} texto={falta.texto} />
       <div className={estilos.botoes}>
-        <Botao variante="primario" disabled title="O modo reunião chega na fase 3">
-          Iniciar reunião
-        </Botao>
-        <span className="suave">chega na fase 3</span>
+        {reuniao.tipo === "diagnostica" ? (
+          <Botao variante="primario" onClick={() => navegar(`/reunioes/${reuniao.id}/diagnostica`)}>
+            Iniciar reunião
+          </Botao>
+        ) : (
+          <>
+            <Botao variante="primario" disabled title="A reunião de proposta chega na fase 4">
+              Iniciar reunião
+            </Botao>
+            <span className="suave">a reunião de proposta chega na fase 4</span>
+          </>
+        )}
       </div>
     </section>
   );
