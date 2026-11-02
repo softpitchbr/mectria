@@ -1,6 +1,8 @@
 import { StrictMode } from "react";
 import { createRoot } from "react-dom/client";
 import "./estilo/tokens.css";
+import "./estilo/base.css";
+import "./estilo/fontes";
 import { aplicarTema, lerEscolhaTema } from "./tema/tema";
 import App from "./App";
 

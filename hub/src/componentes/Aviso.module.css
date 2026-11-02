@@ -1,0 +1,33 @@
+.regiao {
+  position: fixed;
+  left: 50%;
+  bottom: 24px;
+  z-index: 50;
+  transform: translateX(-50%);
+  pointer-events: none;
+}
+
+.aviso {
+  margin: 0;
+  padding: 10px 16px;
+  border-radius: 10px;
+  border: 1px solid var(--linha-viva);
+  background: var(--painel-alto);
+  color: var(--texto);
+  font-size: 14px;
+  box-shadow: inset 0 1px 0 var(--realce), var(--sombra);
+  animation: entrar var(--medio) var(--curva);
+}
+
+@keyframes entrar {
+  from {
+    opacity: 0;
+    transform: translateY(8px) scale(0.98);
+  }
+}
+
+@media (max-width: 760px) {
+  .regiao {
+    bottom: 84px;
+  }
+}

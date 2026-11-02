@@ -1,0 +1,118 @@
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+html {
+  -webkit-text-size-adjust: 100%;
+}
+
+/* Grade técnica: forte a cada 64 px, fina a cada 16 px. */
+body {
+  margin: 0;
+  min-height: 100vh;
+  background-color: var(--fundo);
+  background-image:
+    linear-gradient(var(--grade-forte) 1px, transparent 1px),
+    linear-gradient(90deg, var(--grade-forte) 1px, transparent 1px),
+    linear-gradient(var(--grade-fina) 1px, transparent 1px),
+    linear-gradient(90deg, var(--grade-fina) 1px, transparent 1px);
+  background-size:
+    64px 64px,
+    64px 64px,
+    16px 16px,
+    16px 16px;
+  background-attachment: fixed;
+  color: var(--texto);
+  font-family: "IBM Plex Sans", system-ui, -apple-system, "Segoe UI", sans-serif;
+  font-size: 15px;
+  line-height: 1.5;
+  -webkit-font-smoothing: antialiased;
+}
+
+/* A grade acende perto do cursor (luz.ts grava --cx e --cy). */
+body::before {
+  content: "";
+  position: fixed;
+  inset: 0;
+  z-index: 0;
+  pointer-events: none;
+  background-image:
+    linear-gradient(var(--grade-luz) 1px, transparent 1px),
+    linear-gradient(90deg, var(--grade-luz) 1px, transparent 1px);
+  background-size: 16px 16px;
+  -webkit-mask-image: radial-gradient(260px circle at var(--cx, -999px) var(--cy, -999px), #000, transparent 70%);
+  mask-image: radial-gradient(260px circle at var(--cx, -999px) var(--cy, -999px), #000, transparent 70%);
+}
+
+@media (pointer: coarse) {
+  body::before {
+    display: none;
+  }
+}
+
+#raiz {
+  position: relative;
+  z-index: 1;
+}
+
+/* Papéis de fonte. */
+h1,
+h2,
+h3,
+h4 {
+  margin: 0;
+  font-family: "Poppins", "IBM Plex Sans", system-ui, sans-serif;
+  font-weight: 600;
+  letter-spacing: -0.01em;
+  line-height: 1.2;
+}
+
+h1 {
+  font-size: 28px;
+}
+
+h2 {
+  font-size: 20px;
+}
+
+h3 {
+  font-size: 16px;
+}
+
+p {
+  margin: 0;
+}
+
+code,
+kbd,
+time,
+.mono {
+  font-family: "IBM Plex Mono", ui-monospace, "SFMono-Regular", monospace;
+  font-weight: 500;
+  font-variant-numeric: tabular-nums;
+}
+
+.suave {
+  color: var(--suave);
+}
+
+::selection {
+  background: rgba(193, 39, 45, 0.25);
+}
+
+:focus-visible {
+  outline: 2px solid var(--vermelho-texto);
+  outline-offset: 2px;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation: none !important;
+    transition: none !important;
+    scroll-behavior: auto !important;
+  }
+}

@@ -1,0 +1,36 @@
+.painel {
+  position: relative;
+  isolation: isolate;
+  padding: 20px;
+  border: 1px solid var(--linha);
+  border-radius: 14px;
+  background: var(--painel);
+  box-shadow: inset 0 1px 0 var(--realce), var(--sombra);
+  transition: border-color var(--medio) var(--curva);
+}
+
+/* Brilho que segue o cursor dentro do cartão. */
+.painel::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  border-radius: inherit;
+  pointer-events: none;
+  background: radial-gradient(360px circle at var(--x, -999px) var(--y, -999px), var(--luz), transparent 45%);
+  opacity: 0;
+  transition: opacity var(--medio) var(--curva);
+}
+
+.painel:hover {
+  border-color: var(--linha-viva);
+}
+
+.painel:hover::after {
+  opacity: 1;
+}
+
+.foco {
+  background: var(--painel-alto);
+  border-color: var(--linha-viva);
+}

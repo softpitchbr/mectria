@@ -1,0 +1,71 @@
+.pagina {
+  max-width: 1040px;
+  margin: 0 auto;
+  padding: 48px 20px 120px;
+  display: grid;
+  gap: 48px;
+}
+
+.cabeca {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: end;
+  justify-content: space-between;
+  gap: 16px;
+  padding-bottom: 20px;
+  border-bottom: 1px solid var(--linha);
+}
+
+.cabeca p {
+  font-size: 12px;
+  letter-spacing: 0.08em;
+  margin-bottom: 6px;
+}
+
+.bloco {
+  display: grid;
+  gap: 16px;
+}
+
+.linha {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+  align-items: center;
+}
+
+.grade {
+  display: grid;
+  gap: 16px;
+  grid-template-columns: repeat(auto-fill, minmax(min(100%, 320px), 1fr));
+}
+
+.grade h3 {
+  margin: 8px 0 4px;
+}
+
+.grade p:first-child {
+  font-size: 12px;
+  letter-spacing: 0.06em;
+}
+
+.icones {
+  display: grid;
+  gap: 8px;
+  grid-template-columns: repeat(auto-fill, minmax(110px, 1fr));
+}
+
+.icones figure {
+  margin: 0;
+  display: grid;
+  justify-items: center;
+  gap: 8px;
+  padding: 16px 8px;
+  border: 1px solid var(--linha);
+  border-radius: 12px;
+  background: var(--painel);
+}
+
+.icones figcaption {
+  font-size: 11px;
+}

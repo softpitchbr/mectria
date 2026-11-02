@@ -1,0 +1,36 @@
+.campo {
+  display: grid;
+  gap: 6px;
+}
+
+.campo label {
+  font-size: 13px;
+  font-weight: 500;
+  color: var(--suave);
+}
+
+.campo input {
+  font: inherit;
+  font-size: 15px;
+  min-height: 40px;
+  padding: 0 12px;
+  border-radius: 9px;
+  border: 1px solid var(--linha);
+  background: var(--fundo);
+  color: var(--texto);
+  transition: border-color var(--rapido) var(--curva), box-shadow var(--rapido) var(--curva);
+}
+
+.campo input::placeholder {
+  color: var(--suave);
+}
+
+.campo input:hover {
+  border-color: var(--linha-viva);
+}
+
+.campo input:focus {
+  outline: none;
+  border-color: var(--linha-viva);
+  box-shadow: 0 0 0 3px var(--luz), 0 0 0 1px var(--vermelho-texto);
+}
