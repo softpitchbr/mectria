@@ -40,6 +40,8 @@ export async function emailDaRequisicao(
     const { payload } = await jwtVerify(token, opcoes.jwks ?? chavesDoAccess(emissor), {
       issuer: emissor,
       audience: env.ACCESS_AUD,
+      algorithms: ["RS256"],
+      requiredClaims: ["email"],
     });
     return typeof payload.email === "string" && payload.email.trim() ? normalizarEmail(payload.email) : null;
   } catch {

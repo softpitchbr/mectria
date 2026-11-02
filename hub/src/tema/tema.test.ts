@@ -34,3 +34,16 @@ test("aplicarTema escreve data-theme só quando a escolha é fixa", () => {
   aplicarTema("sistema", raiz);
   expect(raiz.hasAttribute("data-theme")).toBe(false);
 });
+
+test("sem armazenamento, lembra a escolha enquanto a aba está aberta", () => {
+  const quebrado = {
+    getItem: () => {
+      throw new Error("bloqueado");
+    },
+    setItem: () => {
+      throw new Error("bloqueado");
+    },
+  } as unknown as Storage;
+  salvarEscolhaTema("escuro", quebrado);
+  expect(lerEscolhaTema(quebrado)).toBe("escuro");
+});

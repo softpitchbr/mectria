@@ -1,5 +1,5 @@
 import { applyD1Migrations, env } from "cloudflare:test";
-import { atualizar, buscarPorEmail, buscarPorId, contarDiretoresAtivos, criar, listar } from "./pessoas";
+import { atualizar, atualizarProtegendoDiretor, buscarPorEmail, buscarPorId, contarDiretoresAtivos, criar, listar } from "./pessoas";
 
 beforeEach(async () => {
   await applyD1Migrations(env.DB, env.TEST_MIGRATIONS);
@@ -54,4 +54,34 @@ test("contarDiretoresAtivos ignora diretores inativos", async () => {
   await criar(env.DB, { nome: "Hunter", email: "hun@mectria.com", cargo: "hunter" });
   await atualizar(env.DB, b.id, { ativo: false });
   expect(await contarDiretoresAtivos(env.DB)).toBe(1);
+});
+
+test("listar ordena nomes com acento como o português", async () => {
+  for (const [nome, email] of [
+    ["Zeca", "zeca@mectria.com"],
+    ["Álvaro", "alvaro@mectria.com"],
+    ["Érica", "erica@mectria.com"],
+    ["Bruno", "bruno@mectria.com"],
+  ]) {
+    await criar(env.DB, { nome, email, cargo: "hunter" });
+  }
+  expect((await listar(env.DB)).map((p) => p.nome)).toEqual(["Álvaro", "Bruno", "Érica", "Zeca"]);
+});
+
+test("atualizarProtegendoDiretor recusa rebaixar o último diretor e grava quando há outro", async () => {
+  const a = await criar(env.DB, { nome: "Dir A", email: "dira@mectria.com", cargo: "diretor" });
+  expect(await atualizarProtegendoDiretor(env.DB, a.id, { cargo: "closer" })).toBeNull();
+  expect((await buscarPorId(env.DB, a.id))?.cargo).toBe("diretor");
+  expect(await atualizarProtegendoDiretor(env.DB, a.id, { ativo: false })).toBeNull();
+
+  await criar(env.DB, { nome: "Dir B", email: "dirb@mectria.com", cargo: "diretor" });
+  expect(await atualizarProtegendoDiretor(env.DB, a.id, { cargo: "closer" })).toMatchObject({ cargo: "closer" });
+});
+
+test("atualizarProtegendoDiretor muda quem não é diretor sem olhar a contagem", async () => {
+  const h = await criar(env.DB, { nome: "Hugo", email: "hugo@mectria.com", cargo: "hunter" });
+  expect(await atualizarProtegendoDiretor(env.DB, h.id, { cargo: "closer", nome: "Hugo C" })).toMatchObject({
+    cargo: "closer",
+    nome: "Hugo C",
+  });
 });

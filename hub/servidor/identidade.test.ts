@@ -81,3 +81,15 @@ test("em dev local sem cabeçalho, usa o DEV_EMAIL do .dev.vars", async () => {
     "hun@mectria.com",
   );
 });
+
+test("em produção, JWT HS256 é recusado", async () => {
+  const segredo = new TextEncoder().encode("um-segredo-qualquer-com-32-caracteres!!");
+  const jwt = await new SignJWT({ email: "ana@mectria.com" })
+    .setProtectedHeader({ alg: "HS256", kid: "k1" })
+    .setIssuer(ISSUER)
+    .setAudience(AUD)
+    .setIssuedAt()
+    .setExpirationTime("10m")
+    .sign(segredo);
+  expect(await emailDaRequisicao(requisicao({ "Cf-Access-Jwt-Assertion": jwt }), producao, { jwks: chaves })).toBeNull();
+});

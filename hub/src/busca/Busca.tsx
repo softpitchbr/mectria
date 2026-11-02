@@ -54,7 +54,13 @@ export default function Busca({ eu, aoFechar }: { eu: Eu; aoFechar: () => void }
 
   return (
     <div className={estilos.veu} onPointerDown={(e) => e.target === e.currentTarget && aoFechar()}>
-      <div role="dialog" aria-modal="true" aria-labelledby={idTitulo} className={estilos.caixa}>
+      <div
+        role="dialog"
+        aria-modal="true"
+        aria-labelledby={idTitulo}
+        className={estilos.caixa}
+        onMouseDown={(e) => e.target !== campo.current && e.preventDefault()}
+      >
         <h2 id={idTitulo} className={estilos.escondido}>
           Buscar no hub
         </h2>

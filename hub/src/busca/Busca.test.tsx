@@ -73,3 +73,10 @@ test("escolher tema escuro pela busca aplica o tema", async () => {
   document.documentElement.removeAttribute("data-theme");
   localStorage.clear();
 });
+
+test("clicar numa área vazia da caixa mantém o foco no campo", async () => {
+  const dialogo = await abrirBusca();
+  await userEvent.keyboard("xyzw");
+  await userEvent.click(within(dialogo).getByText("Nada encontrado para “xyzw”."));
+  expect(within(dialogo).getByRole("combobox")).toHaveFocus();
+});

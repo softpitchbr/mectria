@@ -8,7 +8,7 @@
     "typecheck": "tsc -p tsconfig.app.json --noEmit && tsc -p tsconfig.api.json --noEmit",
     "build": "npm run typecheck && vite build",
     "test:app": "vitest run",
-    "test:api": "vitest run --config vitest.api.config.ts --passWithNoTests",
+    "test:api": "vitest run --config vitest.api.config.ts",
     "test": "npm run test:app && npm run test:api",
     "e2e:preparar": "wrangler d1 migrations apply hub-mectria --local && wrangler d1 execute hub-mectria --local --file e2e/semente.sql",
     "e2e": "npm run e2e:preparar && playwright test -c e2e/playwright.config.ts"
