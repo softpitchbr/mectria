@@ -5,6 +5,7 @@ export default defineWorkersConfig(async () => {
   const migracoes = await readD1Migrations("migrations");
   return {
     test: {
+      globals: true,
       include: ["servidor/**/*.test.ts", "functions/**/*.test.ts"],
       poolOptions: {
         workers: {
