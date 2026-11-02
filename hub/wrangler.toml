@@ -1,0 +1,12 @@
+name = "hub-mectria"
+pages_build_output_dir = "dist"
+compatibility_date = "2025-09-01"
+
+[vars]
+AMBIENTE = "dev"
+
+[[d1_databases]]
+binding = "DB"
+database_name = "hub-mectria"
+database_id = "local"
+migrations_dir = "migrations"
