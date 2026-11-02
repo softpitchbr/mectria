@@ -27,3 +27,57 @@ export const ROTEIRO_COLD_CALL: { titulo: string; fala: string; dica?: string }[
     "dica": "Confirme 24 h antes."
   }
 ];
+
+/** Preparação antes do bloco de ligações. */
+export const ANTES_COLD_CALL: readonly string[] = [
+  "Pegue a lista do dia na Casa de Dados: decisor, telefone, CNAE, score e hipótese de dor.",
+  "Ligue em bloco e em horário fixo, todo dia. Constância vale mais que volume concentrado na sexta.",
+  "Deixe a agenda aberta para marcar a diagnóstica na hora.",
+  "Trate por \"o senhor\" ou \"a senhora\" até a pessoa liberar o \"você\"."
+];
+
+/** Texto da meta na versão 0.2 (a meta em uso fica em rotinas.ts). */
+export const META_COLD_CALL_TEXTO = "Meta diária, não semanal: [nº de ligações] por dia, num bloco fixo. Calibrar com a disponibilidade dos hunters.";
+
+/** Como passar pela recepção. */
+export const GATEKEEPER: readonly string[] = [
+  "\"Bom dia, aqui é o {vendedor}, da MecTRIA, da UFTM. Quem cuida da parte de manutenção, de projetos ou das máquinas aí?\"",
+  "\"Qual o melhor horário para falar com essa pessoa? Tem um celular ou WhatsApp direto?\"",
+  "Não apresente a proposta para a recepção: peça nome, horário e contato direto, e agradeça."
+];
+
+/** Tentativas quando o decisor não atende. */
+export const TENTATIVAS_COLD_CALL: { dia: number; canal: string; texto: string }[] = [
+  {
+    "dia": 0,
+    "canal": "Ligação",
+    "texto": "Primeira tentativa."
+  },
+  {
+    "dia": 0,
+    "canal": "WhatsApp",
+    "texto": "Oi, {decisor}! Aqui é o {vendedor}, da MecTRIA, a empresa júnior de engenharia mecânica da UFTM. Tentei te ligar sobre {tema}. Qual o melhor horário para conversarmos 5 minutos?"
+  },
+  {
+    "dia": 2,
+    "canal": "Ligação",
+    "texto": "Em outro período do dia."
+  },
+  {
+    "dia": 4,
+    "canal": "Ligação + e-mail",
+    "texto": "E-mail curto com o gancho do serviço."
+  },
+  {
+    "dia": 7,
+    "canal": "Ligação",
+    "texto": "Última ligação."
+  },
+  {
+    "dia": 10,
+    "canal": "WhatsApp",
+    "texto": "Oi, {decisor}. Não quero insistir: se {tema} não for prioridade agora, sem problema. Se mudar, é só me chamar aqui. {vendedor} · MecTRIA"
+  }
+];
+
+export const PRIVACIDADE_COLD_CALL = "Se perguntarem de onde veio o contato, diga a verdade. Se pedirem para não ligar mais, tire o contato da lista na hora.";
