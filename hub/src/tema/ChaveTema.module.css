@@ -1,0 +1,36 @@
+.chave {
+  display: inline-flex;
+  gap: 2px;
+  padding: 3px;
+  border: 1px solid var(--linha);
+  border-radius: 10px;
+  background: var(--painel);
+  box-shadow: inset 0 1px 0 var(--realce);
+}
+
+.chave button {
+  font: inherit;
+  font-size: 13px;
+  padding: 6px 12px;
+  border: 0;
+  border-radius: 7px;
+  background: transparent;
+  color: var(--suave);
+  cursor: pointer;
+  transition: background var(--rapido) var(--curva), color var(--rapido) var(--curva);
+}
+
+.chave button:hover {
+  color: var(--texto);
+}
+
+.chave button[aria-pressed="true"] {
+  background: var(--painel-alto);
+  color: var(--texto);
+  box-shadow: inset 0 1px 0 var(--realce), 0 0 0 1px var(--linha-viva);
+}
+
+.chave button:focus-visible {
+  outline: 2px solid var(--vermelho);
+  outline-offset: 1px;
+}

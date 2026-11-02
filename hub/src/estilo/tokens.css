@@ -1,0 +1,71 @@
+/* Tokens da Prancheta. Valores do claro em :root; o escuro vale pelo sistema
+   (sem data-theme="light") ou pela escolha fixa data-theme="dark". */
+:root {
+  --fundo: #f2f1ee;
+  --painel: #ffffff;
+  --painel-alto: #faf9f7;
+  --linha: #e2dfd9;
+  --linha-viva: #cdc8c0;
+  --texto: #1f1e1c;
+  --suave: #6b6762;
+  --vermelho: #c1272d;
+  --vermelho-texto: #b3242a;
+  --vinho: #780000;
+  --grade-fina: rgba(31, 30, 28, 0.035);
+  --grade-forte: rgba(31, 30, 28, 0.07);
+  --grade-luz: rgba(31, 30, 28, 0.08);
+  --luz: rgba(120, 0, 0, 0.05);
+  --realce: rgba(255, 255, 255, 0.9);
+  --sombra: 0 1px 2px rgba(31, 30, 28, 0.05), 0 6px 20px -12px rgba(31, 30, 28, 0.18);
+  --rapido: 140ms;
+  --medio: 240ms;
+  --lento: 420ms;
+  --curva: cubic-bezier(0.2, 0.8, 0.2, 1);
+  color-scheme: light;
+}
+
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --fundo: #16171a;
+    --painel: #1f2024;
+    --painel-alto: #27282d;
+    --linha: #34353b;
+    --linha-viva: #4a4b52;
+    --texto: #eeede9;
+    --suave: #a19e99;
+    --vermelho-texto: #ef5a5f;
+    --grade-fina: rgba(255, 255, 255, 0.025);
+    --grade-forte: rgba(255, 255, 255, 0.055);
+    --grade-luz: rgba(255, 255, 255, 0.09);
+    --luz: rgba(255, 255, 255, 0.06);
+    --realce: rgba(255, 255, 255, 0.07);
+    --sombra: 0 1px 0 rgba(0, 0, 0, 0.3), 0 10px 30px -18px rgba(0, 0, 0, 0.7);
+    color-scheme: dark;
+  }
+}
+
+:root[data-theme="dark"] {
+  --fundo: #16171a;
+  --painel: #1f2024;
+  --painel-alto: #27282d;
+  --linha: #34353b;
+  --linha-viva: #4a4b52;
+  --texto: #eeede9;
+  --suave: #a19e99;
+  --vermelho-texto: #ef5a5f;
+  --grade-fina: rgba(255, 255, 255, 0.025);
+  --grade-forte: rgba(255, 255, 255, 0.055);
+  --grade-luz: rgba(255, 255, 255, 0.09);
+  --luz: rgba(255, 255, 255, 0.06);
+  --realce: rgba(255, 255, 255, 0.07);
+  --sombra: 0 1px 0 rgba(0, 0, 0, 0.3), 0 10px 30px -18px rgba(0, 0, 0, 0.7);
+  color-scheme: dark;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  :root {
+    --rapido: 0ms;
+    --medio: 0ms;
+    --lento: 0ms;
+  }
+}
