@@ -1,0 +1,120 @@
+import { screen, within } from "@testing-library/react";
+import userEvent from "@testing-library/user-event";
+import { abrir, fingirApi, PESSOAS } from "../../teste/ajuda";
+
+const ROTINA_VAZIA = { dia: "2026-11-09", itens: [], feitos: 0, total: 0 };
+const contagem = (total: number, naoAtendeu: number, atendeu: number, marcou = 0) => ({ total, naoAtendeu, atendeu, marcou, meta: 2 });
+
+test("hunter registra ligações pelo teclado no bloco em foco", async () => {
+  const enviados: string[] = [];
+  let n = 0;
+  fingirApi({
+    "/api/eu": { corpo: PESSOAS.hunter },
+    "GET /api/ligacoes": { corpo: contagem(0, 0, 0) },
+    "POST /api/ligacoes": (init) => {
+      enviados.push(JSON.parse(String(init?.body)).resultado);
+      n++;
+      return { corpo: n === 1 ? contagem(1, 1, 0) : contagem(2, 1, 1) };
+    },
+    "GET /api/rotina": { corpo: ROTINA_VAZIA },
+    "GET /api/reunioes": { corpo: [] },
+  });
+  abrir("/");
+  await userEvent.click(await screen.findByRole("button", { name: "Começar o bloco" }));
+  const foco = screen.getByRole("dialog", { name: "Bloco de ligações" });
+  await userEvent.keyboard("1");
+  await within(foco).findByText("1 sem resposta");
+  await userEvent.keyboard("2");
+  expect(enviados).toEqual(["nao_atendeu", "atendeu"]);
+  expect(await within(foco).findByText("Meta do dia batida")).toBeInTheDocument();
+  expect(within(foco).getByRole("meter", { name: "Ligações de hoje" })).toHaveAttribute("aria-valuenow", "2");
+  expect(within(foco).getByText("1 sem resposta")).toBeInTheDocument();
+});
+
+test("marcar diagnóstica cria a oportunidade e conta a ligação", async () => {
+  let oportunidade: Record<string, unknown> | undefined;
+  const ligacoes: string[] = [];
+  fingirApi({
+    "/api/eu": { corpo: PESSOAS.hunter },
+    "GET /api/ligacoes": { corpo: contagem(0, 0, 0) },
+    "POST /api/ligacoes": (init) => {
+      ligacoes.push(JSON.parse(String(init?.body)).resultado);
+      return { corpo: contagem(1, 0, 0, 1) };
+    },
+    "GET /api/rotina": { corpo: ROTINA_VAZIA },
+    "GET /api/reunioes": { corpo: [] },
+    "GET /api/closers": { corpo: [{ id: 2, nome: "Vinícius Miguel" }] },
+    "POST /api/oportunidades": (init) => {
+      oportunidade = JSON.parse(String(init?.body));
+      return { status: 201, corpo: { oportunidade: {}, reuniao: { dataHora: "2026-11-10T14:00" } } };
+    },
+  });
+  abrir("/");
+  await userEvent.click(await screen.findByRole("button", { name: "Começar o bloco" }));
+  await userEvent.click(screen.getByRole("button", { name: /Marcou diagnóstica/ }));
+  const form = screen.getByRole("form", { name: "Marcar diagnóstica" });
+  await userEvent.type(within(form).getByLabelText("Empresa"), "Usinagem Alfa");
+  await userEvent.type(within(form).getByLabelText("Contato"), "Ana Souza");
+  await userEvent.type(within(form).getByLabelText("Telefone"), "34999990000");
+  await userEvent.selectOptions(within(form).getByLabelText("Serviço"), "climatizacao");
+  await within(form).findByRole("option", { name: "Vinícius Miguel" });
+  await userEvent.selectOptions(within(form).getByLabelText("Closer"), "2");
+  await userEvent.type(within(form).getByLabelText("Data"), "2026-11-10");
+  await userEvent.type(within(form).getByLabelText("Hora"), "14:00");
+  await userEvent.click(within(form).getByRole("button", { name: "Marcar diagnóstica" }));
+  expect(oportunidade).toMatchObject({ empresa: "Usinagem Alfa", servico: "climatizacao", closerId: 2, dataHora: "2026-11-10T14:00", formato: "online" });
+  expect(ligacoes).toEqual(["marcou"]);
+  expect(await screen.findByRole("status")).toHaveTextContent("Diagnóstica marcada com Vinícius Miguel para Ter, 10/11 às 14:00.");
+});
+
+test("closer vê a próxima reunião com a contagem", async () => {
+  vi.useFakeTimers({ toFake: ["Date"] });
+  vi.setSystemTime(new Date("2026-11-09T11:45:00-03:00"));
+  fingirApi({
+    "/api/eu": { corpo: PESSOAS.closer },
+    "GET /api/reunioes": {
+      corpo: [
+        { id: 1, oportunidadeId: 1, empresa: "Já passou", tipo: "diagnostica", dataHora: "2026-11-09T09:00", formato: "online", situacao: "marcada", closerId: 2, closerNome: "Vinícius Miguel" },
+        { id: 2, oportunidadeId: 2, empresa: "Usinagem Alfa", tipo: "diagnostica", dataHora: "2026-11-09T14:00", formato: "online", situacao: "marcada", closerId: 2, closerNome: "Vinícius Miguel" },
+      ],
+    },
+    "GET /api/rotina": { corpo: ROTINA_VAZIA },
+    "GET /api/followup": { corpo: [] },
+    "GET /api/numeros/mes": { corpo: { propostas: 3, ganhas: 1 } },
+  });
+  abrir("/");
+  const cartao = (await screen.findByText("Usinagem Alfa")).closest("section") as HTMLElement;
+  expect(within(cartao).getByText("faltam 2 h 15 min")).toBeInTheDocument();
+  expect(within(cartao).getByRole("button", { name: "Iniciar reunião" })).toBeDisabled();
+  expect(screen.queryByText("Já passou")).not.toBeInTheDocument();
+  expect(await screen.findByRole("region", { name: "Este mês" })).toHaveTextContent("3");
+});
+
+test("diretor vê atrasados por pessoa em ordem", async () => {
+  fingirApi({
+    "/api/eu": { corpo: PESSOAS.diretor },
+    "GET /api/time/resumo": {
+      corpo: {
+        pessoas: [
+          { pessoa: { id: 3, nome: "Clara Closer", cargo: "closer" }, rotina: { feitos: 1, total: 4 }, atrasados: 1 },
+          { pessoa: { id: 2, nome: "Carlos Closer", cargo: "closer" }, rotina: { feitos: 4, total: 4 }, atrasados: 3 },
+          { pessoa: { id: 1, nome: "Hugo Hunter", cargo: "hunter" }, rotina: { feitos: 0, total: 3 }, atrasados: 0 },
+        ],
+        reunioesDaSemana: [
+          { id: 9, oportunidadeId: 9, empresa: "Agro Gama", tipo: "proposta", dataHora: "2026-11-11T10:00", formato: "presencial", situacao: "marcada", closerId: 2, closerNome: "Carlos Closer" },
+        ],
+      },
+    },
+  });
+  abrir("/");
+  const atrasados = await screen.findByRole("list", { name: "Follow-ups atrasados por pessoa" });
+  expect(within(atrasados).getAllByRole("listitem").map((l) => l.textContent)).toEqual(["Carlos · 3", "Clara · 1"]);
+  expect(screen.getByRole("list", { name: "Reuniões da semana" })).toHaveTextContent("Agro Gama");
+  expect(screen.getByText("Conversão e valor vendido chegam na fase 6.")).toBeInTheDocument();
+});
+
+test("Projetos vê o aviso da fase 6", async () => {
+  fingirApi({ "/api/eu": { corpo: PESSOAS.projetos } });
+  abrir("/");
+  expect(await screen.findByText("Briefings e pendências técnicas chegam na fase 6.")).toBeInTheDocument();
+});

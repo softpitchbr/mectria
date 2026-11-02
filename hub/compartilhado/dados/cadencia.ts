@@ -91,5 +91,8 @@ export const VARIAVEIS: Record<string, string> = {
   "vendedor": "seu nome",
   "decisores": "quem decide",
   "validade": "validade da proposta",
-  "link_conteudo": "link do conteúdo"
+  "link_conteudo": "link do conteúdo",
+  "decisor": "nome do decisor",
+  "dor1": "primeira dor",
+  "dor2": "segunda dor"
 };

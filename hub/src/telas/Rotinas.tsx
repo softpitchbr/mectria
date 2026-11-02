@@ -61,11 +61,12 @@ export function ChecklistDaRotina({ dia, aoMarcar }: { dia: DiaDeRotina; aoMarca
 export function useRotinaDeHoje() {
   const [dia, setDia] = useState<DiaDeRotina | null>(null);
   const [erro, setErro] = useState("");
-  useEffect(() => {
+  const recarregar = useCallback(() => {
     api<DiaDeRotina>("/api/rotina")
       .then(setDia)
       .catch((e: unknown) => setErro(mensagemDe(e)));
   }, []);
+  useEffect(recarregar, [recarregar]);
   const marcar = useCallback(async (chave: string, feito: boolean) => {
     setErro("");
     try {
@@ -74,7 +75,7 @@ export function useRotinaDeHoje() {
       setErro(mensagemDe(e));
     }
   }, []);
-  return { dia, erro, marcar };
+  return { dia, erro, marcar, recarregar };
 }
 
 function Segmentos({ feitos, total }: { feitos: number; total: number }) {

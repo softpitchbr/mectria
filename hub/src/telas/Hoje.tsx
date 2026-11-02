@@ -1,5 +1,8 @@
 import Painel from "../componentes/Painel";
 import type { Eu } from "../sessao/useEu";
+import HojeCloser from "./hoje/HojeCloser";
+import HojeDiretor from "./hoje/HojeDiretor";
+import HojeHunter from "./hoje/HojeHunter";
 import estilos from "./Hoje.module.css";
 
 const DIAS = ["Domingo", "Segunda", "Terça", "Quarta", "Quinta", "Sexta", "Sábado"];
@@ -29,7 +32,7 @@ function dataPorExtenso(agora: Date): string {
   return `${DIAS[agora.getDay()]}, ${agora.getDate()} de ${MESES[agora.getMonth()]}`;
 }
 
-/** Hoje: a saudação. A agenda, os follow-ups e as rotinas do dia chegam na fase 2. */
+/** Hoje: a saudação e o bloco do cargo. */
 export default function Hoje({ eu }: { eu: Eu }) {
   const agora = new Date();
   const primeiroNome = eu.nome.trim().split(/\s+/)[0];
@@ -41,10 +44,15 @@ export default function Hoje({ eu }: { eu: Eu }) {
           {saudacao(agora)}, {primeiroNome}
         </h1>
       </header>
-      <Painel className={estilos.aviso}>
-        <p className="mono suave">EM CONSTRUÇÃO</p>
-        <p>A agenda do dia, os follow-ups atrasados e as suas rotinas aparecem aqui a partir da fase 2.</p>
-      </Painel>
+      {eu.cargo === "hunter" && <HojeHunter eu={eu} />}
+      {eu.cargo === "closer" && <HojeCloser />}
+      {eu.cargo === "diretor" && <HojeDiretor />}
+      {eu.cargo === "projetos" && (
+        <Painel className={estilos.aviso}>
+          <p className="mono suave">EM CONSTRUÇÃO</p>
+          <p>Briefings e pendências técnicas chegam na fase 6.</p>
+        </Painel>
+      )}
     </div>
   );
 }
