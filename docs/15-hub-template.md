@@ -78,14 +78,16 @@ A permissão é conferida no servidor, não só na tela. O cargo Projetos entra 
 
 | Seção | O que tem | Quem vê |
 |---|---|---|
-| **Hoje** | A tela inicial, diferente por cargo (abaixo) | Todos |
+| **Hoje** | A tela inicial, diferente por cargo (abaixo) | Todos os cargos |
 | **Reuniões** | Agenda de diagnósticas e apresentações. Cada uma abre a ficha e tem "Iniciar" | Closer, diretor |
 | **Follow-up** | Propostas na rua com o próximo toque, atrasados primeiro | Closer, diretor |
-| **Playbooks** | Consulta: cold call, diagnóstica, proposta, objeções e cadências | Todos |
+| **Playbooks** | Consulta: cold call, diagnóstica, proposta, objeções e cadências | Hunter, closer, diretor |
 | **Apresentações** | O catálogo (diagnóstica, portfólio, uma proposta por serviço) e a edição das variáveis de cada cliente | Closer, diretor |
 | **Rotinas** | O checklist do dia do cargo e o histórico dos dias cumpridos | Hunter, closer |
 | **Time** | Pessoas, cargos e convites, e a visão do time | Diretor |
-| **Briefings** | Fichas, PDFs e pendências técnicas que chegaram das reuniões | Projetos |
+| **Briefings** | Fichas, PDFs e pendências técnicas que chegaram das reuniões | Projetos, diretor |
+
+O diretor vê todas as seções.
 
 **O "Hoje" de cada cargo:**
 - **Hunter:** bloco de ligações do dia (meta e contador), tentativas pendentes e diagnósticas que ele marcou.
@@ -153,7 +155,7 @@ A permissão é conferida no servidor, não só na tela. O cargo Projetos entra 
 | Linha | #34353B | #E2DFD9 |
 | Linha viva | #4A4B52 | #CDC8C0 |
 | Texto | #EEEDE9 | #1F1E1C |
-| Texto suave | #9B9893 | #6B6762 |
+| Texto suave | #A19E99 | #6B6762 |
 | Vermelho (texto) | #EF5A5F | #B3242A |
 | Vermelho Energia (ação, com texto branco) | #C1272D | #C1272D |
 | Vinho MecTRIA (identidade) | #780000 | #780000 |
@@ -176,6 +178,7 @@ A permissão é conferida no servidor, não só na tela. O cargo Projetos entra 
   - Com "reduzir movimento" ligado no sistema, tudo fica parado.
 - **Regras:**
   - Um botão vermelho por tela.
+  - Texto vermelho só sobre o fundo e o painel (sobre o painel em foco, o contraste não chega a 4,5:1).
   - Números em mono.
   - Detalhe técnico só onde informa algo.
   - Teclado primeiro no notebook.
