@@ -21,7 +21,7 @@ interface LinhaOportunidade {
   atualizado_em: string;
 }
 
-interface LinhaReuniao {
+export interface LinhaReuniao {
   id: number;
   oportunidade_id: number;
   empresa: string;
@@ -31,6 +31,12 @@ interface LinhaReuniao {
   situacao: Reuniao["situacao"];
   closer_id: number | null;
   closer_nome: string | null;
+  quem_decide: string | null;
+  iniciada_em: string | null;
+  encerrada_em: string | null;
+  resultado: Reuniao["resultado"];
+  motivo: string | null;
+  briefing_enviado_em: string | null;
 }
 
 export function oportunidadeDeLinha(l: LinhaOportunidade): Oportunidade {
@@ -55,7 +61,7 @@ export function oportunidadeDeLinha(l: LinhaOportunidade): Oportunidade {
   };
 }
 
-function reuniaoDeLinha(l: LinhaReuniao): Reuniao {
+export function reuniaoDeLinha(l: LinhaReuniao): Reuniao {
   return {
     id: l.id,
     oportunidadeId: l.oportunidade_id,
@@ -66,6 +72,12 @@ function reuniaoDeLinha(l: LinhaReuniao): Reuniao {
     situacao: l.situacao,
     closerId: l.closer_id,
     closerNome: l.closer_nome,
+    quemDecide: l.quem_decide,
+    iniciadaEm: l.iniciada_em,
+    encerradaEm: l.encerrada_em,
+    resultado: l.resultado,
+    motivo: l.motivo,
+    briefingEnviadoEm: l.briefing_enviado_em,
   };
 }
 
@@ -74,8 +86,9 @@ export const SELECT_OPORTUNIDADE = `
   SELECT o.*, c.nome AS closer_nome
   FROM oportunidades o LEFT JOIN pessoas c ON c.id = o.closer_id`;
 
-const SELECT_REUNIAO = `
-  SELECT r.id, r.oportunidade_id, o.empresa, r.tipo, r.data_hora, r.formato, r.situacao, o.closer_id, c.nome AS closer_nome
+export const SELECT_REUNIAO = `
+  SELECT r.id, r.oportunidade_id, o.empresa, r.tipo, r.data_hora, r.formato, r.situacao, o.closer_id, c.nome AS closer_nome,
+    r.quem_decide, r.iniciada_em, r.encerrada_em, r.resultado, r.motivo, r.briefing_enviado_em
   FROM reunioes r
   JOIN oportunidades o ON o.id = r.oportunidade_id
   LEFT JOIN pessoas c ON c.id = o.closer_id`;

@@ -47,6 +47,12 @@ export interface Reuniao {
   situacao: "marcada" | "em_andamento" | "concluida" | "cancelada";
   closerId: number | null;
   closerNome: string | null;
+  quemDecide: string | null;
+  iniciadaEm: string | null;
+  encerradaEm: string | null;
+  resultado: "proposta_marcada" | "nao_qualificou" | null;
+  motivo: string | null;
+  briefingEnviadoEm: string | null;
 }
 
 export interface NovaDiagnostica {
@@ -145,3 +151,25 @@ export interface ContagemLigacoes {
 }
 
 export type ResultadoLigacao = "nao_atendeu" | "atendeu" | "marcou";
+
+export interface Pendencia {
+  id: number;
+  anotacaoId: number | null;
+  oportunidadeId: number;
+  texto: string;
+  prazo: string;
+  situacao: "aberta" | "respondida" | "fechada";
+  resposta: string | null;
+}
+
+export type FechamentoDiagnostica =
+  | { resultado: "proposta_marcada"; dataHora: string; formato: "online" | "presencial"; quemDecide: string }
+  | { resultado: "nao_qualificou"; motivo: string };
+
+export interface FichaCompleta {
+  reuniao: Reuniao;
+  oportunidade: Oportunidade;
+  respostas: Record<string, string>;
+  anotacoes: import("./diagnostica").Anotacao[];
+  pendencias: Pendencia[];
+}
