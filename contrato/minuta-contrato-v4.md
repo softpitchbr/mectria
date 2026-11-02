@@ -1,12 +1,12 @@
-# Minuta v3 · Contrato de prestação de serviços
+# Minuta v4 · Contrato de prestação de serviços
 
-> **Uso interno.** Versão de 08/10/2026. Muda da v2 só a média de referência: R$ 5.000,00 (faturamento de 2025), no lugar de R$ 5.429,00, com o Anexo III preenchido pelos números do Marcelo. Falta só o CPF do interveniente, que fica em branco no PDF. Assinatura só eletrônica: sem testemunhas, sem rubricas, com a data da última assinatura. Os representantes das empresas (Lucas e Arthur) assinam sem CPF, por decisão do Lucas. Ver `notas-v3.md`. CPFs nunca entram no repositório. O PDF é gerado por `gerar-pdf.py`.
+> **Uso interno.** Versão de 25/10/2026, depois do registro do contrato social da Triângulo na JUCEMG (23/10/2026). Muda da v3: o NIRE na qualificação da CONTRATADA e a cláusula 2.6, que ratifica os serviços prestados desde o kick-off. Falta só o CPF do interveniente, que fica em branco no PDF do repositório. Assinatura só eletrônica: sem testemunhas, sem rubricas, com a data da última assinatura. Os representantes das empresas (Lucas e Arthur) assinam sem CPF, por decisão do Lucas. Ver `notas-v4.md`. CPFs nunca entram no repositório. O PDF é gerado por `gerar-pdf.py`.
 
 ---
 
 ## CONTRATO DE PRESTAÇÃO DE SERVIÇOS DE REESTRUTURAÇÃO COMERCIAL E DIGITAL
 
-**CONTRATADA:** TRIÂNGULO SOLUTIONS BRASIL LTDA, sociedade empresária limitada, inscrita no CNPJ sob o nº 68.057.695/0001-81, com sede na Rua Doutor Paulo Pontes, 139, Apto. 106, Centro, CEP 38010-180, Uberaba/MG, neste ato representada por seu sócio administrador **Lucas Cruvinel Boaretto**.
+**CONTRATADA:** TRIÂNGULO SOLUTIONS BRASIL LTDA, sociedade empresária limitada, inscrita no CNPJ sob o nº 68.057.695/0001-81 e registrada na Junta Comercial do Estado de Minas Gerais sob o NIRE 31218662179, com sede na Rua Doutor Paulo Pontes, 139, Apto. 106, Centro, CEP 38010-180, Uberaba/MG, neste ato representada por seu sócio administrador **Lucas Cruvinel Boaretto**.
 
 **CONTRATANTE:** EMPRESA JR ENGENHARIA MECANICA DO TRIANGULO MINEIRO ("MecTRIA"), pessoa jurídica de direito privado, empresa júnior nos termos da Lei nº 13.267/2016, inscrita no CNPJ sob o nº 19.501.433/0001-59, com sede na Avenida Doutor Randolfo Borges Junior, 1250, Univerdecidade, CEP 38064-200, Uberaba/MG, neste ato representada por seu Presidente, **Arthur Menezes Jordão**.
 
@@ -39,6 +39,8 @@ As partes celebram este contrato, que se rege pelas cláusulas a seguir.
 2.4. Atrasos da CONTRATANTE no envio de informações, acessos, materiais ou aprovações deslocam proporcionalmente os prazos seguintes.
 
 2.5. **Vigência:** da assinatura até a quitação das parcelas do Anexo II ou até 31/12/2027, o que ocorrer primeiro. Depois do fim da vigência, continuam valendo as obrigações de confidencialidade, propriedade intelectual e contrapartidas, nos termos das respectivas cláusulas, e o pagamento de parcelas já liberadas.
+
+2.6. **Serviços já iniciados:** as partes reconhecem que a execução começou no kick-off de 09/10/2026, antes da assinatura deste contrato, e ratificam os serviços prestados desde então, que passam a ser regidos por este instrumento.
 
 ### Cláusula 3 · Preço e pagamento pelo resultado
 

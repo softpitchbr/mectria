@@ -16,7 +16,8 @@ Atualizar este arquivo sempre que algo for decidido ou resolvido.
 | Pagamento atrelado a resultado, a ser detalhado no contrato | Reunião não gravada, confirmado na R2 27:48 |
 | Começar pelo fechamento. Topo de funil, prospecção e pós-venda ficam para projetos futuros. **Revisto em 08/10:** a prospecção (cold call) entra na R, dentro do hub do vendedor; o pós-venda continua fora | R1 46:39, R2 30:42 · revisão: Lucas, 08/10/2026 |
 | **Etapa R ampliada e adiantada.** Além do que está no contrato (proposta de valor, textos, processo visual e objeções), a R monta o processo comercial completo num **hub do vendedor** (`hub-comercial/`): apresentações (diagnóstica, portfólio para o WhatsApp, proposta por serviço), playbooks (cold call; diagnóstica com perguntas GPCTBA × Carta de Serviços e briefing em PDF para Projetos; proposta com checklist de micro pactos e guia de objeções) e cadência de follow-up. Começa já, em paralelo com a T, que está com o Matheus. A validação formal da copy continua em 12/11 | Lucas, 08/10/2026 |
-| **Contrato pausado até o CNPJ da Triângulo (LTDA) ficar ativo.** As demais entregas seguem. A versão para assinatura (v3) está pronta | Lucas, 08/10/2026 |
+| **Contrato retomado:** contrato social da Triângulo registrado na JUCEMG em 23/10/2026 (NIRE 31218662179). Minuta v4 com o NIRE e a ratificação dos serviços desde o kick-off | Lucas, 25/10/2026 |
+| Contrato pausado até o CNPJ da Triângulo (LTDA) ficar ativo (superado em 25/10) | Lucas, 08/10/2026 |
 | **Kick-off na sexta, 09/10/2026.** Execução de 12/10 a 04/12, acompanhamento de 07/12/2026 a 05/02/2027 | Lucas, 06/10/2026 |
 | **Contrato:** resultado líquido com trava; apuração a partir de dez/2026, quando a estrutura entra em uso; acompanhamento até fev/2027 com 1 reunião por mês e ajuste mensal do roteiro (contraproposta aos "até junho" do Marcelo); parcelas das etapas entregues devidas se a MecTRIA desistir ou não usar o processo (T 2, R 1, I 2, A 1) | Lucas, 06/10/2026 |
 | **Publicação do site:** depois da validação do site (S3), sem data fixa; prazo final no fim da execução (04/12). A copy entra no site já publicado | Lucas, 06/10/2026 |
@@ -43,7 +44,7 @@ O PDF de 21/09 não tem treinamento, roleplay, micro pactos, calculadora, roteir
 Detalhes e perguntas do kick-off em `08-site-e-hospedagem.md`.
 
 ### 3. Cláusula de pagamento por resultado (alta)
-**Atualização 06/10/2026:** minuta v2 com as decisões do Lucas (hoje v3, `contrato/minuta-contrato-v3.md`): resultado líquido com trava, apuração de dez/2026 a dez/2027, acompanhamento até 05/02/2027, proteção se a MecTRIA não usar o processo. Faltam dados da MecTRIA, a base da média e a confirmação de quem assina. Ver `contrato/notas-v3.md`.
+**Atualização 06/10/2026:** minuta v2 com as decisões do Lucas (hoje v4, `contrato/minuta-contrato-v4.md`): resultado líquido com trava, apuração de dez/2026 a dez/2027, acompanhamento até 05/02/2027, proteção se a MecTRIA não usar o processo. Faltam dados da MecTRIA, a base da média e a confirmação de quem assina. Ver `contrato/notas-v3.md`.
 
 Métrica, linha de base, janela, fonte de dados, obrigações da MecTRIA, o que acontece se não bater e a troca de gestão. Lista completa em `05-comercial.md`.
 
@@ -95,7 +96,10 @@ São usados no pitch e vão aparecer no case:
 ### 14. Acompanhamento: fevereiro × junho (média)
 **Decidido em 06/10:** até 05/02/2027. É uma contraproposta aos "até junho" do Marcelo. Argumento para ele: o acompanhamento tem duração fixa e é prestado inteiro, pague a EJ antes ou depois. Se ele insistir em junho, a extensão é orçada à parte. Ver `contrato/notas-v3.md`.
 
-### 15. Registro e atividades da Triângulo (média)
+### 15. Registro e atividades da Triângulo (resolvido em 25/10)
+Contrato social registrado na JUCEMG em 23/10/2026, NIRE 31218662179, com consultoria em gestão e treinamento no objeto social. O texto abaixo é o histórico.
+
+
 O contrato social de transformação em LTDA foi assinado em 05/10/2026. Confirmar o registro na JUCEMG antes de assinar com a MecTRIA. O objeto social não tem consultoria em gestão (CNAE 7020-4/00) nem treinamento (CNAE 8599-6/04). Ver com o contador como emitir a nota fiscal.
 
 ### 16. Materiais da MecTRIA recebidos em 08/10 (média)
@@ -111,7 +115,7 @@ Manual de identidade visual, Carta de Serviços e planilhas de precificação (2
 
 ### 17. Etapa R ampliada: escopo, contrato e uso do hub (média)
 **Decidido em 08/10 (Lucas):** a R monta o processo comercial completo no hub do vendedor (`hub-comercial/`). Falta resolver:
-- **Contrato e TAP:** o Anexo I da minuta v3 lista para a R só "processo comercial visual" e "mapa de objeções". Cold call, roteiro da diagnóstica, cadência de follow-up e o hub vão além. Como o contrato está pausado, dá para escolher agora: registrar como cortesia ou ajustar o Anexo I numa minuta v4. O topo de funil era a "oportunidade futura" do post-it 7 (`03-plano-erp.md`).
+- **Contrato e TAP:** o Anexo I da minuta (hoje v4) lista para a R só "processo comercial visual" e "mapa de objeções". Cold call, roteiro da diagnóstica, cadência de follow-up e o hub vão além. Como o contrato está pausado, dá para escolher agora: registrar como cortesia ou ajustar o Anexo I numa minuta v4. O topo de funil era a "oportunidade futura" do post-it 7 (`03-plano-erp.md`).
 - **Argumento a favor:** o Anexo II conta todo o valor vendido no mês, de qualquer canal. Mais propostas pela prospecção ativa também ajudam a liberar as parcelas, não só a conversão.
 - **Dados do hub:** nesta versão ficam no navegador de cada vendedor (com backup e CSV). Decidir a base compartilhada e o login antes de o time inteiro usar.
 - **Hospedagem do hub:** privada (tem regras internas de preço). Só o portfólio vai para o site público.
