@@ -11,7 +11,12 @@ import Pergunta from "./Pergunta";
 import { useRascunho } from "./rascunho";
 import estilos from "./Painel.module.css";
 
-const ROTULO_ESTADO = { salvo: "Salvo", salvando: "Salvando…", sem_internet: "Sem internet · salvo neste computador" };
+const ROTULO_ESTADO = {
+  salvo: "Salvo",
+  salvando: "Salvando…",
+  sem_internet: "Sem internet · salvo neste computador",
+  sem_permissao: "Não salvo no servidor · salvo neste computador",
+};
 
 /** Os grupos da barra de segmentos, na ordem do roteiro. */
 function grupoDo(p: Passo): string {
@@ -103,13 +108,19 @@ export default function PainelDaDiagnostica() {
           <h1 className={estilos.empresa}>{ficha.oportunidade.empresa}</h1>
         </div>
         <span className="mono">{minuto} min</span>
-        <span className={rascunho.estado === "sem_internet" ? estilos.semInternet : "mono suave"} role="status">
+        <span className={rascunho.estado === "sem_internet" || rascunho.estado === "sem_permissao" ? estilos.semInternet : "mono suave"} role="status">
           {ROTULO_ESTADO[rascunho.estado]}
         </span>
         <button type="button" className={estilos.sair} onClick={() => navegar("/reunioes")}>
           Sair do painel
         </button>
       </header>
+
+      {rascunho.aviso && (
+        <p role="alert" className={estilos.avisoRascunho}>
+          {rascunho.aviso}
+        </p>
+      )}
 
       <nav className={estilos.segmentos} aria-label="Partes da diagnóstica">
         {grupos.map((g) => (
@@ -139,7 +150,7 @@ export default function PainelDaDiagnostica() {
               reuniaoId={reuniaoId}
               contato={ficha.oportunidade.contato}
               respostas={rascunho.respostas}
-              antesDeEncerrar={rascunho.sincronizar}
+              antesDeEncerrar={() => rascunho.sincronizar()}
               aoEncerrar={() => {
                 avisar("Diagnóstica encerrada.");
                 navegar(`/reunioes/${reuniaoId}/briefing`);

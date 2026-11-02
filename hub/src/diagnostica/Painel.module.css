@@ -42,6 +42,14 @@
   color: var(--vermelho-texto);
 }
 
+.avisoRascunho {
+  margin: 0;
+  padding: 8px 24px;
+  border-bottom: 1px solid var(--linha);
+  color: var(--vermelho-texto);
+  font-weight: 500;
+}
+
 .sair {
   padding: 8px 12px;
   border: 1px solid var(--linha);

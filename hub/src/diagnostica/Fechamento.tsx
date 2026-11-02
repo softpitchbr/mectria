@@ -19,7 +19,7 @@ export default function Fechamento({
   reuniaoId: number;
   contato: string;
   respostas: Respostas;
-  antesDeEncerrar: () => Promise<void>;
+  antesDeEncerrar: () => Promise<boolean>;
   aoEncerrar: () => void;
 }) {
   const [resultado, setResultado] = useState<"proposta_marcada" | "nao_qualificou" | null>(null);
@@ -38,7 +38,11 @@ export default function Fechamento({
     setErro("");
     setEnviando(true);
     try {
-      await antesDeEncerrar();
+      if (!(await antesDeEncerrar())) {
+        setErro("Ainda há respostas sem salvar no servidor. Confira a internet e tente de novo.");
+        setEnviando(false);
+        return;
+      }
       const corpo =
         resultado === "proposta_marcada"
           ? { resultado, dataHora: `${c.data}T${c.hora}`, formato: c.formato, quemDecide: c.quemDecide.trim() }

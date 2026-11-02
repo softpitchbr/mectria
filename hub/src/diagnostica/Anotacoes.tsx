@@ -63,6 +63,7 @@ export default function Anotacoes({
           </div>
           <textarea
             aria-label="Anotação"
+            maxLength={2000}
             autoFocus
             rows={3}
             className={estilos.resposta}

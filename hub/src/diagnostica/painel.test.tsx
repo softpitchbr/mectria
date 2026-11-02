@@ -1,4 +1,4 @@
-import { act, screen, within } from "@testing-library/react";
+import { act, screen, waitFor, within } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import { DIAGNOSTICA } from "../../compartilhado/dados/diagnostica";
 import { abrir, fingirApi, PESSOAS } from "../teste/ajuda";
@@ -35,6 +35,9 @@ function api(extra: Record<string, unknown> = {}) {
     ...extra,
   } as never);
 }
+
+// Cada teste começa sem rascunho: a reunião 5 é a mesma em todos.
+beforeEach(() => localStorage.clear());
 
 async function abrirPainel() {
   abrir("/reunioes/5/diagnostica");
@@ -103,7 +106,7 @@ test("fechamento exige o resultado e manda a proposta marcada", async () => {
   await userEvent.type(within(form).getByLabelText("Hora"), "14:00");
   await userEvent.type(within(form).getByLabelText("Quem decide"), "Ana e o sócio");
   await userEvent.click(within(form).getByRole("button", { name: "Encerrar diagnóstica" }));
-  expect(enviado).toEqual({ resultado: "proposta_marcada", dataHora: "2026-11-18T14:00", formato: "online", quemDecide: "Ana e o sócio" });
+  await waitFor(() => expect(enviado).toEqual({ resultado: "proposta_marcada", dataHora: "2026-11-18T14:00", formato: "online", quemDecide: "Ana e o sócio" }));
 });
 
 test("sem internet aparece no topo", async () => {
@@ -119,4 +122,29 @@ test("sem internet aparece no topo", async () => {
     window.dispatchEvent(new Event("online"));
   });
   expect(await screen.findByText("Sem internet · salvo neste computador")).toBeInTheDocument();
+});
+
+test("encerrar não passa enquanto há respostas sem salvar no servidor", async () => {
+  const falso = api({
+    "PUT /api/reunioes/5/respostas": () => {
+      throw new TypeError("Failed to fetch");
+    },
+  });
+  await abrirPainel();
+  await userEvent.keyboard("{ArrowRight}{ArrowRight}");
+  await userEvent.type(screen.getByRole("textbox", { name: "Resposta" }), "Chegar a 26 °C");
+  await userEvent.click(screen.getByRole("button", { name: "Ir para Fechamento" }));
+  const form = screen.getByRole("form", { name: "Fechamento da diagnóstica" });
+  await userEvent.click(within(form).getByRole("radio", { name: "Não qualificou" }));
+  await userEvent.selectOptions(within(form).getByLabelText("Motivo"), "Sem orçamento");
+  await userEvent.click(within(form).getByRole("button", { name: "Encerrar diagnóstica" }));
+  expect(await within(form).findByRole("alert")).toHaveTextContent("Ainda há respostas sem salvar no servidor. Confira a internet e tente de novo.");
+  expect(falso.mock.calls.some(([url]) => String(url).includes("/encerrar"))).toBe(false);
+});
+
+test("o campo da anotação aceita até 2.000 caracteres, o mesmo limite do servidor", async () => {
+  api();
+  await abrirPainel();
+  await userEvent.keyboard("n");
+  expect(screen.getByRole("textbox", { name: "Anotação" })).toHaveAttribute("maxLength", "2000");
 });
