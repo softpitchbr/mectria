@@ -263,3 +263,27 @@ test("encerrar não passa com o andamento sem salvar", async () => {
   expect(await within(form).findByRole("alert")).toHaveTextContent("Ainda há dados sem salvar no servidor. Confira a internet e tente de novo.");
   expect(falso.mock.calls.some(([url]) => String(url).includes("/encerrar"))).toBe(false);
 });
+
+test("com o fechamento aberto, o relógio para e o tempo do último slide não sobe", async () => {
+  api();
+  await irParaOFechamento();
+  const tempoDoFechamento = () => JSON.parse(localStorage.getItem("hub-proposta-7")!).andamento.tempos.fechamento ?? 0;
+  const antes = tempoDoFechamento();
+  await act(async () => {
+    await new Promise((r) => setTimeout(r, 2100));
+  });
+  expect(tempoDoFechamento()).toBe(antes);
+}, 10_000);
+
+test("o relógio não troca o Salvo por Salvando", async () => {
+  api();
+  await comecar();
+  await act(async () => {
+    await new Promise((r) => setTimeout(r, 1100));
+  });
+  await vi.waitFor(() => expect(screen.getAllByRole("status")[0]).toHaveTextContent("Salvo"));
+  await act(async () => {
+    await new Promise((r) => setTimeout(r, 1100));
+  });
+  expect(screen.getAllByRole("status")[0]).toHaveTextContent("Salvo");
+}, 10_000);

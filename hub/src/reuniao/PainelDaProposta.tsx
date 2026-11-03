@@ -158,7 +158,8 @@ export default function PainelDaProposta() {
   useEffect(() => {
     const t = setInterval(() => {
       setAgora(Date.now());
-      if (atual.current.aoVivo) atual.current.mudar((x) => somarTempo(x, slides[x.slide].id, 1));
+      // O tempo do bloco só corre com os slides na tela (o fechamento aberto para o relógio) e não mexe no "Salvo".
+      if (atual.current.aoVivo && !atual.current.fechando) atual.current.mudar((x) => somarTempo(x, slides[x.slide].id, 1), { silencioso: true });
     }, 1000);
     return () => clearInterval(t);
   }, [slides]);

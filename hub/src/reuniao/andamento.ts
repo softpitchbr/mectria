@@ -40,7 +40,11 @@ export function useAndamento(reuniaoId: number, inicial: Andamento | null, inter
   const [andamento, setAndamento] = useState<Andamento | null>(() => local.current?.andamento ?? null);
   const [estado, setEstado] = useState<EstadoRascunho>(() => (local.current?.pendente ? "salvando" : "salvo"));
   const [aviso, setAviso] = useState("");
+  const avisoDePermissao = useRef("");
   const emAndamento = useRef<Promise<boolean> | null>(null);
+  /** A maior versão que o servidor já confirmou, e a última mudança que não foi só de tempo. */
+  const confirmada = useRef(local.current?.pendente ? -1 : (local.current?.versao ?? 0));
+  const ultimaVisivel = useRef(local.current?.versao ?? 0);
 
   // Quando o servidor responde (uma vez): o pendente do computador vale mais; senão, vale o servidor.
   const juntou = useRef(false);
@@ -53,13 +57,16 @@ export function useAndamento(reuniaoId: number, inicial: Andamento | null, inter
     setAndamento(inicial);
   }, [inicial, reuniaoId]);
 
+  /** Muda o andamento. `silencioso` (o tempo que corre a cada segundo) não troca o "Salvo" por "Salvando…". */
   const mudar = useCallback(
-    (f: (a: Andamento) => Andamento) => {
+    (f: (a: Andamento) => Andamento, opcoes: { silencioso?: boolean } = {}) => {
       const g = local.current;
       if (!g) return;
       local.current = { andamento: f(g.andamento), pendente: true, versao: g.versao + 1 };
       gravarLocal(reuniaoId, local.current);
       setAndamento(local.current.andamento);
+      if (opcoes.silencioso) return;
+      ultimaVisivel.current = local.current.versao;
       setEstado((e) => (e === "sem_internet" || e === "sem_permissao" ? e : "salvando"));
     },
     [reuniaoId],
@@ -72,37 +79,50 @@ export function useAndamento(reuniaoId: number, inicial: Andamento | null, inter
       const versao = g.versao;
       try {
         await api(`/api/reunioes/${reuniaoId}/andamento`, { method: "PUT", body: JSON.stringify(g.andamento), ...(keepalive ? { keepalive: true } : {}) });
+        // A permissão voltou (entrou de novo): o aviso dela some; o de algo recusado fica.
+        setAviso((atual) => (atual && atual === avisoDePermissao.current ? "" : atual));
       } catch (e) {
         if (!(e instanceof ErroApi)) throw e;
-        if (e.status === 400) {
-          setAviso(`O andamento não foi salvo: ${e.mensagem}`);
-        } else {
-          if (e.status === 0) setEstado("sem_internet");
-          else if (e.status === 401 || e.status === 403) {
-            setEstado("sem_permissao");
-            setAviso(e.mensagem);
-          } else setEstado("salvando");
+        if (e.status === 0) {
+          setEstado("sem_internet");
+          return false;
+        }
+        if (e.status === 401 || e.status === 403) {
+          setEstado("sem_permissao");
+          avisoDePermissao.current = e.mensagem;
+          setAviso(e.mensagem);
+          return false;
+        }
+        // 409: a reunião já foi encerrada (o envio atrasado não importa mais). 400 e 404: sai da fila com aviso.
+        if (e.status === 400 || e.status === 404) setAviso(`O andamento não foi salvo: ${e.mensagem}`);
+        else if (e.status !== 409) {
+          setEstado("salvando");
           return false;
         }
       }
+      confirmada.current = Math.max(confirmada.current, versao);
       const atual = local.current!;
       if (atual.versao === versao) local.current = { ...atual, pendente: false };
       gravarLocal(reuniaoId, local.current!);
-      setEstado(local.current!.pendente ? "salvando" : "salvo");
+      setEstado(confirmada.current >= ultimaVisivel.current ? "salvo" : "salvando");
       return true;
     },
     [reuniaoId],
   );
 
-  /** Manda o que está pendente; espera o envio em andamento e repete até não sobrar nada. Devolve se conseguiu. */
+  /**
+   * Manda o que está pendente até o servidor confirmar a versão do momento da chamada (o relógio pode
+   * continuar mudando o tempo enquanto isso). Espera o envio em andamento. Devolve se conseguiu.
+   */
   const sincronizar = useCallback(
     async (opcoes: { keepalive?: boolean } = {}): Promise<boolean> => {
+      const alvo = local.current?.versao ?? 0;
       for (let volta = 0; volta < 5; volta++) {
         if (emAndamento.current) {
           await emAndamento.current.catch(() => false);
           continue;
         }
-        if (!local.current?.pendente) return true;
+        if (!local.current?.pendente || confirmada.current >= alvo) return true;
         const envio = rodada(opcoes.keepalive ?? false);
         emAndamento.current = envio;
         let foi: boolean;
@@ -113,7 +133,7 @@ export function useAndamento(reuniaoId: number, inicial: Andamento | null, inter
         }
         if (!foi) return false;
       }
-      return !local.current?.pendente;
+      return !local.current?.pendente || confirmada.current >= alvo;
     },
     [rodada],
   );
