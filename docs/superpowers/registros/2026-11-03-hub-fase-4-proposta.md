@@ -1,0 +1,90 @@
+# Registro da execução · Hub comercial, fase 4 (reunião de proposta em duas janelas)
+
+Plano: [`docs/superpowers/plans/2026-11-03-hub-fase-4-proposta.md`](../plans/2026-11-03-hub-fase-4-proposta.md). Especificação: [`docs/15-hub-template.md`](../../15-hub-template.md). Executado em 03/11/2026, no modo nativo, a pedido do Lucas de seguir o plano. As 8 decisões do plano **ainda não foram confirmadas pelo Lucas** (ver `docs/07-decisoes-e-pendencias.md`, linha da fase 4, com os pontos que a revisão pediu para ele rever). Houve uma revisão final independente do branch inteiro e uma rodada única de correções.
+
+Cada decisão traz o que foi decidido, o porquê e o custo se estiver errada.
+
+## Tarefas concluídas
+
+- Task 1: complete (commits 6149f6a..28e378f, tests: npm run typecheck && npx vitest run compartilhado → 34/34; typecheck ok)
+- Task 2: complete (commits 28e378f..e0bf168, tests: bash -c 'cd hub && npm run typecheck && npm run test:api' → api 110/110; typecheck ok)
+- Task 3: complete (commits e0bf168..c8af06f, tests: bash -c 'cd hub && npm run typecheck && npm run test:api' → api 117/117; typecheck ok)
+- Task 4: complete (commits c8af06f..39d9b50, tests: bash -c 'cd hub && npm run typecheck && npm run test:api' → api 121/121; typecheck ok; wrangler pages functions build ok)
+- Task 5: complete (commits 39d9b50..57f3d3a, tests: npm run typecheck && npx vitest run → app 173/173; typecheck ok)
+- Task 6: complete (commits 57f3d3a..8c0eab4, tests: npm run typecheck && npx vitest run → app 178/178; typecheck ok)
+- Task 7: complete (commits 8c0eab4..45ab6b1, tests: npm run typecheck && npx vitest run → app 190/190; typecheck ok)
+- Task 8: complete (commits 45ab6b1..59ce212, tests: npm run typecheck && npx vitest run → app 193/193; typecheck ok)
+- Task 9: complete (commits 59ce212..1f98d11, tests: npm run typecheck && npx vitest run → app 198/198; typecheck ok)
+- Task 10: complete (commits 1f98d11..c8890a7, tests: npm run typecheck && npm test → app 202/202; api 121/121; typecheck ok)
+- Task 11: complete (commits c8890a7..0bc19c4, tests: npm run typecheck && npm test && npm run e2e → app 202/202; api 121/121; e2e 31/31; typecheck ok)
+
+## Decisões antes de começar (varredura das interfaces)
+
+- Task 2 → Task 3 (motivoDaRecusa e "ja_passou"): motivoDaRecusa da fase 3 é interna de diagnostica.ts e devolve "nao_e_diagnostica". Pre-flight: Ruling: motivoDaRecusa passa a ser exportada e recebe o tipo esperado (diagnostica | proposta), devolvendo nao_e_diagnostica ou nao_e_proposta — a Task 3 precisa dos mesmos motivos — custo se errado: nenhum.
+- Task 2 → Task 5 (PUT /andamento depois de encerrada): o useAndamento manda o que ficou pendente ao desmontar, que pode chegar depois do encerrar. Pre-flight: Ruling: salvarAndamento aceita reunião de proposta concluída (não cancelada) — recusar faria o painel mostrar erro depois do fechamento por um envio inofensivo — custo se errado: pactos de uma reunião concluída podem mudar por um envio atrasado do mesmo closer.
+
+## Decisões tomadas durante a execução
+
+- **Task 1:** o plano dizia que o céu e inferno é o 5º slide (índice 4), mas com a capa e os 12 passos na ordem do roteiro ele é o 6º (índice 5), porque a abertura também é um passo; o teste segue a ordem do roteiro — a spec só dá "5 de 13" como exemplo — custo se errado: nenhum.
+- **Task 1:** empresa.ts foi gerado executando hub-comercial/js/dados/empresa.js; os textos dos slides de exemplo são novos (não existem na 0.2) e só usam fatos já presentes no repositório (empresa júnior da UFTM, orientação de professores) — números e casos ficam como pendência [rótulo]; VARIAVEIS ganhou os rótulos das chaves novas (empresa, data, anos, equipe, entregamos, fica, prazoProjeto, ancora, fraseValor, valor, parcelas, descontoAVista); quemDecideNaSala junta 3 ou mais nomes com vírgula e "e" — custo se errado: ajuste de texto.
+- **Task 2:** a condição da oportunidade virou a constante OPORTUNIDADE_NA_ETAPA (CASE pelo tipo) e motivoDaRecusa recebe o tipo esperado, os dois exportados de diagnostica.ts; o iniciar deixou de exigir tipo diagnóstica (a proposta inicia com a oportunidade em proposta_marcada); a sala inicial ignora o contato quando ele tem o mesmo nome de quem decide; JSON inválido no banco cai no valor inicial — custo se errado: nenhum.
+- **Task 3:** encerrarProposta lê as variáveis da reunião antes do batch (para mandar os valores copiados) e faz o resto num batch só: concluir a reunião, INSERT…SELECT da proposta (dor = resposta da pergunta de chave "dor" da última diagnóstica concluída), os 7 toques (só em decidir/ajuste), o histórico e a oportunidade, todos condicionados a "reunião recém-concluída e oportunidade ainda em proposta_marcada"; a observação (ajuste) ou o motivo (perdido) vão em reunioes.motivo; o teste de rota da fase 2 que comparava o objeto inteiro dos números passou a esperar pactosPorReuniao: null — custo se errado: nenhum.
+- **Task 4:** a tradução dos erros das gravações da reunião (409/400) foi para servidor/errosDaReuniao.ts (arquivo em functions/ vira rota) e passou a ser usada também pelo iniciar e pelo encerrar da diagnóstica; validarFechamentoProposta recebe o dia de hoje (padrão São Paulo) e recusa data da decisão antes de hoje com "A data da decisão não pode ser antes de hoje."; escopo e o que fica com o cliente aceitam quebra de linha (só o trim); wrangler pages functions build ok — custo se errado: nenhum.
+- **Task 5:** o teste do aviso de quem decide esperava o valor × preço, mas o slide anterior ao investimento é o de provas sociais; vale a regra do plano (investimento e o anterior a ele) — custo se errado: o aviso aparece um slide depois do valor × preço.
+- **Task 5:** useAndamento devolve andamento null até ter o local ou o servidor, e expõe também o aviso (400/401/403) como o useRascunho; um 400 tira o pendente da fila com o aviso "O andamento não foi salvo: …"; EstadoRascunho é reaproveitado de src/diagnostica/rascunho.ts — custo se errado: nenhum.
+- **Task 6:** a rota /apresentacao/:id ficou fora da Raiz (não só fora das barras) — a janela não chama a API e, dentro da Raiz, uma sessão que falha mostraria um aviso na tela que o cliente vê; o Access continua protegendo o carregamento da página em produção — custo se errado: nenhum dado sai por ali, porque o conteúdo só vem do painel do mesmo navegador.
+- **Task 6:** o slide é medido em cqw (container query), sem JS de escala; a janela centraliza o maior 16:9 sobre fundo grafite fixo; a pendência [rótulo] só fica destacada com destacarFaltas (painel e catálogo); antes do primeiro estado, a janela mostra só "MecTRIA" e o título "Apresentação · MecTRIA" — custo se errado: ajuste visual.
+- **Task 7:** a sala também pode ser editada ao vivo, na coluna lateral (gente que entra atrasada); o botão da janela mostra "Apresentação aberta" enquanto chega sinal (pronta ou viva) há menos de 5 s, "Abrir apresentação" se nunca chegou e "Reabrir apresentação" se chegou e sumiu; o botão vermelho é o pacto ainda não feito, senão o "Próximo →"; o tempo total e o minuto das notas contam desde iniciada_em; o "AO VIVO" é um selo com ponto que pulsa (parado com reduzir movimento); as anotações mostram "Slide N · M min" (prop descreverPasso nova em Anotacoes); o "Ir para o fechamento" entra na Task 8 — custo se errado: ajustes de tela.
+- **Task 8:** o fechamento abre no lugar dos slides, pelo botão "Ir para o fechamento" do último slide (vermelho só depois do pacto do fechamento), com "← Voltar aos slides"; as setas não passam slide com o fechamento aberto; "Quem decide" começa com quem está marcado na sala (ou o quem_decide da reunião); o valor aparece como "R$ 12.500,00" e é lido com lerReais; a data da decisão tem min = hoje e a mesma checagem do servidor; o arquivo do painel foi formatado com prettier --print-width 160 (o repositório não tem config; 160 é a largura que o código já usa) — custo se errado: nenhum.
+- **Task 9:** o teste antigo "closer abrindo uma seção de fase futura vê quando ela chega" usava Apresentações, que agora existe; passou a ser o diretor abrindo Briefings ("Briefings chega na fase 6."), a única seção futura; o teste "o hunter não vê Apresentações" já passava antes (proteção de regressão, a permissão é da fase 1); a preparação recusa valor ilegível com "Confira o valor: use o formato 12.500,00." e mostra "Pronta para a reunião." quando nada falta; o catálogo usa um cliente de exemplo (variáveis iniciais de Climatização, sem valor) para as 13 miniaturas — custo se errado: nenhum.
+- **Task 10:** a regra "a reunião ainda está na etapa dela" virou oportunidadeNaEtapa em compartilhado/oportunidade.ts, usada pela agenda e pelo Hoje; o teste antigo da agenda que esperava o Iniciar da proposta desligado perdeu essa linha (o comportamento mudou de propósito) e o exemplo de reunião de proposta ganhou a oportunidade em proposta_marcada; o Hoje mostra os pactos com uma casa decimal em pt-BR ("4,5") e "—" sem reunião concluída no mês — custo se errado: nenhum.
+- **Task 11:** a semente ganhou duas propostas do Carlos para hoje (Caldeiraria Sul às 23:40, com a diagnóstica concluída e a dor na ficha; Estrutura Leste às 23:50, sem diagnóstica); o e2e da janela reaberta e o da internet caída usam a Estrutura Leste em sequência (o segundo continua do slide 5); os testes de ponta a ponta foram escritos depois das Tasks 1–10 (é a cobertura de integração do plano), menos o do catálogo, que pegou um defeito real.
+- **Task 11:** as capturas mostraram que, nas miniaturas pequenas, o slide de propósito estourava o quadro (o Chromium aplica um tamanho mínimo de fonte, e as linhas quebravam diferente); o e2e "o catálogo mostra os 13 slides inteiros, sem texto cortado" RED→GREEN, e o slide passou a ser desenhado em 1280 × 720 px e reduzido com transform: scale medido por ResizeObserver (sem ResizeObserver, escala 1) — custo se errado: nenhum; a janela do cliente continua igual.
+- **Task 11:** docs — README do hub (fase 4, arquivos novos, migrações 0004 e 0005), IMPLANTACAO (Durable Objects na fase 5; a fase 4 não usa servidor de tempo real), docs/07 (linha da fase 4 com as 8 decisões, a confirmar) e docs/03 (tarefa 56 construída em 03/11, em revisão) — custo se errado: nenhum.
+
+## Revisão final: o que foi corrigido
+
+Revisor independente; veredito "pronto com correções", com um achado crítico (C1) e cinco importantes (I1 a I5); o M1 subiu para importante pelo efeito. Correções nos commits `9894675` (C1 e I5), `9a7106f` (I1) e `10c6682` (I2, I3, I4 e M1). Resultado depois delas: typecheck sem erros, interface 214/214, API 124/124 e ponta a ponta 32/32.
+
+- C1 (com rede lenta o encerrar nunca passava: o relógio de 1 s mantinha o andamento pendente, inclusive com o fechamento aberto) — "com a rede lenta e o relógio mudando o andamento, sincronizar volta assim que a versão pedida chega", "mudança só de tempo (silenciosa) não troca o Salvo por Salvando", "com o fechamento aberto, o relógio para e o tempo do último slide não sobe" e "o relógio não troca o Salvo por Salvando" RED→GREEN, src/reuniao 32/32; o sincronizar mira a versão do momento da chamada (confirmada ≥ alvo), o relógio para com o fechamento aberto e muda o tempo em silêncio.
+- I5 (erros do useAndamento afastados do useRascunho) — "depois de um 403, o aviso some quando o servidor volta a aceitar" e "409 (reunião já encerrada) tira o andamento da fila e não trava o sincronizar" RED→GREEN, src/reuniao 32/32; 409 sai da fila em silêncio, 400 e 404 saem com aviso, e o aviso de permissão some no primeiro envio aceito.
+- I1 (dois painéis da mesma reunião se sobrescreviam) — "andamento de reunião já encerrada é recusado", "inativo (a reunião está aberta em outra aba) não manda nada" e "a mesma reunião aberta em outra aba fica só com o aviso, sem relógio e sem responder à janela" RED→GREEN, src/reuniao 34/34, api da proposta 12/12; o painel pega a trava navigator.locks "hub-reuniao-{id}" (com 2 novas tentativas de 250 ms, por causa do StrictMode) e a outra aba mostra "Esta reunião já está aberta em outra aba. Continue por lá.", sem relógio, sem canal e com o useAndamento inativo; salvarAndamento só aceita reunião marcada ou em andamento (o 409 sai da fila em silêncio, pela I5); e2e "a mesma reunião numa segunda aba fica só com o aviso" acrescentado.
+- I2 (proposta passada sem fechamento sumia da agenda e do Hoje) — "proposta passada sem fechamento continua na agenda, com Continuar ou Iniciar" e "o Hoje do closer busca a agenda desde uma semana atrás, para achar a reunião começada e não fechada" RED→GREEN, app 214/214; a agenda mostra qualquer reunião passada não concluída que ainda está na etapa, e o Hoje pede de hoje−7 a hoje+6.
+- I3 (pacto depois de 600 minutos derrubava o andamento inteiro com 400) — "reunião continuada outro dia: pacto com minuto alto e tempo longo ainda salvam" RED→GREEN, api 124/124; o minuto do pacto vai até 100.000 e o tempo de cada slide até 10.000.000 s (continuam inteiros e não negativos).
+- I4 ("Fechou" gravava o valor apresentado como valor fechado) — "fechou marca ganha com o valor fechado (separado do apresentado)", "fechou exige o valor fechado" e "fechou pede o valor fechado, que começa com o apresentado" RED→GREEN, app 214/214, api 124/124; FechamentoProposta "ganho" ganhou valorFechado (a proposta guarda o apresentado; a oportunidade, o fechado).
+- M1 re-graduado (atalhos paravam depois de marcar "decide") — "depois de marcar quem decide, as setas continuam passando o slide" RED→GREEN, app 214/214; o emCampo do painel da proposta deixa o checkbox de fora.
+
+**Decisões da rodada de correções:**
+
+- M1 (atalhos param depois de marcar "decide" na sala) re-graduado para Important — acontece no meio da reunião, no fluxo de teclado que é o principal, e o closer não entende por que a seta não passa o slide — entra na rodada.
+- o pre-flight ruling "salvarAndamento aceita reunião concluída" foi revertido pela I1 (o revisor discordou com razão: uma aba velha reescrevia os pactos de reunião fechada) — custo se errado: nenhum, o 409 sai da fila sem aviso.
+- os testes que encerravam com "ganho" passaram a mandar valorFechado (o tipo mudou de propósito pela I4) — custo se errado: nenhum.
+
+## Revisão final: pontos menores adiados (decisão do Lucas)
+
+- M2 — o painel da diagnóstica aberto pela URL com o id de uma proposta chama o iniciar sozinho (grava iniciada_em cedo); o painel deveria conferir o tipo.
+- M3 — o tempo do bloco soma 1 s por tique; com a aba escondida o Chrome segura o relógio e o tempo fica menor que o real (somar a diferença de Date.now()).
+- M4 — se a resposta do encerrar se perde, a nova tentativa mostra "Essa reunião já foi encerrada." e o closer sai pelo "Sair do painel"; tratar o 409 ja_encerrada como sucesso e mandar o fim à janela.
+- M5 — o localStorage (hub-proposta-{id}, com os nomes de quem estava na sala, e as anotações) nunca é limpo (LGPD; mesma pendência (c) da fase 3).
+- M6 — a validação do andamento conhece os ids e o número de slides da apresentação de exemplo; as apresentações por serviço vão exigir validar só a forma.
+- M7 — o painel não tem título próprio (herda o da seção); um título "Painel · não compartilhar · {empresa}" ajuda a não compartilhar a janela errada.
+- M8 — trocar o serviço em Preparar mantém o escopo e o "fica com o cliente" do serviço anterior.
+- M9 — o encerrar lê as variáveis antes do batch (daria para copiar com json_extract no INSERT…SELECT), e a dor copiada vem da última diagnóstica com resposta c-dor, enquanto a sessão usa a última concluída.
+- M10 — POST /api/propostas (fase 2) confere a situação e depois chama mudarSituacao sem condição; pode cruzar com o fechamento do hub (raro).
+- M11 — "Começar reunião" não abre a janela da apresentação se ela estiver fechada (a spec, Forma 1, abre a apresentação no Iniciar); hoje é um clique a mais em "Abrir apresentação".
+
+## Revisão final: itens deixados de fora pelo revisor e como ficaram
+
+- fidelidade visual aos mockups (não julgado) — os links são privados; conferido por capturas do implementador (painel estreito e largo, janela e Apresentações, claro e escuro); o Lucas confere no roleplay — custo se errado: ajustes de estilo.
+- qualidade das falas e dos slides (não julgado) — rascunho da 0.2 mais os slides de exemplo; o Marcelo valida — custo se errado: muda só o arquivo de dados.
+- contraste e "reduzir movimento" (não julgado) — as cores novas usam os tokens medidos na fase 1; o único movimento novo (o ponto do AO VIVO) fica parado com reduzir movimento — custo se errado: um ajuste de token.
+- latência real do D1 a partir do Brasil (não julgado) — depois da C1 o encerrar não depende mais da latência (mira a versão da chamada) — custo se errado: nenhum.
+- Access na rota /apresentacao/:id em produção (não julgado) — a janela não chama a API; se o Access pedir login no popup, o vendedor vê a tela de login na janela antes de compartilhar — custo se errado: um login a mais antes da reunião.
+- limite de consultas do D1 no encerrar (não julgado) — o encerrar faz 4 leituras e um batch (o batch conta como 1 consulta no limite de 50 por chamada, conferido na documentação na fase 3) — custo se errado: nenhum.
+- BroadcastChannel fora do Chrome (não julgado) — Safari 15.4+ e Firefox 38+ têm; sem ele, o canal não faz nada e a janela fica só com a marca — custo se errado: num navegador muito antigo, a janela não sincroniza (o painel continua).
+- menores adiados da fase 3 (não julgado além dos repetidos) — continuam na lista da fase 3 — custo se errado: nenhum.
+- impedir sair do painel sem fechar (não julgado) — mantido como na fase 3 (sair sem trava; a reunião fica em andamento e agora continua visível na agenda pela I2) — custo se errado: nenhum.
+- e2e (não rodado pelo revisor) — rodado depois das correções: 32/32 — custo se errado: nenhum.
+- fase 5 e custo dos Durable Objects (não julgado) — fora desta fase — custo se errado: nenhum.
+- prettier com largura 160 (não julgado) — é a largura do código existente — custo se errado: nenhum.
+- "Vinícius Miguel" como closer fictício nos testes (não julgado) — decisão das fases 2 e 3 — custo se errado: nenhum.
