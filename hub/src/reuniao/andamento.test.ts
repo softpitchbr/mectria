@@ -175,3 +175,14 @@ test("409 (reunião já encerrada) tira o andamento da fila e não trava o sincr
   expect(conseguiu).toBe(true);
   expect(result.current.estado).toBe("salvo");
 });
+
+test("inativo (a reunião está aberta em outra aba) não manda nada, nem o que ficou pendente no computador", async () => {
+  const { chamadas } = fetchControlado(() => "ok");
+  localStorage.setItem("hub-proposta-9", JSON.stringify({ andamento: { ...SERVIDOR, slide: 4 }, pendente: true, versao: 3 }));
+  const { unmount } = renderHook(() => useAndamento(9, SERVIDOR, 5000, false));
+  await act(() => vi.advanceTimersByTimeAsync(11_000));
+  window.dispatchEvent(new Event("online"));
+  unmount();
+  await act(() => vi.advanceTimersByTimeAsync(0));
+  expect(chamadas).toEqual([]);
+});

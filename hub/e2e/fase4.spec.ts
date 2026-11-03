@@ -105,6 +105,17 @@ test.describe("closer conduz a proposta", () => {
     await outra.close();
   });
 
+  test("a mesma reunião numa segunda aba fica só com o aviso", async ({ page, context }) => {
+    await page.goto("/reunioes");
+    await page.locator("li", { hasText: "Estrutura Leste" }).getByRole("button", { name: /Iniciar|Continuar/ }).click();
+    await expect(page.getByRole("main", { name: "Painel da proposta" })).toBeVisible();
+    await expect(page.getByText(/de 13/)).toBeVisible();
+    const outra = await context.newPage();
+    await outra.goto(page.url());
+    await expect(outra.getByText("Esta reunião já está aberta em outra aba. Continue por lá.")).toBeVisible();
+    await outra.close();
+  });
+
   test("sem internet, os slides continuam passando e o painel guarda tudo", async ({ page, context }) => {
     const janela = await abrirReuniao(page, "Estrutura Leste");
     await expect(page.getByText("5 de 13")).toBeVisible();

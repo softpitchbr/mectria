@@ -141,3 +141,8 @@ test("pactos por reunião é a média do mês", async () => {
   await encerrarProposta(env.DB, outra, { desfecho: "perdido", valor: 1, motivo: "Preço" }, closer, hoje);
   expect((await numerosDoMes(env.DB, closer, hoje)).pactosPorReuniao).toBe(3);
 });
+
+test("andamento de reunião já encerrada é recusado (uma aba velha não reescreve os pactos)", async () => {
+  await encerrarProposta(env.DB, propostaId, { desfecho: "ganho", valor: 1 }, closer, HOJE);
+  await expect(salvarAndamento(env.DB, propostaId, { sala: [], pactos: [], tempos: {}, slide: 0 })).rejects.toThrow("ja_encerrada");
+});

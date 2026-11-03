@@ -32,9 +32,9 @@ function gravarLocal(reuniaoId: number, g: Guardado) {
 /**
  * Andamento da reunião de proposta (sala, pactos, tempos e slide): fica no computador na hora e vai inteiro
  * para o servidor a cada `intervalo` ms. Sem internet, guarda e avisa; o que está pendente aqui vale mais
- * que a versão do servidor quando o painel reabre.
+ * que a versão do servidor quando o painel reabre. Inativo (a reunião está aberta em outra aba), não manda nada.
  */
-export function useAndamento(reuniaoId: number, inicial: Andamento | null, intervalo = 5000) {
+export function useAndamento(reuniaoId: number, inicial: Andamento | null, intervalo = 5000, ativo = true) {
   const local = useRef<Guardado | null | undefined>(undefined);
   if (local.current === undefined) local.current = lerLocal(reuniaoId);
   const [andamento, setAndamento] = useState<Andamento | null>(() => local.current?.andamento ?? null);
@@ -139,6 +139,7 @@ export function useAndamento(reuniaoId: number, inicial: Andamento | null, inter
   );
 
   useEffect(() => {
+    if (!ativo) return;
     const id = setInterval(() => {
       if (!emAndamento.current) void sincronizar();
     }, intervalo);
@@ -152,7 +153,7 @@ export function useAndamento(reuniaoId: number, inicial: Andamento | null, inter
       window.removeEventListener("pagehide", aoSair);
       void sincronizar();
     };
-  }, [sincronizar, intervalo]);
+  }, [sincronizar, intervalo, ativo]);
 
   return { andamento, mudar, estado, aviso, sincronizar };
 }

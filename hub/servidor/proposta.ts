@@ -36,12 +36,12 @@ export async function salvarVariaveis(db: D1Database, reuniaoId: number, v: Vari
   if (!mudou) throw new Error(await motivoDaRecusa(db, reuniaoId, "proposta"));
 }
 
-/** Grava o andamento inteiro (a última gravação vale). Aceita reunião concluída: o envio atrasado do painel é inofensivo. */
+/** Grava o andamento inteiro (a última gravação vale), só enquanto a reunião não encerrou: uma aba velha não reescreve os pactos. */
 export async function salvarAndamento(db: D1Database, reuniaoId: number, a: Andamento): Promise<void> {
   const mudou = await db
     .prepare(
       `UPDATE reunioes SET sala = ?, pactos = ?, tempos = ?, slide_atual = ?, atualizado_em = datetime('now')
-       WHERE id = ? AND tipo = 'proposta' AND situacao != 'cancelada' RETURNING id`,
+       WHERE id = ? AND tipo = 'proposta' AND situacao IN ('marcada', 'em_andamento') RETURNING id`,
     )
     .bind(JSON.stringify(a.sala), JSON.stringify(a.pactos), JSON.stringify(a.tempos), a.slide, reuniaoId)
     .first();

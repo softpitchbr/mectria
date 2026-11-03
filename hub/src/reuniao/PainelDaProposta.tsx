@@ -22,6 +22,7 @@ import { useRascunho, type EstadoRascunho } from "../diagnostica/rascunho";
 import { mensagemDe } from "../telas/followup/comum";
 import { useAndamento } from "./andamento";
 import { abrirCanal } from "./canal";
+import { useDonoDaReuniao } from "./dono";
 import FechamentoDaProposta from "./FechamentoDaProposta";
 import ObjecoesDaReuniao from "./ObjecoesDaReuniao";
 import Sala from "./Sala";
@@ -88,29 +89,16 @@ export default function PainelDaProposta() {
     [sessao],
   );
   const montados = useMemo(() => montarSlides(slides, valores, doCliente), [slides, valores, doCliente]);
-  const andamento = useAndamento(reuniaoId, sessao?.andamento ?? null);
+  const dono = useDonoDaReuniao(reuniaoId);
+  const andamento = useAndamento(reuniaoId, sessao?.andamento ?? null, 5000, dono === "sim");
   const inicialDasNotas = useMemo(() => (sessao ? { respostas: {}, anotacoes: sessao.anotacoes } : null), [sessao]);
   const rascunho = useRascunho(reuniaoId, inicialDasNotas);
   const a = andamento.andamento;
   const aoVivo = sessao?.reuniao.situacao === "em_andamento";
 
   // O canal entre as janelas lê sempre o estado mais recente.
-  const atual = useRef({
-    a,
-    montados,
-    empresa: "",
-    aoVivo,
-    fechando,
-    mudar: andamento.mudar,
-  });
-  atual.current = {
-    a,
-    montados,
-    empresa: sessao?.oportunidade.empresa ?? "",
-    aoVivo,
-    fechando,
-    mudar: andamento.mudar,
-  };
+  const atual = useRef({ a, montados, empresa: "", aoVivo, fechando, dono, mudar: andamento.mudar });
+  atual.current = { a, montados, empresa: sessao?.oportunidade.empresa ?? "", aoVivo, fechando, dono, mudar: andamento.mudar };
   const canal = useRef<ReturnType<typeof abrirCanal> | null>(null);
 
   useEffect(() => {
@@ -125,6 +113,8 @@ export default function PainelDaProposta() {
         });
     };
     canal.current = abrirCanal(reuniaoId, (m) => {
+      // Só o painel dono da reunião conversa com a janela.
+      if (atual.current.dono !== "sim") return;
       if (m.tipo === "pronta" || m.tipo === "viva") setUltimaViva(Date.now());
       if (m.tipo === "pronta") enviarEstado();
       else if (m.tipo === "tecla" && atual.current.aoVivo && !atual.current.fechando) {
@@ -138,7 +128,7 @@ export default function PainelDaProposta() {
   }, [reuniaoId, slides.length]);
 
   // Uma janela já aberta recebe o estado inteiro quando o painel fica pronto; depois, só o slide.
-  const pronto = !!a && !!sessao;
+  const pronto = !!a && !!sessao && dono === "sim";
   useEffect(() => {
     const r = atual.current;
     if (pronto && r.a)
@@ -151,7 +141,7 @@ export default function PainelDaProposta() {
   }, [pronto, montados]);
   const slideAtual = a?.slide;
   useEffect(() => {
-    if (slideAtual !== undefined) canal.current?.enviar({ tipo: "slide", slide: slideAtual });
+    if (slideAtual !== undefined && atual.current.dono === "sim") canal.current?.enviar({ tipo: "slide", slide: slideAtual });
   }, [slideAtual]);
 
   // Um relógio de 1 s: o tempo total, o sinal da janela e, ao vivo, o tempo do bloco.
@@ -159,13 +149,13 @@ export default function PainelDaProposta() {
     const t = setInterval(() => {
       setAgora(Date.now());
       // O tempo do bloco só corre com os slides na tela (o fechamento aberto para o relógio) e não mexe no "Salvo".
-      if (atual.current.aoVivo && !atual.current.fechando) atual.current.mudar((x) => somarTempo(x, slides[x.slide].id, 1), { silencioso: true });
+      if (atual.current.dono === "sim" && atual.current.aoVivo && !atual.current.fechando) atual.current.mudar((x) => somarTempo(x, slides[x.slide].id, 1), { silencioso: true });
     }, 1000);
     return () => clearInterval(t);
   }, [slides]);
 
   useEffect(() => {
-    if (!aoVivo) return;
+    if (!aoVivo || dono !== "sim") return;
     const aoTeclar = (e: KeyboardEvent) => {
       if (e.defaultPrevented || e.ctrlKey || e.metaKey || e.altKey) return;
       if (emCampo(e.target)) {
@@ -188,7 +178,7 @@ export default function PainelDaProposta() {
     };
     document.addEventListener("keydown", aoTeclar);
     return () => document.removeEventListener("keydown", aoTeclar);
-  }, [aoVivo, slides.length]);
+  }, [aoVivo, dono, slides.length]);
 
   function aoEncerrar(desfecho: DesfechoProposta) {
     canal.current?.enviar({ tipo: "fim" });
@@ -219,7 +209,17 @@ export default function PainelDaProposta() {
       </main>
     );
   }
-  if (!sessao || !a) return <p className={`mono suave ${estilos.carregando}`}>Abrindo o painel…</p>;
+  if (dono === "outra_aba") {
+    return (
+      <main className={estilos.painel} aria-label="Painel da proposta">
+        <div className={estilos.mensagem}>
+          <p>Esta reunião já está aberta em outra aba. Continue por lá.</p>
+          <Link to="/reunioes">← Reuniões</Link>
+        </div>
+      </main>
+    );
+  }
+  if (!sessao || !a || dono !== "sim") return <p className={`mono suave ${estilos.carregando}`}>Abrindo o painel…</p>;
 
   const { reuniao, oportunidade } = sessao;
   if (reuniao.situacao === "concluida" || reuniao.situacao === "cancelada") {

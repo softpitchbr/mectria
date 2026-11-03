@@ -287,3 +287,21 @@ test("o relógio não troca o Salvo por Salvando", async () => {
   });
   expect(screen.getAllByRole("status")[0]).toHaveTextContent("Salvo");
 }, 10_000);
+
+test("a mesma reunião aberta em outra aba fica só com o aviso, sem relógio e sem responder à janela", async () => {
+  vi.stubGlobal("navigator", Object.assign(Object.create(navigator), { locks: { request: async (_n: string, _o: unknown, f: (l: null) => unknown) => f(null) } }));
+  const falso = api();
+  const recebidas: MensagemReuniao[] = [];
+  const janela = abrirCanal(7, (m) => recebidas.push(m));
+  abrir("/reunioes/7/proposta");
+  expect(await screen.findByText("Esta reunião já está aberta em outra aba. Continue por lá.")).toBeInTheDocument();
+  expect(screen.queryByRole("button", { name: "Começar reunião" })).not.toBeInTheDocument();
+  janela.enviar({ tipo: "pronta" });
+  await act(async () => {
+    await new Promise((r) => setTimeout(r, 300));
+  });
+  expect(recebidas.filter((m) => m.tipo === "estado")).toEqual([]);
+  expect(falso.mock.calls.some(([url]) => String(url).endsWith("/andamento"))).toBe(false);
+  janela.fechar();
+  vi.unstubAllGlobals();
+});
