@@ -102,7 +102,9 @@ No projeto do Pages: Custom domains → `hub.mectria.com`. Isso depende do acess
 | Workers / Functions (a API) | 100 mil chamadas por dia | Plano pago: US$ 5/mês |
 | D1 (o banco) | 5 milhões de leituras e 100 mil gravações por dia; 5 GB | Plano pago: US$ 5/mês |
 | Access (o login) | Até 50 pessoas | Cerca de US$ 7/mês por pessoa acima de 50 |
-| Durable Objects (reunião em tempo real, fase 4) | **A confirmar** se entra no grátis | US$ 5/mês (plano pago) |
+| Durable Objects (celular como controle, fase 5) | **A confirmar** se entra no grátis | US$ 5/mês (plano pago) |
+
+Na fase 4, as duas janelas da reunião (a apresentação e o painel) se falam pelo próprio navegador, sem servidor de tempo real. Os Durable Objects só entram na fase 5, com o celular.
 
 O volume da MecTRIA (umas 10 pessoas e algumas centenas de oportunidades por ano) fica muito abaixo desses limites. O plano grátis não tem prazo e não pausa por falta de uso. Onde ver o consumo: painel da Cloudflare → Workers & Pages → Overview, e D1 → hub-mectria → Metrics.
 

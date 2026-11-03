@@ -50,3 +50,19 @@ VALUES ('Prensa Fria', 'Caio', '34999990003', 'cold call', 'nr-12',
         (SELECT id FROM pessoas WHERE email = 'hun@mectria.com'), (SELECT id FROM pessoas WHERE email = 'clo@mectria.com'), 'diagnostica_marcada');
 INSERT INTO reunioes (oportunidade_id, tipo, data_hora, formato)
 VALUES ((SELECT id FROM oportunidades WHERE empresa = 'Prensa Fria'), 'diagnostica', date('now', '-3 hours') || 'T23:30', 'online');
+
+-- Fase 4: duas propostas do Carlos marcadas para hoje (hora de São Paulo), cada uma com a diagnóstica
+-- concluída (a dor do cliente vem da ficha) e quem decide "Bia".
+INSERT INTO oportunidades (empresa, contato, telefone, origem, servico, closer_id, situacao)
+VALUES ('Caldeiraria Sul', 'Ana', '34999990004', 'cold call', 'climatizacao', (SELECT id FROM pessoas WHERE email = 'clo@mectria.com'), 'proposta_marcada');
+INSERT INTO reunioes (oportunidade_id, tipo, data_hora, formato, situacao, resultado, quem_decide, encerrada_em)
+VALUES ((SELECT id FROM oportunidades WHERE empresa = 'Caldeiraria Sul'), 'diagnostica', date('now', '-3 hours', '-5 days') || 'T10:00', 'online', 'concluida', 'proposta_marcada', 'Bia', datetime('now', '-5 days'));
+INSERT INTO fichas (reuniao_id, pergunta_id, resposta)
+VALUES ((SELECT r.id FROM reunioes r JOIN oportunidades o ON o.id = r.oportunidade_id WHERE o.empresa = 'Caldeiraria Sul' AND r.tipo = 'diagnostica'), 'c-dor', 'O galpão passa de 38 °C à tarde');
+INSERT INTO reunioes (oportunidade_id, tipo, data_hora, formato, quem_decide)
+VALUES ((SELECT id FROM oportunidades WHERE empresa = 'Caldeiraria Sul'), 'proposta', date('now', '-3 hours') || 'T23:40', 'online', 'Bia');
+
+INSERT INTO oportunidades (empresa, contato, telefone, origem, servico, closer_id, situacao)
+VALUES ('Estrutura Leste', 'Bia', '34999990005', 'cold call', 'estruturas-metalicas', (SELECT id FROM pessoas WHERE email = 'clo@mectria.com'), 'proposta_marcada');
+INSERT INTO reunioes (oportunidade_id, tipo, data_hora, formato, quem_decide)
+VALUES ((SELECT id FROM oportunidades WHERE empresa = 'Estrutura Leste'), 'proposta', date('now', '-3 hours') || 'T23:50', 'online', 'Bia');

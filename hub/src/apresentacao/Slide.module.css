@@ -1,23 +1,29 @@
-/* O que o cliente vê é sempre claro e segue o manual da MecTRIA (spec, seção 7). Cores fixas: não mudam com o tema. */
+/* O que o cliente vê é sempre claro e segue o manual da MecTRIA (spec, seção 7). Cores fixas: não mudam com o tema.
+   O slide tem 1280 × 720 e o componente aplica a escala (transform), para quebrar as linhas igual em qualquer tamanho. */
 .moldura {
-  container-type: inline-size;
+  position: relative;
   width: 100%;
+  aspect-ratio: 16 / 9;
+  overflow: hidden;
 }
 
 .slide,
 .capa {
-  position: relative;
-  aspect-ratio: 16 / 9;
-  width: 100%;
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 1280px;
+  height: 720px;
+  transform-origin: 0 0;
   overflow: hidden;
-  padding: 6cqw 7cqw;
+  padding: 77px 90px;
   background: #ffffff;
   color: #1f1e1c;
   font-family: "IBM Plex Sans", sans-serif;
   display: flex;
   flex-direction: column;
   justify-content: center;
-  gap: 2cqw;
+  gap: 26px;
 }
 
 .capa {
@@ -28,7 +34,7 @@
 .rotulo {
   margin: 0;
   font-family: "IBM Plex Mono", monospace;
-  font-size: 1.6cqw;
+  font-size: 20px;
   letter-spacing: 0.08em;
   text-transform: uppercase;
   color: #780000;
@@ -42,24 +48,24 @@
   margin: 0;
   font-family: "Poppins", sans-serif;
   font-weight: 600;
-  font-size: 4.6cqw;
+  font-size: 59px;
   line-height: 1.15;
   color: inherit;
 }
 
 .linhas {
-  margin: 1cqw 0 0;
+  margin: 13px 0 0;
   padding: 0;
   list-style: none;
   display: grid;
-  gap: 1.4cqw;
-  font-size: 2.2cqw;
+  gap: 18px;
+  font-size: 28px;
   line-height: 1.4;
 }
 
 .linhas li {
-  padding-left: 2.4cqw;
-  border-left: 0.4cqw solid #780000;
+  padding-left: 31px;
+  border-left: 5px solid #780000;
 }
 
 .capa .linhas li {
@@ -68,11 +74,11 @@
 
 .marca {
   position: absolute;
-  right: 4cqw;
-  bottom: 3cqw;
+  right: 51px;
+  bottom: 38px;
   font-family: "Poppins", sans-serif;
   font-weight: 600;
-  font-size: 1.4cqw;
+  font-size: 18px;
   color: #780000;
 }
 
@@ -83,6 +89,6 @@
 .falta {
   background: #fde8e8;
   color: #b3242a;
-  border-radius: 0.3cqw;
-  padding: 0 0.3cqw;
+  border-radius: 4px;
+  padding: 0 4px;
 }

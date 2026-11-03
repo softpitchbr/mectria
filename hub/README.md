@@ -2,11 +2,12 @@
 
 O hub do vendedor da MecTRIA: login pelo e-mail, navegação por cargo (hunter, closer, diretor comercial e projetos), busca Ctrl K e o sistema visual Prancheta, nos temas claro e escuro. A especificação está em [`docs/15-hub-template.md`](../docs/15-hub-template.md).
 
-Pronto até agora (fases 1 a 3 de 6):
+Pronto até agora (fases 1 a 4 de 6):
 
 - **Base:** login, cargos, navegação, busca, Time e os dois temas.
 - **Rotina e follow-up:** o Hoje de cada cargo (bloco de ligações do hunter em modo foco, próxima reunião do closer, resumo do time para o diretor), a seção Rotinas (checklist do dia e histórico) e o Follow-up (cadência D0 a D15 em dias úteis, atraso e o toque em modo foco, com a mensagem pronta).
 - **Diagnóstica:** a agenda em Reuniões, o painel em tela cheia (GPCTBA + C&I e as perguntas técnicas do serviço, uma de cada vez; anotações com N e marcações; fechamento obrigatório), o rascunho guardado no computador quando a internet cai, o briefing para Projetos em PDF, os Playbooks de consulta e a busca de clientes, roteiros e objeções.
+- **Reunião de proposta em duas janelas:** a seção Apresentações (preparar as variáveis de cada cliente e o catálogo com a apresentação de exemplo de 13 slides), a janela da apresentação que o cliente vê, o painel sincronizado pelo próprio navegador (fala com as palavras do cliente, pactos, quem está na sala, tempo por bloco, objeções com O, anotações com N e o aviso de quem decide antes do preço) e o fechamento obrigatório, que registra a proposta e cria os toques de follow-up sozinho.
 
 As outras seções mostram em que fase chegam.
 
@@ -48,7 +49,7 @@ O CI (`.github/workflows/hub.yml`) roda os três em todo push que mexe em `hub/`
 
 ```
 hub/
-  migrations/                      0001 pessoas · 0002 oportunidades, reuniões, propostas, toques, rotinas, ligações e histórico · 0003 fichas, anotações e pendências
+  migrations/                      0001 pessoas · 0002 oportunidades, reuniões, propostas, toques, rotinas, ligações e histórico · 0003 fichas, anotações e pendências · 0004 uma pendência por anotação · 0005 preparação, andamento e desfecho da proposta
   compartilhado/                   usado pela interface e pela API
     cargos.ts, pessoa.ts           cargos, rótulos e o tipo Pessoa
     permissoes.ts                  seções, fase de cada uma e quem pode fazer o quê
@@ -57,7 +58,8 @@ hub/
     cadencia.ts                    datas da cadência e preenchimento das mensagens
     oportunidade.ts                tipos de oportunidade, reunião, proposta, toque, rotina e ficha
     diagnostica.ts                 roteiro da diagnóstica, resumos e o briefing
-    dados/                         conteúdo: cadência, feriados, serviços, rotinas, cold call, diagnóstica, objeções e proposta
+    proposta.ts                    variáveis da proposta, slides, falas com as palavras do cliente e pactos
+    dados/                         conteúdo: cadência, feriados, serviços, rotinas, cold call, diagnóstica, objeções, proposta, empresa e a apresentação de exemplo
     icones.ts                      nomes dos ícones
   servidor/                        lógica da API
     identidade.ts                  e-mail pelo JWT do Access (ou dev local)
@@ -67,12 +69,15 @@ hub/
     followup.ts                    proposta, toques, lista do follow-up, resultado e números do mês
     rotina.ts                      ligações, rotina do dia, histórico e resumo do time
     diagnostica.ts                 ficha, anotações, pendências técnicas e fechamento da diagnóstica
+    proposta.ts                    preparação, andamento e fechamento da proposta (proposta e toques numa transação)
     acessoReuniao.ts               quem abre e quem edita uma reunião
+    errosDaReuniao.ts              os 409 e 400 das gravações da reunião
     validacao.ts                   regras dos dados que chegam
     respostas.ts                   respostas JSON e códigos de erro
     rotas/                         testes das rotas (em functions/ todo arquivo vira rota)
   functions/api/                   rotas: _middleware (quem é a pessoa), eu, pessoas, closers, oportunidades,
-                                   propostas, followup, toques, ligacoes, reunioes (e a ficha), rotina, time/resumo, numeros/mes, 404
+                                   propostas, followup, toques, ligacoes, reunioes (a ficha, a proposta, as variáveis e o andamento),
+                                   rotina, time/resumo, numeros/mes, 404
   src/
     estilo/                        tokens, grade técnica e fontes
     tema/                          tema claro/escuro e teste de contraste
@@ -83,7 +88,9 @@ hub/
     shell/                         barras, topo, perfil, sem acesso, em construção
     busca/                         busca Ctrl K e as fontes de itens (inclusive clientes, roteiros e objeções)
     diagnostica/                   painel da diagnóstica e o rascunho no computador
-    telas/                         Hoje (e hoje/), FollowUp (e followup/), Rotinas, Reunioes, Briefing, Playbooks, Time e Vitrine
+    reuniao/                       painel da proposta, canal entre as janelas, andamento no computador e fechamento
+    apresentacao/                  o slide e a janela da apresentação que o cliente vê
+    telas/                         Hoje (e hoje/), FollowUp (e followup/), Rotinas, Reunioes, Briefing, Playbooks, Apresentacoes, Time e Vitrine
   e2e/                             testes ponta a ponta e a semente do banco local
 ```
 
