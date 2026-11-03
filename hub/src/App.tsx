@@ -18,6 +18,7 @@ import Reunioes from "./telas/Reunioes";
 import Rotinas from "./telas/Rotinas";
 import Time from "./telas/Time";
 import Vitrine from "./telas/Vitrine";
+import JanelaDaApresentacao from "./apresentacao/JanelaDaApresentacao";
 import estilos from "./App.module.css";
 
 const TITULO = "Hub comercial MecTRIA";
@@ -103,6 +104,8 @@ function criarRotas(): RouteObject[] {
       ],
     },
   ];
+  // A janela do cliente fica fora da Raiz: não chama a API (tudo vem do painel) e nunca mostra aviso de sessão.
+  rotas.unshift({ path: "/apresentacao/:id", element: <JanelaDaApresentacao /> });
   if (import.meta.env.DEV) rotas.unshift({ path: "/vitrine", element: <Vitrine /> });
   return rotas;
 }
