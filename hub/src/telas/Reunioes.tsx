@@ -16,11 +16,12 @@ const TIPO = { diagnostica: "Diagnóstica", proposta: "Proposta" };
 const jaPassou = (r: Reuniao) => r.situacao !== "concluida" && !oportunidadeNaEtapa(r);
 const ROTULO_DESFECHO = Object.fromEntries(PLAYBOOK_PROPOSTA.resultados.map((x) => [x.id, x.rotulo])) as Record<string, string>;
 
-/** O que mostrar: os próximos 7 dias e as diagnósticas passadas ainda sem resultado. */
+/** O que mostrar: os próximos 7 dias e as reuniões passadas ainda sem resultado. */
 function daAgenda(r: Reuniao, hoje: string): boolean {
   if (r.situacao === "cancelada") return false;
   if (r.dataHora.slice(0, 10) >= hoje) return true;
-  return r.tipo === "diagnostica" && r.situacao !== "concluida" && !jaPassou(r);
+  // Passada e sem fechamento (diagnóstica ou proposta): continua aqui até alguém encerrar.
+  return r.situacao !== "concluida" && !jaPassou(r);
 }
 
 function AcaoDaReuniao({ r }: { r: Reuniao }) {

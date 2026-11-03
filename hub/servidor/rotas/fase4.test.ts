@@ -67,7 +67,7 @@ test("o closer dono lê a sessão, salva variáveis e andamento e encerra; de no
   const fim = await chamar(g(postEncerrar), "clo@mectria.com", { corpo: { desfecho: "decidir", valor: 1250000, dataDecisao: amanha(), quemDecide: "Bia" } });
   expect(fim.status).toBe(200);
   expect(await corpo(fim)).toMatchObject({ reuniao: { situacao: "concluida", desfecho: "decidir" }, propostaId: expect.any(Number) });
-  const denovo = await chamar(g(postEncerrar), "clo@mectria.com", { corpo: { desfecho: "ganho", valor: 1250000 } });
+  const denovo = await chamar(g(postEncerrar), "clo@mectria.com", { corpo: { desfecho: "ganho", valor: 1250000, valorFechado: 1125000 } });
   expect(denovo.status).toBe(409);
   expect(await corpo(denovo)).toEqual({ erro: "conflito", mensagem: "Essa reunião já foi encerrada." });
 });
@@ -94,4 +94,17 @@ test("GET da proposta numa diagnóstica dá 400", async () => {
   const r = await chamar(g(getProposta), "clo@mectria.com");
   expect(r.status).toBe(400);
   expect(await corpo(r)).toEqual({ erro: "invalido", mensagem: "Essa reunião não é uma proposta." });
+});
+
+test("reunião continuada outro dia: pacto com minuto alto e tempo longo ainda salvam", async () => {
+  const andamento = { sala: [], pactos: [{ id: "agenda", minuto: 1500 }], tempos: { capa: 90_000 }, slide: 0 };
+  expect((await chamar(g(putAndamento), "clo@mectria.com", { metodo: "PUT", corpo: andamento })).status).toBe(200);
+  const negativo = { sala: [], pactos: [{ id: "agenda", minuto: -1 }], tempos: {}, slide: 0 };
+  expect((await chamar(g(putAndamento), "clo@mectria.com", { metodo: "PUT", corpo: negativo })).status).toBe(400);
+});
+
+test("fechou exige o valor fechado", async () => {
+  const r = await chamar(g(postEncerrar), "clo@mectria.com", { corpo: { desfecho: "ganho", valor: 1250000 } });
+  expect(r.status).toBe(400);
+  expect(await corpo(r)).toMatchObject({ mensagem: "Informe o valor fechado." });
 });

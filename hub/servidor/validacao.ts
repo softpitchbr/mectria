@@ -291,14 +291,14 @@ export function validarAndamento(corpo: unknown): Validado<Andamento> {
   }
   const pactos: { id: IdPacto; minuto: number }[] = [];
   for (const p of corpo.pactos) {
-    if (!ehObjeto(p) || !IDS_PACTO.includes(p.id as IdPacto) || !inteiroEntre(p.minuto, 0, 600) || pactos.some((x) => x.id === p.id)) {
+    if (!ehObjeto(p) || !IDS_PACTO.includes(p.id as IdPacto) || !inteiroEntre(p.minuto, 0, 100_000) || pactos.some((x) => x.id === p.id)) {
       return { ok: false, mensagem: "Pacto inválido." };
     }
     pactos.push({ id: p.id as IdPacto, minuto: p.minuto });
   }
   const tempos: Record<string, number> = {};
   for (const [id, segundos] of Object.entries(corpo.tempos)) {
-    if (!IDS_SLIDE.includes(id) || !inteiroEntre(segundos, 0, 36_000)) return { ok: false, mensagem: "Tempo de slide inválido." };
+    if (!IDS_SLIDE.includes(id) || !inteiroEntre(segundos, 0, 10_000_000)) return { ok: false, mensagem: "Tempo de slide inválido." };
     tempos[id] = segundos;
   }
   if (!inteiroEntre(corpo.slide, 0, IDS_SLIDE.length - 1)) return { ok: false, mensagem: "Slide inválido." };
@@ -311,7 +311,11 @@ export function validarFechamentoProposta(corpo: unknown, hoje: string = hojeEmS
   if (d !== "ganho" && d !== "decidir" && d !== "ajuste" && d !== "perdido") return { ok: false, mensagem: "Escolha como a reunião terminou." };
   if (!inteiroEntre(corpo.valor, 1, 10_000_000_000)) return { ok: false, mensagem: "Informe o valor apresentado." };
   const valor = corpo.valor;
-  if (d === "ganho") return { ok: true, dados: { desfecho: d, valor } };
+  if (d === "ganho") {
+    return inteiroEntre(corpo.valorFechado, 1, 10_000_000_000)
+      ? { ok: true, dados: { desfecho: d, valor, valorFechado: corpo.valorFechado } }
+      : { ok: false, mensagem: "Informe o valor fechado." };
+  }
   if (d === "perdido") {
     return typeof corpo.motivo === "string" && MOTIVOS_PERDA.includes(corpo.motivo)
       ? { ok: true, dados: { desfecho: d, valor, motivo: corpo.motivo } }

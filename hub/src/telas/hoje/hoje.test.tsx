@@ -153,6 +153,17 @@ test("Iniciar reunião da proposta leva ao painel da proposta", async () => {
   vi.useRealTimers();
 });
 
+test("o Hoje do closer busca a agenda desde uma semana atrás, para achar a reunião começada e não fechada", async () => {
+  vi.useFakeTimers({ toFake: ["Date"] });
+  vi.setSystemTime(new Date("2026-11-09T11:45:00-03:00"));
+  hojeDoCloser([{ ...reuniaoDoCloser(4, "Forja Ontem", "2026-11-08T14:00", "em_andamento", "proposta_marcada"), tipo: "proposta" }]);
+  const cartao = (await screen.findByText("Forja Ontem")).closest("section") as HTMLElement;
+  expect(within(cartao).getByRole("button", { name: "Continuar reunião" })).toBeInTheDocument();
+  const chamadas = (fetch as unknown as { mock: { calls: [string][] } }).mock.calls.map(([url]) => String(url));
+  expect(chamadas).toContain("/api/reunioes?de=2026-11-02&ate=2026-11-15");
+  vi.useRealTimers();
+});
+
 test("diretor vê atrasados por pessoa em ordem", async () => {
   fingirApi({
     "/api/eu": { corpo: PESSOAS.diretor },

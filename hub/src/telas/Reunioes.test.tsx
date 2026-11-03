@@ -66,3 +66,14 @@ test("proposta cuja oportunidade já andou não oferece Iniciar; a concluída mo
   const zeta = screen.getByText("Caldeiraria Zeta").closest("li") as HTMLElement;
   expect(within(zeta).getByText("Concluída · Vai decidir (data combinada)")).toBeInTheDocument();
 });
+
+test("proposta passada sem fechamento continua na agenda, com Continuar ou Iniciar", async () => {
+  const ontemEmAndamento = R(11, "Forja Ontem", "2020-01-10T14:00", "em_andamento", "proposta");
+  const passadaMarcada = R(12, "Usina Antiga", "2020-01-09T09:00", "marcada", "proposta");
+  fingirApi({ "/api/eu": { corpo: PESSOAS.closer }, "GET /api/reunioes": { corpo: [ontemEmAndamento, passadaMarcada] } });
+  abrir("/reunioes");
+  const forja = (await screen.findByText("Forja Ontem")).closest("li") as HTMLElement;
+  expect(within(forja).getByRole("button", { name: "Continuar" })).toBeInTheDocument();
+  const usina = screen.getByText("Usina Antiga").closest("li") as HTMLElement;
+  expect(within(usina).getByRole("button", { name: "Iniciar" })).toBeInTheDocument();
+});

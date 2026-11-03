@@ -175,7 +175,7 @@ export async function encerrarProposta(
         `UPDATE oportunidades SET situacao = ?, valor_fechado = COALESCE(?, valor_fechado), motivo_perda = COALESCE(?, motivo_perda), atualizado_em = datetime('now')
          WHERE situacao = 'proposta_marcada' AND id = (SELECT oportunidade_id FROM reunioes WHERE id = ? AND situacao = 'concluida')`,
       )
-      .bind(para, f.desfecho === "ganho" ? f.valor : null, f.desfecho === "perdido" ? f.motivo : null, reuniaoId),
+      .bind(para, f.desfecho === "ganho" ? f.valorFechado : null, f.desfecho === "perdido" ? f.motivo : null, reuniaoId),
   ]);
   if (!resultados[0].results.length) throw new Error(await motivoDaRecusa(db, reuniaoId, "proposta"));
   const propostaId = (resultados[1].results[0] as { id: number }).id;

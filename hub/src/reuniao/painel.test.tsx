@@ -305,3 +305,30 @@ test("a mesma reunião aberta em outra aba fica só com o aviso, sem relógio e 
   janela.fechar();
   vi.unstubAllGlobals();
 });
+
+test("fechou pede o valor fechado, que começa com o apresentado", async () => {
+  let enviado: unknown;
+  api({
+    "POST /api/reunioes/7/encerrar": (init: RequestInit) => {
+      enviado = JSON.parse(String(init.body));
+      return { corpo: { reuniao: { ...REUNIAO, situacao: "concluida", desfecho: "ganho" }, propostaId: 3 } };
+    },
+    "GET /api/reunioes": { corpo: [] },
+  });
+  const form = await irParaOFechamento();
+  await userEvent.click(within(form).getByRole("radio", { name: "Fechou" }));
+  const fechado = within(form).getByLabelText("Valor fechado");
+  expect(fechado).toHaveValue("R$ 12.500,00");
+  await userEvent.clear(fechado);
+  await userEvent.type(fechado, "11.250,00");
+  await userEvent.click(within(form).getByRole("button", { name: "Encerrar reunião" }));
+  await vi.waitFor(() => expect(enviado).toEqual({ desfecho: "ganho", valor: 1250000, valorFechado: 1125000 }));
+});
+
+test("depois de marcar quem decide, as setas continuam passando o slide", async () => {
+  api();
+  await comecar();
+  await userEvent.click(screen.getByRole("checkbox", { name: "Ana decide" }));
+  await userEvent.keyboard("{ArrowRight}");
+  expect(screen.getByText("2 de 13")).toBeInTheDocument();
+});

@@ -40,6 +40,8 @@ export default function FechamentoDaProposta({
   const [desfecho, setDesfecho] = useState<DesfechoProposta | null>(null);
   const [c, setC] = useState({
     valor: valorInicial ? formatarReais(valorInicial) : "",
+    // O valor fechado começa igual ao apresentado; o desconto à vista muda.
+    fechado: valorInicial ? formatarReais(valorInicial) : "",
     data: "",
     quemDecide: quemDecideInicial,
     ajuste: "",
@@ -54,7 +56,10 @@ export default function FechamentoDaProposta({
     if (!desfecho) return "Escolha como a reunião terminou.";
     const valor = lerReais(c.valor);
     if (!valor) return "Informe o valor apresentado.";
-    if (desfecho === "ganho") return { desfecho, valor };
+    if (desfecho === "ganho") {
+      const valorFechado = lerReais(c.fechado);
+      return valorFechado ? { desfecho, valor, valorFechado } : "Informe o valor fechado.";
+    }
     if (desfecho === "perdido") return c.motivo ? { desfecho, valor, motivo: c.motivo } : "Escolha o motivo.";
     if (!c.data) return "Informe a data da decisão.";
     if (c.data < hoje) return "A data da decisão não pode ser antes de hoje.";
@@ -110,6 +115,7 @@ export default function FechamentoDaProposta({
         ))}
       </fieldset>
       {desfecho && <Campo rotulo="Valor apresentado" inputMode="decimal" value={c.valor} onChange={mudar("valor")} />}
+      {desfecho === "ganho" && <Campo rotulo="Valor fechado" inputMode="decimal" value={c.fechado} onChange={mudar("fechado")} />}
       {vaiDecidir && (
         <div className={estilos.grade}>
           <Campo rotulo="Data da decisão" type="date" min={hoje} value={c.data} onChange={mudar("data")} />

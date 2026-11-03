@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { Link, useNavigate } from "react-router";
-import { formatarDia } from "../../../compartilhado/datas";
+import { diasDepois, formatarDia, hojeEmSaoPaulo } from "../../../compartilhado/datas";
 import type { ItemFollowup, Reuniao } from "../../../compartilhado/oportunidade";
 import { api } from "../../api/cliente";
 import Botao from "../../componentes/Botao";
@@ -48,7 +48,9 @@ export default function HojeCloser() {
   const rotina = useRotinaDeHoje();
 
   useEffect(() => {
-    api<Reuniao[]>("/api/reunioes")
+    // Desde uma semana atrás: a reunião começada e não fechada continua como a próxima.
+    const hoje = hojeEmSaoPaulo();
+    api<Reuniao[]>(`/api/reunioes?de=${diasDepois(hoje, -7)}&ate=${diasDepois(hoje, 6)}`)
       .then(setReunioes)
       .catch(() => setReunioes([]));
     api<ItemFollowup[]>("/api/followup")

@@ -90,9 +90,10 @@ test("vai decidir cria a proposta, os 7 toques e põe no follow-up", async () =>
   expect(historico).toEqual({ de: "proposta_marcada", para: "em_followup" });
 });
 
-test("fechou marca ganha com o valor e não cria toques", async () => {
-  const { propostaId: idProposta } = await encerrarProposta(env.DB, propostaId, { desfecho: "ganho", valor: 1100000 }, closer, hojeEmSaoPaulo());
-  expect(await buscarOportunidade(env.DB, oportunidadeId)).toMatchObject({ situacao: "ganha", valorFechado: 1100000 });
+test("fechou marca ganha com o valor fechado (separado do apresentado) e não cria toques", async () => {
+  const { propostaId: idProposta } = await encerrarProposta(env.DB, propostaId, { desfecho: "ganho", valor: 1250000, valorFechado: 1125000 }, closer, hojeEmSaoPaulo());
+  expect(await buscarOportunidade(env.DB, oportunidadeId)).toMatchObject({ situacao: "ganha", valorFechado: 1125000 });
+  expect((await env.DB.prepare("SELECT valor FROM propostas WHERE id = ?").bind(idProposta).first<{ valor: number }>())?.valor).toBe(1250000);
   expect(await contar("toques", "proposta_id = ?", idProposta)).toBe(0);
   expect((await numerosDoMes(env.DB, closer, hojeEmSaoPaulo())).ganhas).toBe(1);
 });
@@ -113,14 +114,14 @@ test("encerrar de novo dá ja_encerrada e não duplica proposta nem toques", asy
 
 test("proposta registrada à mão antes: encerrar dá ja_passou e nada muda", async () => {
   await registrarProposta(env.DB, { oportunidadeId, servico: "climatizacao", valor: 900000, apresentadaEm: HOJE, quemDecide: "Bia" }, closer);
-  await expect(encerrarProposta(env.DB, propostaId, { desfecho: "ganho", valor: 900000 }, closer, HOJE)).rejects.toThrow("ja_passou");
+  await expect(encerrarProposta(env.DB, propostaId, { desfecho: "ganho", valor: 900000, valorFechado: 900000 }, closer, HOJE)).rejects.toThrow("ja_passou");
   expect((await buscarOportunidade(env.DB, oportunidadeId))?.situacao).toBe("em_followup");
   expect(await contar("propostas")).toBe(1);
   expect((await sessaoDaProposta(env.DB, propostaId))?.reuniao.situacao).toBe("marcada");
 });
 
 test("encerrar uma diagnóstica como proposta dá nao_e_proposta", async () => {
-  await expect(encerrarProposta(env.DB, diagnosticaId, { desfecho: "ganho", valor: 1 }, closer, HOJE)).rejects.toThrow("nao_e_proposta");
+  await expect(encerrarProposta(env.DB, diagnosticaId, { desfecho: "ganho", valor: 1, valorFechado: 1 }, closer, HOJE)).rejects.toThrow("nao_e_proposta");
 });
 
 test("pactos por reunião é a média do mês", async () => {
@@ -128,7 +129,7 @@ test("pactos por reunião é a média do mês", async () => {
   expect((await numerosDoMes(env.DB, closer, hoje)).pactosPorReuniao).toBeNull();
   const quatro = ["agenda", "dor", "duvida", "cliente"].map((id) => ({ id: id as "agenda", minuto: 1 }));
   await salvarAndamento(env.DB, propostaId, { sala: [], pactos: quatro, tempos: {}, slide: 12 });
-  await encerrarProposta(env.DB, propostaId, { desfecho: "ganho", valor: 1 }, closer, hoje);
+  await encerrarProposta(env.DB, propostaId, { desfecho: "ganho", valor: 1, valorFechado: 1 }, closer, hoje);
   // Uma segunda oportunidade, com 2 pactos.
   const { reuniao } = await criarDiagnostica(
     env.DB,
@@ -143,6 +144,6 @@ test("pactos por reunião é a média do mês", async () => {
 });
 
 test("andamento de reunião já encerrada é recusado (uma aba velha não reescreve os pactos)", async () => {
-  await encerrarProposta(env.DB, propostaId, { desfecho: "ganho", valor: 1 }, closer, HOJE);
+  await encerrarProposta(env.DB, propostaId, { desfecho: "ganho", valor: 1, valorFechado: 1 }, closer, HOJE);
   await expect(salvarAndamento(env.DB, propostaId, { sala: [], pactos: [], tempos: {}, slide: 0 })).rejects.toThrow("ja_encerrada");
 });

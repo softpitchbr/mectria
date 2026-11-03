@@ -46,7 +46,8 @@ export type DesfechoProposta = "ganho" | "decidir" | "ajuste" | "perdido";
 
 export type FechamentoProposta =
   | { desfecho: "decidir" | "ajuste"; valor: number; dataDecisao: string; quemDecide: string; observacao?: string }
-  | { desfecho: "ganho"; valor: number }
+  /** Fechou: valor é o apresentado; valorFechado é o que o cliente vai pagar (o desconto à vista muda). */
+  | { desfecho: "ganho"; valor: number; valorFechado: number }
   | { desfecho: "perdido"; valor: number; motivo: string };
 
 export interface SessaoProposta {

@@ -43,7 +43,9 @@ const TOTAL_DE_PACTOS = PLAYBOOK_PROPOSTA.pactos.length;
 /** Sem sinal da janela por mais que isso, o painel oferece reabrir. */
 const JANELA_SUMIU_MS = 5000;
 
-const emCampo = (alvo: EventTarget | null) => !!(alvo as HTMLElement | null)?.closest?.("input, textarea, select, [contenteditable]");
+/** Campo onde as teclas são do texto (o checkbox de "decide" não conta: depois dele, as setas continuam passando o slide). */
+const emCampo = (alvo: EventTarget | null) =>
+  !!(alvo as HTMLElement | null)?.closest?.('textarea, select, [contenteditable], input:not([type="checkbox"])');
 const relogio = (segundos: number) => `${Math.floor(segundos / 60)}:${String(segundos % 60).padStart(2, "0")}`;
 
 /** Abre (ou traz de volta) a janela da apresentação, com uns 70% da tela, à esquerda. */
