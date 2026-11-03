@@ -55,6 +55,8 @@ export interface Reuniao {
   briefingEnviadoEm: string | null;
   /** Em que situação está a oportunidade agora (a diagnóstica só anda enquanto ela está em diagnostica_marcada). */
   oportunidadeSituacao: Situacao;
+  /** Como terminou a reunião de proposta (null na diagnóstica e enquanto não encerra). */
+  desfecho: import("./proposta").DesfechoProposta | null;
 }
 
 export interface NovaDiagnostica {

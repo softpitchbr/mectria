@@ -9,24 +9,28 @@ export async function buscarReuniao(db: D1Database, id: number): Promise<Reuniao
   return l ? reuniaoDeLinha(l) : null;
 }
 
-/** A diagnóstica só anda enquanto a oportunidade ainda está nela (senão a proposta já foi registrada por outro caminho). */
-const OPORTUNIDADE_NA_DIAGNOSTICA = `EXISTS (SELECT 1 FROM oportunidades o WHERE o.id = reunioes.oportunidade_id AND o.situacao = 'diagnostica_marcada')`;
+/**
+ * A reunião só anda enquanto a oportunidade ainda está na etapa dela: diagnostica_marcada para a diagnóstica,
+ * proposta_marcada para a proposta (senão a etapa já foi registrada por outro caminho).
+ */
+export const OPORTUNIDADE_NA_ETAPA = `EXISTS (SELECT 1 FROM oportunidades o WHERE o.id = reunioes.oportunidade_id
+  AND o.situacao = CASE reunioes.tipo WHEN 'diagnostica' THEN 'diagnostica_marcada' ELSE 'proposta_marcada' END)`;
 
-/** Por que a reunião não pôde andar: não existe, já encerrou ou a oportunidade já passou da diagnóstica. */
-async function motivoDaRecusa(db: D1Database, reuniaoId: number): Promise<string> {
+/** Por que a reunião não pôde andar: não existe, é de outro tipo, já encerrou ou a oportunidade já passou da etapa. */
+export async function motivoDaRecusa(db: D1Database, reuniaoId: number, tipo?: Reuniao["tipo"]): Promise<string> {
   const r = await buscarReuniao(db, reuniaoId);
   if (!r) return "nao_encontrada";
-  if (r.tipo !== "diagnostica") return "nao_e_diagnostica";
+  if (tipo && r.tipo !== tipo) return tipo === "diagnostica" ? "nao_e_diagnostica" : "nao_e_proposta";
   if (r.situacao === "concluida" || r.situacao === "cancelada") return "ja_encerrada";
   return "ja_passou";
 }
 
-/** Marca a diagnóstica como em andamento (a primeira vez guarda o horário de início). */
+/** Marca a reunião (diagnóstica ou proposta) como em andamento (a primeira vez guarda o horário de início). */
 export async function iniciarReuniao(db: D1Database, reuniaoId: number): Promise<Reuniao> {
   const mudou = await db
     .prepare(
       `UPDATE reunioes SET situacao = 'em_andamento', iniciada_em = COALESCE(iniciada_em, datetime('now')), atualizado_em = datetime('now')
-       WHERE id = ? AND tipo = 'diagnostica' AND situacao IN ('marcada', 'em_andamento') AND ${OPORTUNIDADE_NA_DIAGNOSTICA} RETURNING id`,
+       WHERE id = ? AND situacao IN ('marcada', 'em_andamento') AND ${OPORTUNIDADE_NA_ETAPA} RETURNING id`,
     )
     .bind(reuniaoId)
     .first();
@@ -130,7 +134,7 @@ export async function encerrarDiagnostica(db: D1Database, reuniaoId: number, f: 
     db
       .prepare(
         `UPDATE reunioes SET situacao = 'concluida', encerrada_em = datetime('now'), resultado = ?, motivo = ?, atualizado_em = datetime('now')
-         WHERE id = ? AND tipo = 'diagnostica' AND situacao IN ('marcada', 'em_andamento') AND ${OPORTUNIDADE_NA_DIAGNOSTICA} RETURNING id`,
+         WHERE id = ? AND tipo = 'diagnostica' AND situacao IN ('marcada', 'em_andamento') AND ${OPORTUNIDADE_NA_ETAPA} RETURNING id`,
       )
       .bind(f.resultado, f.resultado === "nao_qualificou" ? f.motivo : null, reuniaoId),
     ...(f.resultado === "proposta_marcada"
@@ -157,7 +161,7 @@ export async function encerrarDiagnostica(db: D1Database, reuniaoId: number, f: 
       .bind(para, reuniaoId),
   ];
   const [concluiu] = await db.batch(gravacoes);
-  if (!concluiu.results.length) throw new Error(await motivoDaRecusa(db, reuniaoId));
+  if (!concluiu.results.length) throw new Error(await motivoDaRecusa(db, reuniaoId, "diagnostica"));
   return (await buscarReuniao(db, reuniaoId))!;
 }
 
