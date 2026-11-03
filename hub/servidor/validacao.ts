@@ -1,4 +1,4 @@
-import { lerReais } from "../compartilhado/datas";
+import { hojeEmSaoPaulo, lerReais } from "../compartilhado/datas";
 import { MOTIVOS_PERDA } from "../compartilhado/dados/cadencia";
 import { MOTIVOS_NAO_QUALIFICOU } from "../compartilhado/dados/diagnostica";
 import type { Anotacao, Marcacao } from "../compartilhado/diagnostica";
@@ -6,6 +6,7 @@ import { SERVICOS } from "../compartilhado/dados/servicos";
 import { CANAIS_DE_TOQUE, type FechamentoDiagnostica, type NovaDiagnostica, type NovaProposta, type ResultadoLigacao, type ResultadoProposta } from "../compartilhado/oportunidade";
 import { CARGOS, type Cargo } from "../compartilhado/cargos";
 import { normalizarEmail } from "../compartilhado/texto";
+import { IDS_PACTO, slidesDaProposta, type Andamento, type FechamentoProposta, type IdPacto, type PessoaNaSala, type VariaveisProposta } from "../compartilhado/proposta";
 
 export type Validado<T> = { ok: true; dados: T } | { ok: false; mensagem: string };
 
@@ -255,4 +256,72 @@ export function validarFechamento(corpo: unknown): Validado<FechamentoDiagnostic
       : { ok: false, mensagem: "Escolha o motivo." };
   }
   return { ok: false, mensagem: "Escolha como a diagnóstica terminou." };
+}
+
+// Fase 4 ------------------------------------------------------------------------
+
+const IDS_SLIDE = slidesDaProposta().map((s) => s.id);
+const inteiroEntre = (v: unknown, min: number, max: number): v is number => typeof v === "number" && Number.isInteger(v) && v >= min && v <= max;
+/** Texto que pode ter quebras de linha (escopo, o que fica com o cliente). */
+const textoLivre = (v: unknown, max: number): string | null => (typeof v === "string" && v.length <= max ? v.trim() : null);
+
+export function validarVariaveis(corpo: unknown): Validado<VariaveisProposta> {
+  if (!ehObjeto(corpo)) return { ok: false, mensagem: MENSAGEM.corpo };
+  if (typeof corpo.servico !== "string" || !SERVICOS.some((s) => s.id === corpo.servico)) return { ok: false, mensagem: "Escolha um serviço da lista." };
+  const escopo = textoLivre(corpo.escopo, 2000);
+  const ficaComCliente = textoLivre(corpo.ficaComCliente, 2000);
+  if (escopo === null || ficaComCliente === null) return { ok: false, mensagem: "O escopo e o que fica com o cliente têm até 2.000 caracteres." };
+  const prazo = textoLivre(corpo.prazo, 500);
+  const condicoes = textoLivre(corpo.condicoes, 500);
+  const equipe = textoLivre(corpo.equipe, 500);
+  if (prazo === null || condicoes === null || equipe === null) return { ok: false, mensagem: "Prazo, condições e time têm até 500 caracteres." };
+  if (corpo.valor !== null && !inteiroEntre(corpo.valor, 1, 10_000_000_000)) return { ok: false, mensagem: "Confira o valor." };
+  if (!inteiroEntre(corpo.parcelas, 1, 12)) return { ok: false, mensagem: "As parcelas vão de 1 a 12." };
+  return { ok: true, dados: { servico: corpo.servico, escopo, ficaComCliente, valor: corpo.valor as number | null, parcelas: corpo.parcelas, prazo, condicoes, equipe } };
+}
+
+export function validarAndamento(corpo: unknown): Validado<Andamento> {
+  if (!ehObjeto(corpo) || !Array.isArray(corpo.sala) || !Array.isArray(corpo.pactos) || !ehObjeto(corpo.tempos)) return { ok: false, mensagem: MENSAGEM.corpo };
+  if (corpo.sala.length > 12) return { ok: false, mensagem: "No máximo 12 pessoas na sala." };
+  const sala: PessoaNaSala[] = [];
+  for (const p of corpo.sala) {
+    const nome = ehObjeto(p) ? textoEntre(p.nome, 1, 80) : null;
+    if (!ehObjeto(p) || !nome || typeof p.decide !== "boolean") return { ok: false, mensagem: "Confira quem está na sala." };
+    sala.push({ nome, decide: p.decide });
+  }
+  const pactos: { id: IdPacto; minuto: number }[] = [];
+  for (const p of corpo.pactos) {
+    if (!ehObjeto(p) || !IDS_PACTO.includes(p.id as IdPacto) || !inteiroEntre(p.minuto, 0, 600) || pactos.some((x) => x.id === p.id)) {
+      return { ok: false, mensagem: "Pacto inválido." };
+    }
+    pactos.push({ id: p.id as IdPacto, minuto: p.minuto });
+  }
+  const tempos: Record<string, number> = {};
+  for (const [id, segundos] of Object.entries(corpo.tempos)) {
+    if (!IDS_SLIDE.includes(id) || !inteiroEntre(segundos, 0, 36_000)) return { ok: false, mensagem: "Tempo de slide inválido." };
+    tempos[id] = segundos;
+  }
+  if (!inteiroEntre(corpo.slide, 0, IDS_SLIDE.length - 1)) return { ok: false, mensagem: "Slide inválido." };
+  return { ok: true, dados: { sala, pactos, tempos, slide: corpo.slide } };
+}
+
+export function validarFechamentoProposta(corpo: unknown, hoje: string = hojeEmSaoPaulo()): Validado<FechamentoProposta> {
+  if (!ehObjeto(corpo)) return { ok: false, mensagem: MENSAGEM.corpo };
+  const d = corpo.desfecho;
+  if (d !== "ganho" && d !== "decidir" && d !== "ajuste" && d !== "perdido") return { ok: false, mensagem: "Escolha como a reunião terminou." };
+  if (!inteiroEntre(corpo.valor, 1, 10_000_000_000)) return { ok: false, mensagem: "Informe o valor apresentado." };
+  const valor = corpo.valor;
+  if (d === "ganho") return { ok: true, dados: { desfecho: d, valor } };
+  if (d === "perdido") {
+    return typeof corpo.motivo === "string" && MOTIVOS_PERDA.includes(corpo.motivo)
+      ? { ok: true, dados: { desfecho: d, valor, motivo: corpo.motivo } }
+      : { ok: false, mensagem: "Escolha o motivo." };
+  }
+  if (!diaValido(corpo.dataDecisao)) return { ok: false, mensagem: "Informe a data da decisão." };
+  if (corpo.dataDecisao < hoje) return { ok: false, mensagem: "A data da decisão não pode ser antes de hoje." };
+  const quemDecide = textoEntre(corpo.quemDecide, 2, 120);
+  if (!quemDecide) return { ok: false, mensagem: "Informe quem decide." };
+  const observacao = textoEntre(corpo.observacao, 0, 500);
+  if (observacao === null) return { ok: false, mensagem: "O que ajustar tem até 500 caracteres." };
+  return { ok: true, dados: { desfecho: d, valor, dataDecisao: corpo.dataDecisao, quemDecide, ...(observacao ? { observacao } : {}) } };
 }
