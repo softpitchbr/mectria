@@ -5,6 +5,8 @@ import { PLAYBOOK_PROPOSTA } from "../../compartilhado/dados/playbooks";
 import type { Reuniao } from "../../compartilhado/oportunidade";
 import {
   faltandoNaProposta,
+  quemDecideNaSala,
+  type DesfechoProposta,
   montarSlides,
   partesDoModelo,
   slidesDaProposta,
@@ -20,6 +22,7 @@ import { useRascunho, type EstadoRascunho } from "../diagnostica/rascunho";
 import { mensagemDe } from "../telas/followup/comum";
 import { useAndamento } from "./andamento";
 import { abrirCanal } from "./canal";
+import FechamentoDaProposta from "./FechamentoDaProposta";
 import ObjecoesDaReuniao from "./ObjecoesDaReuniao";
 import Sala from "./Sala";
 import { alternarPacto, avancar, irPara, precisaDeQuemDecide, somarTempo, voltar } from "./sessao";
@@ -58,6 +61,7 @@ export default function PainelDaProposta() {
   const [erro, setErro] = useState("");
   const [anotando, setAnotando] = useState(false);
   const [objecoes, setObjecoes] = useState(false);
+  const [fechando, setFechando] = useState(false);
   const [agora, setAgora] = useState(Date.now());
   const [ultimaViva, setUltimaViva] = useState(0);
   const slides = useMemo(() => slidesDaProposta(), []);
@@ -71,8 +75,16 @@ export default function PainelDaProposta() {
   const { valores, doCliente } = useMemo(
     () =>
       sessao
-        ? valoresDaProposta({ oportunidade: sessao.oportunidade, variaveis: sessao.variaveis, respostas: sessao.respostasDaDiagnostica, hoje: hojeEmSaoPaulo() })
-        : { valores: {} as Record<string, string>, doCliente: new Set<string>() },
+        ? valoresDaProposta({
+            oportunidade: sessao.oportunidade,
+            variaveis: sessao.variaveis,
+            respostas: sessao.respostasDaDiagnostica,
+            hoje: hojeEmSaoPaulo(),
+          })
+        : {
+            valores: {} as Record<string, string>,
+            doCliente: new Set<string>(),
+          },
     [sessao],
   );
   const montados = useMemo(() => montarSlides(slides, valores, doCliente), [slides, valores, doCliente]);
@@ -83,19 +95,39 @@ export default function PainelDaProposta() {
   const aoVivo = sessao?.reuniao.situacao === "em_andamento";
 
   // O canal entre as janelas lê sempre o estado mais recente.
-  const atual = useRef({ a, montados, empresa: "", aoVivo, mudar: andamento.mudar });
-  atual.current = { a, montados, empresa: sessao?.oportunidade.empresa ?? "", aoVivo, mudar: andamento.mudar };
+  const atual = useRef({
+    a,
+    montados,
+    empresa: "",
+    aoVivo,
+    fechando,
+    mudar: andamento.mudar,
+  });
+  atual.current = {
+    a,
+    montados,
+    empresa: sessao?.oportunidade.empresa ?? "",
+    aoVivo,
+    fechando,
+    mudar: andamento.mudar,
+  };
   const canal = useRef<ReturnType<typeof abrirCanal> | null>(null);
 
   useEffect(() => {
     const enviarEstado = () => {
       const r = atual.current;
-      if (r.a && r.empresa) canal.current?.enviar({ tipo: "estado", empresa: r.empresa, slides: r.montados, slide: r.a.slide });
+      if (r.a && r.empresa)
+        canal.current?.enviar({
+          tipo: "estado",
+          empresa: r.empresa,
+          slides: r.montados,
+          slide: r.a.slide,
+        });
     };
     canal.current = abrirCanal(reuniaoId, (m) => {
       if (m.tipo === "pronta" || m.tipo === "viva") setUltimaViva(Date.now());
       if (m.tipo === "pronta") enviarEstado();
-      else if (m.tipo === "tecla" && atual.current.aoVivo) {
+      else if (m.tipo === "tecla" && atual.current.aoVivo && !atual.current.fechando) {
         atual.current.mudar((x) => (m.tecla === "ArrowRight" ? avancar(x, slides.length) : voltar(x)));
       }
     });
@@ -109,7 +141,13 @@ export default function PainelDaProposta() {
   const pronto = !!a && !!sessao;
   useEffect(() => {
     const r = atual.current;
-    if (pronto && r.a) canal.current?.enviar({ tipo: "estado", empresa: r.empresa, slides: montados, slide: r.a.slide });
+    if (pronto && r.a)
+      canal.current?.enviar({
+        tipo: "estado",
+        empresa: r.empresa,
+        slides: montados,
+        slide: r.a.slide,
+      });
   }, [pronto, montados]);
   const slideAtual = a?.slide;
   useEffect(() => {
@@ -134,8 +172,8 @@ export default function PainelDaProposta() {
         return;
       }
       const mudar = atual.current.mudar;
-      if (e.key === "ArrowRight") mudar((x) => avancar(x, slides.length));
-      else if (e.key === "ArrowLeft") mudar(voltar);
+      if (e.key === "ArrowRight" && !atual.current.fechando) mudar((x) => avancar(x, slides.length));
+      else if (e.key === "ArrowLeft" && !atual.current.fechando) mudar(voltar);
       else if (e.key === "n" || e.key === "N") {
         e.preventDefault();
         setAnotando(true);
@@ -151,9 +189,19 @@ export default function PainelDaProposta() {
     return () => document.removeEventListener("keydown", aoTeclar);
   }, [aoVivo, slides.length]);
 
+  function aoEncerrar(desfecho: DesfechoProposta) {
+    canal.current?.enviar({ tipo: "fim" });
+    if (desfecho === "ganho") avisar("Proposta registrada como ganha.");
+    else if (desfecho === "perdido") avisar("Proposta registrada como perdida.");
+    else avisar("Proposta no follow-up, com os toques criados.");
+    navegar(desfecho === "ganho" || desfecho === "perdido" ? "/reunioes" : "/follow-up", { replace: true });
+  }
+
   async function comecar() {
     try {
-      const reuniao = await api<Reuniao>(`/api/reunioes/${reuniaoId}/iniciar`, { method: "POST" });
+      const reuniao = await api<Reuniao>(`/api/reunioes/${reuniaoId}/iniciar`, {
+        method: "POST",
+      });
       setSessao((s) => (s ? { ...s, reuniao } : s));
     } catch (e) {
       avisar(mensagemDe(e));
@@ -255,91 +303,108 @@ export default function PainelDaProposta() {
         </p>
       )}
       <div className={estilos.aoVivo}>
-        <div className={estilos.coluna}>
-          <div className={estilos.linhaDoSlide}>
-            <span className="mono">
-              {a.slide + 1} de {slides.length}
-            </span>
-            <span className="mono suave">{relogio(Math.max(0, Math.floor((agora - inicio) / 1000)))} no total</span>
-            <span className={estilos.tempo} aria-label="Tempo do bloco" data-estourou={estourou ? "sim" : undefined}>
-              {relogio(tempoReal)} / {relogio(slide.tempoPlanejado)}
-            </span>
+        {fechando ? (
+          <div className={estilos.coluna}>
+            <FechamentoDaProposta
+              reuniaoId={reuniaoId}
+              valorInicial={sessao.variaveis.valor}
+              quemDecideInicial={quemDecideNaSala(a.sala) || reuniao.quemDecide || ""}
+              antesDeEncerrar={async () => (await andamento.sincronizar()) && (await rascunho.sincronizar())}
+              aoEncerrar={aoEncerrar}
+              aoVoltar={() => setFechando(false)}
+            />
           </div>
-          <nav className={estilos.segmentos} aria-label="Slides">
-            {slides.map((s, i) => (
-              <button
-                key={s.id}
-                type="button"
-                aria-label={`Ir para o slide ${i + 1}`}
-                aria-current={i === a.slide ? "step" : undefined}
-                data-passou={i < a.slide ? "sim" : undefined}
-                className={estilos.segmento}
-                onClick={() => andamento.mudar((x) => irPara(x, i, slides.length))}
-              />
-            ))}
-          </nav>
-
-          {precisaDeQuemDecide(a, slides) && (
-            <p role="alert" className={estilos.alerta}>
-              Quem decide não está na sala. Segure o preço e marque a conversa com quem decide.
-            </p>
-          )}
-
-          <h2 className={estilos.tituloDoSlide}>{montados[a.slide].titulo.map((p) => p.texto).join("")}</h2>
-          {slide.fala && (
-            <section className={estilos.fala} aria-label="Fala">
-              <p>
-                {partesDoModelo(slide.fala, valores, doCliente).map((p, i) =>
-                  p.tipo === "cliente" ? (
-                    <mark key={i}>{p.texto}</mark>
-                  ) : p.tipo === "falta" ? (
-                    <span key={i} className={estilos.pendencia}>
-                      {p.texto}
-                    </span>
-                  ) : (
-                    <span key={i}>{p.texto}</span>
-                  ),
-                )}
-              </p>
-              {slide.dica && <p className={`suave ${estilos.dica}`}>{slide.dica}</p>}
-            </section>
-          )}
-
-          <div className={estilos.pactos}>
-            {slide.pacto && (
-              <Botao
-                variante={pactoFeito ? "secundario" : "primario"}
-                className={estilos.pacto}
-                aria-pressed={pactoFeito}
-                data-feito={pactoFeito ? "sim" : undefined}
-                onClick={() => andamento.mudar((x) => alternarPacto(x, slide.pacto!, minuto))}
-              >
-                {pactoFeito ? "✓ " : ""}Pacto: {TEXTO_DO_PACTO[slide.pacto]}
-              </Botao>
-            )}
-            <span className="mono suave">
-              {a.pactos.length} de {TOTAL_DE_PACTOS} pactos
-            </span>
-          </div>
-
-          <div className={estilos.navegacao}>
-            <Botao variante="fantasma" disabled={a.slide === 0} onClick={() => andamento.mudar(voltar)}>
-              ← Voltar
-            </Botao>
-            {proximo && (
-              <Botao variante={slide.pacto && !pactoFeito ? "secundario" : "primario"} onClick={() => andamento.mudar((x) => avancar(x, slides.length))}>
-                Próximo →
-              </Botao>
-            )}
-            {botaoDaJanela}
-          </div>
-          {proximo && (
-            <div className={estilos.miniatura} aria-label="Próximo slide">
-              <p className={`mono ${estilos.sobre}`}>A SEGUIR</p>
-              <Slide slide={proximo} destacarFaltas />
+        ) : (
+          <div className={estilos.coluna}>
+            <div className={estilos.linhaDoSlide}>
+              <span className="mono">
+                {a.slide + 1} de {slides.length}
+              </span>
+              <span className="mono suave">{relogio(Math.max(0, Math.floor((agora - inicio) / 1000)))} no total</span>
+              <span className={estilos.tempo} aria-label="Tempo do bloco" data-estourou={estourou ? "sim" : undefined}>
+                {relogio(tempoReal)} / {relogio(slide.tempoPlanejado)}
+              </span>
             </div>
-          )}
-        </div>
+            <nav className={estilos.segmentos} aria-label="Slides">
+              {slides.map((s, i) => (
+                <button
+                  key={s.id}
+                  type="button"
+                  aria-label={`Ir para o slide ${i + 1}`}
+                  aria-current={i === a.slide ? "step" : undefined}
+                  data-passou={i < a.slide ? "sim" : undefined}
+                  className={estilos.segmento}
+                  onClick={() => andamento.mudar((x) => irPara(x, i, slides.length))}
+                />
+              ))}
+            </nav>
+
+            {precisaDeQuemDecide(a, slides) && (
+              <p role="alert" className={estilos.alerta}>
+                Quem decide não está na sala. Segure o preço e marque a conversa com quem decide.
+              </p>
+            )}
+
+            <h2 className={estilos.tituloDoSlide}>{montados[a.slide].titulo.map((p) => p.texto).join("")}</h2>
+            {slide.fala && (
+              <section className={estilos.fala} aria-label="Fala">
+                <p>
+                  {partesDoModelo(slide.fala, valores, doCliente).map((p, i) =>
+                    p.tipo === "cliente" ? (
+                      <mark key={i}>{p.texto}</mark>
+                    ) : p.tipo === "falta" ? (
+                      <span key={i} className={estilos.pendencia}>
+                        {p.texto}
+                      </span>
+                    ) : (
+                      <span key={i}>{p.texto}</span>
+                    ),
+                  )}
+                </p>
+                {slide.dica && <p className={`suave ${estilos.dica}`}>{slide.dica}</p>}
+              </section>
+            )}
+
+            <div className={estilos.pactos}>
+              {slide.pacto && (
+                <Botao
+                  variante={pactoFeito ? "secundario" : "primario"}
+                  className={estilos.pacto}
+                  aria-pressed={pactoFeito}
+                  data-feito={pactoFeito ? "sim" : undefined}
+                  onClick={() => andamento.mudar((x) => alternarPacto(x, slide.pacto!, minuto))}
+                >
+                  {pactoFeito ? "✓ " : ""}Pacto: {TEXTO_DO_PACTO[slide.pacto]}
+                </Botao>
+              )}
+              <span className="mono suave">
+                {a.pactos.length} de {TOTAL_DE_PACTOS} pactos
+              </span>
+            </div>
+
+            <div className={estilos.navegacao}>
+              <Botao variante="fantasma" disabled={a.slide === 0} onClick={() => andamento.mudar(voltar)}>
+                ← Voltar
+              </Botao>
+              {proximo ? (
+                <Botao variante={slide.pacto && !pactoFeito ? "secundario" : "primario"} onClick={() => andamento.mudar((x) => avancar(x, slides.length))}>
+                  Próximo →
+                </Botao>
+              ) : (
+                <Botao variante={slide.pacto && !pactoFeito ? "secundario" : "primario"} onClick={() => setFechando(true)}>
+                  Ir para o fechamento
+                </Botao>
+              )}
+              {botaoDaJanela}
+            </div>
+            {proximo && (
+              <div className={estilos.miniatura} aria-label="Próximo slide">
+                <p className={`mono ${estilos.sobre}`}>A SEGUIR</p>
+                <Slide slide={proximo} destacarFaltas />
+              </div>
+            )}
+          </div>
+        )}
 
         <div className={estilos.lateral}>
           <Sala sala={a.sala} aoMudar={mudarSala} />
@@ -354,7 +419,15 @@ export default function PainelDaProposta() {
             aberto={anotando}
             aoAbrir={() => setAnotando(true)}
             aoFechar={() => setAnotando(false)}
-            aoSalvar={(texto, marcacao) => rascunho.anotar({ idCliente: crypto.randomUUID(), minuto, passo: slide.id, marcacao, texto })}
+            aoSalvar={(texto, marcacao) =>
+              rascunho.anotar({
+                idCliente: crypto.randomUUID(),
+                minuto,
+                passo: slide.id,
+                marcacao,
+                texto,
+              })
+            }
             descreverPasso={(passo) => `Slide ${slides.findIndex((s) => s.id === passo) + 1}`}
           />
         </div>

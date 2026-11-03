@@ -194,3 +194,72 @@ test("anotação fica carimbada com o slide e o minuto", async () => {
   await userEvent.type(screen.getByRole("textbox", { name: "Anotação" }), "Telhado de fibrocimento{Enter}");
   expect(screen.getByRole("list", { name: "Anotações" })).toHaveTextContent(/Slide 2 · \d+ min · Técnico/);
 });
+
+// Fechamento obrigatório --------------------------------------------------------
+
+const amanha = () => {
+  const d = new Date(Date.now() + 86_400_000);
+  return new Intl.DateTimeFormat("en-CA", { timeZone: "America/Sao_Paulo" }).format(d);
+};
+
+async function irParaOFechamento() {
+  await comecar();
+  await userEvent.click(screen.getByRole("button", { name: "Ir para o slide 13" }));
+  await userEvent.click(screen.getByRole("button", { name: "Ir para o fechamento" }));
+  return screen.getByRole("form", { name: "Fechamento da proposta" });
+}
+
+test("fechamento exige o resultado, a data e quem decide, e manda vai decidir", async () => {
+  let enviado: unknown;
+  api({
+    "POST /api/reunioes/7/encerrar": (init: RequestInit) => {
+      enviado = JSON.parse(String(init.body));
+      return { corpo: { reuniao: { ...REUNIAO, situacao: "concluida", desfecho: "decidir" }, propostaId: 3 } };
+    },
+    "GET /api/followup": { corpo: [] },
+  });
+  const form = await irParaOFechamento();
+  await userEvent.click(within(form).getByRole("button", { name: "Encerrar reunião" }));
+  expect(within(form).getByRole("alert")).toHaveTextContent("Escolha como a reunião terminou.");
+  await userEvent.click(within(form).getByRole("radio", { name: "Vai decidir (data combinada)" }));
+  expect(within(form).getByLabelText("Quem decide")).toHaveValue("Bia");
+  expect(within(form).getByLabelText("Valor apresentado")).toHaveValue("R$ 12.500,00");
+  await userEvent.click(within(form).getByRole("button", { name: "Encerrar reunião" }));
+  expect(within(form).getByRole("alert")).toHaveTextContent("Informe a data da decisão.");
+  await userEvent.type(within(form).getByLabelText("Data da decisão"), amanha());
+  await userEvent.click(within(form).getByRole("button", { name: "Encerrar reunião" }));
+  await vi.waitFor(() => expect(enviado).toEqual({ desfecho: "decidir", valor: 1250000, dataDecisao: amanha(), quemDecide: "Bia" }));
+  await vi.waitFor(() => expect(window.location.pathname).toBe("/follow-up"));
+});
+
+test("perdeu pede o motivo e volta para Reuniões", async () => {
+  let enviado: unknown;
+  api({
+    "POST /api/reunioes/7/encerrar": (init: RequestInit) => {
+      enviado = JSON.parse(String(init.body));
+      return { corpo: { reuniao: { ...REUNIAO, situacao: "concluida", desfecho: "perdido" }, propostaId: 3 } };
+    },
+    "GET /api/reunioes": { corpo: [] },
+  });
+  const form = await irParaOFechamento();
+  await userEvent.click(within(form).getByRole("radio", { name: "Perdeu" }));
+  await userEvent.click(within(form).getByRole("button", { name: "Encerrar reunião" }));
+  expect(within(form).getByRole("alert")).toHaveTextContent("Escolha o motivo.");
+  await userEvent.selectOptions(within(form).getByLabelText("Motivo"), "Preço");
+  await userEvent.click(within(form).getByRole("button", { name: "Encerrar reunião" }));
+  await vi.waitFor(() => expect(enviado).toEqual({ desfecho: "perdido", valor: 1250000, motivo: "Preço" }));
+  await vi.waitFor(() => expect(window.location.pathname).toBe("/reunioes"));
+});
+
+test("encerrar não passa com o andamento sem salvar", async () => {
+  const falso = api({
+    "PUT /api/reunioes/7/andamento": () => {
+      throw new TypeError("Failed to fetch");
+    },
+  });
+  const form = await irParaOFechamento();
+  await userEvent.click(within(form).getByRole("radio", { name: "Fechou" }));
+  await userEvent.click(within(form).getByRole("button", { name: "Encerrar reunião" }));
+  expect(await within(form).findByRole("alert")).toHaveTextContent("Ainda há dados sem salvar no servidor. Confira a internet e tente de novo.");
+  expect(falso.mock.calls.some(([url]) => String(url).includes("/encerrar"))).toBe(false);
+});

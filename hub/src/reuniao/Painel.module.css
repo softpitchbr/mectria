@@ -381,3 +381,51 @@
 .objecao {
   font-weight: 600;
 }
+
+/* Fechamento */
+.fechamento {
+  display: grid;
+  gap: 14px;
+}
+
+.fechamentoTopo {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.resultados {
+  display: grid;
+  gap: 8px;
+  margin: 0;
+  padding: 0;
+  border: 0;
+}
+
+.opcao,
+.opcaoMarcada {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 10px 12px;
+  border: 1px solid var(--linha);
+  border-radius: 9px;
+  background: var(--painel);
+  cursor: pointer;
+}
+
+.opcaoMarcada {
+  border-color: var(--vermelho);
+}
+
+.grade {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+  gap: 12px;
+}
+
+.erro {
+  margin: 0;
+  color: var(--vermelho-texto);
+  font-weight: 500;
+}
