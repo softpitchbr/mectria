@@ -179,3 +179,8 @@ export interface FichaCompleta {
   /** A reunião de proposta combinada no fechamento (null enquanto não há). */
   proximaReuniao: Reuniao | null;
 }
+
+/** A reunião ainda pode andar: a oportunidade continua na etapa dela (diagnóstica marcada ou proposta marcada). */
+export function oportunidadeNaEtapa(r: Pick<Reuniao, "tipo" | "oportunidadeSituacao">): boolean {
+  return r.oportunidadeSituacao === (r.tipo === "diagnostica" ? "diagnostica_marcada" : "proposta_marcada");
+}

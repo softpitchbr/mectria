@@ -5,7 +5,8 @@ import { abrir, fingirApi, PESSOAS } from "../teste/ajuda";
 const R = (id: number, empresa: string, dataHora: string, situacao = "marcada", tipo = "diagnostica") => ({
   id, oportunidadeId: id, empresa, tipo, dataHora, formato: "online", situacao, closerId: 2, closerNome: "Vinícius Miguel",
   quemDecide: null, iniciadaEm: null, encerradaEm: null, resultado: situacao === "concluida" ? "proposta_marcada" : null, motivo: null, briefingEnviadoEm: null,
-  oportunidadeSituacao: situacao === "concluida" ? "proposta_marcada" : "diagnostica_marcada",
+  oportunidadeSituacao: situacao === "concluida" || tipo === "proposta" ? "proposta_marcada" : "diagnostica_marcada",
+  desfecho: null,
 });
 
 const AGENDA = [
@@ -29,10 +30,8 @@ test("Iniciar leva ao painel; em andamento mostra Continuar; concluída mostra o
   const alfa = (await screen.findByText("Usinagem Alfa")).closest("li") as HTMLElement;
   const beta = screen.getByText("Metalúrgica Beta").closest("li") as HTMLElement;
   const gama = screen.getByText("Agro Gama").closest("li") as HTMLElement;
-  const delta = screen.getByText("Plásticos Delta").closest("li") as HTMLElement;
   expect(within(beta).getByRole("button", { name: "Continuar" })).toBeInTheDocument();
   expect(within(gama).getByRole("link", { name: "Briefing" })).toHaveAttribute("href", "/reunioes/3/briefing");
-  expect(within(delta).getByRole("button", { name: "Iniciar" })).toBeDisabled();
   await userEvent.click(within(alfa).getByRole("button", { name: "Iniciar" }));
   expect(window.location.pathname).toBe("/reunioes/1/diagnostica");
 });
@@ -46,4 +45,24 @@ test("diagnóstica cuja oportunidade já passou dela não oferece Iniciar, e a p
   expect(within(epsilon).queryByRole("button", { name: /Iniciar|Continuar/ })).not.toBeInTheDocument();
   expect(within(epsilon).getByText("A oportunidade já passou da diagnóstica")).toBeInTheDocument();
   expect(screen.queryByText("Caldeiraria Zeta")).not.toBeInTheDocument();
+});
+
+test("Iniciar da proposta leva ao painel da proposta", async () => {
+  fingirApi({ "/api/eu": { corpo: PESSOAS.closer }, "GET /api/reunioes": { corpo: AGENDA }, "GET /api/reunioes/4/proposta": { status: 404, corpo: { erro: "nao_encontrado", mensagem: "x" } } });
+  abrir("/reunioes");
+  const delta = (await screen.findByText("Plásticos Delta")).closest("li") as HTMLElement;
+  await userEvent.click(within(delta).getByRole("button", { name: "Iniciar" }));
+  expect(window.location.pathname).toBe("/reunioes/4/proposta");
+});
+
+test("proposta cuja oportunidade já andou não oferece Iniciar; a concluída mostra o desfecho", async () => {
+  const andou = { ...R(5, "Fundição Épsilon", "2099-11-10T11:00", "marcada", "proposta"), oportunidadeSituacao: "em_followup" };
+  const concluida = { ...R(6, "Caldeiraria Zeta", "2099-11-10T15:00", "concluida", "proposta"), desfecho: "decidir" };
+  fingirApi({ "/api/eu": { corpo: PESSOAS.closer }, "GET /api/reunioes": { corpo: [andou, concluida] } });
+  abrir("/reunioes");
+  const epsilon = (await screen.findByText("Fundição Épsilon")).closest("li") as HTMLElement;
+  expect(within(epsilon).queryByRole("button")).not.toBeInTheDocument();
+  expect(within(epsilon).getByText("A oportunidade já passou da proposta")).toBeInTheDocument();
+  const zeta = screen.getByText("Caldeiraria Zeta").closest("li") as HTMLElement;
+  expect(within(zeta).getByText("Concluída · Vai decidir (data combinada)")).toBeInTheDocument();
 });

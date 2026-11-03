@@ -1,4 +1,4 @@
-import type { Reuniao } from "../../../compartilhado/oportunidade";
+import { oportunidadeNaEtapa, type Reuniao } from "../../../compartilhado/oportunidade";
 import { instanteLocal } from "../../../compartilhado/datas";
 
 export const primeiroNome = (nome: string) => nome.trim().split(/\s+/)[0];
@@ -20,11 +20,10 @@ const TOLERANCIA_MIN = 60;
 
 /**
  * A reunião que o cartão do Hoje mostra: a em andamento, ou a primeira marcada que ainda não passou
- * da tolerância. Ficam de fora as canceladas, as concluídas e as diagnósticas cuja oportunidade já andou.
+ * da tolerância. Ficam de fora as canceladas, as concluídas e as reuniões cuja oportunidade já passou da etapa.
  */
 export function proximaReuniao(reunioes: Reuniao[], agora: Date = new Date()): Reuniao | undefined {
-  const valida = (r: Reuniao) =>
-    r.situacao !== "cancelada" && r.situacao !== "concluida" && !(r.tipo === "diagnostica" && r.oportunidadeSituacao !== "diagnostica_marcada");
+  const valida = (r: Reuniao) => r.situacao !== "cancelada" && r.situacao !== "concluida" && oportunidadeNaEtapa(r);
   const ordenadas = reunioes.filter(valida).sort((a, b) => a.dataHora.localeCompare(b.dataHora));
   return (
     ordenadas.find((r) => r.situacao === "em_andamento") ??

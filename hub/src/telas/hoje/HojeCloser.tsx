@@ -12,6 +12,9 @@ import { ChecklistDaRotina, useRotinaDeHoje } from "../Rotinas";
 import { proximaReuniao, quantoFalta } from "./comum";
 import estilos from "./hoje.module.css";
 
+type NumerosDoMes = { propostas: number; ganhas: number; pactosPorReuniao?: number | null };
+const UMA_CASA = new Intl.NumberFormat("pt-BR", { minimumFractionDigits: 1, maximumFractionDigits: 1 });
+
 function ProximaReuniao({ reuniao }: { reuniao: Reuniao }) {
   const navegar = useNavigate();
   const [agora, setAgora] = useState(() => new Date());
@@ -29,18 +32,9 @@ function ProximaReuniao({ reuniao }: { reuniao: Reuniao }) {
       </p>
       <Medidor rotulo="Até a reunião" valor={Math.max(0, 1440 - falta.minutos)} total={1440} texto={falta.texto} />
       <div className={estilos.botoes}>
-        {reuniao.tipo === "diagnostica" ? (
-          <Botao variante="primario" onClick={() => navegar(`/reunioes/${reuniao.id}/diagnostica`)}>
-            {reuniao.situacao === "em_andamento" ? "Continuar reunião" : "Iniciar reunião"}
-          </Botao>
-        ) : (
-          <>
-            <Botao variante="primario" disabled title="A reunião de proposta chega na fase 4">
-              Iniciar reunião
-            </Botao>
-            <span className="suave">a reunião de proposta chega na fase 4</span>
-          </>
-        )}
+        <Botao variante="primario" onClick={() => navegar(`/reunioes/${reuniao.id}/${reuniao.tipo}`)}>
+          {reuniao.situacao === "em_andamento" ? "Continuar reunião" : "Iniciar reunião"}
+        </Botao>
       </div>
     </section>
   );
@@ -50,7 +44,7 @@ function ProximaReuniao({ reuniao }: { reuniao: Reuniao }) {
 export default function HojeCloser() {
   const [reunioes, setReunioes] = useState<Reuniao[] | null>(null);
   const [followups, setFollowups] = useState<ItemFollowup[]>([]);
-  const [numeros, setNumeros] = useState<{ propostas: number; ganhas: number } | null>(null);
+  const [numeros, setNumeros] = useState<NumerosDoMes | null>(null);
   const rotina = useRotinaDeHoje();
 
   useEffect(() => {
@@ -60,7 +54,7 @@ export default function HojeCloser() {
     api<ItemFollowup[]>("/api/followup")
       .then(setFollowups)
       .catch(() => setFollowups([]));
-    api<{ propostas: number; ganhas: number }>("/api/numeros/mes")
+    api<NumerosDoMes>("/api/numeros/mes")
       .then(setNumeros)
       .catch(() => setNumeros(null));
   }, []);
@@ -91,9 +85,7 @@ export default function HojeCloser() {
             </div>
             <div>
               <dt className="suave">Pactos por reunião</dt>
-              <dd className="mono suave" title="Chega na fase 4">
-                —
-              </dd>
+              <dd className="mono">{numeros?.pactosPorReuniao != null ? UMA_CASA.format(numeros.pactosPorReuniao) : "—"}</dd>
             </div>
           </dl>
         </section>

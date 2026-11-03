@@ -130,6 +130,29 @@ test("reunião em andamento aparece com Continuar, mesmo passada a primeira hora
   vi.useRealTimers();
 });
 
+test("o Hoje mostra pactos por reunião, com uma casa decimal", async () => {
+  fingirApi({
+    "/api/eu": { corpo: PESSOAS.closer },
+    "GET /api/reunioes": { corpo: [] },
+    "GET /api/rotina": { corpo: ROTINA_VAZIA },
+    "GET /api/followup": { corpo: [] },
+    "GET /api/numeros/mes": { corpo: { propostas: 3, ganhas: 1, pactosPorReuniao: 4.5 } },
+  });
+  abrir("/");
+  const mes = await screen.findByRole("region", { name: "Este mês" });
+  await vi.waitFor(() => expect(mes).toHaveTextContent("4,5"));
+});
+
+test("Iniciar reunião da proposta leva ao painel da proposta", async () => {
+  vi.useFakeTimers({ toFake: ["Date"] });
+  vi.setSystemTime(new Date("2026-11-09T11:45:00-03:00"));
+  hojeDoCloser([{ ...reuniaoDoCloser(4, "Plásticos Delta", "2026-11-09T14:00", "marcada", "proposta_marcada"), tipo: "proposta" }]);
+  const cartao = (await screen.findByText("Plásticos Delta")).closest("section") as HTMLElement;
+  await userEvent.click(within(cartao).getByRole("button", { name: "Iniciar reunião" }));
+  expect(window.location.pathname).toBe("/reunioes/4/proposta");
+  vi.useRealTimers();
+});
+
 test("diretor vê atrasados por pessoa em ordem", async () => {
   fingirApi({
     "/api/eu": { corpo: PESSOAS.diretor },
