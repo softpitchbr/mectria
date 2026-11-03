@@ -108,5 +108,17 @@ export const VARIAVEIS: Record<string, string> = {
   "numeros": "números",
   "ganho": "ganho",
   "dias": "dias",
-  "data_proposta": "data da apresentação"
+  "data_proposta": "data da apresentação",
+  "empresa": "empresa do cliente",
+  "data": "data",
+  "anos": "anos de MecTRIA",
+  "equipe": "nomes e papéis do time",
+  "entregamos": "o que entregamos",
+  "fica": "o que fica com o cliente",
+  "prazoProjeto": "prazo do projeto",
+  "ancora": "quem faria o projeto no mercado",
+  "fraseValor": "frase de valor",
+  "valor": "valor",
+  "parcelas": "parcelas",
+  "descontoAVista": "desconto à vista"
 };
