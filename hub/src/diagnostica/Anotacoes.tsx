@@ -11,12 +11,15 @@ export default function Anotacoes({
   aoAbrir,
   aoFechar,
   aoSalvar,
+  descreverPasso,
 }: {
   anotacoes: Anotacao[];
   aberto: boolean;
   aoAbrir: () => void;
   aoFechar: () => void;
   aoSalvar: (texto: string, marcacao: Marcacao | null) => void;
+  /** Como mostrar o passo da anotação (na proposta, "Slide N"); sem ele, só o minuto. */
+  descreverPasso?: (passo: string) => string;
 }) {
   const [texto, setTexto] = useState("");
   const [marcacao, setMarcacao] = useState<Marcacao | null>(null);
@@ -78,6 +81,7 @@ export default function Anotacoes({
         {[...anotacoes].reverse().map((a) => (
           <li key={a.idCliente} data-marcacao={a.marcacao ?? ""}>
             <span className="mono suave">
+              {descreverPasso ? `${descreverPasso(a.passo)} · ` : ""}
               {a.minuto} min{a.marcacao ? ` · ${ROTULO_MARCACAO[a.marcacao]}` : ""}
             </span>
             <p>{a.texto}</p>

@@ -1,0 +1,383 @@
+/* Painel da proposta: estreito (uns 30% da tela, à direita da apresentação) e com uma coluna lateral quando há espaço. */
+.painel {
+  min-height: 100vh;
+  display: grid;
+  grid-template-rows: auto auto 1fr;
+  background: var(--fundo);
+}
+
+.carregando,
+.mensagem {
+  min-height: 100vh;
+  display: grid;
+  place-content: center;
+  gap: 12px;
+  text-align: center;
+}
+
+.topo {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  padding: 12px 20px;
+  border-bottom: 1px solid var(--linha);
+  background: var(--painel);
+}
+
+.topo > div {
+  flex: 1;
+  min-width: 0;
+}
+
+.sobre {
+  margin: 0;
+  font-size: 11px;
+  letter-spacing: 0.08em;
+  color: var(--suave);
+}
+
+.empresa {
+  font-size: 18px;
+}
+
+.seloAoVivo {
+  color: var(--vermelho-texto);
+  font-weight: 600;
+}
+
+.seloAoVivo::before {
+  content: "";
+  display: inline-block;
+  width: 7px;
+  height: 7px;
+  margin-right: 6px;
+  border-radius: 50%;
+  background: var(--vermelho);
+  vertical-align: 1px;
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  .seloAoVivo::before {
+    animation: pulsar 1.6s var(--curva) infinite;
+  }
+}
+
+@keyframes pulsar {
+  50% {
+    opacity: 0.35;
+  }
+}
+
+.semInternet {
+  font-family: "IBM Plex Mono", monospace;
+  font-size: 13px;
+  font-weight: 500;
+  color: var(--vermelho-texto);
+}
+
+.avisoRascunho {
+  margin: 0;
+  padding: 8px 20px;
+  border-bottom: 1px solid var(--linha);
+  color: var(--vermelho-texto);
+  font-weight: 500;
+}
+
+.sair {
+  padding: 8px 12px;
+  border: 1px solid var(--linha);
+  border-radius: 9px;
+  background: transparent;
+  color: var(--suave);
+  font: inherit;
+  font-size: 14px;
+  cursor: pointer;
+}
+
+.sair:hover {
+  color: var(--texto);
+  border-color: var(--linha-viva);
+}
+
+.subtitulo {
+  margin: 0;
+  font-size: 14px;
+  color: var(--suave);
+}
+
+/* Antes de começar */
+.antes {
+  display: grid;
+  gap: 20px;
+  align-content: start;
+  max-width: 640px;
+  width: 100%;
+  margin: 0 auto;
+  padding: 28px 20px;
+}
+
+.falta {
+  margin: 0;
+  color: var(--vermelho-texto);
+}
+
+.janela {
+  display: grid;
+  gap: 8px;
+  justify-items: start;
+  padding: 16px;
+  border: 1px solid var(--linha);
+  border-radius: 12px;
+  background: var(--painel);
+}
+
+.lembrete {
+  margin: 0;
+  font-weight: 500;
+}
+
+/* Sala */
+.sala {
+  display: grid;
+  gap: 8px;
+}
+
+.pessoas {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  display: grid;
+  gap: 6px;
+}
+
+.pessoas li {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 6px 10px;
+  border: 1px solid var(--linha);
+  border-radius: 9px;
+  background: var(--painel);
+}
+
+.pessoas li > span {
+  flex: 1;
+}
+
+.pessoas li[data-decide="sim"] {
+  border-color: var(--vinho);
+}
+
+.decide {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 13px;
+  color: var(--suave);
+}
+
+.tirar {
+  border: 0;
+  background: transparent;
+  color: var(--suave);
+  font-size: 18px;
+  line-height: 1;
+  cursor: pointer;
+}
+
+.campo {
+  width: 100%;
+  padding: 8px 10px;
+  border: 1px solid var(--linha);
+  border-radius: 9px;
+  background: var(--painel);
+  color: var(--texto);
+  font: inherit;
+}
+
+.campo:focus-visible {
+  outline: 2px solid var(--vermelho);
+  outline-offset: 1px;
+}
+
+/* Ao vivo */
+.aoVivo {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
+  gap: 20px;
+  padding: 16px 20px 40px;
+}
+
+@media (min-width: 1100px) {
+  .aoVivo {
+    grid-template-columns: minmax(0, 1fr) 320px;
+  }
+}
+
+.coluna,
+.lateral {
+  display: grid;
+  gap: 14px;
+  align-content: start;
+  min-width: 0;
+}
+
+.linhaDoSlide {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  gap: 14px;
+}
+
+.tempo {
+  margin-left: auto;
+  font-family: "IBM Plex Mono", monospace;
+  font-variant-numeric: tabular-nums;
+}
+
+.tempo[data-estourou="sim"] {
+  color: var(--vermelho-texto);
+  font-weight: 600;
+}
+
+.segmentos {
+  display: flex;
+  gap: 3px;
+}
+
+.segmento {
+  flex: 1;
+  height: 8px;
+  padding: 0;
+  border: 0;
+  border-radius: 2px;
+  background: var(--linha);
+  cursor: pointer;
+  transition: background-color var(--medio) var(--curva);
+}
+
+.segmento[data-passou="sim"] {
+  background: var(--suave);
+}
+
+.segmento[aria-current="step"] {
+  background: var(--vermelho);
+}
+
+.alerta {
+  margin: 0;
+  padding: 10px 14px;
+  border: 1px solid var(--vermelho-texto);
+  border-radius: 9px;
+  color: var(--vermelho-texto);
+  font-weight: 600;
+}
+
+.tituloDoSlide {
+  margin: 0;
+  font-size: 15px;
+  color: var(--suave);
+}
+
+.fala {
+  display: grid;
+  gap: 8px;
+}
+
+.fala > p:first-child {
+  margin: 0;
+  font-size: 19px;
+  line-height: 1.55;
+}
+
+.fala mark {
+  background: transparent;
+  color: var(--texto);
+  font-weight: 600;
+  box-shadow: inset 0 -0.45em 0 color-mix(in srgb, var(--vermelho) 28%, transparent);
+}
+
+.pendencia {
+  color: var(--vermelho-texto);
+}
+
+.dica {
+  margin: 0;
+  font-size: 14px;
+}
+
+.pactos {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 12px;
+}
+
+.pacto {
+  min-height: 52px;
+  padding-inline: 20px;
+  font-size: 16px;
+}
+
+.navegacao {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 10px;
+}
+
+.miniatura {
+  display: grid;
+  gap: 6px;
+  max-width: 280px;
+}
+
+.botaoObjecoes {
+  justify-self: start;
+  padding: 6px 10px;
+  border: 1px solid var(--linha);
+  border-radius: 9px;
+  background: transparent;
+  color: var(--suave);
+  font: inherit;
+  font-size: 14px;
+  cursor: pointer;
+}
+
+.objecoes {
+  display: grid;
+  gap: 10px;
+  padding: 14px;
+  border: 1px solid var(--linha-viva);
+  border-radius: 12px;
+  background: var(--painel);
+}
+
+.objecoesTopo {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.listaObjecoes {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  display: grid;
+  gap: 12px;
+  max-height: 50vh;
+  overflow-y: auto;
+}
+
+.listaObjecoes li {
+  display: grid;
+  gap: 4px;
+}
+
+.listaObjecoes p {
+  margin: 0;
+}
+
+.objecao {
+  font-weight: 600;
+}

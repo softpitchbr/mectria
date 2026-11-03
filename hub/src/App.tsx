@@ -19,6 +19,7 @@ import Rotinas from "./telas/Rotinas";
 import Time from "./telas/Time";
 import Vitrine from "./telas/Vitrine";
 import JanelaDaApresentacao from "./apresentacao/JanelaDaApresentacao";
+import PainelDaProposta from "./reuniao/PainelDaProposta";
 import estilos from "./App.module.css";
 
 const TITULO = "Hub comercial MecTRIA";
@@ -100,6 +101,7 @@ function criarRotas(): RouteObject[] {
           ],
         },
         { path: "reunioes/:id/diagnostica", element: <PainelDaDiagnostica /> },
+        { path: "reunioes/:id/proposta", element: <PainelDaProposta /> },
         { path: "reunioes/:id/briefing", element: <Briefing /> },
       ],
     },
