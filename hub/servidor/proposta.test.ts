@@ -1,10 +1,11 @@
 import { applyD1Migrations, env } from "cloudflare:test";
 import { variaveisIniciais } from "../compartilhado/proposta";
 import { encerrarDiagnostica, iniciarReuniao, salvarRespostas } from "./diagnostica";
-import { registrarProposta } from "./followup";
-import { criarDiagnostica } from "./oportunidades";
+import { hojeEmSaoPaulo } from "../compartilhado/datas";
+import { listarFollowup, numerosDoMes, registrarProposta } from "./followup";
+import { buscarOportunidade, criarDiagnostica } from "./oportunidades";
 import { criar } from "./pessoas";
-import { salvarAndamento, salvarVariaveis, sessaoDaProposta } from "./proposta";
+import { encerrarProposta, salvarAndamento, salvarVariaveis, sessaoDaProposta } from "./proposta";
 import type { Pessoa } from "./tipos";
 
 let closer: Pessoa;
@@ -59,4 +60,84 @@ test("reunião de proposta inicia só com a oportunidade em proposta_marcada", a
 
 test("salvarVariaveis recusa reunião de diagnóstica", async () => {
   await expect(salvarVariaveis(env.DB, diagnosticaId, variaveisIniciais("climatizacao"))).rejects.toThrow("nao_e_proposta");
+});
+
+const HOJE = "2026-11-18";
+const preparada = { ...variaveisIniciais("climatizacao"), valor: 1250000, prazo: "45 dias", equipe: "Rui e Bia" };
+
+async function contar(tabela: string, onde = "1 = 1", ...valores: unknown[]) {
+  return (await env.DB.prepare(`SELECT COUNT(*) AS n FROM ${tabela} WHERE ${onde}`).bind(...valores).first<{ n: number }>())!.n;
+}
+
+test("vai decidir cria a proposta, os 7 toques e põe no follow-up", async () => {
+  await salvarVariaveis(env.DB, propostaId, preparada);
+  const { reuniao, propostaId: idProposta } = await encerrarProposta(
+    env.DB,
+    propostaId,
+    { desfecho: "decidir", valor: 1250000, dataDecisao: "2026-11-25", quemDecide: "Bia" },
+    closer,
+    HOJE,
+  );
+  expect(reuniao).toMatchObject({ situacao: "concluida", desfecho: "decidir" });
+  const p = await env.DB.prepare("SELECT * FROM propostas WHERE id = ?").bind(idProposta).first<Record<string, unknown>>();
+  expect(p).toMatchObject({ reuniao_id: propostaId, valor: 1250000, apresentada_em: HOJE, data_decisao: "2026-11-25", quem_decide: "Bia", dor: "O galpão passa de 38 °C", prazo: "45 dias", equipe: "Rui e Bia" });
+  expect(String(p?.escopo)).toBe(preparada.escopo);
+  expect(await contar("toques", "proposta_id = ?", idProposta)).toBe(7);
+  const fila = await listarFollowup(env.DB, closer, HOJE);
+  expect(fila).toHaveLength(1);
+  expect(fila[0].proximo).toMatchObject({ codigo: "D0", previstoPara: HOJE });
+  const historico = await env.DB.prepare("SELECT de, para FROM historico WHERE oportunidade_id = ? ORDER BY id DESC LIMIT 1").bind(oportunidadeId).first();
+  expect(historico).toEqual({ de: "proposta_marcada", para: "em_followup" });
+});
+
+test("fechou marca ganha com o valor e não cria toques", async () => {
+  const { propostaId: idProposta } = await encerrarProposta(env.DB, propostaId, { desfecho: "ganho", valor: 1100000 }, closer, hojeEmSaoPaulo());
+  expect(await buscarOportunidade(env.DB, oportunidadeId)).toMatchObject({ situacao: "ganha", valorFechado: 1100000 });
+  expect(await contar("toques", "proposta_id = ?", idProposta)).toBe(0);
+  expect((await numerosDoMes(env.DB, closer, hojeEmSaoPaulo())).ganhas).toBe(1);
+});
+
+test("perdeu marca perdida com o motivo", async () => {
+  await encerrarProposta(env.DB, propostaId, { desfecho: "perdido", valor: 1250000, motivo: "Preço" }, closer, HOJE);
+  expect(await buscarOportunidade(env.DB, oportunidadeId)).toMatchObject({ situacao: "perdida", motivoPerda: "Preço" });
+  expect((await sessaoDaProposta(env.DB, propostaId))?.reuniao.desfecho).toBe("perdido");
+});
+
+test("encerrar de novo dá ja_encerrada e não duplica proposta nem toques", async () => {
+  const f = { desfecho: "decidir" as const, valor: 1250000, dataDecisao: "2026-11-25", quemDecide: "Bia" };
+  await encerrarProposta(env.DB, propostaId, f, closer, HOJE);
+  await expect(encerrarProposta(env.DB, propostaId, f, closer, HOJE)).rejects.toThrow("ja_encerrada");
+  expect(await contar("propostas")).toBe(1);
+  expect(await contar("toques")).toBe(7);
+});
+
+test("proposta registrada à mão antes: encerrar dá ja_passou e nada muda", async () => {
+  await registrarProposta(env.DB, { oportunidadeId, servico: "climatizacao", valor: 900000, apresentadaEm: HOJE, quemDecide: "Bia" }, closer);
+  await expect(encerrarProposta(env.DB, propostaId, { desfecho: "ganho", valor: 900000 }, closer, HOJE)).rejects.toThrow("ja_passou");
+  expect((await buscarOportunidade(env.DB, oportunidadeId))?.situacao).toBe("em_followup");
+  expect(await contar("propostas")).toBe(1);
+  expect((await sessaoDaProposta(env.DB, propostaId))?.reuniao.situacao).toBe("marcada");
+});
+
+test("encerrar uma diagnóstica como proposta dá nao_e_proposta", async () => {
+  await expect(encerrarProposta(env.DB, diagnosticaId, { desfecho: "ganho", valor: 1 }, closer, HOJE)).rejects.toThrow("nao_e_proposta");
+});
+
+test("pactos por reunião é a média do mês", async () => {
+  const hoje = hojeEmSaoPaulo();
+  expect((await numerosDoMes(env.DB, closer, hoje)).pactosPorReuniao).toBeNull();
+  const quatro = ["agenda", "dor", "duvida", "cliente"].map((id) => ({ id: id as "agenda", minuto: 1 }));
+  await salvarAndamento(env.DB, propostaId, { sala: [], pactos: quatro, tempos: {}, slide: 12 });
+  await encerrarProposta(env.DB, propostaId, { desfecho: "ganho", valor: 1 }, closer, hoje);
+  // Uma segunda oportunidade, com 2 pactos.
+  const { reuniao } = await criarDiagnostica(
+    env.DB,
+    { empresa: "Metalúrgica Beta", contato: "Rui", telefone: "34999990001", servico: "nr-12", closerId: closer.id, dataHora: "2026-11-13T15:00", formato: "online" },
+    closer,
+  );
+  await encerrarDiagnostica(env.DB, reuniao.id, { resultado: "proposta_marcada", dataHora: "2026-11-19T10:00", formato: "online", quemDecide: "Rui" }, closer);
+  const outra = (await env.DB.prepare("SELECT id FROM reunioes WHERE tipo = 'proposta' AND id != ? ORDER BY id DESC").bind(propostaId).first<{ id: number }>())!.id;
+  await salvarAndamento(env.DB, outra, { sala: [], pactos: quatro.slice(0, 2), tempos: {}, slide: 12 });
+  await encerrarProposta(env.DB, outra, { desfecho: "perdido", valor: 1, motivo: "Preço" }, closer, hoje);
+  expect((await numerosDoMes(env.DB, closer, hoje)).pactosPorReuniao).toBe(3);
 });

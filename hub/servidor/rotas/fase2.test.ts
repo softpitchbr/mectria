@@ -194,7 +194,7 @@ test("closers da lista e números do mês", async () => {
   const closers = await corpo<{ nome: string }[]>(await chamar(g(getCloser), "hun@mectria.com"));
   expect(closers.map((c) => c.nome)).toEqual(["Carlos Closer", "Clara Closer", "Diana Diretora"]);
   await chamar(g(postProposta), "clo@mectria.com", { corpo: novaProposta("Eta") });
-  expect(await corpo(await chamar(g(getNumeros), "clo@mectria.com"))).toEqual({ propostas: 1, ganhas: 0 });
+  expect(await corpo(await chamar(g(getNumeros), "clo@mectria.com"))).toEqual({ propostas: 1, ganhas: 0, pactosPorReuniao: null });
   expect((await chamar(g(getNumeros), "hun@mectria.com")).status).toBe(403);
 });
 

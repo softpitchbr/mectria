@@ -216,8 +216,15 @@ export async function registrarResultado(
   return (await buscarOportunidade(db, oportunidadeId))!;
 }
 
-/** Propostas apresentadas no mês e oportunidades ganhas no mês (hora de São Paulo). */
-export async function numerosDoMes(db: D1Database, quem: Pessoa, hoje: string): Promise<{ propostas: number; ganhas: number }> {
+/**
+ * Propostas apresentadas no mês, oportunidades ganhas no mês e a média de pactos das reuniões de proposta
+ * concluídas no mês (hora de São Paulo; null sem reunião).
+ */
+export async function numerosDoMes(
+  db: D1Database,
+  quem: Pessoa,
+  hoje: string,
+): Promise<{ propostas: number; ganhas: number; pactosPorReuniao: number | null }> {
   const mes = hoje.slice(0, 7);
   const soDele = quem.cargo !== "diretor";
   const filtro = soDele ? "AND o.closer_id = ?" : "";
@@ -236,5 +243,13 @@ export async function numerosDoMes(db: D1Database, quem: Pessoa, hoje: string): 
     )
     .bind(mes, ...extra)
     .first<{ n: number }>();
-  return { propostas: propostas?.n ?? 0, ganhas: ganhas?.n ?? 0 };
+  const pactos = await db
+    .prepare(
+      `SELECT COUNT(*) AS n, AVG(json_array_length(COALESCE(r.pactos, '[]'))) AS media
+       FROM reunioes r JOIN oportunidades o ON o.id = r.oportunidade_id
+       WHERE r.tipo = 'proposta' AND r.situacao = 'concluida' AND substr(datetime(r.encerrada_em, '-3 hours'), 1, 7) = ? ${filtro}`,
+    )
+    .bind(mes, ...extra)
+    .first<{ n: number; media: number | null }>();
+  return { propostas: propostas?.n ?? 0, ganhas: ganhas?.n ?? 0, pactosPorReuniao: pactos?.n ? pactos.media : null };
 }
