@@ -19,6 +19,7 @@ import Rotinas from "./telas/Rotinas";
 import Time from "./telas/Time";
 import Vitrine from "./telas/Vitrine";
 import JanelaDaApresentacao from "./apresentacao/JanelaDaApresentacao";
+import Apresentacoes from "./telas/Apresentacoes";
 import PainelDaProposta from "./reuniao/PainelDaProposta";
 import estilos from "./App.module.css";
 
@@ -40,6 +41,7 @@ function PaginaDaSecao({ secao }: { secao: Secao }) {
   if (secao === "rotinas") return <Rotinas eu={eu} />;
   if (secao === "reunioes") return <Reunioes eu={eu} />;
   if (secao === "playbooks") return <Playbooks eu={eu} />;
+  if (secao === "apresentacoes") return <Apresentacoes eu={eu} />;
   return <EmConstrucao secao={info.rotulo} fase={info.fase} icone={info.icone} />;
 }
 

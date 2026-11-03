@@ -1,0 +1,83 @@
+.apresentacoes {
+  display: grid;
+  gap: 28px;
+  max-width: 960px;
+}
+
+.apresentacoes header {
+  display: grid;
+  gap: 6px;
+}
+
+.secao {
+  display: grid;
+  gap: 12px;
+}
+
+.secao h2 {
+  font-size: 15px;
+}
+
+.lista {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  border: 1px solid var(--linha);
+  border-radius: 12px;
+  background: var(--painel);
+}
+
+.lista li {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  padding: 12px 16px;
+}
+
+.lista li + li {
+  border-top: 1px solid var(--linha);
+}
+
+.lista strong {
+  flex: 1;
+}
+
+.cartao {
+  display: grid;
+  gap: 10px;
+  padding: 18px;
+}
+
+.cartao h3 {
+  font-size: 15px;
+}
+
+.miniaturas {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(170px, 1fr));
+  gap: 10px;
+}
+
+.aindaVem {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  gap: 12px;
+}
+
+.formulario {
+  display: grid;
+  gap: 14px;
+}
+
+.grade {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+  gap: 12px;
+}
+
+.falta,
+.erro {
+  margin: 0;
+  color: var(--vermelho-texto);
+  font-weight: 500;
+}
