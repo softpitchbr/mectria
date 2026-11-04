@@ -22,9 +22,9 @@ Lista de 04/11/2026, reorganizada para a reunião de terça, 10/11, às 18h30. O
 
 ### Para o processo comercial (`17-processo-comercial.md`)
 
-- [ ] **Quem conduz a diagnóstica:** hunter, closer, projetista, ou varia. **Trava:** quem pode abrir o painel da diagnóstica no hub.
-- [ ] **O nome da etiqueta dos leads em conversa** no CRM deles ("Em contato"?). **Trava:** o texto da rotina do hunter.
-- [ ] **Em que grupo o hunter avisa a reunião confirmada.** **Trava:** a mensagem do grupo no hub.
+- [x] **Quem conduz a diagnóstica:** normalmente hunter + projetista (resposta de 04/11). No hub, o hunter passa a abrir o painel (fase 6).
+- [ ] **Os leads em conversa no CRM.** Parcial: a lista de status e marcadores chegou em 04/11 (`17-processo-comercial.md`). Confirmar se é o status Contato estabelecido mais o marcador Retornar. **Trava:** o texto da rotina do hunter.
+- [ ] **Em que grupo o hunter avisa a reunião confirmada,** e se a mensagem cita o projetista no lugar do closer. **Trava:** a mensagem do grupo no hub.
 
 ### Para validar com eles
 
@@ -33,6 +33,7 @@ Lista de 04/11/2026, reorganizada para a reunião de terça, 10/11, às 18h30. O
 
 ### Para avisar (não é pergunta)
 
+- [ ] A fase 6 do hub: números do mês do diretor, Briefings para Projetos, cadência de 7 dias, reativação e o hunter conduzindo a diagnóstica.
 - [ ] As metas novas: 8 conexões por semana dos hunters e o % da rotina do dia por pessoa, no lugar das 10 ligações por dia. O ponto V3 do PDF ainda falava da meta antiga.
 
 ## 2. Terça, 10/11 · Importante, mas pode chegar depois da reunião

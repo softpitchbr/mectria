@@ -2,7 +2,7 @@
 
 Rascunho de 04/11/2026, a partir do que o Lucas descreveu. É o "processo visual hunter → closer" da Retórica (tarefa 18 do `03-plano-erp.md`): um fluxo de rotina, no estilo BPMN, que o hub transforma no dia de cada pessoa. A divisão entre hunter e closer vem do livro *Receita Previsível*, adaptada ao jeito de uma empresa júnior.
 
-Partes prontas: as metas, o dia do hunter, o roteiro de cold call (com um rascunho de cold message), a confirmação da diagnóstica e o dia do closer. Faltam a diagnóstica (quem conduz) e as objeções.
+Partes prontas: as metas, o dia do hunter, o roteiro de cold call (com um rascunho de cold message), a confirmação da diagnóstica e o dia do closer. Falta o conteúdo das objeções.
 
 ## Metas (Lucas, 04/11/2026)
 
@@ -13,7 +13,7 @@ Partes prontas: as metas, o dia do hunter, o roteiro de cold call (com um rascun
 
 ```mermaid
 flowchart TD
-    A[Abre Rotinas no hub] --> B[Leads 'Em contato' no CRM]
+    A[Abre Rotinas no hub] --> B[Leads em conversa no CRM]
     B --> C[Reagendar quem não compareceu]
     C --> D[Bloco de cold call]
     D --> E{Falou com quem decide?}
@@ -28,7 +28,7 @@ flowchart TD
 ```
 
 1. **Abre a aba Rotinas.** O dia começa pelo checklist do hub.
-2. **Leads "Em contato".** Primeiro, os leads que já estão em conversa no CRM da MecTRIA. O nome exato da etiqueta é a confirmar.
+2. **Leads em conversa.** Primeiro, os leads que já estão em conversa no CRM da MecTRIA. Pela lista do CRM, são os de status "Contato estabelecido" e os com o marcador "Retornar" (leitura a confirmar; ver abaixo).
 3. **Reagendamentos.** Depois, quem não compareceu à diagnóstica (no-show), para marcar de novo.
 4. **Cold call.** Só então as ligações novas.
    - O que conta é a **conexão**: a ligação em que o hunter fala com quem decide.
@@ -37,6 +37,14 @@ flowchart TD
 5. **Marca a diagnóstica.** Registra no hub, com as observações importantes da ligação ou do WhatsApp.
 6. **Confirma a reunião** com as três mensagens da seção 3.
 7. **Avisa o time.** Com a confirmação do lead, informa no grupo do comercial que a reunião está confirmada com o closer.
+
+### Status e marcadores do CRM da MecTRIA (recebidos em 04/11/2026)
+
+- **Status:** Não prospectado, Em prospecção, Contato estabelecido, No funil, Cliente e Perdido.
+- **Marcadores automáticos** (pelo histórico): Ligação feita, Mensagem enviada e Nenhum contato registrado.
+- **Marcadores:** Interesse Futuros, Lead Convertido, Lead Disponível, Lead Indisponível, Lead Não Consumado, Prospecção Passiva e Retornar.
+
+Leitura, a confirmar na terça: "em conversa" é o status Contato estabelecido mais o marcador Retornar; "No funil" é quem já tem diagnóstica marcada; e "Interesse Futuros" é o mesmo "interesse futuro" da reativação (`16-pitch-e-fups.md`, seção 4).
 
 ## 2. Cold call
 
@@ -100,7 +108,7 @@ Três mensagens pelo WhatsApp, no dia da reunião. Só sai a seguinte se a anter
 
 ## 4. A diagnóstica
 
-**Quem conduz (a confirmar com a MecTRIA).** Parece ser flexível: já houve diagnóstica conduzida pelo hunter junto com o closer. As combinações possíveis são hunter + projetista, closer + projetista, ou hunter + closer.
+**Quem conduz:** normalmente o hunter, com um projetista (resposta da MecTRIA, 04/11/2026). O closer entra na proposta. No hub, o hunter que marcou a diagnóstica abre, conduz e encerra o painel, e o closer dono continua podendo abrir.
 
 ## 5. O dia do closer
 
@@ -133,7 +141,7 @@ As diagnósticas e as APs marcadas para o dia são obrigação de agenda, não t
 
 | O que muda | Onde | Hoje |
 |---|---|---|
-| A rotina do hunter segue a ordem do fluxo: leads "Em contato", reagendamentos, bloco de cold call e confirmações do dia | Rotinas | Bloco de ligações, WhatsApp e registro das diagnósticas |
+| A rotina do hunter segue a ordem do fluxo: leads em conversa, reagendamentos, bloco de cold call e confirmações do dia | Rotinas | Bloco de ligações, WhatsApp e registro das diagnósticas |
 | A rotina passa a ser por blocos de prioridade, cada um com as suas tarefas, o progresso (feitas de total), a orientação e o % do dia. A do closer segue a seção 5 | Rotinas e Hoje | Uma lista única de itens |
 | As metas passam a ser 8 conexões por semana dos hunters e o % da rotina por pessoa por dia | Hoje do hunter e do diretor | 1 a 2 ligações por dia |
 | As reuniões do dia saem da rotina do closer (ficam na agenda e no Hoje) | Rotinas | O hub gera "Confirmar a diagnóstica com…" na rotina |
@@ -143,7 +151,7 @@ As diagnósticas e as APs marcadas para o dia são obrigação de agenda, não t
 | O roteiro do bloco de ligações passa a ser o da seção 2, com os desvios (30 segundos; conhece ou não o MEJ) e a cold message pronta para copiar | Bloco de ligações | Roteiro da versão 0.2 |
 | Os 3 FUPs de confirmação aparecem como botões no dia da reunião, cada um na sua hora, com a mensagem pronta. "Confirmada" gera a mensagem do grupo | Hoje do hunter | Não tem |
 | O fim da diagnóstica ganha "Cliente não compareceu", que volta a oportunidade para o hunter reagendar | Fechamento da diagnóstica | Só proposta marcada ou não qualificou |
-| Se a diagnóstica puder ser conduzida pelo hunter, ele passa a poder abrir o painel | Permissões | Só o closer dono ou o diretor |
+| O hunter que marcou conduz a diagnóstica e abre o painel (fase 6) | Permissões e Reuniões | Só o closer dono ou o diretor |
 
 ## 7. Em aberto
 
@@ -151,8 +159,8 @@ O que depende da MecTRIA está também na pauta da reunião de 10/11, em `14-ped
 
 | # | Pergunta | Quem responde |
 |---|---|---|
-| 1 | O nome da etiqueta dos leads em conversa no CRM ("Em contato"?) | MecTRIA |
-| 2 | Quem conduz a diagnóstica: hunter, closer, projetista, ou varia? | MecTRIA, na call |
+| 1 | "Em conversa" é o status Contato estabelecido mais o marcador Retornar? | MecTRIA |
+| 2 | A mensagem do grupo diz "com {closer}"; com hunter + projetista na diagnóstica, ela deve citar o projetista? | MecTRIA |
 | 4 | Em que grupo o hunter avisa a confirmação, e se o hub deve só gerar o texto para copiar | MecTRIA |
 | 5 | Quantos clientes a MecTRIA já atendeu, para o {nº de clientes} do cold call (pedido 17) | MecTRIA |
 | 6 | Os professores orientadores são todos doutores? O roteiro diz só "professores" até confirmar (pedido 18) | MecTRIA |

@@ -20,7 +20,7 @@
 
 E `docs/16-pitch-e-fups.md` (cadência de 7 dias, sexta fixa e reativação, decididos pelo Lucas em 04/11/2026).
 
-## Decisões deste plano (o Lucas confirma)
+## Decisões deste plano (confirmadas pelo Lucas em 04/11/2026)
 
 1. **A fase 6 vem antes da 5.** Os números do diretor e o Projetos entram antes do roleplay de aceite. O celular como controle fica opcional para o aceite.
 2. **Conversão do mês:** ganhas ÷ (ganhas + perdidas) decididas no mês. Nutrição não conta como decisão.
@@ -40,6 +40,11 @@ E `docs/16-pitch-e-fups.md` (cadência de 7 dias, sexta fixa e reativação, dec
    - D7 (D0 + 7 dias corridos; se cair em feriado, o dia útil seguinte).
    - Reunião numa sexta: a sexta seguinte é o D7, com a mensagem das duas juntas.
    - As propostas antigas continuam com os toques que já têm.
+10. **% da rotina no mês por pessoa** (meta nova de `docs/17`): itens de rotina feitos ÷ itens do mês, por pessoa, na tabela `rotinas`. As 8 conexões por semana ficam para o plano do processo comercial, porque a ligação ainda não registra a conexão.
+11. **O hunter conduz a diagnóstica** (normalmente hunter + projetista, resposta da MecTRIA em 04/11/2026):
+   - o hunter que marcou a diagnóstica abre, conduz e encerra o painel dela; o closer dono e o diretor continuam podendo;
+   - a seção Reuniões passa a aparecer para o hunter, com as reuniões das oportunidades dele; ele só tem "Iniciar" nas diagnósticas;
+   - a proposta continua só do closer dono e do diretor.
 
 ## Global Constraints
 
@@ -58,6 +63,7 @@ E `docs/16-pitch-e-fups.md` (cadência de 7 dias, sexta fixa e reativação, dec
 - **Projetos digitando o endereço de outra tela:** `/follow-up` e `/api/followup` dão 403 e a tela de sem acesso. Teste na Task 7.
 - **Apagar dados pessoais duas vezes, ou depois o briefing:** a segunda vez não falha, e o briefing e o PDF não mostram mais o nome. Teste na Task 6.
 - **Nutrição antiga, sem `retomar_em`:** aparece na reativação 45 dias depois da entrada em nutrição (pela data do histórico). Teste na Task 3.
+- **Hunter digitando o endereço da proposta ou da diagnóstica de outro hunter:** 403 e a tela de sem acesso. Teste na Task 10.
 
 ---
 
@@ -111,7 +117,7 @@ E `docs/16-pitch-e-fups.md` (cadência de 7 dias, sexta fixa e reativação, dec
 
 **Files:** Create `hub/servidor/numeros.ts` e o teste; rota `GET /api/time/numeros?mes=AAAA-MM`.
 
-**Interfaces — Produces:** `numerosDoTime(db, mes): { propostas; ganhas; perdidas; conversao: number | null; valorVendido; tempoMedioDias: number | null; pactosPorReuniao: number | null; objecoes: { texto; empresa; closer; dia }[]; porCloser: { pessoa; propostas; ganhas; valorVendido }[] }`.
+**Interfaces — Produces:** `numerosDoTime(db, mes): { propostas; ganhas; perdidas; conversao: number | null; valorVendido; tempoMedioDias: number | null; pactosPorReuniao: number | null; objecoes: { texto; empresa; closer; dia }[]; porCloser: { pessoa; propostas; ganhas; valorVendido }[]; rotina: { pessoa; feitos; total }[] }`.
 
 - [ ] **Testes:**
   - "conversão é ganhas sobre decididas e ignora nutrição";
@@ -119,6 +125,7 @@ E `docs/16-pitch-e-fups.md` (cadência de 7 dias, sexta fixa e reativação, dec
   - "ganha às 22h do dia 30 em São Paulo conta no próprio mês";
   - "tempo médio da diagnóstica à decisão em dias";
   - "objeções do mês, as mais recentes primeiro";
+  - "% da rotina do mês por pessoa soma os itens feitos e o total dos dias do mês";
   - "só o diretor acessa a rota".
 - [ ] RED, implementação, GREEN, commit `git commit -m "Calcula os números do mês para o diretor"`
 
@@ -128,7 +135,7 @@ E `docs/16-pitch-e-fups.md` (cadência de 7 dias, sexta fixa e reativação, dec
 
 - [ ] **O que entra:**
   - no Hoje do diretor, um bloco do mês com propostas, fechadas, conversão e valor vendido;
-  - em Time, a aba "Mês", com a escolha do mês, os números por closer, as objeções do mês e os botões de exportação (Task 6).
+  - em Time, a aba "Mês", com a escolha do mês, os números por closer, o % da rotina de cada pessoa no mês, as objeções do mês e os botões de exportação (Task 6).
 - [ ] **Testes:** "Hoje do diretor mostra conversão e valor vendido do mês"; "a aba Mês troca o mês e relê os números".
 - [ ] RED, implementação, GREEN, commit `git commit -m "Mostra os números do mês ao diretor"`
 
@@ -188,14 +195,27 @@ E `docs/16-pitch-e-fups.md` (cadência de 7 dias, sexta fixa e reativação, dec
   - "ainda não troca o mês".
 - [ ] RED, implementação, GREEN, commit `git commit -m "Adiciona a aba Reativação ao follow-up"`
 
-### Task 10: Ponta a ponta e documentação
+### Task 10: O hunter conduz a diagnóstica
+
+**Files:** Modify `hub/compartilhado/permissoes.ts` (`reunioes` inclui o hunter), `hub/servidor/acessoReuniao.ts` (o hunter que marcou é dono da diagnóstica, não da proposta), `hub/src/telas/Reunioes.tsx` (o hunter só tem ação nas diagnósticas) e `hub/src/telas/hoje/HojeHunter.tsx` ("Iniciar" na diagnóstica do dia); Test `hub/compartilhado/permissoes.test.ts`, `hub/servidor/rotas/fase6.test.ts` e `hub/src/telas/Reunioes.test.tsx`.
+
+- [ ] **Testes:**
+  - "o hunter vê a seção Reuniões";
+  - "o hunter que marcou inicia, anota e encerra a diagnóstica";
+  - "o hunter recebe 403 na proposta e na diagnóstica de outro hunter";
+  - "o closer dono continua conduzindo a diagnóstica";
+  - "na agenda do hunter, a proposta não tem Iniciar".
+- [ ] RED, implementação, GREEN, commit `git commit -m "Deixa o hunter conduzir a diagnóstica que marcou"`
+
+### Task 11: Ponta a ponta e documentação
 
 - [ ] **Semente:** uma oportunidade em nutrição com o mês de retomar já vencido, uma pendência técnica aberta e uma ganha no mês.
 - [ ] **`e2e/fase6.spec.ts`:**
   - o diretor vê os números e exporta o CSV;
   - Projetos responde uma pendência e o closer vê a resposta no follow-up;
   - o closer reativa marcando uma reunião;
-  - a proposta nova cria os toques de 7 dias.
+  - a proposta nova cria os toques de 7 dias;
+  - o hunter conduz a diagnóstica que marcou.
 - [ ] **Documentação:**
   - `hub/README.md`;
   - `docs/07` (decisões da fase 6, "a confirmar");
