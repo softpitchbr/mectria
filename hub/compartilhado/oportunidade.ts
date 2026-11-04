@@ -120,7 +120,7 @@ export interface ItemFollowup {
   estado: EstadoFollowup;
 }
 
-export type ResultadoProposta = { resultado: "ganha"; valor: number } | { resultado: "perdida"; motivo: string } | { resultado: "nutricao" };
+export type ResultadoProposta = { resultado: "ganha"; valor: number } | { resultado: "perdida"; motivo: string } | { resultado: "nutricao"; retomarEm?: string };
 
 export interface ItemRotina {
   chave: string;
@@ -168,7 +168,7 @@ export interface Pendencia {
 
 export type FechamentoDiagnostica =
   | { resultado: "proposta_marcada"; dataHora: string; formato: "online" | "presencial"; quemDecide: string }
-  | { resultado: "nao_qualificou"; motivo: string };
+  | { resultado: "nao_qualificou"; motivo: string; retomarEm?: string };
 
 export interface FichaCompleta {
   reuniao: Reuniao;

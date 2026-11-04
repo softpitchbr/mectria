@@ -174,7 +174,14 @@ export function validarNovaProposta(corpo: unknown, hoje: string): Validado<Nova
   };
 }
 
-export function validarResultado(corpo: unknown): Validado<ResultadoProposta> {
+const MENSAGEM_RETOMAR = "Escolha o mês para retomar, deste mês em diante.";
+
+/** Dia para retomar a oportunidade em nutrição: data válida, deste mês em diante. */
+function retomarValido(valor: unknown, hoje: string): valor is string {
+  return typeof valor === "string" && DIA.test(valor) && !Number.isNaN(Date.parse(`${valor}T12:00:00Z`)) && new Date(`${valor}T12:00:00Z`).toISOString().slice(0, 10) === valor && valor.slice(0, 7) >= hoje.slice(0, 7);
+}
+
+export function validarResultado(corpo: unknown, hoje: string = hojeEmSaoPaulo()): Validado<ResultadoProposta> {
   if (!ehObjeto(corpo)) return { ok: false, mensagem: MENSAGEM.corpo };
   if (corpo.resultado === "ganha") {
     const valor = valorEmReais(corpo.valor);
@@ -185,7 +192,10 @@ export function validarResultado(corpo: unknown): Validado<ResultadoProposta> {
       ? { ok: true, dados: { resultado: "perdida", motivo: corpo.motivo } }
       : { ok: false, mensagem: "Escolha o motivo." };
   }
-  if (corpo.resultado === "nutricao") return { ok: true, dados: { resultado: "nutricao" } };
+  if (corpo.resultado === "nutricao") {
+    if (corpo.retomarEm === undefined) return { ok: true, dados: { resultado: "nutricao" } };
+    return retomarValido(corpo.retomarEm, hoje) ? { ok: true, dados: { resultado: "nutricao", retomarEm: corpo.retomarEm } } : { ok: false, mensagem: MENSAGEM_RETOMAR };
+  }
   return { ok: false, mensagem: "Escolha o resultado: ganha, perdida ou nutrição." };
 }
 
@@ -239,7 +249,7 @@ export function validarAnotacao(corpo: unknown): Validado<Anotacao> {
   };
 }
 
-export function validarFechamento(corpo: unknown): Validado<FechamentoDiagnostica> {
+export function validarFechamento(corpo: unknown, hoje: string = hojeEmSaoPaulo()): Validado<FechamentoDiagnostica> {
   if (!ehObjeto(corpo)) return { ok: false, mensagem: MENSAGEM.corpo };
   if (corpo.resultado === "proposta_marcada") {
     if (typeof corpo.dataHora !== "string" || !DIA_E_HORA.test(corpo.dataHora) || Number.isNaN(Date.parse(`${corpo.dataHora}:00-03:00`))) {
@@ -251,9 +261,11 @@ export function validarFechamento(corpo: unknown): Validado<FechamentoDiagnostic
     return { ok: true, dados: { resultado: "proposta_marcada", dataHora: corpo.dataHora, formato: corpo.formato, quemDecide } };
   }
   if (corpo.resultado === "nao_qualificou") {
-    return typeof corpo.motivo === "string" && MOTIVOS_NAO_QUALIFICOU.includes(corpo.motivo)
-      ? { ok: true, dados: { resultado: "nao_qualificou", motivo: corpo.motivo } }
-      : { ok: false, mensagem: "Escolha o motivo." };
+    if (typeof corpo.motivo !== "string" || !MOTIVOS_NAO_QUALIFICOU.includes(corpo.motivo)) return { ok: false, mensagem: "Escolha o motivo." };
+    if (corpo.retomarEm === undefined) return { ok: true, dados: { resultado: "nao_qualificou", motivo: corpo.motivo } };
+    return retomarValido(corpo.retomarEm, hoje)
+      ? { ok: true, dados: { resultado: "nao_qualificou", motivo: corpo.motivo, retomarEm: corpo.retomarEm } }
+      : { ok: false, mensagem: MENSAGEM_RETOMAR };
   }
   return { ok: false, mensagem: "Escolha como a diagnóstica terminou." };
 }
@@ -328,4 +340,25 @@ export function validarFechamentoProposta(corpo: unknown, hoje: string = hojeEmS
   const observacao = textoEntre(corpo.observacao, 0, 500);
   if (observacao === null) return { ok: false, mensagem: "O que ajustar tem até 500 caracteres." };
   return { ok: true, dados: { desfecho: d, valor, dataDecisao: corpo.dataDecisao, quemDecide, ...(observacao ? { observacao } : {}) } };
+}
+
+// Fase 6 ------------------------------------------------------------------------
+
+export function validarAdiamento(corpo: unknown, hoje: string = hojeEmSaoPaulo()): Validado<string> {
+  if (!ehObjeto(corpo)) return { ok: false, mensagem: MENSAGEM.corpo };
+  return retomarValido(corpo.retomarEm, hoje) ? { ok: true, dados: corpo.retomarEm } : { ok: false, mensagem: MENSAGEM_RETOMAR };
+}
+
+export function validarReuniaoDeReativacao(corpo: unknown): Validado<{ dataHora: string; formato: "online" | "presencial" }> {
+  if (!ehObjeto(corpo)) return { ok: false, mensagem: MENSAGEM.corpo };
+  if (typeof corpo.dataHora !== "string" || !DIA_E_HORA.test(corpo.dataHora) || Number.isNaN(Date.parse(`${corpo.dataHora}:00-03:00`))) {
+    return { ok: false, mensagem: "Informe a data e a hora da reunião." };
+  }
+  if (corpo.formato !== "online" && corpo.formato !== "presencial") return { ok: false, mensagem: "Escolha online ou presencial." };
+  return { ok: true, dados: { dataHora: corpo.dataHora, formato: corpo.formato } };
+}
+
+export function validarMotivoDePerda(corpo: unknown): Validado<string> {
+  if (!ehObjeto(corpo)) return { ok: false, mensagem: MENSAGEM.corpo };
+  return typeof corpo.motivo === "string" && MOTIVOS_PERDA.includes(corpo.motivo) ? { ok: true, dados: corpo.motivo } : { ok: false, mensagem: "Escolha o motivo." };
 }

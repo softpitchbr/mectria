@@ -1,4 +1,5 @@
 import { nomeDoToque } from "../compartilhado/cadencia";
+import { reativacoesDoDia } from "./reativacao";
 import { META_LIGACOES_DIA, MINIMO_LIGACOES_DIA, ROTINA_FIXA } from "../compartilhado/dados/rotinas";
 import { ehDiaUtil } from "../compartilhado/datas";
 import type { ContagemLigacoes, DiaDeRotina, ItemRotina, ResultadoLigacao, ResumoPessoa } from "../compartilhado/oportunidade";
@@ -119,6 +120,9 @@ export async function rotinaDoDia(db: D1Database, pessoa: Pessoa, dia: string, p
         feito: t.feito_em !== null,
         link: `/follow-up?proposta=${t.proposta_id}`,
       });
+    }
+    for (const r of await reativacoesDoDia(db, pessoa, dia)) {
+      itens.push({ chave: `reativar:${r.id}`, titulo: `Reativar ${r.empresa}`, origem: "gerado", automatico: true, feito: r.feito, link: "/follow-up?aba=reativacao" });
     }
   }
 

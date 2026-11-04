@@ -1,4 +1,5 @@
 import { datasDaCadencia } from "../compartilhado/cadencia";
+import { retomarOuPadrao } from "../compartilhado/reativacao";
 import type {
   EstadoFollowup,
   ItemFollowup,
@@ -200,10 +201,10 @@ export async function registrarResultado(
   const motivo = r.resultado === "perdida" ? r.motivo : null;
   const mudou = await db
     .prepare(
-      `UPDATE oportunidades SET situacao = ?, valor_fechado = ?, motivo_perda = ?, atualizado_em = datetime('now')
+      `UPDATE oportunidades SET situacao = ?, valor_fechado = ?, motivo_perda = ?, retomar_em = ?, atualizado_em = datetime('now')
        WHERE id = ? AND situacao = 'em_followup' RETURNING id`,
     )
-    .bind(r.resultado, valor, motivo, oportunidadeId)
+    .bind(r.resultado, valor, motivo, r.resultado === "nutricao" ? retomarOuPadrao(r.retomarEm) : null, oportunidadeId)
     .first<{ id: number }>();
   if (!mudou) {
     if (!(await buscarOportunidade(db, oportunidadeId))) throw new Error("nao_encontrado");

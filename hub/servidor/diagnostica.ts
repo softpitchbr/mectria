@@ -1,4 +1,5 @@
 import { hojeEmSaoPaulo, somarDiasUteis } from "../compartilhado/datas";
+import { retomarOuPadrao } from "../compartilhado/reativacao";
 import type { Anotacao, Marcacao } from "../compartilhado/diagnostica";
 import type { FechamentoDiagnostica, FichaCompleta, Pendencia, Reuniao } from "../compartilhado/oportunidade";
 import { buscarOportunidade, reuniaoDeLinha, SELECT_REUNIAO, type LinhaReuniao } from "./oportunidades";
@@ -155,10 +156,10 @@ export async function encerrarDiagnostica(db: D1Database, reuniaoId: number, f: 
       .bind(para, autor.id, reuniaoId),
     db
       .prepare(
-        `UPDATE oportunidades SET situacao = ?, atualizado_em = datetime('now')
+        `UPDATE oportunidades SET situacao = ?, retomar_em = ?, atualizado_em = datetime('now')
          WHERE situacao = 'diagnostica_marcada' AND id = (SELECT oportunidade_id FROM reunioes WHERE id = ? AND situacao = 'concluida')`,
       )
-      .bind(para, reuniaoId),
+      .bind(para, f.resultado === "nao_qualificou" ? retomarOuPadrao(f.retomarEm) : null, reuniaoId),
   ];
   const [concluiu] = await db.batch(gravacoes);
   if (!concluiu.results.length) throw new Error(await motivoDaRecusa(db, reuniaoId, "diagnostica"));
