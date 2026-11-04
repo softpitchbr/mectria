@@ -84,6 +84,19 @@ export default function ToqueEmFoco({
           <Botao onClick={copiar}>Copiar mensagem</Botao>
         </div>
         {modelo.dica && <p className={`suave ${estilos.dica}`}>{modelo.dica}</p>}
+        {item.respostasTecnicas?.length ? (
+          <div className={estilos.respostas}>
+            <h3>Respostas de Projetos</h3>
+            <ul aria-label="Respostas de Projetos">
+              {item.respostasTecnicas.map((p) => (
+                <li key={p.id}>
+                  <p className="suave">{p.texto}</p>
+                  <p>{p.resposta}</p>
+                </li>
+              ))}
+            </ul>
+          </div>
+        ) : null}
       </section>
 
       <form aria-label="Toque feito" className={estilos.registro} onSubmit={registrar} noValidate>

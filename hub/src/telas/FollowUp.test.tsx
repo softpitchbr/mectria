@@ -214,3 +214,16 @@ test("proposta de oportunidade de colega: assume e depois registra", async () =>
   await screen.findByRole("status");
   expect(chamadas).toEqual(["assumir", "proposta"]);
 });
+
+test("o card do follow-up mostra a resposta de Projetos", async () => {
+  const comResposta = {
+    ...item(9, "Caldeiraria Sul", "hoje", "D1"),
+    respostasTecnicas: [{ id: 7, anotacaoId: 3, oportunidadeId: 9, texto: "Qual a vazão?", prazo: "2026-11-04", situacao: "respondida", resposta: "3 m³/h" }],
+  };
+  fingirApi({ "/api/eu": { corpo: PESSOAS.closer }, "GET /api/followup": { corpo: [comResposta] } });
+  abrir("/follow-up");
+  const cartao = await screen.findByRole("button", { name: /Caldeiraria Sul/ });
+  expect(cartao).toHaveTextContent("Projetos respondeu: 3 m³/h");
+  await userEvent.click(cartao);
+  expect(within(screen.getByRole("dialog")).getByRole("list", { name: "Respostas de Projetos" })).toHaveTextContent("Qual a vazão?3 m³/h");
+});

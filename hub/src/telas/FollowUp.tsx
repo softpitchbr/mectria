@@ -26,14 +26,17 @@ const GRUPOS: { estado: EstadoFollowup; titulo: string }[] = [
   { estado: "sem_toque", titulo: "Sem toque" },
 ];
 
-
 function CartaoDaProposta({ item, eu, aoAbrir }: { item: ItemFollowup; eu: Eu; aoAbrir: (origem: HTMLElement) => void }) {
   const { oportunidade, proposta, proximo } = item;
   return (
     <button type="button" className={estilos.cartao} onClick={(e) => aoAbrir(e.currentTarget)}>
       <span className={estilos.linhaTopo}>
         <strong>{oportunidade.empresa}</strong>
-        {item.estado === "atrasado" && <Tag tipo="atrasado">Atrasado · {item.atrasados} {item.atrasados === 1 ? "toque" : "toques"}</Tag>}
+        {item.estado === "atrasado" && (
+          <Tag tipo="atrasado">
+            Atrasado · {item.atrasados} {item.atrasados === 1 ? "toque" : "toques"}
+          </Tag>
+        )}
         {item.estado === "hoje" && <Tag tipo="hoje">Hoje</Tag>}
       </span>
       <span className="suave">
@@ -42,12 +45,16 @@ function CartaoDaProposta({ item, eu, aoAbrir }: { item: ItemFollowup; eu: Eu; a
       <span className={`mono ${estilos.toque}`}>
         {proximo ? (
           <>
-            <span className={estilos.codigo}>{ROTULO_TOQUE[proximo.codigo] ?? proximo.codigo}</span> {canalDoToque(proximo.codigo)} · {formatarDia(proximo.previstoPara)}
+            <span className={estilos.codigo}>{ROTULO_TOQUE[proximo.codigo] ?? proximo.codigo}</span> {canalDoToque(proximo.codigo)} ·{" "}
+            {formatarDia(proximo.previstoPara)}
           </>
         ) : (
           "Cadência terminada: registre o resultado"
         )}
       </span>
+      {item.respostasTecnicas?.length ? (
+        <span className={estilos.respostaTecnica}>Projetos respondeu: {item.respostasTecnicas[item.respostasTecnicas.length - 1].resposta}</span>
+      ) : null}
       {eu.cargo === "diretor" && oportunidade.closerNome && <span className="suave">Closer: {oportunidade.closerNome}</span>}
     </button>
   );
@@ -145,7 +152,11 @@ export default function FollowUp({ eu }: { eu: Eu }) {
         })}
 
       {aberto?.tipo === "toque" && (
-        <Foco titulo={`Toque ${ROTULO_TOQUE[aberto.item.proximo!.codigo] ?? aberto.item.proximo!.codigo} · ${aberto.item.oportunidade.empresa}`} origem={aberto.origem} aoSair={fechar}>
+        <Foco
+          titulo={`Toque ${ROTULO_TOQUE[aberto.item.proximo!.codigo] ?? aberto.item.proximo!.codigo} · ${aberto.item.oportunidade.empresa}`}
+          origem={aberto.origem}
+          aoSair={fechar}
+        >
           <ToqueEmFoco
             item={aberto.item}
             eu={eu}

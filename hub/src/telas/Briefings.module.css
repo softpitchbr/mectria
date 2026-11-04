@@ -1,0 +1,71 @@
+.briefings {
+  display: grid;
+  gap: 24px;
+}
+
+.cabeca {
+  display: grid;
+  gap: 6px;
+  max-width: 640px;
+}
+
+.cabeca h1,
+.cabeca p {
+  margin: 0;
+}
+
+.subtitulo {
+  margin: 0 0 12px;
+  font-size: 16px;
+}
+
+.lista {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: grid;
+  gap: 10px;
+}
+
+.pendencia {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto auto;
+  align-items: center;
+  gap: 12px;
+  padding-bottom: 10px;
+  border-bottom: 1px solid var(--linha);
+}
+
+.pendencia p {
+  margin: 0;
+}
+
+.briefing {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto auto;
+  align-items: center;
+  gap: 12px;
+}
+
+.briefing a {
+  color: var(--texto);
+  text-underline-offset: 3px;
+}
+
+.foco {
+  display: grid;
+  gap: 14px;
+  max-width: 640px;
+}
+
+.foco h2,
+.foco p {
+  margin: 0;
+}
+
+@media (max-width: 640px) {
+  .pendencia,
+  .briefing {
+    grid-template-columns: minmax(0, 1fr);
+  }
+}

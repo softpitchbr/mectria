@@ -1,4 +1,4 @@
-import Painel from "../componentes/Painel";
+import HojeProjetos from "./hoje/HojeProjetos";
 import type { Eu } from "../sessao/useEu";
 import HojeCloser from "./hoje/HojeCloser";
 import HojeDiretor from "./hoje/HojeDiretor";
@@ -6,20 +6,7 @@ import HojeHunter from "./hoje/HojeHunter";
 import estilos from "./Hoje.module.css";
 
 const DIAS = ["Domingo", "Segunda", "Terça", "Quarta", "Quinta", "Sexta", "Sábado"];
-const MESES = [
-  "janeiro",
-  "fevereiro",
-  "março",
-  "abril",
-  "maio",
-  "junho",
-  "julho",
-  "agosto",
-  "setembro",
-  "outubro",
-  "novembro",
-  "dezembro",
-];
+const MESES = ["janeiro", "fevereiro", "março", "abril", "maio", "junho", "julho", "agosto", "setembro", "outubro", "novembro", "dezembro"];
 
 function saudacao(agora: Date): string {
   const hora = agora.getHours();
@@ -47,12 +34,7 @@ export default function Hoje({ eu }: { eu: Eu }) {
       {eu.cargo === "hunter" && <HojeHunter eu={eu} />}
       {eu.cargo === "closer" && <HojeCloser />}
       {eu.cargo === "diretor" && <HojeDiretor />}
-      {eu.cargo === "projetos" && (
-        <Painel className={estilos.aviso}>
-          <p className="mono suave">EM CONSTRUÇÃO</p>
-          <p>Briefings e pendências técnicas chegam na fase 6.</p>
-        </Painel>
-      )}
+      {eu.cargo === "projetos" && <HojeProjetos />}
     </div>
   );
 }

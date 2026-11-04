@@ -200,10 +200,27 @@ test("Hoje do diretor mostra conversão e valor vendido do mês", async () => {
   expect(mes).toHaveTextContent("Fechadas1");
 });
 
-test("Projetos vê o aviso da fase 6", async () => {
-  fingirApi({ "/api/eu": { corpo: PESSOAS.projetos } });
+test("Hoje de Projetos mostra os briefings novos e as pendências abertas", async () => {
+  fingirApi({
+    "/api/eu": { corpo: PESSOAS.projetos },
+    "GET /api/briefings": {
+      corpo: [{ id: 5, oportunidadeId: 1, empresa: "Usinagem Alfa", tipo: "diagnostica", dataHora: "2026-11-03T10:00", briefingEnviadoEm: "2026-11-03 15:00:00" }],
+    },
+    "GET /api/pendencias": {
+      corpo: [
+        {
+          pendencia: { id: 7, oportunidadeId: 1, texto: "Qual a vazão?", prazo: "2026-11-04", situacao: "aberta", resposta: null },
+          empresa: "Usinagem Alfa",
+          reuniaoId: 5,
+          estado: "atrasada",
+        },
+      ],
+    },
+  } as never);
   abrir("/");
-  expect(await screen.findByText("Briefings e pendências técnicas chegam na fase 6.")).toBeInTheDocument();
+  expect(await screen.findByRole("list", { name: "Briefings novos" })).toHaveTextContent("Usinagem Alfa");
+  expect(screen.getByRole("list", { name: "Pendências abertas" })).toHaveTextContent("Qual a vazão?");
+  expect(screen.getByRole("link", { name: "Responder em Briefings" })).toHaveAttribute("href", "/briefings");
 });
 
 test("segurar a tecla no bloco não registra várias ligações", async () => {
