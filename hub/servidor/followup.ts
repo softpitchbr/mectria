@@ -252,7 +252,7 @@ export async function numerosDoMes(
   const ganhas = await db
     .prepare(
       `SELECT COUNT(DISTINCT h.oportunidade_id) AS n FROM historico h JOIN oportunidades o ON o.id = h.oportunidade_id
-       WHERE h.para = 'ganha' AND o.situacao = 'ganha' AND substr(datetime(h.em, '-3 hours'), 1, 7) = ? ${filtro}`,
+       WHERE h.para = 'ganha' AND h.de IS NOT h.para AND o.situacao = 'ganha' AND substr(datetime(h.em, '-3 hours'), 1, 7) = ? ${filtro}`,
     )
     .bind(mes, ...extra)
     .first<{ n: number }>();

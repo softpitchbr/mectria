@@ -2,6 +2,9 @@ import { SERVICOS } from "../compartilhado/dados/servicos";
 import { ROTULO_SITUACAO, type Situacao } from "../compartilhado/oportunidade";
 import type { Pessoa } from "./tipos";
 
+/** O detalhe da linha do histórico que registra a exclusão de dados pessoais (não é mudança de situação). */
+export const DETALHE_LGPD = "Dados pessoais apagados a pedido (LGPD)";
+
 const TABELAS = [
   "pessoas",
   "oportunidades",
@@ -52,7 +55,7 @@ export async function csvDoHistorico(db: D1Database, mes: string): Promise<strin
     .prepare(
       `SELECT o.empresa, o.servico, c.nome AS closer, p.apresentada_em, o.situacao, p.valor, o.valor_fechado, o.motivo_perda,
          CASE WHEN o.situacao IN ('ganha', 'perdida', 'nutricao')
-           THEN (SELECT date(MAX(h.em), '-3 hours') FROM historico h WHERE h.oportunidade_id = o.id AND h.para = o.situacao) END AS decidida_em
+           THEN (SELECT date(MAX(h.em), '-3 hours') FROM historico h WHERE h.oportunidade_id = o.id AND h.para = o.situacao AND h.de IS NOT h.para) END AS decidida_em
        FROM propostas p JOIN oportunidades o ON o.id = p.oportunidade_id LEFT JOIN pessoas c ON c.id = o.closer_id
        WHERE substr(p.apresentada_em, 1, 7) = ? ORDER BY p.apresentada_em, p.id`,
     )
@@ -99,11 +102,18 @@ export async function apagarDadosPessoais(db: D1Database, oportunidadeId: number
       .bind(oportunidadeId),
     db.prepare("UPDATE propostas SET quem_decide = '' WHERE oportunidade_id = ?").bind(oportunidadeId),
     db.prepare("UPDATE reunioes SET quem_decide = NULL, sala = NULL WHERE oportunidade_id = ?").bind(oportunidadeId),
+    // As respostas sobre quem decide e quem assina guardam nomes.
+    db
+      .prepare(
+        `UPDATE fichas SET resposta = '' WHERE pergunta_id IN ('a-decisores', 'a-processo')
+         AND reuniao_id IN (SELECT id FROM reunioes WHERE oportunidade_id = ?)`,
+      )
+      .bind(oportunidadeId),
     db
       .prepare(
         `INSERT INTO historico (oportunidade_id, de, para, detalhe, autor_id)
-         SELECT id, situacao, situacao, 'Dados pessoais apagados a pedido (LGPD)', ? FROM oportunidades WHERE id = ?`,
+         SELECT id, situacao, situacao, ?, ? FROM oportunidades WHERE id = ?`,
       )
-      .bind(autor.id, oportunidadeId),
+      .bind(DETALHE_LGPD, autor.id, oportunidadeId),
   ]);
 }

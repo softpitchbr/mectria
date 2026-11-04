@@ -83,12 +83,12 @@ export default function Briefing() {
   return (
     <div className={estilos.pagina}>
       <nav className={estilos.acoes} aria-label="Ações do briefing">
-        <Link to="/reunioes">← Reuniões</Link>
+        {eu?.cargo === "projetos" ? <Link to="/briefings">← Briefings</Link> : <Link to="/reunioes">← Reuniões</Link>}
         <Botao onClick={copiarResumo}>Copiar resumo para o cliente</Botao>
         {reuniao.briefingEnviadoEm ? (
           <span className="mono suave">Enviado para Projetos</span>
         ) : (
-          <Botao onClick={marcarEnviado}>Marcar como enviado para Projetos</Botao>
+          eu?.cargo !== "projetos" && <Botao onClick={marcarEnviado}>Marcar como enviado para Projetos</Botao>
         )}
         <Botao variante="primario" onClick={() => window.print()}>
           Gerar PDF

@@ -2,10 +2,11 @@ import { eDonoDaOportunidade } from "../compartilhado/permissoes";
 import { mesesEntre, type ItemReativacao } from "../compartilhado/reativacao";
 import type { Oportunidade, Reuniao } from "../compartilhado/oportunidade";
 import { buscarOportunidade, oportunidadeDeLinha, reuniaoDeLinha, SELECT_OPORTUNIDADE, SELECT_REUNIAO, type LinhaReuniao } from "./oportunidades";
+import { DETALHE_LGPD } from "./exportar";
 import type { Pessoa } from "./tipos";
 
 // Quando a oportunidade em nutrição volta: o mês escolhido ou, nas antigas, a entrada em nutrição + 45 dias (hora de São Paulo).
-const RETOMAR = `COALESCE(o.retomar_em, date((SELECT MAX(h.em) FROM historico h WHERE h.oportunidade_id = o.id AND h.para = 'nutricao'), '-3 hours', '+45 days'))`;
+const RETOMAR = `COALESCE(o.retomar_em, date((SELECT MAX(h.em) FROM historico h WHERE h.oportunidade_id = o.id AND h.para = 'nutricao' AND h.de IS NOT h.para), '-3 hours', '+45 days'))`;
 const ULTIMA_REUNIAO = `NULLIF(MAX(
   COALESCE((SELECT MAX(substr(r.data_hora, 1, 10)) FROM reunioes r WHERE r.oportunidade_id = o.id), ''),
   COALESCE((SELECT MAX(p.apresentada_em) FROM propostas p WHERE p.oportunidade_id = o.id), '')), '')`;
@@ -45,8 +46,8 @@ function conferirBatch(resultados: D1Result[]): void {
 }
 
 /** "Ainda não": troca o mês para retomar. */
-export async function adiarReativacao(db: D1Database, id: number, retomarEm: string, autor: Pessoa): Promise<void> {
-  await conferir(db, id, autor);
+export async function adiarReativacao(db: D1Database, id: number, retomarEm: string, autor: Pessoa): Promise<Oportunidade> {
+  const o = await conferir(db, id, autor);
   conferirBatch(
     await db.batch([
       db
@@ -57,6 +58,7 @@ export async function adiarReativacao(db: D1Database, id: number, retomarEm: str
         .bind(retomarEm, id),
     ]),
   );
+  return o;
 }
 
 /** "Marcar reunião": cria a diagnóstica e volta a oportunidade para diagnostica_marcada, só se ela ainda estiver em nutrição. */
@@ -69,9 +71,13 @@ export async function reativarComReuniao(
   await conferir(db, id, autor);
   // As três gravações olham a situação de antes do UPDATE, então a segunda chamada não cria outra reunião.
   const resultados = await db.batch([
-    db.prepare(`INSERT INTO reunioes (oportunidade_id, tipo, data_hora, formato) SELECT id, 'diagnostica', ?, ? ${NA_NUTRICAO} RETURNING id`).bind(nova.dataHora, nova.formato, id),
     db
-      .prepare(`INSERT INTO historico (oportunidade_id, de, para, detalhe, autor_id) SELECT id, 'nutricao', 'diagnostica_marcada', 'Reativação', ? ${NA_NUTRICAO}`)
+      .prepare(`INSERT INTO reunioes (oportunidade_id, tipo, data_hora, formato) SELECT id, 'diagnostica', ?, ? ${NA_NUTRICAO} RETURNING id`)
+      .bind(nova.dataHora, nova.formato, id),
+    db
+      .prepare(
+        `INSERT INTO historico (oportunidade_id, de, para, detalhe, autor_id) SELECT id, 'nutricao', 'diagnostica_marcada', 'Reativação', ? ${NA_NUTRICAO}`,
+      )
       .bind(autor.id, id),
     db
       .prepare(
@@ -87,8 +93,8 @@ export async function reativarComReuniao(
 }
 
 /** "Perdida": encerra a cadência com o motivo. */
-export async function perderNaReativacao(db: D1Database, id: number, motivo: string, autor: Pessoa): Promise<void> {
-  await conferir(db, id, autor);
+export async function perderNaReativacao(db: D1Database, id: number, motivo: string, autor: Pessoa): Promise<Oportunidade> {
+  const o = await conferir(db, id, autor);
   conferirBatch(
     await db.batch([
       db
@@ -102,6 +108,7 @@ export async function perderNaReativacao(db: D1Database, id: number, motivo: str
         .bind(motivo, id),
     ]),
   );
+  return o;
 }
 
 /** Reativações do closer no dia: as que venceram (a fazer) e as que ele já tratou hoje (feitas). */
@@ -109,9 +116,9 @@ export async function reativacoesDoDia(db: D1Database, closer: Pessoa, dia: stri
   const { results } = await db
     .prepare(
       `SELECT DISTINCT o.id, o.empresa FROM historico h JOIN oportunidades o ON o.id = h.oportunidade_id
-       WHERE h.de = 'nutricao' AND date(h.em, '-3 hours') = ? AND o.closer_id = ?`,
+       WHERE h.de = 'nutricao' AND date(h.em, '-3 hours') = ? AND o.closer_id = ? AND (h.detalhe IS NULL OR h.detalhe <> ?)`,
     )
-    .bind(dia, closer.id)
+    .bind(dia, closer.id, DETALHE_LGPD)
     .all<{ id: number; empresa: string }>();
   const feitas = results.map((r) => ({ ...r, feito: true }));
   const tratadas = new Set(feitas.map((r) => r.id));

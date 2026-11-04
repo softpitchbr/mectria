@@ -1,3 +1,5 @@
+import { hojeEmSaoPaulo } from "../../../../compartilhado/datas";
+import { atualizarRotinaDe } from "../../../../servidor/rotina";
 import { respostaDoErroDeReativacao, semPermissaoNaReativacao } from "../../../../servidor/errosDaReativacao";
 import { reativarComReuniao } from "../../../../servidor/reativacao";
 import { erro, json } from "../../../../servidor/respostas";
@@ -11,7 +13,9 @@ export const onRequestPost: PagesFunction<Env, "id", DadosApi> = async ({ reques
   const validado = validarReuniaoDeReativacao(await lerCorpo(request));
   if (!validado.ok) return erro("invalido", validado.mensagem);
   try {
-    return json(await reativarComReuniao(env.DB, Number(params.id), validado.dados, data.pessoa), 201);
+    const marcada = await reativarComReuniao(env.DB, Number(params.id), validado.dados, data.pessoa);
+    await atualizarRotinaDe(env.DB, marcada.oportunidade.closerId, hojeEmSaoPaulo());
+    return json(marcada, 201);
   } catch (e) {
     const resposta = respostaDoErroDeReativacao(e);
     if (resposta) return resposta;

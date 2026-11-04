@@ -104,3 +104,12 @@ test("o closer não vê o botão de apagar dados pessoais", async () => {
   await screen.findByRole("button", { name: "Gerar PDF" });
   expect(screen.queryByRole("button", { name: "Apagar dados pessoais (LGPD)" })).toBeNull();
 });
+
+test("Projetos lê o briefing sem a ação de enviar e volta para Briefings", async () => {
+  fingirApi({ "/api/eu": { corpo: PESSOAS.projetos }, "GET /api/reunioes/5": { corpo: FICHA } } as never);
+  abrir("/reunioes/5/briefing");
+  await screen.findByRole("button", { name: "Gerar PDF" });
+  expect(screen.queryByRole("button", { name: "Marcar como enviado para Projetos" })).toBeNull();
+  expect(screen.getByRole("link", { name: "← Briefings" })).toHaveAttribute("href", "/briefings");
+  expect(screen.queryByRole("link", { name: "← Reuniões" })).toBeNull();
+});

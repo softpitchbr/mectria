@@ -23,6 +23,7 @@ import { onRequestGet as getFicha } from "../../functions/api/reunioes/[id]";
 import { onRequestPut as putRespostas } from "../../functions/api/reunioes/[id]/respostas";
 import { criarDiagnostica } from "../oportunidades";
 import { registrarProposta } from "../followup";
+import { rotinaDoDia } from "../rotina";
 import { criar } from "../pessoas";
 import type { DadosApi, Env, Pessoa } from "../tipos";
 
@@ -191,7 +192,24 @@ test("Projetos recebe a ficha completa da diagnóstica, com as respostas, para l
   const params = { id: String(reuniao.id) };
   await chamar(g(postIniciar), "hun@mectria.com", { corpo: {}, params });
   await chamar(g(putRespostas), "hun@mectria.com", { metodo: "PUT", corpo: { respostas: [{ perguntaId: "c-dor", resposta: "calor" }] }, params });
-  const ficha = await corpo<{ respostas?: Record<string, string> }>(await chamar(g(getFicha), "pro@mectria.com", { params }));
+  await env.DB.prepare("UPDATE oportunidades SET valor_fechado = 900000, motivo_perda = 'Preço' WHERE id = ?").bind(reuniao.oportunidadeId).run();
+  const ficha = await corpo<{ respostas?: Record<string, string>; oportunidade: Record<string, unknown> }>(await chamar(g(getFicha), "pro@mectria.com", { params }));
   expect(ficha.respostas).toEqual({ "c-dor": "calor" });
+  // Projetos não vê valores (spec, seção 4): o valor fechado e o motivo da perda não saem para Projetos.
+  expect(ficha.oportunidade).not.toHaveProperty("valorFechado");
+  expect(ficha.oportunidade).not.toHaveProperty("motivoPerda");
+  const doCloser = await corpo<{ oportunidade: Record<string, unknown> }>(await chamar(g(getFicha), "clo@mectria.com", { params }));
+  expect(doCloser.oportunidade.valorFechado).toBe(900000);
   expect((await chamar(g(putRespostas), "pro@mectria.com", { metodo: "PUT", corpo: { respostas: [] }, params })).status).toBe(403);
+});
+
+test("as ações da reativação atualizam a rotina do closer no dia", async () => {
+  const id = await propostaEmFollowup("Rotina");
+  await chamar(g(postResultado), "clo@mectria.com", { corpo: { resultado: "nutricao", retomarEm: `${hoje.slice(0, 7)}-01` }, params: { id } });
+  await rotinaDoDia(env.DB, closer, hoje);
+  const antes = await env.DB.prepare("SELECT feito_em FROM rotinas WHERE pessoa_id = ? AND dia = ? AND chave = ?").bind(closer.id, hoje, `reativar:${id}`).first<{ feito_em: string | null }>();
+  expect(antes?.feito_em).toBeNull();
+  expect((await chamar(g(postAdiar), "clo@mectria.com", { corpo: { retomarEm: "2099-01-01" }, params: { id } })).status).toBe(200);
+  const depois = await env.DB.prepare("SELECT feito_em FROM rotinas WHERE pessoa_id = ? AND dia = ? AND chave = ?").bind(closer.id, hoje, `reativar:${id}`).first<{ feito_em: string | null }>();
+  expect(depois?.feito_em).not.toBeNull();
 });

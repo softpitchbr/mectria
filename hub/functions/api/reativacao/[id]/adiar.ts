@@ -1,3 +1,5 @@
+import { hojeEmSaoPaulo } from "../../../../compartilhado/datas";
+import { atualizarRotinaDe } from "../../../../servidor/rotina";
 import { respostaDoErroDeReativacao, semPermissaoNaReativacao } from "../../../../servidor/errosDaReativacao";
 import { adiarReativacao } from "../../../../servidor/reativacao";
 import { erro, json } from "../../../../servidor/respostas";
@@ -11,7 +13,8 @@ export const onRequestPost: PagesFunction<Env, "id", DadosApi> = async ({ reques
   const validado = validarAdiamento(await lerCorpo(request));
   if (!validado.ok) return erro("invalido", validado.mensagem);
   try {
-    await adiarReativacao(env.DB, Number(params.id), validado.dados, data.pessoa);
+    const o = await adiarReativacao(env.DB, Number(params.id), validado.dados, data.pessoa);
+    await atualizarRotinaDe(env.DB, o.closerId, hojeEmSaoPaulo());
     return json({ ok: true });
   } catch (e) {
     const resposta = respostaDoErroDeReativacao(e);

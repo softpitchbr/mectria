@@ -1,9 +1,10 @@
 import type { NumerosDoTime, PessoaDoNumero } from "../compartilhado/numeros";
 
-// Tudo pela hora de São Paulo (UTC−3): uma ganha às 22h do dia 30 conta no dia 30.
+// Tudo pela hora de São Paulo (UTC−3): uma ganha às 22h do dia 30 conta no dia 30. Só conta linha do histórico que muda
+// a situação (a exclusão de dados pessoais grava a situação nela mesma e não é decisão).
 const NO_MES = (coluna: string) => `substr(datetime(${coluna}, '-3 hours'), 1, 7) = ?1`;
 const DECIDIDA_NO_MES = (para: "ganha" | "perdida") =>
-  `o.situacao = '${para}' AND EXISTS (SELECT 1 FROM historico h WHERE h.oportunidade_id = o.id AND h.para = '${para}' AND ${NO_MES("h.em")})`;
+  `o.situacao = '${para}' AND EXISTS (SELECT 1 FROM historico h WHERE h.oportunidade_id = o.id AND h.para = '${para}' AND h.de IS NOT h.para AND ${NO_MES("h.em")})`;
 
 /** Números do mês (AAAA-MM) para o diretor: o time inteiro, por closer e a rotina de cada pessoa. */
 export async function numerosDoTime(db: D1Database, mes: string): Promise<NumerosDoTime> {
@@ -23,7 +24,7 @@ export async function numerosDoTime(db: D1Database, mes: string): Promise<Numero
         `SELECT AVG(julianday(decisao) - julianday(diagnostica)) AS media FROM (
            SELECT
              (SELECT MIN(substr(r.data_hora, 1, 10)) FROM reunioes r WHERE r.oportunidade_id = o.id AND r.tipo = 'diagnostica') AS diagnostica,
-             (SELECT date(MAX(h.em), '-3 hours') FROM historico h WHERE h.oportunidade_id = o.id AND h.para = o.situacao) AS decisao
+             (SELECT date(MAX(h.em), '-3 hours') FROM historico h WHERE h.oportunidade_id = o.id AND h.para = o.situacao AND h.de IS NOT h.para) AS decisao
            FROM oportunidades o WHERE (${DECIDIDA_NO_MES("ganha")}) OR (${DECIDIDA_NO_MES("perdida")})
          ) WHERE diagnostica IS NOT NULL`,
       )

@@ -1,5 +1,9 @@
 import { applyD1Migrations, env } from "cloudflare:test";
-import { registrarProposta, registrarResultado } from "./followup";
+import { numerosDoMes, registrarProposta, registrarResultado } from "./followup";
+import { numerosDoTime } from "./numeros";
+import { listarReativacao } from "./reativacao";
+import { rotinaDoDia } from "./rotina";
+import { hojeEmSaoPaulo } from "../compartilhado/datas";
 import { fichaDaReuniao } from "./diagnostica";
 import { apagarDadosPessoais, csvDoHistorico, exportarTudo } from "./exportar";
 import { criarDiagnostica } from "./oportunidades";
@@ -75,8 +79,44 @@ test("o briefing de uma oportunidade apagada não mostra o nome", async () => {
     { empresa: "Gama", contato: "Ana Souza", telefone: "34999990000", servico: "climatizacao", closerId: closer.id, dataHora: "2026-11-03T10:00", formato: "online" },
     hunter,
   );
+  await env.DB.prepare("INSERT INTO fichas (reuniao_id, pergunta_id, resposta) VALUES (?, 'a-decisores', 'O sócio Bruno Lima'), (?, 'a-processo', 'Quem assina é o Bruno Lima'), (?, 'c-dor', 'Calor no galpão')")
+    .bind(reuniao.id, reuniao.id, reuniao.id)
+    .run();
   await apagarDadosPessoais(env.DB, oportunidade.id, diretor);
   const ficha = await fichaDaReuniao(env.DB, reuniao.id);
   expect(JSON.stringify(ficha)).not.toContain("Ana Souza");
   expect(JSON.stringify(ficha)).not.toContain("34999990000");
+  expect(JSON.stringify(ficha)).not.toContain("Bruno Lima");
+  expect(ficha?.respostas["c-dor"]).toBe("Calor no galpão");
+});
+
+test("apagar dados pessoais não conta como decisão nem mexe na reativação", async () => {
+  // Uma ganha em outubro, apagada em novembro: novembro não ganha uma venda a mais.
+  const { proposta } = await registrarProposta(
+    env.DB,
+    { empresa: "Ganha Antiga", contato: "Ana", servico: "climatizacao", valor: 1000000, apresentadaEm: "2026-10-20", quemDecide: "Ana" },
+    closer,
+  );
+  await registrarResultado(env.DB, proposta.oportunidadeId, { resultado: "ganha", valor: 900000 }, closer);
+  await env.DB.prepare("UPDATE historico SET em = '2026-10-25 15:00:00' WHERE para = 'ganha'").run();
+  await apagarDadosPessoais(env.DB, proposta.oportunidadeId, diretor);
+  await env.DB.prepare("UPDATE historico SET em = '2026-11-10 15:00:00' WHERE detalhe LIKE 'Dados pessoais apagados%'").run();
+  expect(await numerosDoTime(env.DB, "2026-11")).toMatchObject({ ganhas: 0, valorVendido: 0 });
+  expect(await numerosDoTime(env.DB, "2026-10")).toMatchObject({ ganhas: 1, valorVendido: 900000, tempoMedioDias: null });
+  expect((await numerosDoMes(env.DB, diretor, "2026-11-15")).ganhas).toBe(0);
+  expect(await csvDoHistorico(env.DB, "2026-10")).toContain(";20/10/2026;25/10/2026;Ganha;");
+
+  // Uma nutrição antiga sem retomar_em: a exclusão não reinicia os 45 dias nem marca "Reativar" como feito.
+  const { proposta: p2 } = await registrarProposta(
+    env.DB,
+    { empresa: "Nutrida Antiga", contato: "Bia", servico: "climatizacao", valor: 500000, apresentadaEm: "2026-08-20", quemDecide: "Bia" },
+    closer,
+  );
+  await registrarResultado(env.DB, p2.oportunidadeId, { resultado: "nutricao" }, closer);
+  await env.DB.prepare("UPDATE oportunidades SET retomar_em = NULL WHERE id = ?").bind(p2.oportunidadeId).run();
+  await env.DB.prepare("UPDATE historico SET em = '2026-09-01 15:00:00' WHERE oportunidade_id = ? AND para = 'nutricao'").bind(p2.oportunidadeId).run();
+  await apagarDadosPessoais(env.DB, p2.oportunidadeId, diretor);
+  expect((await listarReativacao(env.DB, closer, "2026-10-16")).map((i) => i.oportunidade.empresa)).toEqual(["Nutrida Antiga"]);
+  const dia = await rotinaDoDia(env.DB, closer, hojeEmSaoPaulo());
+  expect(dia.itens.find((i) => i.chave === `reativar:${p2.oportunidadeId}`)).toMatchObject({ feito: false });
 });
