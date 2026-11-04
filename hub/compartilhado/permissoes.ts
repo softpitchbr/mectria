@@ -18,7 +18,7 @@ export const SECOES: { id: Secao; rotulo: string; caminho: string; icone: NomeIc
 /** Quem vê cada seção (spec, seções 4 e 5). O diretor vê tudo. */
 const QUEM_VE: Record<Secao, readonly Cargo[]> = {
   hoje: ["hunter", "closer", "diretor", "projetos"],
-  reunioes: ["closer", "diretor"],
+  reunioes: ["hunter", "closer", "diretor"],
   followup: ["closer", "diretor"],
   playbooks: ["hunter", "closer", "diretor"],
   apresentacoes: ["closer", "diretor"],

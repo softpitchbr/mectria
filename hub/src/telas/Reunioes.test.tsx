@@ -77,3 +77,14 @@ test("proposta passada sem fechamento continua na agenda, com Continuar ou Inici
   const usina = screen.getByText("Usina Antiga").closest("li") as HTMLElement;
   expect(within(usina).getByRole("button", { name: "Iniciar" })).toBeInTheDocument();
 });
+
+test("na agenda do hunter, a proposta não tem Iniciar e a diagnóstica tem", async () => {
+  fingirApi({ "/api/eu": { corpo: PESSOAS.hunter }, "GET /api/reunioes": { corpo: AGENDA } });
+  abrir("/reunioes");
+  await screen.findByText("Plásticos Delta");
+  const proposta = screen.getByText("Plásticos Delta").closest("li") as HTMLElement;
+  expect(within(proposta).queryByRole("button", { name: /Iniciar|Continuar/ })).toBeNull();
+  expect(within(proposta).getByText(/com o closer/)).toBeInTheDocument();
+  const diagnosticas = screen.getAllByRole("button", { name: /Iniciar|Continuar/ });
+  expect(diagnosticas.length).toBeGreaterThan(0);
+});

@@ -12,10 +12,10 @@ async function rotulosDaNavegacao(nome = "Seções") {
     .map((l) => l.getAttribute("aria-label"));
 }
 
-test("hunter vê Hoje, Playbooks e Rotinas e não vê Time", async () => {
+test("hunter vê Hoje, Reuniões, Playbooks e Rotinas e não vê Time", async () => {
   fingirApi({ "/api/eu": { corpo: PESSOAS.hunter } });
   abrir("/");
-  expect(await rotulosDaNavegacao()).toEqual(["Hoje", "Playbooks", "Rotinas"]);
+  expect(await rotulosDaNavegacao()).toEqual(["Hoje", "Reuniões", "Playbooks", "Rotinas"]);
 });
 
 test("diretor vê as 8 seções", async () => {

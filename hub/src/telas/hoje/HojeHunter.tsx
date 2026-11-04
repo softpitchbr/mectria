@@ -1,5 +1,6 @@
 import { useCallback, useEffect, useState } from "react";
-import { formatarDia } from "../../../compartilhado/datas";
+import { Link } from "react-router";
+import { formatarDia, hojeEmSaoPaulo } from "../../../compartilhado/datas";
 import type { ContagemLigacoes, Reuniao } from "../../../compartilhado/oportunidade";
 import { api } from "../../api/cliente";
 import Botao from "../../componentes/Botao";
@@ -16,6 +17,7 @@ import estilos from "./hoje.module.css";
 export default function HojeHunter({ eu }: { eu: Eu }) {
   const [contagem, setContagem] = useState<ContagemLigacoes | null>(null);
   const [reunioes, setReunioes] = useState<Reuniao[]>([]);
+  const hoje = hojeEmSaoPaulo();
   const [origem, setOrigem] = useState<HTMLElement | null>(null);
   const [emFoco, setEmFoco] = useState(false);
   const rotina = useRotinaDeHoje();
@@ -69,7 +71,13 @@ export default function HojeHunter({ eu }: { eu: Eu }) {
                   {formatarDia(r.dataHora.slice(0, 10))} · {r.dataHora.slice(11, 16)}
                 </span>
                 <span>{r.empresa}</span>
-                <span className="suave">{r.closerNome ?? ""}</span>
+                {r.dataHora.slice(0, 10) === hoje && r.situacao !== "concluida" && r.oportunidadeSituacao === "diagnostica_marcada" ? (
+                  <Link to={`/reunioes/${r.id}/diagnostica`} aria-label={`Iniciar a diagnóstica de ${r.empresa}`}>
+                    {r.situacao === "em_andamento" ? "Continuar" : "Iniciar"}
+                  </Link>
+                ) : (
+                  <span className="suave">{r.closerNome ?? ""}</span>
+                )}
               </li>
             ))}
           </ul>

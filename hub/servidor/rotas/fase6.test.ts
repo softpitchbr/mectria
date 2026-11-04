@@ -15,6 +15,13 @@ import { onRequestGet as getNumerosMes } from "../../functions/api/numeros/mes";
 import { onRequestPost as postFechar } from "../../functions/api/pendencias/[id]/fechar";
 import { onRequestPost as postResponder } from "../../functions/api/pendencias/[id]/responder";
 import { onRequestGet as getPendencias } from "../../functions/api/pendencias/index";
+import { onRequestPost as postAnotacao } from "../../functions/api/reunioes/[id]/anotacoes";
+import { onRequestPost as postEncerrar } from "../../functions/api/reunioes/[id]/encerrar";
+import { onRequestPost as postIniciar } from "../../functions/api/reunioes/[id]/iniciar";
+import { onRequestGet as getProposta } from "../../functions/api/reunioes/[id]/proposta";
+import { onRequestGet as getFicha } from "../../functions/api/reunioes/[id]";
+import { onRequestPut as putRespostas } from "../../functions/api/reunioes/[id]/respostas";
+import { criarDiagnostica } from "../oportunidades";
 import { registrarProposta } from "../followup";
 import { criar } from "../pessoas";
 import type { DadosApi, Env, Pessoa } from "../tipos";
@@ -147,4 +154,44 @@ test("pendências: Projetos lista, responde e fecha; closer não responde; Proje
   expect((await chamar(g(getNumerosMes), "pro@mectria.com")).status).toBe(403);
   const doCloser = await corpo<{ respostasTecnicas: { resposta: string }[] }[]>(await chamar(g(getFollowup), "clo@mectria.com"));
   expect(doCloser[0].respostasTecnicas.map((p) => p.resposta)).toEqual(["3 m³/h"]);
+});
+
+test("o hunter que marcou inicia, anota e encerra a diagnóstica; não abre a proposta nem a de outro hunter; o closer dono continua", async () => {
+  const hugo = await env.DB.prepare("SELECT * FROM pessoas WHERE email = 'hun@mectria.com'").first<Pessoa>();
+  const outro = await criar(env.DB, { nome: "Helena Hunter", email: "hun2@mectria.com", cargo: "hunter" });
+  const marcar = (empresa: string, quem: Pessoa) =>
+    criarDiagnostica(env.DB, { empresa, contato: "Ana", telefone: "34999990000", servico: "climatizacao", closerId: closer.id, dataHora: `${hoje}T10:00`, formato: "online" }, quem);
+  const { reuniao } = await marcar("Alfa", hugo!);
+  const params = { id: String(reuniao.id) };
+  expect((await chamar(g(postIniciar), "hun@mectria.com", { corpo: {}, params })).status).toBe(200);
+  const nota = { idCliente: "h-1", minuto: 3, passo: "cl-area", marcacao: "tecnico", texto: "Pé-direito de 9 m" };
+  expect((await chamar(g(postAnotacao), "hun@mectria.com", { corpo: nota, params })).status).toBe(200);
+  expect((await chamar(g(postAnotacao), "hun2@mectria.com", { corpo: { ...nota, idCliente: "h-2" }, params })).status).toBe(403);
+  const encerrou = await chamar(g(postEncerrar), "hun@mectria.com", {
+    corpo: { resultado: "proposta_marcada", dataHora: `${hoje}T16:00`, formato: "online", quemDecide: "Ana (sócia)" },
+    params,
+  });
+  expect(encerrou.status).toBe(200);
+  const proposta = await env.DB.prepare("SELECT id FROM reunioes WHERE tipo = 'proposta' AND oportunidade_id = ?").bind(reuniao.oportunidadeId).first<{ id: number }>();
+  expect((await chamar(g(getProposta), "hun@mectria.com", { params: { id: String(proposta!.id) } })).status).toBe(403);
+  expect((await chamar(g(getProposta), "clo@mectria.com", { params: { id: String(proposta!.id) } })).status).toBe(200);
+
+  const deOutro = await marcar("Beta", outro);
+  expect((await chamar(g(postIniciar), "hun@mectria.com", { corpo: {}, params: { id: String(deOutro.reuniao.id) } })).status).toBe(403);
+  expect((await chamar(g(postIniciar), "clo@mectria.com", { corpo: {}, params: { id: String(deOutro.reuniao.id) } })).status).toBe(200);
+});
+
+test("Projetos recebe a ficha completa da diagnóstica, com as respostas, para ler o briefing", async () => {
+  const hugo = await env.DB.prepare("SELECT * FROM pessoas WHERE email = 'hun@mectria.com'").first<Pessoa>();
+  const { reuniao } = await criarDiagnostica(
+    env.DB,
+    { empresa: "Gama", contato: "Ana", telefone: "34999990000", servico: "climatizacao", closerId: closer.id, dataHora: `${hoje}T10:00`, formato: "online" },
+    hugo!,
+  );
+  const params = { id: String(reuniao.id) };
+  await chamar(g(postIniciar), "hun@mectria.com", { corpo: {}, params });
+  await chamar(g(putRespostas), "hun@mectria.com", { metodo: "PUT", corpo: { respostas: [{ perguntaId: "c-dor", resposta: "calor" }] }, params });
+  const ficha = await corpo<{ respostas?: Record<string, string> }>(await chamar(g(getFicha), "pro@mectria.com", { params }));
+  expect(ficha.respostas).toEqual({ "c-dor": "calor" });
+  expect((await chamar(g(putRespostas), "pro@mectria.com", { metodo: "PUT", corpo: { respostas: [] }, params })).status).toBe(403);
 });

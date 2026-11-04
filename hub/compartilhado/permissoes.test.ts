@@ -2,7 +2,8 @@ import { CARGOS } from "./cargos";
 import { podeGerenciarPessoas, podeVer, SECOES, secoesDoCargo } from "./permissoes";
 
 test("seções de cada cargo", () => {
-  expect(secoesDoCargo("hunter")).toEqual(["hoje", "playbooks", "rotinas"]);
+  // Fase 6: o hunter conduz a diagnóstica que marcou, então vê a seção Reuniões.
+  expect(secoesDoCargo("hunter")).toEqual(["hoje", "reunioes", "playbooks", "rotinas"]);
   expect(secoesDoCargo("closer")).toEqual(["hoje", "reunioes", "followup", "playbooks", "apresentacoes", "rotinas"]);
   expect(secoesDoCargo("diretor")).toEqual(["hoje", "reunioes", "followup", "playbooks", "apresentacoes", "rotinas", "time", "briefings"]);
   expect(secoesDoCargo("projetos")).toEqual(["hoje", "briefings"]);

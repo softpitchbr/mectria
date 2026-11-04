@@ -24,12 +24,14 @@ function daAgenda(r: Reuniao, hoje: string): boolean {
   return r.situacao !== "concluida" && !jaPassou(r);
 }
 
-function AcaoDaReuniao({ r }: { r: Reuniao }) {
+function AcaoDaReuniao({ r, eu }: { r: Reuniao; eu: Eu }) {
   const navegar = useNavigate();
   if (r.situacao === "concluida") {
     if (r.tipo === "diagnostica") return <Link to={`/reunioes/${r.id}/briefing`}>Briefing</Link>;
     return <span className="suave">{r.desfecho ? `Concluída · ${ROTULO_DESFECHO[r.desfecho]}` : "Concluída"}</span>;
   }
+  // O hunter conduz a diagnóstica que marcou; a proposta é do closer.
+  if (eu.cargo === "hunter" && r.tipo === "proposta") return <span className="suave">Proposta com o closer{r.closerNome ? ` ${r.closerNome}` : ""}</span>;
   if (jaPassou(r)) return <span className="suave">A oportunidade já passou {r.tipo === "diagnostica" ? "da diagnóstica" : "da proposta"}</span>;
   return <Botao onClick={() => navegar(`/reunioes/${r.id}/${r.tipo}`)}>{r.situacao === "em_andamento" ? "Continuar" : "Iniciar"}</Botao>;
 }
@@ -82,7 +84,7 @@ export default function Reunioes({ eu }: { eu: Eu }) {
                       {eu.cargo === "diretor" && r.closerNome ? ` · ${r.closerNome}` : ""}
                     </span>
                   </span>
-                  <AcaoDaReuniao r={r} />
+                  <AcaoDaReuniao r={r} eu={eu} />
                 </li>
               ))}
           </ul>

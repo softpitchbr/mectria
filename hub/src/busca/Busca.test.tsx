@@ -57,7 +57,7 @@ test("Esc fecha", async () => {
 test("um hunter não vê Ir para Time", async () => {
   const dialogo = await abrirBusca("hunter");
   await userEvent.keyboard("ir para");
-  expect(titulos(dialogo).filter((t) => t?.startsWith("Ir para"))).toEqual(["Ir para Hoje", "Ir para Playbooks", "Ir para Rotinas"]);
+  expect(titulos(dialogo).filter((t) => t?.startsWith("Ir para"))).toEqual(["Ir para Hoje", "Ir para Reuniões", "Ir para Playbooks", "Ir para Rotinas"]);
 });
 
 test("busca sem resultado diz que não achou", async () => {

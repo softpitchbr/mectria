@@ -47,16 +47,16 @@ async function chamar(manipulador: Manipulador, email: string, opcoes: { metodo?
 }
 const corpo = async <T = Record<string, unknown>>(r: Response) => (await r.json()) as T;
 
-test("o closer dono abre, inicia e grava; o hunter que marcou só vê a reunião", async () => {
+test("o closer dono abre, inicia e grava; o hunter que marcou também conduz (fase 6)", async () => {
   expect((await chamar(g(postIniciar), "clo@mectria.com", {})).status).toBe(200);
   expect((await chamar(g(putRespostas), "clo@mectria.com", { metodo: "PUT", corpo: { respostas: [{ perguntaId: "c-dor", resposta: "calor" }] } })).status).toBe(200);
   const ficha = await corpo<{ respostas: Record<string, string>; reuniao: { situacao: string } }>(await chamar(g(getFicha), "clo@mectria.com"));
   expect(ficha).toMatchObject({ respostas: { "c-dor": "calor" }, reuniao: { situacao: "em_andamento" } });
 
+  // Fase 6: a diagnóstica normalmente é do hunter com um projetista; quem marcou lê e grava a ficha.
   const doHunter = await corpo<Record<string, unknown>>(await chamar(g(getFicha), "hun@mectria.com"));
-  expect(doHunter.reuniao).toBeTruthy();
-  expect(doHunter.respostas).toBeUndefined();
-  expect((await chamar(g(putRespostas), "hun@mectria.com", { metodo: "PUT", corpo: { respostas: [] } })).status).toBe(403);
+  expect(doHunter.respostas).toEqual({ "c-dor": "calor" });
+  expect((await chamar(g(putRespostas), "hun@mectria.com", { metodo: "PUT", corpo: { respostas: [] } })).status).toBe(200);
 });
 
 test("outro closer recebe 403; Projetos só lê a ficha da diagnóstica; o diretor passa", async () => {

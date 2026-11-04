@@ -1,3 +1,4 @@
+import { hojeEmSaoPaulo } from "../../../compartilhado/datas";
 import { screen, within } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import { abrir, fingirApi, NUMEROS_VAZIOS, PESSOAS } from "../../teste/ajuda";
@@ -257,4 +258,23 @@ test("o Iniciar reunião do Hoje leva ao painel da diagnóstica", async () => {
   abrir("/");
   await userEvent.click(await screen.findByRole("button", { name: "Iniciar reunião" }));
   expect(window.location.pathname).toBe("/reunioes/2/diagnostica");
+});
+
+test("o hunter tem Iniciar na diagnóstica que marcou para hoje", async () => {
+  const hoje = hojeEmSaoPaulo();
+  fingirApi({
+    "/api/eu": { corpo: PESSOAS.hunter },
+    "GET /api/ligacoes": { corpo: { dia: hoje, naoAtendeu: 0, atendeu: 0, marcou: 0, total: 0 } },
+    "GET /api/rotina": { corpo: ROTINA_VAZIA },
+    "GET /api/reunioes": {
+      corpo: [
+        { id: 7, oportunidadeId: 1, empresa: "Usinagem Alfa", tipo: "diagnostica", dataHora: `${hoje}T15:00`, formato: "online", situacao: "marcada", closerId: 2, closerNome: "Carlos Closer", oportunidadeSituacao: "diagnostica_marcada" },
+        { id: 8, oportunidadeId: 2, empresa: "Agro Gama", tipo: "diagnostica", dataHora: "2099-01-05T10:00", formato: "online", situacao: "marcada", closerId: 2, closerNome: "Carlos Closer", oportunidadeSituacao: "diagnostica_marcada" },
+      ],
+    },
+  } as never);
+  abrir("/");
+  const lista = await screen.findByRole("list", { name: "Diagnósticas que marquei" });
+  expect(within(lista).getByRole("link", { name: "Iniciar a diagnóstica de Usinagem Alfa" })).toHaveAttribute("href", "/reunioes/7/diagnostica");
+  expect(within(lista).queryByRole("link", { name: "Iniciar a diagnóstica de Agro Gama" })).toBeNull();
 });
