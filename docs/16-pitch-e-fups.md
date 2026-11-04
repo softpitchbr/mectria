@@ -42,7 +42,8 @@ Se o cliente pedir mais tempo, o closer pergunta: "O que precisaria acontecer pa
 - Os toques só saem em dia útil.
 - Toda janela de 7 dias passa por uma sexta-feira, e nela sai o **FUP fixo de sexta**. Se a sexta cai num dia que já teria toque, a mensagem de sexta fica no lugar dele. Se a reunião foi numa sexta, a sexta seguinte é o próprio D7, e as duas mensagens viram uma só.
 - A ligação fica no meio da janela, num dia sem outro toque e fora da sexta.
-- Sem resposta depois do D7, a proposta é registrada como perdida (com o motivo) ou vai para nutrição.
+- Todos os toques escritos vão pelo WhatsApp.
+- Sem resposta depois do D7, a proposta é registrada como perdida (com o motivo) ou vai para nutrição, com retorno em 45 dias (seção 3).
 
 ### Quando cai cada toque
 
@@ -58,7 +59,7 @@ Se o cliente pedir mais tempo, o closer pergunta: "O que precisaria acontecer pa
 
 As chaves entre `{}` o hub preenche sozinho: `{contato}`, `{servico}`, `{dor}` (com as palavras do cliente na diagnóstica), `{decisores}`, `{data_decisao}` (o D7) e `{vendedor}`.
 
-**D0 · WhatsApp e e-mail, no mesmo dia.** Registrar o combinado e a data da resposta.
+**D0 · WhatsApp, no mesmo dia.** Registrar o combinado e a data da resposta.
 
 > Fala, {contato}, tudo bem? Obrigado pela reunião de hoje!
 >
@@ -96,15 +97,31 @@ Se não atender, no WhatsApp:
 
 > Fala, {contato}, tudo bem? Hoje é o dia que combinamos para o sim ou não da parceria, e na segunda começa o próximo ciclo de projetos. Vou me reunir com o time de Projetos neste fim de semana para pré-alocar as equipes. O que ainda precisamos alinhar para vocês entrarem nesse ciclo?
 
-## 3. Em aberto
+## 3. Decidido (Lucas, 04/11/2026)
 
-| # | Pergunta | Quem responde |
-|---|---|---|
-| 1 | O ciclo de projetos que começa toda segunda e a pré-alocação no fim de semana já existem na MecTRIA? A sexta fixa só funciona se isso for verdade. Quem é o "time de Projetos" que se reúne? | MecTRIA, na call |
-| 2 | Os 7 dias são corridos? A política comercial deles fala em fechar em até 5 dias úteis (pedido 27) | Lucas e Marcelo |
-| 3 | O D0 vai por WhatsApp e por e-mail, ou só por WhatsApp? | MecTRIA |
-| 4 | Depois do D7 sem resposta: nutrição com retorno em 45 dias, como hoje, ou outro prazo? | Lucas e Marcelo |
+- **Ciclo de segunda:** passa a existir na MecTRIA. A sexta fixa usa esse ciclo como gatilho de urgência.
+- **Janela:** 7 dias corridos.
+- **Canal:** WhatsApp em todos os toques escritos.
+- **Depois do D7 sem resposta:** nutrição com retorno em 45 dias, como hoje, até a reativação existir no hub.
 
-## 4. No hub
+## 4. Reativação (ideia para o hub)
 
-Depois da validação, a cadência vira os novos dados de `hub/compartilhado/dados/cadencia.ts`, e a regra da sexta fixa entra no cálculo das datas (`hub/compartilhado/cadencia.ts`), com testes. O fechamento da proposta no hub já cria os toques sozinho; ele só passa a usar a janela de 7 dias.
+Hoje a nutrição só guarda a oportunidade. A ideia é o hub lembrar o closer na hora certa, conforme o que o cliente disse.
+
+**Como funcionaria:**
+
+1. **Na hora de mandar para nutrição.** Isso vale para o resultado do follow-up, para o D7 sem resposta e para o "não qualificou" da diagnóstica. O closer marca "interesse futuro" e escolhe o mês que o cliente indicou para retomar. Se o cliente não deu prazo, o padrão é 45 dias.
+2. **Uma aba de Reativação**, dentro do Follow-up. O card aparece quando chega o mês combinado, do mais antigo para o mais recente, com a mensagem pronta e o tempo desde a reunião já preenchido.
+3. **Na rotina do closer**, o hub gera o item "Reativar {empresa}" no dia.
+4. **O resultado da reativação:**
+   - remarcou a reunião, e a oportunidade volta para a agenda;
+   - ainda não, com um novo mês para retomar;
+   - perdida, com o motivo.
+
+**A mensagem de reativação** (`{tempo}` é o tempo desde a última reunião, em meses: "1 mês", "3 meses"):
+
+> Opa, {contato}, tudo bem? A gente conversou há mais ou menos {tempo} e lembro que, na época, acabamos não avançando. Mas fiquei com uma boa impressão da nossa conversa e não queria deixar esse contato esfriar, porque parecia ter uma aderência legal entre o seu momento e o que conseguimos fazer por aqui. O que acha de marcarmos 10 ou 15 minutinhos para retomar com calma e ver se ainda existe espaço para avançarmos?
+
+## 5. No hub
+
+Depois da validação, a cadência vira os novos dados de `hub/compartilhado/dados/cadencia.ts`, e a regra da sexta fixa entra no cálculo das datas (`hub/compartilhado/cadencia.ts`), com testes. O fechamento da proposta no hub já cria os toques sozinho; ele só passa a usar a janela de 7 dias. A reativação é uma tela nova, com o mês de retomar guardado na oportunidade.
