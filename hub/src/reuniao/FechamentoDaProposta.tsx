@@ -1,4 +1,5 @@
 import { useState, type FormEvent } from "react";
+import { dataDoD7 } from "../../compartilhado/cadencia";
 import { formatarReais, hojeEmSaoPaulo, lerReais } from "../../compartilhado/datas";
 import { MOTIVOS_PERDA } from "../../compartilhado/dados/cadencia";
 import { PLAYBOOK_PROPOSTA } from "../../compartilhado/dados/playbooks";
@@ -42,7 +43,8 @@ export default function FechamentoDaProposta({
     valor: valorInicial ? formatarReais(valorInicial) : "",
     // O valor fechado começa igual ao apresentado; o desconto à vista muda.
     fechado: valorInicial ? formatarReais(valorInicial) : "",
-    data: "",
+    // A data da decisão já vem no D7 combinado na jornada de parcerias; o closer pode trocar.
+    data: dataDoD7(hoje),
     quemDecide: quemDecideInicial,
     ajuste: "",
     motivo: "",

@@ -1,5 +1,7 @@
 import { act, screen, within } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
+import { dataDoD7 } from "../../compartilhado/cadencia";
+import { hojeEmSaoPaulo } from "../../compartilhado/datas";
 import { variaveisIniciais } from "../../compartilhado/proposta";
 import { abrir, fingirApi, PESSOAS } from "../teste/ajuda";
 import { abrirCanal, type MensagemReuniao } from "./canal";
@@ -224,12 +226,23 @@ test("fechamento exige o resultado, a data e quem decide, e manda vai decidir", 
   await userEvent.click(within(form).getByRole("radio", { name: "Vai decidir (data combinada)" }));
   expect(within(form).getByLabelText("Quem decide")).toHaveValue("Bia");
   expect(within(form).getByLabelText("Valor apresentado")).toHaveValue("R$ 12.500,00");
+  await userEvent.clear(within(form).getByLabelText("Data da decisão"));
   await userEvent.click(within(form).getByRole("button", { name: "Encerrar reunião" }));
   expect(within(form).getByRole("alert")).toHaveTextContent("Informe a data da decisão.");
   await userEvent.type(within(form).getByLabelText("Data da decisão"), amanha());
   await userEvent.click(within(form).getByRole("button", { name: "Encerrar reunião" }));
   await vi.waitFor(() => expect(enviado).toEqual({ desfecho: "decidir", valor: 1250000, dataDecisao: amanha(), quemDecide: "Bia" }));
   await vi.waitFor(() => expect(window.location.pathname).toBe("/follow-up"));
+});
+
+test("vai decidir e pediu ajuste já vêm com a data da decisão no D7", async () => {
+  api({ "GET /api/followup": { corpo: [] } });
+  const form = await irParaOFechamento();
+  const d7 = dataDoD7(hojeEmSaoPaulo());
+  await userEvent.click(within(form).getByRole("radio", { name: "Vai decidir (data combinada)" }));
+  expect(within(form).getByLabelText("Data da decisão")).toHaveValue(d7);
+  await userEvent.click(within(form).getByRole("radio", { name: "Pediu ajuste na proposta" }));
+  expect(within(form).getByLabelText("Data da decisão")).toHaveValue(d7);
 });
 
 test("perdeu pede o motivo e volta para Reuniões", async () => {
