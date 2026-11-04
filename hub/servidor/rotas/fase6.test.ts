@@ -6,6 +6,7 @@ import { onRequestPost as postAdiar } from "../../functions/api/reativacao/[id]/
 import { onRequestPost as postPerdida } from "../../functions/api/reativacao/[id]/perdida";
 import { onRequestPost as postReuniao } from "../../functions/api/reativacao/[id]/reuniao";
 import { onRequestGet as getReativacao } from "../../functions/api/reativacao/index";
+import { onRequestGet as getNumerosDoTime } from "../../functions/api/time/numeros";
 import { registrarProposta } from "../followup";
 import { criar } from "../pessoas";
 import type { DadosApi, Env, Pessoa } from "../tipos";
@@ -79,4 +80,14 @@ test("rotas da reativação: nutrição com o mês, lista, adia, marca reunião 
   expect((await chamar(g(postReuniao), "clo@mectria.com", { corpo: { dataHora: `${hoje}T16:00`, formato: "online" }, params })).status).toBe(409);
   expect((await chamar(g(postPerdida), "clo@mectria.com", { corpo: { motivo: "Preço" }, params })).status).toBe(409);
   expect((await chamar(g(postPerdida), "clo@mectria.com", { corpo: { motivo: "Preço" }, params: { id: "999" } })).status).toBe(404);
+});
+
+test("números do time: só o diretor acessa, o mês padrão é o atual e mês inválido dá 400", async () => {
+  expect((await chamar(g(getNumerosDoTime), "clo@mectria.com")).status).toBe(403);
+  expect((await chamar(g(getNumerosDoTime), "pro@mectria.com")).status).toBe(403);
+  const r = await chamar(g(getNumerosDoTime), "dir@mectria.com");
+  expect(r.status).toBe(200);
+  expect(await corpo(r)).toMatchObject({ mes: hoje.slice(0, 7), propostas: 0, conversao: null });
+  expect(await corpo(await chamar(g(getNumerosDoTime), "dir@mectria.com", { busca: "?mes=2026-10" }))).toMatchObject({ mes: "2026-10" });
+  expect((await chamar(g(getNumerosDoTime), "dir@mectria.com", { busca: "?mes=2026-13" })).status).toBe(400);
 });
