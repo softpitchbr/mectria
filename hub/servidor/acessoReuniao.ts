@@ -7,7 +7,7 @@ import type { Pessoa } from "./tipos";
 
 export type Acesso = { reuniao: Reuniao; oportunidade: Oportunidade; dono: boolean };
 
-/** Quem mexe na reunião: o closer dono ou o diretor (dono = true); o hunter que marcou só vê (dono = false). */
+/** Quem mexe na reunião: o closer dono ou o diretor (dono = true); o hunter que marcou e Projetos (na diagnóstica) só veem. */
 export async function acessarReuniao(db: D1Database, pessoa: Pessoa, idTexto: string | string[] | undefined, precisaSerDono: boolean): Promise<Acesso | Response> {
   const id = Number(idTexto);
   const reuniao = Number.isInteger(id) ? await buscarReuniao(db, id) : null;
@@ -15,6 +15,8 @@ export async function acessarReuniao(db: D1Database, pessoa: Pessoa, idTexto: st
   const oportunidade = (await buscarOportunidade(db, reuniao.oportunidadeId))!;
   const dono = eDonoDaOportunidade(pessoa, oportunidade.closerId);
   const quemMarcou = pessoa.cargo === "hunter" && oportunidade.hunterId === pessoa.id;
-  if (dono || (!precisaSerDono && quemMarcou)) return { reuniao, oportunidade, dono };
+  // Projetos lê a ficha e o briefing da diagnóstica; a reunião de proposta tem valores, que Projetos não vê.
+  const projetosLendo = pessoa.cargo === "projetos" && reuniao.tipo === "diagnostica";
+  if (dono || (!precisaSerDono && (quemMarcou || projetosLendo))) return { reuniao, oportunidade, dono };
   return erro("sem_permissao", "Essa reunião é de outro closer.");
 }

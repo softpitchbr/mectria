@@ -1,5 +1,6 @@
 import { datasDaCadencia } from "../compartilhado/cadencia";
 import { retomarOuPadrao } from "../compartilhado/reativacao";
+import { pendenciaDeLinha } from "./pendencias";
 import type {
   EstadoFollowup,
   ItemFollowup,
@@ -125,14 +126,24 @@ export async function listarFollowup(db: D1Database, quem: Pessoa, hoje: string)
     SELECT p.id FROM propostas p JOIN oportunidades o ON o.id = p.oportunidade_id
     WHERE o.situacao = 'em_followup' ${filtro}
       AND p.id = (SELECT MAX(id) FROM propostas WHERE oportunidade_id = o.id)`;
-  const [{ results: oportunidades }, { results: propostas }, { results: toques }] = await db.batch([
+  const [{ results: oportunidades }, { results: propostas }, { results: toques }, { results: respostas }] = await db.batch([
     db.prepare(`${SELECT_OPORTUNIDADE} WHERE o.situacao = 'em_followup' ${filtro}`).bind(...extra),
     db.prepare(`SELECT * FROM propostas WHERE id IN (${ultimaProposta})`).bind(...extra),
     db.prepare(`SELECT * FROM toques WHERE proposta_id IN (${ultimaProposta}) ORDER BY previsto_para, id`).bind(...extra),
+    // Respostas de Projetos às pendências técnicas, para o próximo toque (spec, seção 6, "Técnico").
+    db
+      .prepare(
+        `SELECT pe.*, rp.nome AS respondida_por_nome FROM pendencias pe LEFT JOIN pessoas rp ON rp.id = pe.respondida_por
+         WHERE pe.resposta IS NOT NULL AND pe.situacao IN ('respondida', 'fechada')
+           AND pe.oportunidade_id IN (SELECT o.id FROM oportunidades o WHERE o.situacao = 'em_followup' ${filtro})
+         ORDER BY pe.id`,
+      )
+      .bind(...extra),
   ]) as unknown as [
     { results: Parameters<typeof oportunidadeDeLinha>[0][] },
     { results: LinhaProposta[] },
     { results: LinhaToque[] },
+    { results: Parameters<typeof pendenciaDeLinha>[0][] },
   ];
 
   const itens: ItemFollowup[] = [];
@@ -145,7 +156,8 @@ export async function listarFollowup(db: D1Database, quem: Pessoa, hoje: string)
     const proximo = pendentes[0] ?? null;
     const estado: EstadoFollowup =
       atrasados > 0 ? "atrasado" : !proximo ? "sem_toque" : proximo.previstoPara === hoje ? "hoje" : "em_dia";
-    itens.push({ oportunidade, proposta: propostaDeLinha(linha), proximo, atrasados, estado });
+    const respostasTecnicas = respostas.filter((p) => p.oportunidade_id === oportunidade.id).map(pendenciaDeLinha);
+    itens.push({ oportunidade, proposta: propostaDeLinha(linha), proximo, atrasados, estado, respostasTecnicas });
   }
   return itens.sort(
     (a, b) =>

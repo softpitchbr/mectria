@@ -118,6 +118,8 @@ export interface ItemFollowup {
   proximo: Toque | null;
   atrasados: number;
   estado: EstadoFollowup;
+  /** Pendências técnicas já respondidas por Projetos, para entrar no próximo toque (fase 6). */
+  respostasTecnicas?: Pendencia[];
 }
 
 export type ResultadoProposta = { resultado: "ganha"; valor: number } | { resultado: "perdida"; motivo: string } | { resultado: "nutricao"; retomarEm?: string };
@@ -164,6 +166,17 @@ export interface Pendencia {
   prazo: string;
   situacao: "aberta" | "respondida" | "fechada";
   resposta: string | null;
+  /** Quando e quem de Projetos respondeu (fase 6). */
+  respondidaEm?: string | null;
+  respondidaPor?: string | null;
+}
+
+/** Pendência na lista de Projetos: a empresa, a reunião de onde veio e o estado do prazo. */
+export interface PendenciaDeProjetos {
+  pendencia: Pendencia;
+  empresa: string;
+  reuniaoId: number | null;
+  estado: "atrasada" | "hoje" | "no_prazo" | "respondida";
 }
 
 export type FechamentoDiagnostica =

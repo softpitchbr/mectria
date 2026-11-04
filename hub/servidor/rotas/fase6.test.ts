@@ -9,6 +9,12 @@ import { onRequestGet as getReativacao } from "../../functions/api/reativacao/in
 import { onRequestGet as getNumerosDoTime } from "../../functions/api/time/numeros";
 import { onRequestGet as getExportar } from "../../functions/api/exportar/[arquivo]";
 import { onRequestPost as postApagar } from "../../functions/api/oportunidades/[id]/apagar-dados-pessoais";
+import { onRequestGet as getBriefings } from "../../functions/api/briefings";
+import { onRequestGet as getFollowup } from "../../functions/api/followup";
+import { onRequestGet as getNumerosMes } from "../../functions/api/numeros/mes";
+import { onRequestPost as postFechar } from "../../functions/api/pendencias/[id]/fechar";
+import { onRequestPost as postResponder } from "../../functions/api/pendencias/[id]/responder";
+import { onRequestGet as getPendencias } from "../../functions/api/pendencias/index";
 import { registrarProposta } from "../followup";
 import { criar } from "../pessoas";
 import type { DadosApi, Env, Pessoa } from "../tipos";
@@ -113,4 +119,32 @@ test("exportações e LGPD: só o diretor; CSV e JSON com o nome do arquivo", as
 
   expect((await chamar(g(postApagar), "dir@mectria.com", { corpo: {}, params: { id } })).status).toBe(200);
   expect((await chamar(g(postApagar), "dir@mectria.com", { corpo: {}, params: { id: "999" } })).status).toBe(404);
+});
+
+test("pendências: Projetos lista, responde e fecha; closer não responde; Projetos não acessa follow-up nem números", async () => {
+  const id = await propostaEmFollowup("Alfa");
+  const linha = await env.DB.prepare("INSERT INTO pendencias (oportunidade_id, texto, prazo) VALUES (?, 'Qual a vazão?', ?) RETURNING id").bind(Number(id), hoje).first<{ id: number }>();
+  const params = { id: String(linha!.id) };
+
+  const lista = await chamar(g(getPendencias), "pro@mectria.com");
+  expect(lista.status).toBe(200);
+  expect((await corpo<{ pendencia: { texto: string } }[]>(lista)).map((p) => p.pendencia.texto)).toEqual(["Qual a vazão?"]);
+  expect((await chamar(g(getPendencias), "clo@mectria.com")).status).toBe(403);
+  expect((await chamar(g(getPendencias), "dir@mectria.com")).status).toBe(200);
+
+  expect((await chamar(g(postResponder), "clo@mectria.com", { corpo: { resposta: "3 m³/h" }, params })).status).toBe(403);
+  expect((await chamar(g(postResponder), "pro@mectria.com", { corpo: { resposta: " " }, params })).status).toBe(400);
+  expect((await chamar(g(postFechar), "pro@mectria.com", { corpo: {}, params })).status).toBe(409);
+  const respondida = await chamar(g(postResponder), "pro@mectria.com", { corpo: { resposta: "3 m³/h" }, params });
+  expect(await corpo(respondida)).toMatchObject({ situacao: "respondida", respondidaPor: "Paulo Projetos" });
+  expect((await chamar(g(postFechar), "pro@mectria.com", { corpo: {}, params })).status).toBe(200);
+  expect((await chamar(g(postFechar), "pro@mectria.com", { corpo: {}, params })).status).toBe(409);
+  expect((await chamar(g(postResponder), "pro@mectria.com", { corpo: { resposta: "x" }, params: { id: "999" } })).status).toBe(404);
+
+  expect((await chamar(g(getBriefings), "pro@mectria.com")).status).toBe(200);
+  expect((await chamar(g(getBriefings), "clo@mectria.com")).status).toBe(403);
+  expect((await chamar(g(getFollowup), "pro@mectria.com")).status).toBe(403);
+  expect((await chamar(g(getNumerosMes), "pro@mectria.com")).status).toBe(403);
+  const doCloser = await corpo<{ respostasTecnicas: { resposta: string }[] }[]>(await chamar(g(getFollowup), "clo@mectria.com"));
+  expect(doCloser[0].respostasTecnicas.map((p) => p.resposta)).toEqual(["3 m³/h"]);
 });

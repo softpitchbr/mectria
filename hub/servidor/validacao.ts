@@ -362,3 +362,9 @@ export function validarMotivoDePerda(corpo: unknown): Validado<string> {
   if (!ehObjeto(corpo)) return { ok: false, mensagem: MENSAGEM.corpo };
   return typeof corpo.motivo === "string" && MOTIVOS_PERDA.includes(corpo.motivo) ? { ok: true, dados: corpo.motivo } : { ok: false, mensagem: "Escolha o motivo." };
 }
+
+export function validarResposta(corpo: unknown): Validado<string> {
+  if (!ehObjeto(corpo)) return { ok: false, mensagem: MENSAGEM.corpo };
+  const resposta = textoEntre(corpo.resposta, 1, 2000);
+  return resposta ? { ok: true, dados: resposta } : { ok: false, mensagem: "Escreva a resposta (até 2.000 caracteres)." };
+}

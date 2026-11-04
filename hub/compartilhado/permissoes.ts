@@ -69,3 +69,10 @@ export function eDonoDaOportunidade(pessoa: { id: number; cargo: Cargo }, closer
   if (pessoa.cargo === "diretor") return true;
   return pessoa.cargo === "closer" && (closerId === null || closerId === pessoa.id);
 }
+
+// Fase 6 ------------------------------------------------------------------------
+
+/** Projetos responde e fecha as pendências técnicas; o diretor também pode. */
+export function podeResponderPendencia(cargo: Cargo): boolean {
+  return cargo === "projetos" || cargo === "diretor";
+}
