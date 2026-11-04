@@ -105,6 +105,9 @@ test("marcar diagnóstica cria a oportunidade e conta a ligação", async () => 
   });
   expect(ligacoes).toEqual(["marcou"]);
   expect(await screen.findByRole("status")).toHaveTextContent("Diagnóstica marcada com Vinícius Miguel para Ter, 10/11 às 14:00.");
+  expect(await screen.findByRole("region", { name: "Mensagem para o Comercial & Projetos" })).toHaveTextContent(
+    "Diagnóstica marcada: Usinagem Alfa, Ter, 10/11 às 14:00, online. Algum projetista pode nesse horário?",
+  );
 });
 
 test("closer vê a próxima reunião com a contagem", async () => {
@@ -114,8 +117,30 @@ test("closer vê a próxima reunião com a contagem", async () => {
     "/api/eu": { corpo: PESSOAS.closer },
     "GET /api/reunioes": {
       corpo: [
-        { id: 1, oportunidadeId: 1, empresa: "Já passou", tipo: "diagnostica", dataHora: "2026-11-09T09:00", formato: "online", situacao: "marcada", closerId: 2, closerNome: "Vinícius Miguel", oportunidadeSituacao: "diagnostica_marcada" },
-        { id: 2, oportunidadeId: 2, empresa: "Usinagem Alfa", tipo: "diagnostica", dataHora: "2026-11-09T14:00", formato: "online", situacao: "marcada", closerId: 2, closerNome: "Vinícius Miguel", oportunidadeSituacao: "diagnostica_marcada" },
+        {
+          id: 1,
+          oportunidadeId: 1,
+          empresa: "Já passou",
+          tipo: "diagnostica",
+          dataHora: "2026-11-09T09:00",
+          formato: "online",
+          situacao: "marcada",
+          closerId: 2,
+          closerNome: "Vinícius Miguel",
+          oportunidadeSituacao: "diagnostica_marcada",
+        },
+        {
+          id: 2,
+          oportunidadeId: 2,
+          empresa: "Usinagem Alfa",
+          tipo: "diagnostica",
+          dataHora: "2026-11-09T14:00",
+          formato: "online",
+          situacao: "marcada",
+          closerId: 2,
+          closerNome: "Vinícius Miguel",
+          oportunidadeSituacao: "diagnostica_marcada",
+        },
       ],
     },
     "GET /api/rotina": { corpo: ROTINA_VAZIA },
@@ -131,7 +156,16 @@ test("closer vê a próxima reunião com a contagem", async () => {
 });
 
 const reuniaoDoCloser = (id: number, empresa: string, dataHora: string, situacao = "marcada", oportunidadeSituacao = "diagnostica_marcada") => ({
-  id, oportunidadeId: id, empresa, tipo: "diagnostica", dataHora, formato: "online", situacao, closerId: 2, closerNome: "Vinícius Miguel", oportunidadeSituacao,
+  id,
+  oportunidadeId: id,
+  empresa,
+  tipo: "diagnostica",
+  dataHora,
+  formato: "online",
+  situacao,
+  closerId: 2,
+  closerNome: "Vinícius Miguel",
+  oportunidadeSituacao,
 });
 
 function hojeDoCloser(reunioes: unknown[]) {
@@ -215,14 +249,28 @@ test("diretor vê atrasados por pessoa em ordem", async () => {
           { pessoa: { id: 1, nome: "Hugo Hunter", cargo: "hunter" }, rotina: { feitos: 0, total: 3 }, atrasados: 0 },
         ],
         reunioesDaSemana: [
-          { id: 9, oportunidadeId: 9, empresa: "Agro Gama", tipo: "proposta", dataHora: "2026-11-11T10:00", formato: "presencial", situacao: "marcada", closerId: 2, closerNome: "Carlos Closer" },
+          {
+            id: 9,
+            oportunidadeId: 9,
+            empresa: "Agro Gama",
+            tipo: "proposta",
+            dataHora: "2026-11-11T10:00",
+            formato: "presencial",
+            situacao: "marcada",
+            closerId: 2,
+            closerNome: "Carlos Closer",
+          },
         ],
       },
     },
   });
   abrir("/");
   const atrasados = await screen.findByRole("list", { name: "Follow-ups atrasados por pessoa" });
-  expect(within(atrasados).getAllByRole("listitem").map((l) => l.textContent)).toEqual(["Carlos · 3", "Clara · 1"]);
+  expect(
+    within(atrasados)
+      .getAllByRole("listitem")
+      .map((l) => l.textContent),
+  ).toEqual(["Carlos · 3", "Clara · 1"]);
   expect(screen.getByRole("list", { name: "Reuniões da semana" })).toHaveTextContent("Agro Gama");
 });
 
@@ -244,7 +292,9 @@ test("Hoje de Projetos mostra os briefings novos e as pendências abertas", asyn
   fingirApi({
     "/api/eu": { corpo: PESSOAS.projetos },
     "GET /api/briefings": {
-      corpo: [{ id: 5, oportunidadeId: 1, empresa: "Usinagem Alfa", tipo: "diagnostica", dataHora: "2026-11-03T10:00", briefingEnviadoEm: "2026-11-03 15:00:00" }],
+      corpo: [
+        { id: 5, oportunidadeId: 1, empresa: "Usinagem Alfa", tipo: "diagnostica", dataHora: "2026-11-03T10:00", briefingEnviadoEm: "2026-11-03 15:00:00" },
+      ],
     },
     "GET /api/pendencias": {
       corpo: [
@@ -288,7 +338,20 @@ test("o Iniciar reunião do Hoje leva ao painel da diagnóstica", async () => {
   fingirApi({
     "/api/eu": { corpo: PESSOAS.closer },
     "GET /api/reunioes": {
-      corpo: [{ id: 2, oportunidadeId: 2, empresa: "Usinagem Alfa", tipo: "diagnostica", dataHora: "2026-11-09T14:00", formato: "online", situacao: "marcada", closerId: 2, closerNome: "Vinícius Miguel", oportunidadeSituacao: "diagnostica_marcada" }],
+      corpo: [
+        {
+          id: 2,
+          oportunidadeId: 2,
+          empresa: "Usinagem Alfa",
+          tipo: "diagnostica",
+          dataHora: "2026-11-09T14:00",
+          formato: "online",
+          situacao: "marcada",
+          closerId: 2,
+          closerNome: "Vinícius Miguel",
+          oportunidadeSituacao: "diagnostica_marcada",
+        },
+      ],
     },
     "GET /api/rotina": { corpo: ROTINA_VAZIA },
     "GET /api/followup": { corpo: [] },
@@ -307,8 +370,30 @@ test("o hunter tem Iniciar na diagnóstica que marcou para hoje", async () => {
     "GET /api/rotina": { corpo: ROTINA_VAZIA },
     "GET /api/reunioes": {
       corpo: [
-        { id: 7, oportunidadeId: 1, empresa: "Usinagem Alfa", tipo: "diagnostica", dataHora: `${hoje}T15:00`, formato: "online", situacao: "marcada", closerId: 2, closerNome: "Carlos Closer", oportunidadeSituacao: "diagnostica_marcada" },
-        { id: 8, oportunidadeId: 2, empresa: "Agro Gama", tipo: "diagnostica", dataHora: "2099-01-05T10:00", formato: "online", situacao: "marcada", closerId: 2, closerNome: "Carlos Closer", oportunidadeSituacao: "diagnostica_marcada" },
+        {
+          id: 7,
+          oportunidadeId: 1,
+          empresa: "Usinagem Alfa",
+          tipo: "diagnostica",
+          dataHora: `${hoje}T15:00`,
+          formato: "online",
+          situacao: "marcada",
+          closerId: 2,
+          closerNome: "Carlos Closer",
+          oportunidadeSituacao: "diagnostica_marcada",
+        },
+        {
+          id: 8,
+          oportunidadeId: 2,
+          empresa: "Agro Gama",
+          tipo: "diagnostica",
+          dataHora: "2099-01-05T10:00",
+          formato: "online",
+          situacao: "marcada",
+          closerId: 2,
+          closerNome: "Carlos Closer",
+          oportunidadeSituacao: "diagnostica_marcada",
+        },
       ],
     },
   } as never);
@@ -316,4 +401,65 @@ test("o hunter tem Iniciar na diagnóstica que marcou para hoje", async () => {
   const lista = await screen.findByRole("list", { name: "Diagnósticas que marquei" });
   expect(within(lista).getByRole("link", { name: "Iniciar a diagnóstica de Usinagem Alfa" })).toHaveAttribute("href", "/reunioes/7/diagnostica");
   expect(within(lista).queryByRole("link", { name: "Iniciar a diagnóstica de Agro Gama" })).toBeNull();
+});
+
+function diagnosticaDeHoje(extra: Record<string, unknown> = {}) {
+  const dia = hojeEmSaoPaulo();
+  return {
+    id: 7,
+    oportunidadeId: 1,
+    empresa: "Usinagem Alfa",
+    contato: "Ana",
+    tipo: "diagnostica",
+    dataHora: `${dia}T15:00`,
+    formato: "online",
+    situacao: "marcada",
+    closerId: 2,
+    closerNome: "Carlos Closer",
+    oportunidadeSituacao: "diagnostica_marcada",
+    fupsConfirmacao: 0,
+    confirmadaEm: null,
+    ...extra,
+  };
+}
+
+function hunterComDiagnostica(reuniao: Record<string, unknown>, aoConfirmar: (corpo: Record<string, unknown>) => Record<string, unknown>) {
+  const escrever = vi.fn(async () => undefined);
+  Object.defineProperty(navigator, "clipboard", { value: { writeText: escrever }, configurable: true });
+  fingirApi({
+    "/api/eu": { corpo: PESSOAS.hunter },
+    "GET /api/ligacoes": { corpo: contagem(0, 0, 0) },
+    "GET /api/rotina": { corpo: ROTINA_VAZIA },
+    "GET /api/reunioes": { corpo: [reuniao] },
+    "POST /api/reunioes/7/confirmacao": (init?: RequestInit) => ({ corpo: aoConfirmar(JSON.parse(String(init?.body))) }),
+  } as never);
+  return escrever;
+}
+
+test("FUP 1 copia a mensagem com o nome do hunter, a data e a hora e registra; o FUP 2 só depois do 1", async () => {
+  const enviados: unknown[] = [];
+  const escrever = hunterComDiagnostica(diagnosticaDeHoje(), (c) => {
+    enviados.push(c);
+    return diagnosticaDeHoje({ fupsConfirmacao: 1 });
+  });
+  abrir("/");
+  const grupo = await screen.findByRole("group", { name: "Confirmação de Usinagem Alfa" });
+  expect(within(grupo).getByRole("button", { name: /FUP 2/ })).toBeDisabled();
+  await userEvent.click(within(grupo).getByRole("button", { name: /FUP 1/ }));
+  expect(escrever).toHaveBeenCalledWith(expect.stringMatching(/^Opa! Tudo bem\? Sou o Hugo, da MecTRIA\..*às 15:00\./));
+  await vi.waitFor(() => expect(enviados).toEqual([{ fup: 1 }]));
+  await vi.waitFor(() => expect(within(grupo).getByRole("button", { name: /FUP 2/ })).toBeEnabled());
+});
+
+test("Confirmada copia a mensagem do grupo com a empresa e o formato", async () => {
+  const escrever = hunterComDiagnostica(diagnosticaDeHoje({ fupsConfirmacao: 1 }), () =>
+    diagnosticaDeHoje({ fupsConfirmacao: 1, confirmadaEm: "2026-11-10 12:00:00" }),
+  );
+  abrir("/");
+  const grupo = await screen.findByRole("group", { name: "Confirmação de Usinagem Alfa" });
+  await userEvent.click(within(grupo).getByRole("button", { name: "Confirmada" }));
+  await vi.waitFor(() =>
+    expect(escrever).toHaveBeenCalledWith(expect.stringMatching(/^Reunião confirmada: Usinagem Alfa \(Ana\), .* às 15:00, online, com \[projetista\]\.$/)),
+  );
+  expect(await within(grupo).findByText(/Confirmada pelo cliente/)).toBeInTheDocument();
 });

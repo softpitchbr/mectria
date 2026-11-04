@@ -11,6 +11,7 @@ import Painel from "../../componentes/Painel";
 import type { Eu } from "../../sessao/useEu";
 import { ChecklistDaRotina, useRotinaDeHoje } from "../Rotinas";
 import BlocoDeLigacoes from "./BlocoDeLigacoes";
+import ConfirmacaoDaDiagnostica from "./ConfirmacaoDaDiagnostica";
 import estilos from "./hoje.module.css";
 
 /** Hoje do hunter: bloco de ligações (em foco), diagnósticas marcadas e a rotina. */
@@ -77,6 +78,13 @@ export default function HojeHunter({ eu }: { eu: Eu }) {
                   </Link>
                 ) : (
                   <span className="suave">{r.closerNome ?? ""}</span>
+                )}
+                {r.dataHora.slice(0, 10) === hoje && r.situacao === "marcada" && r.oportunidadeSituacao === "diagnostica_marcada" && (
+                  <ConfirmacaoDaDiagnostica
+                    reuniao={r}
+                    eu={eu}
+                    aoMudar={(nova) => setReunioes((lista) => lista.map((x) => (x.id === nova.id ? { ...x, ...nova } : x)))}
+                  />
                 )}
               </li>
             ))}

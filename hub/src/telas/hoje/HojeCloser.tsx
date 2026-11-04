@@ -67,11 +67,7 @@ export default function HojeCloser() {
   return (
     <div className={estilos.colunas}>
       <Painel className={estilos.cartaoPrincipal}>
-        {proxima ? (
-          <ProximaReuniao reuniao={proxima} />
-        ) : (
-          <p className="suave">{reunioes ? "Nenhuma reunião nos próximos 7 dias." : "Carregando a agenda…"}</p>
-        )}
+        {proxima ? <ProximaReuniao reuniao={proxima} /> : <p className="suave">{reunioes ? "Nenhuma reunião nos próximos 7 dias." : "Carregando a agenda…"}</p>}
       </Painel>
 
       <Painel>
@@ -114,7 +110,7 @@ export default function HojeCloser() {
           <ul className={estilos.lista} aria-label="Próximos follow-ups">
             {followups.slice(0, 5).map((f) => (
               <li key={f.proposta.id}>
-                <span className="mono">{f.proximo ? ROTULO_TOQUE[f.proximo.codigo] ?? f.proximo.codigo : "—"}</span>
+                <span className="mono">{f.proximo ? (ROTULO_TOQUE[f.proximo.codigo] ?? f.proximo.codigo) : "—"}</span>
                 <Link to={`/follow-up?proposta=${f.proposta.id}`}>{f.oportunidade.empresa}</Link>
                 {f.estado === "atrasado" ? <Tag tipo="atrasado">Atrasado</Tag> : f.estado === "hoje" ? <Tag tipo="hoje">Hoje</Tag> : <span />}
               </li>

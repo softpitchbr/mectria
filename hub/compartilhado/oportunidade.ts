@@ -62,6 +62,8 @@ export interface Reuniao {
   /** Último FUP de confirmação enviado (0 a 3) e quando o lead confirmou (fase 7). */
   fupsConfirmacao?: number;
   confirmadaEm?: string | null;
+  /** Nome do contato da oportunidade, para as mensagens da confirmação (fase 7). */
+  contato?: string;
 }
 
 export interface NovaDiagnostica {

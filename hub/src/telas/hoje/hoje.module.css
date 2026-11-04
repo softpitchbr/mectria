@@ -251,3 +251,25 @@
   border-left: 2px solid var(--linha-viva);
   padding-left: 10px;
 }
+
+.confirmacao {
+  grid-column: 1 / -1;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 6px;
+}
+
+.confirmada {
+  font-size: 13px;
+  color: var(--texto);
+  border-left: 2px solid var(--vermelho-texto);
+  padding-left: 8px;
+}
+
+.mensagemGrupo {
+  margin: 0;
+  padding: 12px 14px;
+  border: 1px solid var(--linha);
+  border-radius: 6px;
+}

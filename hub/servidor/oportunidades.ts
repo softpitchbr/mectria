@@ -42,6 +42,7 @@ export interface LinhaReuniao {
   observacoes: string | null;
   fups_confirmacao: number;
   confirmada_em: string | null;
+  contato: string;
 }
 
 export function oportunidadeDeLinha(l: LinhaOportunidade): Oportunidade {
@@ -88,6 +89,7 @@ export function reuniaoDeLinha(l: LinhaReuniao): Reuniao {
     observacoes: l.observacoes,
     fupsConfirmacao: l.fups_confirmacao,
     confirmadaEm: l.confirmada_em,
+    contato: l.contato,
   };
 }
 
@@ -99,7 +101,7 @@ export const SELECT_OPORTUNIDADE = `
 export const SELECT_REUNIAO = `
   SELECT r.id, r.oportunidade_id, o.empresa, r.tipo, r.data_hora, r.formato, r.situacao, o.closer_id, c.nome AS closer_nome,
     r.quem_decide, r.iniciada_em, r.encerrada_em, r.resultado, r.motivo, r.briefing_enviado_em, o.situacao AS oportunidade_situacao, r.resultado_proposta,
-    r.observacoes, r.fups_confirmacao, r.confirmada_em
+    r.observacoes, r.fups_confirmacao, r.confirmada_em, o.contato
   FROM reunioes r
   JOIN oportunidades o ON o.id = r.oportunidade_id
   LEFT JOIN pessoas c ON c.id = o.closer_id`;
