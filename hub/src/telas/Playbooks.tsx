@@ -1,5 +1,6 @@
 import { useMemo, useState, type JSX } from "react";
 import { NavLink, useParams, useSearchParams } from "react-router";
+import { ROTULO_TOQUE } from "../../compartilhado/cadencia";
 import { CADENCIA, REGRAS_FOLLOWUP } from "../../compartilhado/dados/cadencia";
 import { ANTES_COLD_CALL, GATEKEEPER, ROTEIRO_COLD_CALL, TENTATIVAS_COLD_CALL } from "../../compartilhado/dados/cold-call";
 import { DIAGNOSTICA } from "../../compartilhado/dados/diagnostica";
@@ -196,7 +197,7 @@ function FollowUp() {
         {CADENCIA.map((t) => (
           <li key={t.codigo}>
             <h3>
-              <span className="mono">{t.codigo}</span> · {t.canal}
+              <span className="mono">{ROTULO_TOQUE[t.codigo]}</span> · {t.canal}
             </h3>
             <p className="suave">{t.objetivo}</p>
             <p className={estilos.fala}>{t.modelo}</p>

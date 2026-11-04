@@ -1,6 +1,5 @@
 import { useState, type FormEvent } from "react";
-import { CADENCIA } from "../../../compartilhado/dados/cadencia";
-import { preencherModelo } from "../../../compartilhado/cadencia";
+import { modeloDoToque, nomeDoToque, preencherModelo } from "../../../compartilhado/cadencia";
 import { formatarDia } from "../../../compartilhado/datas";
 import { CANAIS_DE_TOQUE, type ItemFollowup, type Toque } from "../../../compartilhado/oportunidade";
 import { api } from "../../api/cliente";
@@ -30,8 +29,8 @@ export default function ToqueEmFoco({
   aoPedirResultado: () => void;
 }) {
   const toque = item.proximo!;
-  const modelo = CADENCIA.find((t) => t.codigo === toque.codigo)!;
   const { oportunidade, proposta } = item;
+  const modelo = modeloDoToque(toque.codigo, proposta.apresentadaEm);
   const texto = preencherModelo(modelo.modelo, {
     contato: oportunidade.contato,
     servico: nomeDoServico(proposta.servico),
@@ -75,7 +74,7 @@ export default function ToqueEmFoco({
     <div className={estilos.toque}>
       <section className={estilos.roteiro}>
         <p className={`mono ${estilos.sobre}`}>
-          {toque.codigo} · {modelo.canal} · {formatarDia(toque.previstoPara)}
+          {nomeDoToque(toque.codigo)} · {formatarDia(toque.previstoPara)}
         </p>
         <h2>{modelo.objetivo}</h2>
         <p aria-label="Mensagem do toque" className={estilos.mensagem}>

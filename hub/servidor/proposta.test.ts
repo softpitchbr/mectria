@@ -1,3 +1,4 @@
+import { datasDaCadencia } from "../compartilhado/cadencia";
 import { applyD1Migrations, env } from "cloudflare:test";
 import { variaveisIniciais } from "../compartilhado/proposta";
 import { encerrarDiagnostica, iniciarReuniao, salvarRespostas } from "./diagnostica";
@@ -69,7 +70,7 @@ async function contar(tabela: string, onde = "1 = 1", ...valores: unknown[]) {
   return (await env.DB.prepare(`SELECT COUNT(*) AS n FROM ${tabela} WHERE ${onde}`).bind(...valores).first<{ n: number }>())!.n;
 }
 
-test("vai decidir cria a proposta, os 7 toques e põe no follow-up", async () => {
+test("vai decidir cria a proposta, os toques da janela de 7 dias e põe no follow-up", async () => {
   await salvarVariaveis(env.DB, propostaId, preparada);
   const { reuniao, propostaId: idProposta } = await encerrarProposta(
     env.DB,
@@ -82,7 +83,7 @@ test("vai decidir cria a proposta, os 7 toques e põe no follow-up", async () =>
   const p = await env.DB.prepare("SELECT * FROM propostas WHERE id = ?").bind(idProposta).first<Record<string, unknown>>();
   expect(p).toMatchObject({ reuniao_id: propostaId, valor: 1250000, apresentada_em: HOJE, data_decisao: "2026-11-25", quem_decide: "Bia", dor: "O galpão passa de 38 °C", prazo: "45 dias", equipe: "Rui e Bia" });
   expect(String(p?.escopo)).toBe(preparada.escopo);
-  expect(await contar("toques", "proposta_id = ?", idProposta)).toBe(7);
+  expect(await contar("toques", "proposta_id = ?", idProposta)).toBe(datasDaCadencia(HOJE).length);
   const fila = await listarFollowup(env.DB, closer, HOJE);
   expect(fila).toHaveLength(1);
   expect(fila[0].proximo).toMatchObject({ codigo: "D0", previstoPara: HOJE });
@@ -109,7 +110,7 @@ test("encerrar de novo dá ja_encerrada e não duplica proposta nem toques", asy
   await encerrarProposta(env.DB, propostaId, f, closer, HOJE);
   await expect(encerrarProposta(env.DB, propostaId, f, closer, HOJE)).rejects.toThrow("ja_encerrada");
   expect(await contar("propostas")).toBe(1);
-  expect(await contar("toques")).toBe(7);
+  expect(await contar("toques")).toBe(datasDaCadencia(HOJE).length);
 });
 
 test("proposta registrada à mão antes: encerrar dá ja_passou e nada muda", async () => {

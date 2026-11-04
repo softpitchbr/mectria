@@ -77,7 +77,7 @@ export default function NovaProposta({ eu, aoRegistrar }: { eu: Eu; aoRegistrar:
   return (
     <form aria-label="Nova proposta" className={estilos.nova} onSubmit={registrar} noValidate>
       <p className="suave">
-        Registre a proposta logo depois de apresentar: o hub monta os toques de follow-up (D0 a D15) em dias úteis.
+        Registre a proposta logo depois de apresentar: o hub monta os toques de follow-up da janela de 7 dias, do D0 ao D7, com a sexta fixa.
       </p>
       <Selecao
         rotulo="Oportunidade"

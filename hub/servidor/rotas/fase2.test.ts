@@ -1,3 +1,4 @@
+import { datasDaCadencia } from "../../compartilhado/cadencia";
 import { applyD1Migrations, env } from "cloudflare:test";
 import { hojeEmSaoPaulo } from "../../compartilhado/datas";
 import { onRequest } from "../../functions/api/_middleware";
@@ -103,12 +104,12 @@ test("diagnóstica com closer que não é closer ativo ou com serviço desconhec
   expect((await chamar(g(postOportunidade), "hun@mectria.com", { corpo: { ...novaDiagnostica("X"), dataHora: "amanhã" } })).status).toBe(400);
 });
 
-test("closer registra proposta com valor brasileiro e recebe 7 toques", async () => {
+test("closer registra proposta com valor brasileiro e recebe os toques da janela de 7 dias", async () => {
   const r = await chamar(g(postProposta), "clo@mectria.com", { corpo: novaProposta("Beta") });
   expect(r.status).toBe(201);
   const { proposta, toques } = await corpo<{ proposta: { valor: number }; toques: unknown[] }>(r);
   expect(proposta.valor).toBe(1250000);
-  expect(toques).toHaveLength(7);
+  expect(toques).toHaveLength(datasDaCadencia(hoje).length);
 });
 
 test("valor que não é dinheiro, ou apresentação no futuro, dá 400", async () => {

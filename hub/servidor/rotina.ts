@@ -1,4 +1,4 @@
-import { CADENCIA } from "../compartilhado/dados/cadencia";
+import { nomeDoToque } from "../compartilhado/cadencia";
 import { META_LIGACOES_DIA, MINIMO_LIGACOES_DIA, ROTINA_FIXA } from "../compartilhado/dados/rotinas";
 import { ehDiaUtil } from "../compartilhado/datas";
 import type { ContagemLigacoes, DiaDeRotina, ItemRotina, ResultadoLigacao, ResumoPessoa } from "../compartilhado/oportunidade";
@@ -44,8 +44,6 @@ interface ToqueDoDia {
   situacao: string;
   proposta_id: number;
 }
-
-const CANAL_DO_TOQUE = new Map(CADENCIA.map((t) => [t.codigo, t.canal]));
 
 /**
  * Toques do closer que entram no dia: os pendentes até o dia, os feitos no dia (hora de São Paulo)
@@ -115,7 +113,7 @@ export async function rotinaDoDia(db: D1Database, pessoa: Pessoa, dia: string, p
     for (const t of await toquesDoDia(db, pessoa.id, dia)) {
       itens.push({
         chave: `toque:${t.id}`,
-        titulo: `${t.codigo} · ${CANAL_DO_TOQUE.get(t.codigo as never) ?? ""} · ${t.empresa}`,
+        titulo: `${nomeDoToque(t.codigo)} · ${t.empresa}`,
         origem: "gerado",
         automatico: true,
         feito: t.feito_em !== null,

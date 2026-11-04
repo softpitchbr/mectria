@@ -59,7 +59,7 @@ test("closer ganha um item por toque do dia, e o toque feito marca o item", asyn
     `toque:${toques[1].id}`,
   ]);
   const item = dia.itens.find((i) => i.chave === `toque:${toques[0].id}`)!;
-  expect(item).toMatchObject({ titulo: "D0 · WhatsApp + e-mail · Alfa", automatico: true, feito: false });
+  expect(item).toMatchObject({ titulo: "D0 · WhatsApp · Alfa", automatico: true, feito: false });
 
   await registrarToque(env.DB, toques[0].id, { canal: "WhatsApp", resultado: "ok" }, closer);
   dia = await rotinaDoDia(env.DB, closer, "2026-11-16");
@@ -113,7 +113,7 @@ test("resumo do time: hunters e closers ativos, atrasados só de propostas em fo
   const resumo = await resumoDoTime(env.DB, "2026-11-18");
   expect(resumo.map((r) => [r.pessoa.nome, r.atrasados, r.rotina.total])).toEqual([
     ["Bruna Closer", 0, 4],
-    ["Carlos Closer", 4, 8],
+    ["Carlos Closer", 5, 9],
     ["Hugo Hunter", 0, 3],
   ]);
   // O resumo não grava a rotina de ninguém: o histórico continua "não abriu".
@@ -131,9 +131,10 @@ test("toque feito hoje antes de abrir a rotina aparece como feito", async () => 
 test("volume: closer com 15 propostas inteiras vencidas ainda tem rotina", async () => {
   for (let i = 0; i < 15; i++) await registrarProposta(env.DB, proposta(`Vencida ${i}`, "2026-10-01"), closer);
   const dia = await rotinaDoDia(env.DB, closer, "2026-11-18");
-  expect(dia.itens.filter((i) => i.chave.startsWith("toque:"))).toHaveLength(105);
+  // Reunião numa quinta (01/10): D0, SEXTA, LIGACAO e D7, 4 toques por proposta.
+  expect(dia.itens.filter((i) => i.chave.startsWith("toque:"))).toHaveLength(60);
   const denovo = await rotinaDoDia(env.DB, closer, "2026-11-18");
-  expect(denovo.total).toBe(109);
+  expect(denovo.total).toBe(64);
 });
 
 test("o link do item de toque abre a proposta", async () => {

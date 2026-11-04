@@ -56,7 +56,8 @@ test.describe("closer", () => {
     await foco.getByLabel("Valor").fill("8.000,00");
     await foco.getByLabel("Quem decide").fill("Ana (sócia)");
     await foco.getByRole("button", { name: "Registrar proposta" }).click();
-    await expect(page.getByRole("status")).toContainText("Proposta registrada. 7 toques na agenda.");
+    // A janela de 7 dias tem 4 ou 5 toques, conforme o dia da semana.
+    await expect(page.getByRole("status")).toContainText(/Proposta registrada\. [45] toques na agenda\./);
 
     await expect(page.getByRole("main")).toContainText("Usinagem E2E");
     await page.getByRole("button", { name: /Usinagem E2E/ }).click();
@@ -67,7 +68,7 @@ test.describe("closer", () => {
     await expect(page.getByRole("status")).toContainText("Toque registrado.");
 
     await page.goto("/rotinas");
-    const item = page.locator("li", { hasText: "D0 · WhatsApp + e-mail · Usinagem E2E" });
+    const item = page.locator("li", { hasText: "D0 · WhatsApp · Usinagem E2E" });
     await expect(item.locator('svg[data-feito="true"]')).toBeVisible();
   });
 

@@ -28,16 +28,14 @@ const proposta = (empresa: string, apresentadaEm: string) => ({
   quemDecide: "Ana (sócia)",
 });
 
-test("registrar proposta cria os 7 toques da cadência e põe a oportunidade em follow-up", async () => {
+test("registrar proposta cria os toques da janela de 7 dias e põe a oportunidade em follow-up", async () => {
+  // Reunião numa sexta: sem SEXTA separada; o D7 (20/11, feriado) vai para a segunda, 23/11.
   const { proposta: p, toques } = await registrarProposta(env.DB, proposta("Alfa", "2026-11-13"), closer);
   expect(toques.map((t) => [t.codigo, t.previstoPara, t.feitoEm])).toEqual([
     ["D0", "2026-11-13", null],
     ["D1", "2026-11-16", null],
-    ["D3", "2026-11-18", null],
-    ["D5", "2026-11-23", null],
-    ["D8", "2026-11-26", null],
-    ["D12", "2026-12-02", null],
-    ["D15", "2026-12-07", null],
+    ["LIGACAO", "2026-11-17", null],
+    ["D7", "2026-11-23", null],
   ]);
   const o = await buscarOportunidade(env.DB, p.oportunidadeId);
   expect(o).toMatchObject({ situacao: "em_followup", closerId: closer.id, origem: "registro manual" });
@@ -55,15 +53,15 @@ test("proposta de diagnóstica existente usa a oportunidade e o histórico", asy
 });
 
 test("atrasado, hoje e em dia, na ordem certa", async () => {
-  const a = await registrarProposta(env.DB, proposta("A", "2026-11-13"), closer);
+  const a = await registrarProposta(env.DB, proposta("A", "2026-11-16"), closer);
   for (const t of a.toques.slice(0, 2)) await registrarToque(env.DB, t.id, { canal: "WhatsApp", resultado: "ok" }, closer);
   await registrarProposta(env.DB, proposta("B", "2026-11-09"), closer);
   await registrarProposta(env.DB, proposta("C", "2026-11-18"), closer);
 
   const lista = await listarFollowup(env.DB, closer, "2026-11-18");
   expect(lista.map((i) => [i.oportunidade.empresa, i.estado, i.atrasados, i.proximo?.codigo])).toEqual([
-    ["B", "atrasado", 4, "D0"],
-    ["A", "hoje", 0, "D3"],
+    ["B", "atrasado", 5, "D0"],
+    ["A", "hoje", 0, "LIGACAO"],
     ["C", "hoje", 0, "D0"],
   ]);
 });

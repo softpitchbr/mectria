@@ -1,6 +1,6 @@
 import { useCallback, useEffect, useState } from "react";
 import { useSearchParams } from "react-router";
-import { CADENCIA } from "../../compartilhado/dados/cadencia";
+import { ROTULO_TOQUE, canalDoToque } from "../../compartilhado/cadencia";
 import { formatarDia, formatarReais } from "../../compartilhado/datas";
 import type { EstadoFollowup, ItemFollowup } from "../../compartilhado/oportunidade";
 import { api } from "../api/cliente";
@@ -26,7 +26,6 @@ const GRUPOS: { estado: EstadoFollowup; titulo: string }[] = [
   { estado: "sem_toque", titulo: "Sem toque" },
 ];
 
-const canalDo = (codigo: string) => CADENCIA.find((t) => t.codigo === codigo)?.canal ?? "";
 
 function CartaoDaProposta({ item, eu, aoAbrir }: { item: ItemFollowup; eu: Eu; aoAbrir: (origem: HTMLElement) => void }) {
   const { oportunidade, proposta, proximo } = item;
@@ -43,7 +42,7 @@ function CartaoDaProposta({ item, eu, aoAbrir }: { item: ItemFollowup; eu: Eu; a
       <span className={`mono ${estilos.toque}`}>
         {proximo ? (
           <>
-            <span className={estilos.codigo}>{proximo.codigo}</span> {canalDo(proximo.codigo)} · {formatarDia(proximo.previstoPara)}
+            <span className={estilos.codigo}>{ROTULO_TOQUE[proximo.codigo] ?? proximo.codigo}</span> {canalDoToque(proximo.codigo)} · {formatarDia(proximo.previstoPara)}
           </>
         ) : (
           "Cadência terminada: registre o resultado"
@@ -146,7 +145,7 @@ export default function FollowUp({ eu }: { eu: Eu }) {
         })}
 
       {aberto?.tipo === "toque" && (
-        <Foco titulo={`Toque ${aberto.item.proximo!.codigo} · ${aberto.item.oportunidade.empresa}`} origem={aberto.origem} aoSair={fechar}>
+        <Foco titulo={`Toque ${ROTULO_TOQUE[aberto.item.proximo!.codigo] ?? aberto.item.proximo!.codigo} · ${aberto.item.oportunidade.empresa}`} origem={aberto.origem} aoSair={fechar}>
           <ToqueEmFoco
             item={aberto.item}
             eu={eu}

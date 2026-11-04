@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import { Link, useNavigate } from "react-router";
 import { diasDepois, formatarDia, hojeEmSaoPaulo } from "../../../compartilhado/datas";
+import { ROTULO_TOQUE } from "../../../compartilhado/cadencia";
 import type { ItemFollowup, Reuniao } from "../../../compartilhado/oportunidade";
 import { api } from "../../api/cliente";
 import Botao from "../../componentes/Botao";
@@ -113,7 +114,7 @@ export default function HojeCloser() {
           <ul className={estilos.lista} aria-label="Próximos follow-ups">
             {followups.slice(0, 5).map((f) => (
               <li key={f.proposta.id}>
-                <span className="mono">{f.proximo?.codigo ?? "—"}</span>
+                <span className="mono">{f.proximo ? ROTULO_TOQUE[f.proximo.codigo] ?? f.proximo.codigo : "—"}</span>
                 <Link to={`/follow-up?proposta=${f.proposta.id}`}>{f.oportunidade.empresa}</Link>
                 {f.estado === "atrasado" ? <Tag tipo="atrasado">Atrasado</Tag> : f.estado === "hoje" ? <Tag tipo="hoje">Hoje</Tag> : <span />}
               </li>

@@ -60,9 +60,9 @@ test("toque em foco mostra a mensagem preenchida e o que falta entre colchetes",
   await userEvent.click(await screen.findByRole("button", { name: /Metalúrgica Beta/ }));
   const foco = screen.getByRole("dialog", { name: "Toque D0 · Metalúrgica Beta" });
   const mensagem = within(foco).getByLabelText("Mensagem do toque");
-  expect(mensagem).toHaveTextContent("Oi, Ana!");
+  expect(mensagem).toHaveTextContent("Fala, Ana, tudo bem?");
   expect(mensagem).toHaveTextContent("[dor do cliente]");
-  expect(mensagem).toHaveTextContent("Vinícius · MecTRIA");
+  expect(mensagem).toHaveTextContent("Vinícius, da MecTRIA");
 });
 
 test("registrar toque manda canal e resultado e tira o atraso", async () => {

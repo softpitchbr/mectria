@@ -1,32 +1,57 @@
-// Conteúdo migrado de hub-comercial/js/dados/fup.js (versão 0.2), sem mudar o texto.
+// Cadência de 7 dias, de docs/16-pitch-e-fups.md (decidida pelo Lucas em 04/11/2026), sem mudar o texto.
+// Os toques D3 a D15 da versão 0.2 (hub-comercial/js/dados/fup.js) continuam para as propostas já registradas.
 import type { CodigoToque } from "../cadencia";
 
-/** Toques de follow-up: dias úteis contados da apresentação (D0 = dia da reunião). */
-export const CADENCIA: { codigo: CodigoToque; dia: number; canal: string; objetivo: string; modelo: string; dica?: string }[] = [
+export type DadosDoToque = { codigo: CodigoToque; canal: string; objetivo: string; modelo: string; dica?: string };
+
+/** Toques da janela de 7 dias; as datas saem das regras em compartilhado/cadencia.ts. */
+export const CADENCIA: DadosDoToque[] = [
   {
     "codigo": "D0",
-    "dia": 0,
-    "canal": "WhatsApp + e-mail",
-    "objetivo": "Registrar por escrito o que foi combinado",
-    "modelo": "Oi, {contato}! Obrigado pela reunião de hoje.\n\nComo combinamos, o projeto de {servico} é para resolver o que você me contou: {dor}. Segue a proposta em PDF.\n\nFicamos de falar sobre a decisão em {data_decisao}. Qualquer dúvida até lá, é só me chamar aqui.\n\n{vendedor} · MecTRIA"
+    "canal": "WhatsApp",
+    "objetivo": "Registrar o combinado e a data da resposta",
+    "modelo": "Fala, {contato}, tudo bem? Obrigado pela reunião de hoje!\n\nComo combinamos, segue a proposta do projeto de {servico}, pensado para resolver o que você me contou: {dor}.\n\nComo te expliquei na jornada de parcerias, combinamos o sim ou não até {data_decisao}, para eu organizar a capacidade do time. Qualquer dúvida até lá, me chama por aqui.\n\n{vendedor}, da MecTRIA"
   },
   {
     "codigo": "D1",
-    "dia": 1,
     "canal": "WhatsApp",
-    "objetivo": "Destravar a dúvida que surgiu depois",
-    "modelo": "Oi, {contato}, tudo bem? Às vezes a dúvida aparece depois da reunião, quando vocês conversam internamente. Surgiu alguma pergunta sobre o projeto que eu possa responder? Se ajudar, explico em 15 minutos para {decisores}."
+    "objetivo": "Destravar a dúvida que aparece depois e trazer quem decide",
+    "modelo": "Fala, {contato}! Às vezes a dúvida aparece depois da reunião, quando vocês conversam internamente. Surgiu alguma pergunta sobre o projeto? Se ajudar, explico em 15 minutos para {decisores}."
   },
   {
+    "codigo": "LIGACAO",
+    "canal": "Ligação",
+    "objetivo": "Perguntar direto o que falta",
+    "modelo": "Na ligação: \"{contato}, é o {vendedor}, da MecTRIA. Quero ser direto para não tomar seu tempo: o que falta para vocês decidirem? É sobre o projeto, o investimento ou o momento?\"\n\nSe não atender, no WhatsApp: \"Tentei te ligar agora há pouco. Consegue 5 minutos hoje ou amanhã?\""
+  },
+  {
+    "codigo": "SEXTA",
+    "canal": "WhatsApp",
+    "objetivo": "Usar o ciclo de segunda para pedir o próximo passo",
+    "modelo": "Fala, {contato}, tudo bem? Senti uma sinergia bacana na nossa reunião e por isso vim te mandar essa mensagem.\n\nPensando na organização das equipes de projetos: toda segunda-feira começa um ciclo de novos projetos de parceria, e neste fim de semana vou me reunir com o time de Projetos para deixar as equipes pré-alocadas.\n\nEntão queria entender: o que ainda precisamos alinhar para avançarmos?"
+  },
+  {
+    "codigo": "D7",
+    "canal": "WhatsApp",
+    "objetivo": "Pedir o sim ou não combinado, sem pressão",
+    "modelo": "Fala, {contato}, tudo bem? Hoje é o dia que combinamos para o sim ou não da parceria. Se fizer sentido seguir, me dá um ok por aqui que eu já coloco vocês no próximo ciclo de projetos. Se agora não for o momento, sem problema, é só me falar: assim eu libero a vaga para outro parceiro.",
+    "dica": "Sem resposta depois do D7, registre o resultado: perdida (com o motivo) ou nutrição."
+  }
+];
+
+/** Mensagem do D7 quando a reunião foi numa sexta: a sexta seguinte é o próprio D7. */
+export const D7_NA_SEXTA = "Fala, {contato}, tudo bem? Hoje é o dia que combinamos para o sim ou não da parceria, e na segunda começa o próximo ciclo de projetos. Vou me reunir com o time de Projetos neste fim de semana para pré-alocar as equipes. O que ainda precisamos alinhar para vocês entrarem nesse ciclo?";
+
+/** Toques da cadência de 15 dias da versão 0.2, para as propostas registradas antes da troca. */
+export const TOQUES_ANTIGOS: DadosDoToque[] = [
+  {
     "codigo": "D3",
-    "dia": 3,
     "canal": "Ligação",
     "objetivo": "Saber em que pé está a decisão",
     "modelo": "Na ligação: \"Oi, {contato}, é o {vendedor}, da MecTRIA. Estou ligando para saber como está a decisão sobre o projeto de {servico}. Ficou alguma dúvida, ou alguma coisa que eu possa ajustar?\"\n\nSe não atender, no WhatsApp: \"Tentei te ligar para saber da proposta. Qual o melhor horário para falarmos 5 minutos?\""
   },
   {
     "codigo": "D5",
-    "dia": 5,
     "canal": "WhatsApp",
     "objetivo": "Agregar valor com um conteúdo do mesmo tema",
     "modelo": "Oi, {contato}! Lembrei de vocês: {link_conteudo}. É um projeto parecido com o que conversamos sobre {servico}. Achei que valia mandar.",
@@ -34,14 +59,12 @@ export const CADENCIA: { codigo: CodigoToque; dia: number; canal: string; objeti
   },
   {
     "codigo": "D8",
-    "dia": 8,
     "canal": "Ligação",
     "objetivo": "Perguntar direto o que falta para decidir",
     "modelo": "Na ligação: \"{contato}, quero ser direto para não tomar seu tempo: o que falta para vocês decidirem? É sobre o projeto, o investimento ou o momento?\"\n\nTrate a resposta com o guia de objeções."
   },
   {
     "codigo": "D12",
-    "dia": 12,
     "canal": "E-mail",
     "objetivo": "Oferecer um caminho alternativo",
     "modelo": "Assunto: Projeto de {servico}: uma alternativa\n\nOi, {contato},\n\nSe o investimento ou o momento pesaram, dá para começar por uma fase do projeto ou ajustar o escopo. Também consigo reservar a equipe para começar em [data de início] se fecharmos até [data].\n\nQuer que eu prepare essa versão?\n\n{vendedor}\nMecTRIA · Empresa Júnior de Engenharia Mecânica da UFTM",
@@ -49,7 +72,6 @@ export const CADENCIA: { codigo: CodigoToque; dia: number; canal: string; objeti
   },
   {
     "codigo": "D15",
-    "dia": 15,
     "canal": "WhatsApp",
     "objetivo": "Encerrar com elegância",
     "modelo": "Oi, {contato}. Como não conseguimos nos falar, vou entender que agora não é o momento e paro de te procurar, tudo bem? A proposta vale até {validade}. Se mudar alguma coisa, é só me chamar aqui. Obrigado pela confiança!",
