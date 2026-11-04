@@ -33,6 +33,12 @@ export function somarDiasUteis(dia: string, n: number, feriados: readonly string
   return paraTexto(atual);
 }
 
+/** A segunda-feira da semana do dia (a semana vai de segunda a domingo). */
+export function inicioDaSemana(dia: string): string {
+  const semana = paraData(dia).getUTCDay();
+  return diasDepois(dia, -((semana + 6) % 7));
+}
+
 /** Dia + n dias de calendário. */
 export function diasDepois(dia: string, n: number): string {
   return paraTexto(new Date(paraData(dia).getTime() + n * UM_DIA));

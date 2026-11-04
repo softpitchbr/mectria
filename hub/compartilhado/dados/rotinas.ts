@@ -4,6 +4,9 @@ import type { Cargo } from "../cargos";
 export const MINIMO_LIGACOES_DIA = 1;
 export const META_LIGACOES_DIA = 2;
 
+/** Meta dos hunters (Lucas, 04/11/2026): 8 conexões por semana, conversas com quem decide. */
+export const META_CONEXOES_SEMANA = 8;
+
 /** Itens fixos da rotina de cada cargo (spec, seção 5). Modelos iniciais, a validar com o Marcelo. */
 export const ROTINA_FIXA: Record<Cargo, { chave: string; titulo: string }[]> = {
   hunter: [

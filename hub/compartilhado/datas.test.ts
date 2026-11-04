@@ -1,4 +1,4 @@
-import { diasDepois, ehDiaUtil, formatarDia, formatarReais, hojeEmSaoPaulo, instanteLocal, lerReais, somarDiasUteis } from "./datas";
+import { diasDepois, ehDiaUtil, formatarDia, formatarReais, hojeEmSaoPaulo, inicioDaSemana, instanteLocal, lerReais, somarDiasUteis } from "./datas";
 
 test("hoje é o dia de São Paulo", () => {
   expect(hojeEmSaoPaulo(new Date("2026-11-03T02:30:00Z"))).toBe("2026-11-02");
@@ -30,4 +30,12 @@ test("dinheiro do jeito brasileiro", () => {
 
 test("dias depois conta dias de calendário", () => {
   expect(diasDepois("2026-11-27", 6)).toBe("2026-12-03");
+});
+
+test("inicioDaSemana: a segunda-feira da semana do dia", () => {
+  expect(inicioDaSemana("2026-11-11")).toBe("2026-11-09");
+  expect(inicioDaSemana("2026-11-15")).toBe("2026-11-09");
+  expect(inicioDaSemana("2026-11-16")).toBe("2026-11-16");
+  // Domingo às 22h em São Paulo ainda é domingo (01h UTC de segunda).
+  expect(inicioDaSemana(hojeEmSaoPaulo(new Date("2026-11-16T01:00:00Z")))).toBe("2026-11-09");
 });

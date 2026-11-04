@@ -4,7 +4,16 @@ import userEvent from "@testing-library/user-event";
 import { abrir, fingirApi, NUMEROS_VAZIOS, PESSOAS } from "../../teste/ajuda";
 
 const ROTINA_VAZIA = { dia: "2026-11-09", itens: [], feitos: 0, total: 0 };
-const contagem = (total: number, naoAtendeu: number, atendeu: number, marcou = 0) => ({ total, naoAtendeu, atendeu, marcou, meta: 2 });
+const contagem = (total: number, naoAtendeu: number, atendeu: number, marcou = 0, conexao = 0) => ({
+  total,
+  naoAtendeu,
+  atendeu,
+  marcou,
+  meta: 2,
+  conexao,
+  conexoesSemana: conexao + marcou,
+  metaConexoesSemana: 8,
+});
 
 test("hunter registra ligações pelo teclado no bloco em foco", async () => {
   const enviados: string[] = [];

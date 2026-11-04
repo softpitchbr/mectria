@@ -210,7 +210,7 @@ export function validarToque(corpo: unknown): Validado<{ canal: string; resultad
 export function validarLigacao(corpo: unknown): Validado<ResultadoLigacao> {
   if (!ehObjeto(corpo)) return { ok: false, mensagem: MENSAGEM.corpo };
   const r = corpo.resultado;
-  return r === "nao_atendeu" || r === "atendeu" || r === "marcou" ? { ok: true, dados: r } : { ok: false, mensagem: "Resultado da ligação inválido." };
+  return r === "nao_atendeu" || r === "atendeu" || r === "conexao" || r === "marcou" ? { ok: true, dados: r } : { ok: false, mensagem: "Resultado da ligação inválido." };
 }
 
 export function validarFeito(corpo: unknown): Validado<boolean> {

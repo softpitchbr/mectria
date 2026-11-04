@@ -31,7 +31,7 @@ export default function HojeHunter({ eu }: { eu: Eu }) {
   useEffect(() => {
     api<ContagemLigacoes>("/api/ligacoes")
       .then(setContagem)
-      .catch(() => setContagem({ total: 0, naoAtendeu: 0, atendeu: 0, marcou: 0, meta: 2 }));
+      .catch(() => setContagem({ total: 0, naoAtendeu: 0, atendeu: 0, marcou: 0, meta: 2, conexao: 0, conexoesSemana: 0, metaConexoesSemana: 8 }));
     carregarReunioes();
   }, [carregarReunioes]);
 

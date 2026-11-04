@@ -146,6 +146,8 @@ export interface ResumoPessoa {
   pessoa: { id: number; nome: string; cargo: string };
   rotina: { feitos: number; total: number };
   atrasados: number;
+  /** Só hunters: conexões da semana até hoje (fase 7). */
+  conexoesSemana?: number;
 }
 
 export interface ContagemLigacoes {
@@ -154,9 +156,14 @@ export interface ContagemLigacoes {
   atendeu: number;
   marcou: number;
   meta: number;
+  /** Falou com quem decide, sem marcar (fase 7). */
+  conexao: number;
+  /** Conexões (conexão + marcou) de segunda até o dia, e a meta da semana. */
+  conexoesSemana: number;
+  metaConexoesSemana: number;
 }
 
-export type ResultadoLigacao = "nao_atendeu" | "atendeu" | "marcou";
+export type ResultadoLigacao = "nao_atendeu" | "atendeu" | "conexao" | "marcou";
 
 export interface Pendencia {
   id: number;

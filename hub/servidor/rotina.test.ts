@@ -43,8 +43,8 @@ test("rotina fixa do hunter e contador de ligações", async () => {
 
   await registrarLigacao(env.DB, hunter.id, "2026-11-16", "atendeu");
   await registrarLigacao(env.DB, hunter.id, "2026-11-16", "marcou");
-  expect(await contarLigacoes(env.DB, hunter.id, "2026-11-16")).toEqual({ total: 3, naoAtendeu: 1, atendeu: 1, marcou: 1, meta: 2 });
-  expect(await contarLigacoes(env.DB, hunter.id, "2026-11-17")).toEqual({ total: 0, naoAtendeu: 0, atendeu: 0, marcou: 0, meta: 2 });
+  expect(await contarLigacoes(env.DB, hunter.id, "2026-11-16")).toEqual({ total: 3, naoAtendeu: 1, atendeu: 1, marcou: 1, meta: 2, conexao: 0, conexoesSemana: 1, metaConexoesSemana: 8 });
+  expect(await contarLigacoes(env.DB, hunter.id, "2026-11-17")).toEqual({ total: 0, naoAtendeu: 0, atendeu: 0, marcou: 0, meta: 2, conexao: 0, conexoesSemana: 1, metaConexoesSemana: 8 });
 });
 
 test("closer ganha um item por toque do dia, e o toque feito marca o item", async () => {
@@ -152,4 +152,29 @@ test("o dia de hoje entra no histórico mesmo em feriado", async () => {
     { dia: "2026-10-30", feitos: 0, total: 0 },
     { dia: "2026-10-29", feitos: 0, total: 0 },
   ]);
+});
+
+test("conexão e marcou contam na semana; atendeu e não atendeu não", async () => {
+  await registrarLigacao(env.DB, hunter.id, "2026-11-09", "conexao");
+  await registrarLigacao(env.DB, hunter.id, "2026-11-10", "marcou");
+  await registrarLigacao(env.DB, hunter.id, "2026-11-11", "atendeu");
+  await registrarLigacao(env.DB, hunter.id, "2026-11-11", "nao_atendeu");
+  await registrarLigacao(env.DB, hunter.id, "2026-11-06", "conexao");
+  const c = await contarLigacoes(env.DB, hunter.id, "2026-11-11");
+  expect(c).toMatchObject({ total: 2, conexao: 0, atendeu: 1, naoAtendeu: 1, conexoesSemana: 2, metaConexoesSemana: 8 });
+  expect((await contarLigacoes(env.DB, hunter.id, "2026-11-09")).conexao).toBe(1);
+});
+
+test("conexão de domingo conta na semana que termina no domingo", async () => {
+  await registrarLigacao(env.DB, hunter.id, "2026-11-15", "conexao");
+  expect((await contarLigacoes(env.DB, hunter.id, "2026-11-15")).conexoesSemana).toBe(1);
+  expect((await contarLigacoes(env.DB, hunter.id, "2026-11-16")).conexoesSemana).toBe(0);
+});
+
+test("resumo do time traz as conexões da semana dos hunters", async () => {
+  await registrarLigacao(env.DB, hunter.id, "2026-11-10", "conexao");
+  await registrarLigacao(env.DB, hunter.id, "2026-11-11", "marcou");
+  const resumo = await resumoDoTime(env.DB, "2026-11-11");
+  expect(resumo.find((r) => r.pessoa.id === hunter.id)?.conexoesSemana).toBe(2);
+  expect(resumo.find((r) => r.pessoa.id === closer.id)?.conexoesSemana).toBeUndefined();
 });

@@ -1,7 +1,7 @@
 import { nomeDoToque } from "../compartilhado/cadencia";
 import { reativacoesDoDia } from "./reativacao";
-import { META_LIGACOES_DIA, MINIMO_LIGACOES_DIA, ROTINA_FIXA } from "../compartilhado/dados/rotinas";
-import { ehDiaUtil } from "../compartilhado/datas";
+import { META_CONEXOES_SEMANA, META_LIGACOES_DIA, MINIMO_LIGACOES_DIA, ROTINA_FIXA } from "../compartilhado/dados/rotinas";
+import { ehDiaUtil, inicioDaSemana } from "../compartilhado/datas";
 import type { ContagemLigacoes, DiaDeRotina, ItemRotina, ResultadoLigacao, ResumoPessoa } from "../compartilhado/oportunidade";
 import { listarReunioes } from "./oportunidades";
 import { buscarPorId, listar } from "./pessoas";
@@ -15,18 +15,23 @@ export async function registrarLigacao(db: D1Database, pessoaId: number, dia: st
 export async function contarLigacoes(db: D1Database, pessoaId: number, dia: string): Promise<ContagemLigacoes> {
   const l = await db
     .prepare(
-      `SELECT COUNT(*) AS total,
-         SUM(resultado = 'nao_atendeu') AS nao_atendeu, SUM(resultado = 'atendeu') AS atendeu, SUM(resultado = 'marcou') AS marcou
-       FROM ligacoes WHERE pessoa_id = ? AND dia = ?`,
+      `SELECT SUM(dia = ?2) AS total,
+         SUM(dia = ?2 AND resultado = 'nao_atendeu') AS nao_atendeu, SUM(dia = ?2 AND resultado = 'atendeu') AS atendeu,
+         SUM(dia = ?2 AND resultado = 'conexao') AS conexao, SUM(dia = ?2 AND resultado = 'marcou') AS marcou,
+         SUM(resultado IN ('conexao', 'marcou')) AS conexoes_semana
+       FROM ligacoes WHERE pessoa_id = ?1 AND dia BETWEEN ?3 AND ?2`,
     )
-    .bind(pessoaId, dia)
-    .first<{ total: number; nao_atendeu: number | null; atendeu: number | null; marcou: number | null }>();
+    .bind(pessoaId, dia, inicioDaSemana(dia))
+    .first<{ total: number | null; nao_atendeu: number | null; atendeu: number | null; conexao: number | null; marcou: number | null; conexoes_semana: number | null }>();
   return {
     total: l?.total ?? 0,
     naoAtendeu: l?.nao_atendeu ?? 0,
     atendeu: l?.atendeu ?? 0,
     marcou: l?.marcou ?? 0,
     meta: META_LIGACOES_DIA,
+    conexao: l?.conexao ?? 0,
+    conexoesSemana: l?.conexoes_semana ?? 0,
+    metaConexoesSemana: META_CONEXOES_SEMANA,
   };
 }
 
@@ -218,7 +223,13 @@ export async function resumoDoTime(db: D1Database, hoje: string): Promise<Resumo
               .first<{ n: number }>()
           )?.n ?? 0
         : 0;
-    resumo.push({ pessoa: { id: p.id, nome: p.nome, cargo: p.cargo }, rotina: { feitos: dia.feitos, total: dia.total }, atrasados });
+    const conexoesSemana = p.cargo === "hunter" ? (await contarLigacoes(db, p.id, hoje)).conexoesSemana : undefined;
+    resumo.push({
+      pessoa: { id: p.id, nome: p.nome, cargo: p.cargo },
+      rotina: { feitos: dia.feitos, total: dia.total },
+      atrasados,
+      ...(conexoesSemana === undefined ? {} : { conexoesSemana }),
+    });
   }
   return resumo;
 }
