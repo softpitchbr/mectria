@@ -26,7 +26,10 @@ test.describe("hunter", () => {
     await page.keyboard.press("1");
     await expect(foco.getByText("1 sem resposta")).toBeVisible();
     await page.keyboard.press("2");
-    await expect(foco.getByText("Meta do dia batida")).toBeVisible();
+    await expect(foco).toContainText("2 ligações hoje");
+    // Fase 7: a tecla 3 é a conexão (falou com quem decide) e conta nas conexões da semana.
+    await page.keyboard.press("3");
+    await expect(foco.getByRole("meter", { name: "Conexões da semana" })).toHaveAttribute("aria-valuenow", "1");
 
     await foco.getByRole("button", { name: /Marcou diagnóstica/ }).click();
     const form = page.getByRole("form", { name: "Marcar diagnóstica" });
