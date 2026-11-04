@@ -41,7 +41,7 @@ Se o cliente pedir mais tempo, o closer pergunta: "O que precisaria acontecer pa
 - A janela é de 7 dias corridos a partir da reunião (D0). O D7 é o dia combinado para o sim ou não.
 - Os toques só saem em dia útil.
 - Toda janela de 7 dias passa por uma sexta-feira, e nela sai o **FUP fixo de sexta**. Se a sexta cai num dia que já teria toque, a mensagem de sexta fica no lugar dele. Se a reunião foi numa sexta, a sexta seguinte é o próprio D7, e as duas mensagens viram uma só.
-- A ligação fica no meio da janela, num dia sem outro toque e fora da sexta.
+- A ligação fica no meio da janela: 2 dias úteis depois do D0, pulando a sexta.
 - Todos os toques escritos vão pelo WhatsApp.
 - Sem resposta depois do D7, a proposta é registrada como perdida (com o motivo) ou vai para nutrição, com retorno em 45 dias (seção 3).
 
@@ -52,8 +52,10 @@ Se o cliente pedir mais tempo, o closer pergunta: "O que precisaria acontecer pa
 | Segunda | seg | ter | qua | sex | seg seguinte |
 | Terça | ter | qua | qui | sex | ter seguinte |
 | Quarta | qua | qui | seg | sex | qua seguinte |
-| Quinta | qui | (a sexta fica no lugar) | ter | sex | qui seguinte |
-| Sexta | sex | seg | qua | (é o próprio D7) | sex seguinte |
+| Quinta | qui | (a sexta fica no lugar) | seg | sex | qui seguinte |
+| Sexta | sex | seg | ter | (é o próprio D7) | sex seguinte |
+
+A ligação cai 2 dias úteis depois do D0, pulando a sexta. Feriado: a sexta fixa vai para o dia útil anterior (se não for o D0), e o D7 vai para o dia útil seguinte.
 
 ### As mensagens
 
