@@ -1,7 +1,7 @@
 import { hojeEmSaoPaulo, somarDiasUteis } from "../compartilhado/datas";
 import { retomarOuPadrao } from "../compartilhado/reativacao";
 import type { Anotacao, Marcacao } from "../compartilhado/diagnostica";
-import type { FechamentoDiagnostica, FichaCompleta, Pendencia, Reuniao } from "../compartilhado/oportunidade";
+import { MOTIVO_NAO_COMPARECEU, type FechamentoDiagnostica, type FichaCompleta, type Pendencia, type Reuniao } from "../compartilhado/oportunidade";
 import { buscarOportunidade, reuniaoDeLinha, SELECT_REUNIAO, type LinhaReuniao } from "./oportunidades";
 import type { Pessoa } from "./tipos";
 
@@ -128,6 +128,19 @@ export async function fichaDaReuniao(db: D1Database, reuniaoId: number): Promise
  * se a primeira concluiu a reunião.
  */
 export async function encerrarDiagnostica(db: D1Database, reuniaoId: number, f: FechamentoDiagnostica, autor: Pessoa): Promise<Reuniao> {
+  if (f.resultado === "nao_compareceu") {
+    // O cliente não apareceu: a reunião fica cancelada com o motivo e a oportunidade continua na diagnóstica,
+    // na lista de reagendamentos do hunter (docs/17, seção 6). Não há mudança de situação, então não vai ao histórico.
+    const cancelou = await db
+      .prepare(
+        `UPDATE reunioes SET situacao = 'cancelada', encerrada_em = datetime('now'), motivo = ?, atualizado_em = datetime('now')
+         WHERE id = ? AND tipo = 'diagnostica' AND situacao IN ('marcada', 'em_andamento') AND ${OPORTUNIDADE_NA_ETAPA} RETURNING id`,
+      )
+      .bind(MOTIVO_NAO_COMPARECEU, reuniaoId)
+      .first();
+    if (!cancelou) throw new Error(await motivoDaRecusa(db, reuniaoId, "diagnostica"));
+    return (await buscarReuniao(db, reuniaoId))!;
+  }
   const para = f.resultado === "proposta_marcada" ? "proposta_marcada" : "nutricao";
   // Depois da primeira gravação: esta reunião acabou de ser concluída e a oportunidade ainda está na diagnóstica.
   const recemConcluida = `r.id = ? AND r.situacao = 'concluida' AND o.situacao = 'diagnostica_marcada'`;

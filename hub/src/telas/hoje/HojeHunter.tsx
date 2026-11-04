@@ -12,6 +12,7 @@ import type { Eu } from "../../sessao/useEu";
 import { ChecklistDaRotina, useRotinaDeHoje } from "../Rotinas";
 import BlocoDeLigacoes from "./BlocoDeLigacoes";
 import ConfirmacaoDaDiagnostica from "./ConfirmacaoDaDiagnostica";
+import Reagendamentos from "./Reagendamentos";
 import estilos from "./hoje.module.css";
 
 /** Hoje do hunter: bloco de ligações (em foco), diagnósticas marcadas e a rotina. */
@@ -59,6 +60,8 @@ export default function HojeHunter({ eu }: { eu: Eu }) {
           Começar o bloco
         </Botao>
       </Painel>
+
+      <Reagendamentos aoReagendar={carregarReunioes} />
 
       <Painel>
         <h2 className={estilos.subtitulo}>Diagnósticas que marquei</h2>

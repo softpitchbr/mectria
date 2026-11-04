@@ -178,3 +178,20 @@ test("o painel mostra as observações de quem marcou", async () => {
   await abrirPainel();
   expect(screen.getByRole("note", { name: "Observações de quem marcou" })).toHaveTextContent("O sócio decide; prefere WhatsApp.");
 });
+
+test("o fechamento manda nao_compareceu", async () => {
+  let enviado: unknown;
+  api({
+    "POST /api/reunioes/5/encerrar": (init?: RequestInit) => {
+      enviado = JSON.parse(String(init?.body));
+      return { corpo: { ...FICHA.reuniao, situacao: "cancelada", motivo: "Cliente não compareceu" } };
+    },
+  });
+  await abrirPainel();
+  await userEvent.click(screen.getByRole("button", { name: "Ir para Fechamento" }));
+  const form = screen.getByRole("form", { name: "Fechamento da diagnóstica" });
+  await userEvent.click(within(form).getByRole("radio", { name: "Cliente não compareceu" }));
+  expect(within(form).getByText(/volta para o hunter reagendar/)).toBeInTheDocument();
+  await userEvent.click(within(form).getByRole("button", { name: "Encerrar diagnóstica" }));
+  await waitFor(() => expect(enviado).toEqual({ resultado: "nao_compareceu" }));
+});

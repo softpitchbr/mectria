@@ -3,6 +3,9 @@ import { onRequest } from "../../functions/api/_middleware";
 import { onRequestGet as getLigacoes, onRequestPost as postLigacao } from "../../functions/api/ligacoes";
 import { onRequestPost as postOportunidade } from "../../functions/api/oportunidades/index";
 import { onRequestPost as postConfirmacao } from "../../functions/api/reunioes/[id]/confirmacao";
+import { onRequestGet as getReagendamentos } from "../../functions/api/reagendamentos";
+import { onRequestPost as postReagendar } from "../../functions/api/oportunidades/[id]/reagendar";
+import { onRequestPost as postEncerrar } from "../../functions/api/reunioes/[id]/encerrar";
 import { criarDiagnostica } from "../oportunidades";
 import { criar } from "../pessoas";
 import type { DadosApi, Env, Pessoa } from "../tipos";
@@ -73,4 +76,20 @@ test("o hunter que marcou e o closer dono confirmam; outro hunter recebe 403; co
   expect(await corpo(await chamar(g(postConfirmacao), "hun@mectria.com", { corpo: { fup: 1 }, params }))).toMatchObject({ fupsConfirmacao: 1 });
   expect((await chamar(g(postConfirmacao), "hun@mectria.com", { corpo: { fup: 3 }, params })).status).toBe(409);
   expect(await corpo(await chamar(g(postConfirmacao), "clo@mectria.com", { corpo: { confirmada: true }, params }))).toHaveProperty("confirmadaEm");
+});
+
+test("não compareceu e reagendar pelas rotas; Projetos e outro hunter recebem 403", async () => {
+  const { oportunidade, reuniao } = await criarDiagnostica(
+    env.DB,
+    { empresa: "Gama", contato: "Ana", telefone: "34999990000", servico: "climatizacao", closerId: closer.id, dataHora: "2099-01-05T10:00", formato: "online" },
+    hunter,
+  );
+  expect((await chamar(g(postEncerrar), "hun@mectria.com", { corpo: { resultado: "nao_compareceu" }, params: { id: String(reuniao.id) } })).status).toBe(200);
+  expect((await corpo<{ empresa: string }[]>(await chamar(g(getReagendamentos), "hun@mectria.com"))).map((r) => r.empresa)).toEqual(["Gama"]);
+  expect((await chamar(g(getReagendamentos), "pro@mectria.com")).status).toBe(403);
+  const params = { id: String(oportunidade.id) };
+  expect((await chamar(g(postReagendar), "hun2@mectria.com", { corpo: { dataHora: "2099-01-06T10:00", formato: "online" }, params })).status).toBe(403);
+  expect((await chamar(g(postReagendar), "hun@mectria.com", { corpo: { dataHora: "amanhã", formato: "online" }, params })).status).toBe(400);
+  expect((await chamar(g(postReagendar), "hun@mectria.com", { corpo: { dataHora: "2099-01-06T10:00", formato: "online" }, params })).status).toBe(201);
+  expect((await chamar(g(postReagendar), "hun@mectria.com", { corpo: { dataHora: "2099-01-06T11:00", formato: "online" }, params })).status).toBe(409);
 });

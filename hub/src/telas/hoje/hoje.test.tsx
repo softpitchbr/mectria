@@ -463,3 +463,30 @@ test("Confirmada copia a mensagem do grupo com a empresa e o formato", async () 
   );
   expect(await within(grupo).findByText(/Confirmada pelo cliente/)).toBeInTheDocument();
 });
+
+test("o Hoje do hunter reagenda em foco a diagnóstica em que o cliente não compareceu", async () => {
+  let enviado: unknown;
+  let reagendou = false;
+  const naoVeio = { ...diagnosticaDeHoje({ id: 9, empresa: "Forja Faltosa", situacao: "cancelada", motivo: "Cliente não compareceu", dataHora: "2026-11-03T10:00" }) };
+  fingirApi({
+    "/api/eu": { corpo: PESSOAS.hunter },
+    "GET /api/ligacoes": { corpo: contagem(0, 0, 0) },
+    "GET /api/rotina": { corpo: ROTINA_VAZIA },
+    "GET /api/reunioes": { corpo: [] },
+    "GET /api/reagendamentos": () => ({ corpo: reagendou ? [] : [naoVeio] }),
+    "POST /api/oportunidades/1/reagendar": (init?: RequestInit) => {
+      enviado = JSON.parse(String(init?.body));
+      reagendou = true;
+      return { status: 201, corpo: { ...naoVeio, id: 10, situacao: "marcada" } };
+    },
+  } as never);
+  abrir("/");
+  const lista = await screen.findByRole("list", { name: "Reagendar" });
+  await userEvent.click(within(lista).getByRole("button", { name: "Reagendar Forja Faltosa" }));
+  const foco = screen.getByRole("dialog", { name: "Reagendar · Forja Faltosa" });
+  await userEvent.type(within(foco).getByLabelText("Data"), "2099-01-06");
+  await userEvent.type(within(foco).getByLabelText("Hora"), "10:00");
+  await userEvent.click(within(foco).getByRole("button", { name: "Reagendar a diagnóstica" }));
+  await vi.waitFor(() => expect(enviado).toEqual({ dataHora: "2099-01-06T10:00", formato: "online" }));
+  await vi.waitFor(() => expect(screen.queryByRole("list", { name: "Reagendar" })).toBeNull());
+});

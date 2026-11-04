@@ -24,7 +24,7 @@ export default function Fechamento({
   antesDeEncerrar: () => Promise<boolean>;
   aoEncerrar: () => void;
 }) {
-  const [resultado, setResultado] = useState<"proposta_marcada" | "nao_qualificou" | null>(null);
+  const [resultado, setResultado] = useState<"proposta_marcada" | "nao_qualificou" | "nao_compareceu" | null>(null);
   const [c, setC] = useState({ data: "", hora: "", formato: "online", quemDecide: "", motivo: "", retomarEm: "" });
   const [meses] = useState(() => mesesParaRetomar(hojeEmSaoPaulo()));
   const [erro, setErro] = useState("");
@@ -49,7 +49,9 @@ export default function Fechamento({
       const corpo =
         resultado === "proposta_marcada"
           ? { resultado, dataHora: `${c.data}T${c.hora}`, formato: c.formato, quemDecide: c.quemDecide.trim() }
-          : { resultado, motivo: c.motivo, ...(c.retomarEm ? { retomarEm: c.retomarEm } : {}) };
+          : resultado === "nao_compareceu"
+            ? { resultado }
+            : { resultado, motivo: c.motivo, ...(c.retomarEm ? { retomarEm: c.retomarEm } : {}) };
       await api(`/api/reunioes/${reuniaoId}/encerrar`, { method: "POST", body: JSON.stringify(corpo) });
       aoEncerrar();
     } catch (falha) {
@@ -79,7 +81,12 @@ export default function Fechamento({
           <input type="radio" name="resultado" checked={resultado === "nao_qualificou"} onChange={() => setResultado("nao_qualificou")} />
           Não qualificou
         </label>
+        <label className={resultado === "nao_compareceu" ? estilos.opcaoMarcada : estilos.opcao}>
+          <input type="radio" name="resultado" checked={resultado === "nao_compareceu"} onChange={() => setResultado("nao_compareceu")} />
+          Cliente não compareceu
+        </label>
       </fieldset>
+      {resultado === "nao_compareceu" && <p className="suave">A reunião fica cancelada e a oportunidade volta para o hunter reagendar.</p>}
       {resultado === "proposta_marcada" && (
         <div className={estilos.grade}>
           <Campo rotulo="Data da apresentação" type="date" value={c.data} onChange={mudar("data")} />

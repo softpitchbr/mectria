@@ -197,7 +197,11 @@ export interface PendenciaDeProjetos {
 
 export type FechamentoDiagnostica =
   | { resultado: "proposta_marcada"; dataHora: string; formato: "online" | "presencial"; quemDecide: string }
-  | { resultado: "nao_qualificou"; motivo: string; retomarEm?: string };
+  | { resultado: "nao_qualificou"; motivo: string; retomarEm?: string }
+  | { resultado: "nao_compareceu" };
+
+/** O motivo da diagnóstica cancelada porque o cliente não apareceu: ela volta para o hunter reagendar (docs/17). */
+export const MOTIVO_NAO_COMPARECEU = "Cliente não compareceu";
 
 export interface FichaCompleta {
   reuniao: Reuniao;

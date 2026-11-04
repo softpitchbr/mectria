@@ -295,6 +295,7 @@ export function validarFechamento(corpo: unknown, hoje: string = hojeEmSaoPaulo(
       ? { ok: true, dados: { resultado: "nao_qualificou", motivo: corpo.motivo, retomarEm: corpo.retomarEm } }
       : { ok: false, mensagem: MENSAGEM_RETOMAR };
   }
+  if (corpo.resultado === "nao_compareceu") return { ok: true, dados: { resultado: "nao_compareceu" } };
   return { ok: false, mensagem: "Escolha como a diagnóstica terminou." };
 }
 
