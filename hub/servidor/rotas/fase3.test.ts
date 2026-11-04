@@ -59,9 +59,11 @@ test("o closer dono abre, inicia e grava; o hunter que marcou só vê a reunião
   expect((await chamar(g(putRespostas), "hun@mectria.com", { metodo: "PUT", corpo: { respostas: [] } })).status).toBe(403);
 });
 
-test("outro closer e projetos recebem 403; o diretor passa", async () => {
+test("outro closer recebe 403; Projetos só lê a ficha da diagnóstica; o diretor passa", async () => {
   expect((await chamar(g(getFicha), "clo2@mectria.com")).status).toBe(403);
-  expect((await chamar(g(getFicha), "pro@mectria.com")).status).toBe(403);
+  // Fase 6: Projetos lê a ficha e o briefing da diagnóstica, mas não mexe na reunião.
+  expect((await chamar(g(getFicha), "pro@mectria.com")).status).toBe(200);
+  expect((await chamar(g(postIniciar), "pro@mectria.com", {})).status).toBe(403);
   expect((await chamar(g(postIniciar), "dir@mectria.com", {})).status).toBe(200);
 });
 
