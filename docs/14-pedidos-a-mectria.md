@@ -1,130 +1,107 @@
-# O que pedir à MecTRIA para executar o escopo
+# O que pedir à MecTRIA
 
-Levantamento de 08/10/2026. Cruza o escopo do contrato (Anexo I da minuta do contrato), as tarefas do plano (44, mais as 6 da R ampliada) e o que já foi recebido. Atualizar o status a cada entrega.
+Lista de 04/11/2026, reorganizada para a reunião de terça, 10/11, às 18h30. O levantamento original é de 08/10 e cruza o escopo do contrato (Anexo I da minuta), as tarefas do plano e o que já foi recebido. Os números entre parênteses são os dos pedidos originais e continuam os mesmos.
 
-**Legenda de status:** Recebido · Parcial · Falta
+**Como ler:** [ ] falta · [x] recebido. **Trava** é o que fica parado enquanto o item não chega. **Serve para** é o que melhora quando ele chega, mas não fica parado.
 
-## Pauta da reunião de terça, 10/11/2026, 18h30
+## 1. Terça, 10/11 · Urgente: trava o que estamos construindo agora
 
-Tudo o que precisamos coletar nesta reunião. Ir completando conforme surgir.
+### Para o hub ir para o ar
 
-**Para a apresentação e o cold call**
-- [ ] Quantos clientes já atenderam, quantos projetos entregaram e quantos clientes voltaram (pedido 17). Vai no cold call ("como já fizemos com X clientes") e no slide de números.
-- [ ] Anos de experiência: a MecTRIA é de 2013 (manual), então são 13 anos. Confirmar.
-- [ ] Professores orientadores: nomes, áreas, autorização para citar e se são doutores (pedido 18). O cold call diz só "professores" até confirmar.
-- [ ] Cases e depoimentos, com autorização (pedidos 15 e 16), começando por Desenvolvimento de Produto e Desenho Técnico.
+- [ ] **E-mail institucional** que vai ser o dono das contas (5). **Trava:** criar as contas da Cloudflare e do GitHub e publicar o hub.
+- [ ] **Acesso ao DNS de mectria.com** (2). **Trava:** o endereço hub.mectria.com. Até lá o hub fica num endereço provisório.
+- [ ] **Quem terá login:** nome, e-mail e cargo de cada pessoa, e quem é o diretor comercial no hub (31, parte 1). **Trava:** cadastrar o time.
 
-**Para o processo comercial (`17-processo-comercial.md`)**
-- [ ] O nome da etiqueta dos leads em conversa no CRM ("Em contato"?).
-- [ ] Quem conduz a diagnóstica: hunter, closer, projetista, ou varia.
-- [ ] Em que grupo o hunter avisa a reunião confirmada.
-- [ ] O fluxo de 3 dias da planilha v4 está em uso? (pedido 42). A regra nova é no máximo 3 dias em construção de proposta.
-- [ ] A política comercial em vigor: parcelas, desconto à vista e desconto máximo (pedido 27).
-- [ ] Avisar as metas novas: 8 conexões por semana dos hunters e o % da rotina por pessoa, no lugar das 10 ligações por dia.
+### Para as apresentações (o Instrumento começa em 16/11)
 
-**Para o hub e a publicação**
-- [ ] As respostas aos pontos V1 a V7 do PDF de 04/11 (o V3 perguntava da meta antiga de ligações).
-- [ ] E-mail institucional para as contas e acesso ao DNS de mectria.com (P1 e P2 do PDF; pedidos 5 e 2).
-- [ ] Quem terá login, com e-mail e cargo, e quem é o diretor comercial no hub (P3; pedido 31).
-- [ ] Alguém de Projetos para os briefings e as dúvidas técnicas (P4).
-- [ ] As propostas que estão na rua hoje (P5; pedido 43).
-- [ ] A planilha do Histórico, para o CSV do diretor sair no formato deles (pedido 33).
+- [ ] **Números verificáveis:** clientes atendidos, projetos entregues, clientes que voltaram e membros (17). **Trava:** o cold call ("como já fizemos com X clientes") e o slide de números.
+- [ ] **Anos de experiência:** a MecTRIA é de 2013, segundo o manual, então são 13 anos. Confirmar. **Trava:** o slide de números.
+- [ ] **Professores orientadores:** nomes, áreas, autorização para citar e se são doutores; e quem assina a ART (18 e 38). **Trava:** o cold call, o slide do time e a resposta a "vocês são estudantes?".
+- [ ] **Cases e depoimentos com autorização,** começando por Desenvolvimento de Produto e Desenho Técnico (15 e 16). **Trava:** as duas primeiras apresentações de proposta.
+- [ ] **Política comercial em vigor:** parcelas, desconto à vista, desconto máximo e se existe incentivo para fechar rápido; e se a planilha v4 e o fluxo de 3 dias estão em uso (27 e 42). **Trava:** o slide de investimento e a regra de no máximo 3 dias em construção de proposta.
 
-## Já recebido (não pedir de novo)
+### Para o processo comercial (`17-processo-comercial.md`)
 
-| Item | Onde está |
-|---|---|
-| Carta de Serviços | `referencias/mectria/carta-de-servicos.pdf` · `docs/11-carta-de-servicos.md` |
-| Manual de identidade (cores, fontes, tom de voz) | `referencias/mectria/manual-identidade-visual-v1.0.pdf` · `docs/10-identidade-visual-mectria.md` |
-| Logo em PNG (656 × 195 px, extraído do manual) | `referencias/mectria/logo/` |
-| Planilhas de precificação (2026 e v4) e histórico de projetos | `referencias/mectria/` · `docs/12-precificacao-mectria.md` |
-| Apresentação de proposta atual (Ap Gallu, só o texto) | Drive `[Comercial]` · `docs/13-apresentacao-atual-mectria.md` |
-| Dados cadastrais, faturamento de 2025 e 2026, responsável (Marcelo) | `docs/01-pessoas.md` · contrato |
-| Domínio (mectria.com) e e-mails (comercial@mectria.com) | Manual de identidade |
+- [ ] **Quem conduz a diagnóstica:** hunter, closer, projetista, ou varia. **Trava:** quem pode abrir o painel da diagnóstica no hub.
+- [ ] **O nome da etiqueta dos leads em conversa** no CRM deles ("Em contato"?). **Trava:** o texto da rotina do hunter.
+- [ ] **Em que grupo o hunter avisa a reunião confirmada.** **Trava:** a mensagem do grupo no hub.
 
-## O que falta, por prazo
+### Para validar com eles
 
-### 1. No kick-off · bloqueia a Tela desde a S1 (12/10)
+- [ ] **Os pontos V1 a V7 do PDF de 04/11** (a ideia do hub, quem vê o quê, rotina, follow-up, fim da diagnóstica, reunião de proposta e visual). **Trava:** fechar as telas sem retrabalho.
+- [ ] **A jornada de parcerias e os FUPs de 7 dias** (`16-pitch-e-fups.md`). **Trava:** a cadência nova no hub e o slide de valor × preço.
 
-| # | Pedido | Para quê | Status |
-|---|---|---|---|
-| 1 | **Acesso ao Wix** (colaborador ou admin) | Exportar posts, imagens e formulários; mapear URLs | Falta |
-| 2 | **Domínio:** onde está registrado, quando vence, quem tem o login | Apontar o domínio para o site novo | Falta |
-| 3 | **Provedor de e-mail do domínio** (Google Workspace, Zoho, Wix…) | **Eles usam e-mail no domínio** (comercial@, nomes@). Copiar os registros MX/SPF/DKIM antes de mexer no DNS, senão o e-mail para | Falta |
-| 4 | **Google:** acesso ao Search Console, Analytics e **Ad Grants**; quem gerencia os anúncios; perfil da empresa no Google, se existir | SEO, medição e atualizar os links dos anúncios na virada. O Ad Grants exige a missão no site | Falta |
-| 5 | **E-mail institucional** que vai ser dono das contas do site | Contas no nome da MecTRIA, não de um membro | Falta |
-| 6 | **Data de renovação do Wix Premium** | Cancelar antes de renovar | Falta |
-| 7 | **Lista oficial de serviços** para o site | A carta tem 11, a precificação tem 7 e o protótipo diz "sete frentes" | Recebido (04/11): a lista oficial é a carta, com 12 serviços; Emissão de Carbono está em estruturação. Os que mais fecham são Desenvolvimento de Produto e Desenho Técnico |
-| 8 | **Logo vetorial** (SVG, PDF ou AI), mais as versões negativa e símbolo em arquivos separados | O PNG atual é pequeno para telas de alta resolução e para o favicon | Parcial |
-| 9 | **WhatsApp comercial oficial** | CTAs do site e da apresentação. Hoje a proposta usa o celular de um membro, que sai da EJ | Falta |
-| 10 | **Destino dos leads** (planilha da Casa de Dados, CRM ou e-mail) e quem recebe | Ligar os formulários | Falta |
-| 11 | **Chatbot:** o que deve fazer (dúvidas, qualificação, WhatsApp), quem responde, quanto podem pagar, qual ferramenta é a atual | Especificar e implantar (tarefa 13) | Falta |
-| 12 | **Instagram:** conta profissional e alguém que libere o acesso | Feed dentro do site | Falta |
+### Para avisar (não é pergunta)
 
-### 1b. Também no kick-off · Retórica adiantada (decisão de 08/10)
+- [ ] As metas novas: 8 conexões por semana dos hunters e o % da rotina do dia por pessoa, no lugar das 10 ligações por dia. O ponto V3 do PDF ainda falava da meta antiga.
 
-A R começou em paralelo com a T (`hub-comercial/`). Por isso os itens 24 e 25 passam a ser pedidos no kick-off, e entram os itens abaixo. Sem eles, os roteiros do hub ficam como hipótese.
+## 2. Terça, 10/11 · Importante, mas pode chegar depois da reunião
 
-| # | Pedido | Para quê | Status |
-|---|---|---|---|
-| 38 | **ART e professor orientador:** quem assina a ART e como o professor atua (revisa, assina, participa de reunião?) | Resposta à objeção "vocês são estudantes?" | Falta |
-| 39 | **Políticas que respondem objeções:** revisões incluídas, suporte depois da entrega, termo de confidencialidade, como o projeto segue nas férias e na troca de gestão, se indicam parceiros de fabricação | Guia de objeções do hub | Falta |
-| 40 | **Missão, visão e valores oficiais**, se existirem | A home do protótipo tem uma seção "Valores"; Primal Branding | Falta |
-| 41 | **Lacunas da Carta:** o que fica com o cliente em Tratamento Acústico, Simulação e Prototipagem; se Emissão de Carbono aparece no site | Páginas de serviço e diagnóstica | Falta |
-| 42 | **A planilha v4 e o fluxo de 3 dias já estão em uso?** (parte do item 27, antecipada) | O hub promete "proposta em até 3 dias úteis" | Falta |
-| 43 | **Propostas em aberto hoje** (empresa, contato, serviço, valor, data), **quantas ligações por dia cada hunter consegue fazer** e **a origem dos telefones da Casa de Dados** | Colocar as propostas no follow-up já; meta diária de cold call; resposta a "onde conseguiu meu número?" | Falta (a meta diária foi definida pelo Lucas em 02/11: 1 a 2 ligações por hunter, no máximo; o Marcelo ainda valida as rotinas) |
+### Para o hub
 
-### 2. Até 23/10 · conteúdo real para validar o site (S3)
+- [ ] **Alguém de Projetos** para receber os briefings e responder as dúvidas técnicas (P4 do PDF). **Trava:** usar a seção Briefings (fase 6).
+- [ ] **As propostas que estão na rua hoje:** empresa, contato, serviço, valor e data de apresentação (43). **Serve para:** o follow-up começar com a situação real no dia da publicação.
+- [ ] **A planilha do Histórico** e quem preenche (33). **Serve para:** o CSV do diretor sair no formato deles. Até lá, sai com colunas genéricas.
+- [ ] **A origem dos telefones da Casa de Dados** (43). **Serve para:** responder a "onde conseguiu meu número?".
 
-| # | Pedido | Para quê | Status |
-|---|---|---|---|
-| 13 | **Fotos** do time, do laboratório e de projetos, em alta resolução, com autorização. O manual exige pessoas reais e projeto ao lado do CAD | Site e apresentação | Falta |
-| 14 | **Vídeo institucional** (arquivo ou link) | Seção de vídeo do protótipo | Falta |
-| 15 | **Cases:** 3 a 5 projetos com problema, solução, resultado e **autorização para citar o cliente** | Seção de cases, provas da apresentação e SEO | Falta |
-| 16 | **Depoimentos e logos de clientes**, com autorização. A Ap Gallu tem um slide "Nossos clientes", então os arquivos já existem | Provas sociais | Falta |
-| 17 | **Números verificáveis:** projetos entregues desde 2013, clientes atendidos, clientes que voltaram, membros | Bloco de números no site e na apresentação | Falta |
-| 18 | **Professores orientadores:** nomes, área e autorização para aparecer | É o maior diferencial ("projetos orientados por professores da UFTM") e hoje está escondido | Falta |
-| 19 | **Processo seletivo:** datas, etapas e link | Seção do site | Falta |
-| 20 | **Posts do blog:** quais manter | Migração e redirecionamentos | Falta |
-| 21 | **E-mail para pedidos sobre dados pessoais** (pode ser o comercial@) | Política de privacidade (LGPD) | Falta |
+### Para a Retórica e as apresentações
 
-### 3. Até 30/10 · insumos da Retórica (S4 começa em 02/11)
+- [ ] **Objeções reais:** 30 minutos com os closers (Vinícius Miguel e João Guilherme) sobre o que o cliente diz quando não fecha, e os motivos das propostas perdidas (24). **Serve para:** o guia de objeções.
+- [ ] **Políticas que respondem objeções:** revisões incluídas, suporte depois da entrega, confidencialidade, como o projeto segue nas férias e na troca de gestão, e se indicam parceiros de fabricação (39). **Serve para:** o guia de objeções.
+- [ ] **Referência de valor de mercado por serviço** (28). **Serve para:** a âncora do valor × preço. Se não tiverem, a Triângulo pesquisa.
+- [ ] **Dados para a calculadora:** custo de mão de obra, de parada de máquina, de multa NR-12 etc., um caso real por serviço (29). **Serve para:** a calculadora da apresentação.
+- [ ] **Fotos e cargos do time,** em alta resolução e com autorização (30 e 13). **Serve para:** o slide do time e o site.
+- [ ] **O PDF da Ap Gallu e mais 2 ou 3 propostas,** uma ganha e uma perdida (26). Parcial: só temos o texto da Gallu. **Serve para:** comparar com a apresentação nova.
+- [ ] **Lacunas da carta:** o que fica com o cliente em Tratamento Acústico, Simulação Computacional e Prototipagem (41). **Serve para:** as apresentações desses serviços.
+- [ ] **Cliente ideal:** segmentos, porte, região, quem decide, e os filtros de CNAE e região da Casa de Dados (23). **Serve para:** o público e o {segmento} do cold call.
+- [ ] **Processo comercial atual:** POP, materiais do treinamento, roteiro de ligação, cadência e a planilha do funil (25). **Serve para:** comparar com o processo novo.
+- [ ] **Sessão de Primal Branding,** 1 hora com o Marcelo e o Marketing (João Guilherme), e missão, visão e valores oficiais, se existirem (22 e 40). **Serve para:** a proposta de valor e o tom.
 
-| # | Pedido | Para quê | Status |
-|---|---|---|---|
-| 22 | **Sessão de Primal Branding** com o Marcelo e o Marketing (João Guilherme), 1 h: história de criação, propósito, valores, rituais, palavras internas, o que não são | Proposta de valor, tom e mensagens-chave (tarefas 15 e 16) | Falta |
-| 23 | **Cliente ideal:** segmentos, porte, região, quem decide, e **os filtros de CNAE e região da Casa de Dados** | Definir o público | Falta |
-| 24 | **Objeções reais:** conversa de 30 min com os closers (Vinícius Miguel, João Guilherme) sobre o que o cliente diz quando não fecha, mais os motivos das propostas perdidas | Mapa de objeções (tarefa 19) | Falta · antecipado para o kick-off |
-| 25 | **Processo comercial atual:** POP comercial, materiais do treinamento que fizeram, roteiro de ligação, cadência, planilha do funil (os 80–88% de perda até o decisor) | Processo visual hunter → closer (tarefa 18) | Falta · antecipado para o kick-off |
+### Combinados
 
-### 4. Até 13/11 · insumos do Instrumento (S6 começa em 16/11)
+- [ ] **As datas das validações:** copy (sugestão: qui, 12/11) e apresentação (sugestão: qui, 26/11), com retorno em até 5 dias úteis (37).
+- [ ] **A reunião semanal:** a de terça às 18h30 passa a ser fixa? Quem participa? (36)
 
-| # | Pedido | Para quê | Status |
-|---|---|---|---|
-| 26 | **PDF da Ap Gallu e mais 2 ou 3 propostas**, uma ganha e uma perdida | Análise visual e comparação (tarefa 22) | Parcial (só o texto da Gallu) |
-| 27 | **Política comercial:** desconto máximo, parcelas, se volta o incentivo para fechar em até 5 dias úteis, e **se a planilha v4 já está em uso** | Bloco valor × preço, micro pacto de fechamento e roteiro | Falta |
-| 28 | **Referência de valor de mercado** por serviço (orçamentos de concorrentes ou de engenharia sênior, se tiverem) | Âncora "valor × preço" | Falta (se não tiverem, a Triângulo pesquisa) |
-| 29 | **Dados para a calculadora de retorno do cliente** nos serviços principais: custo de mão de obra, de parada de máquina, de multa NR-12, etc. Um caso real por serviço | Calculadora de investimento (tarefa 25) | Falta |
-| 30 | **Fotos e cargos do time** que aparece na apresentação | Bloco de time | Falta (junto com o item 13) |
+## 3. Para o futuro: não precisa perguntar na terça
 
-### 5. Até 27/11 · Acompanhamento (S8 de 30/11 a 04/12 e depois)
+- [ ] **A lista do time comercial que será treinado,** incluindo quem fica em 2027, e 2 horários na S8 (30/11 a 04/12) para a capacitação e o roleplay (31, parte 2).
+- [ ] **O Marcelo e o Arthur querem acompanhamento das primeiras reuniões reais?** (32)
+- [ ] **A agenda das reuniões de proposta** de dezembro a fevereiro (34).
+- [ ] **Quem entra no grupo de WhatsApp de suporte** (35).
 
-| # | Pedido | Para quê | Status |
-|---|---|---|---|
-| 31 | **Lista do time comercial** que será treinado, incluindo quem fica em 2027, e **2 horários na S8** para capacitação e roleplay | Tarefas 30 e 31 | Falta |
-| 32 | **Decisão de Marcelo e Arthur:** querem acompanhamento das primeiras reuniões reais? | Tarefa 32 | Falta |
-| 33 | **Acesso ao Histórico ou à planilha comercial** e quem vai preenchê-la | Ampliar o Histórico como planilha de taxa de fechamento (tarefa 34) e relatório mensal do contrato | Falta |
-| 34 | **Agenda das reuniões de proposta** de dezembro a fevereiro | Acompanhamento em campo | Falta |
-| 35 | **Quem entra no grupo de WhatsApp** de suporte | Tarefa 33 | Falta |
+## 4. Site (frente Tela, com o Matheus)
 
-### Governança (combinar no kick-off)
+Status de 08/10. Conferir com o Matheus o que já chegou.
 
-| # | Pedido | Status |
-|---|---|---|
-| 36 | **Dia e horário fixos da reunião semanal** e quem participa | Falta |
-| 37 | **Datas das validações:** site (sugestão: qui 29/10), copy (qui 12/11), apresentação (qui 26/11), com feedback em até 5 dias úteis | Falta |
+- [ ] Acesso ao Wix, como colaborador ou admin (1).
+- [ ] Onde o domínio está registrado, quando vence e quem tem o login (2).
+- [ ] Provedor de e-mail do domínio. Copiar os registros MX, SPF e DKIM antes de mexer no DNS, senão o e-mail para (3).
+- [ ] Acesso ao Search Console, ao Analytics e ao Ad Grants, e quem gerencia os anúncios (4).
+- [ ] Data de renovação do Wix Premium, para cancelar antes (6).
+- [ ] Logo vetorial (SVG, PDF ou AI), com as versões negativa e símbolo separadas (8). Parcial: só o PNG.
+- [ ] WhatsApp comercial oficial (9). Hoje a proposta usa o celular de um membro.
+- [ ] Destino dos leads do formulário e quem recebe (10).
+- [ ] O que o chatbot deve fazer, quem responde e quanto podem pagar (11).
+- [ ] Acesso ao Instagram (conta profissional) (12).
+- [ ] Vídeo institucional (14).
+- [ ] Processo seletivo: datas, etapas e link (19).
+- [ ] Quais posts do blog manter (20).
+- [ ] E-mail para pedidos sobre dados pessoais (LGPD), que pode ser o comercial@ (21).
+- [ ] Se Emissão de Carbono aparece no site, já que está em estruturação (41).
+
+## 5. Já recebido
+
+- [x] Carta de Serviços: `referencias/mectria/carta-de-servicos.pdf` e `11-carta-de-servicos.md`.
+- [x] Lista oficial de serviços (7): é a carta, com 12 serviços; Emissão de Carbono está em estruturação. Os que mais fecham são Desenvolvimento de Produto e Desenho Técnico (04/11).
+- [x] Manual de identidade (cores, fontes, tom de voz): `referencias/mectria/manual-identidade-visual-v1.0.pdf` e `10-identidade-visual-mectria.md`.
+- [x] Logo em PNG (656 × 195 px, extraído do manual): `referencias/mectria/logo/`.
+- [x] Planilhas de precificação (2026 e v4) e histórico de projetos: `referencias/mectria/` e `12-precificacao-mectria.md`.
+- [x] Apresentação de proposta atual (Ap Gallu, só o texto): Drive `[Comercial]` e `13-apresentacao-atual-mectria.md`.
+- [x] Dados cadastrais, faturamento de 2025 e 2026 e o responsável (Marcelo): `01-pessoas.md` e o contrato.
+- [x] Domínio (mectria.com) e e-mails (comercial@mectria.com): manual de identidade.
 
 ## Fora desta lista (não depende da MecTRIA)
+
 - Stack do protótipo e hospedagem: Matheus (`09-briefing-tela-matheus.md`).
 - Palavras-chave, URLs públicas atuais e medição de velocidade: a Triângulo faz sozinha.
 - Contrato: pausado até o CNPJ da Triângulo ativar.
