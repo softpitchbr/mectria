@@ -12,7 +12,7 @@ import estilos from "./AbaMes.module.css";
 const UMA_CASA = new Intl.NumberFormat("pt-BR", { maximumFractionDigits: 1 });
 
 /** Aba Mês da seção Time: os números do mês, por closer, a rotina de cada pessoa e as objeções. */
-export default function AbaMes({ acoes }: { acoes?: (mes: string) => React.ReactNode }) {
+export default function AbaMes() {
   const [meses] = useState(() => ultimosMeses(hojeEmSaoPaulo()));
   const [mes, setMes] = useState(meses[0].valor);
   const [numeros, setNumeros] = useState<NumerosDoTime | null>(null);
@@ -33,7 +33,12 @@ export default function AbaMes({ acoes }: { acoes?: (mes: string) => React.React
     <div className={estilos.mes}>
       <div className={estilos.topo}>
         <Selecao rotulo="Mês" opcoes={meses} value={mes} onChange={(e) => setMes(e.target.value)} className={estilos.seletor} />
-        {acoes?.(mes)}
+        <a className={estilos.baixar} href={`/api/exportar/historico.csv?mes=${mes}`} download>
+          Baixar o histórico do mês (CSV)
+        </a>
+        <a className={estilos.baixar} href="/api/exportar/tudo.json" download>
+          Baixar todos os dados (JSON)
+        </a>
       </div>
 
       {erro && <p role="alert">{erro}</p>}

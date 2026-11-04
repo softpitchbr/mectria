@@ -1,11 +1,12 @@
 import { useEffect, useState } from "react";
-import { Link, useParams } from "react-router";
+import { Link, useOutletContext, useParams } from "react-router";
 import { formatarDia } from "../../compartilhado/datas";
 import { briefingDaFicha, resumoParaCliente } from "../../compartilhado/diagnostica";
 import type { FichaCompleta, Reuniao } from "../../compartilhado/oportunidade";
 import { api } from "../api/cliente";
 import { avisar } from "../componentes/Aviso";
 import Botao from "../componentes/Botao";
+import type { Eu } from "../sessao/useEu";
 import { mensagemDe, nomeDoServico } from "./followup/comum";
 import estilos from "./Briefing.module.css";
 
@@ -20,19 +21,27 @@ export default function Briefing() {
   const { id } = useParams();
   const [ficha, setFicha] = useState<FichaCompleta | null>(null);
   const [erro, setErro] = useState("");
+  const eu = useOutletContext<Eu | undefined>();
+  const [confirmandoLgpd, setConfirmandoLgpd] = useState(false);
+  const [recarga, setRecarga] = useState(0);
 
   useEffect(() => {
     api<FichaCompleta>(`/api/reunioes/${id}`)
       .then(setFicha)
       .catch((e: unknown) => setErro(mensagemDe(e)));
-  }, [id]);
+  }, [id, recarga]);
 
   // O título da página vira o nome do arquivo no "Salvar como PDF".
   useEffect(() => {
     if (ficha?.oportunidade) document.title = `Briefing · ${ficha.oportunidade.empresa} · ${formatarDia(ficha.reuniao.dataHora.slice(0, 10))}`;
   }, [ficha]);
 
-  if (erro) return <p role="alert" className={estilos.erro}>{erro}</p>;
+  if (erro)
+    return (
+      <p role="alert" className={estilos.erro}>
+        {erro}
+      </p>
+    );
   if (!ficha) return <p className="mono suave">Abrindo o briefing…</p>;
 
   const { reuniao, oportunidade, proximaReuniao: proxima } = ficha;
@@ -60,6 +69,17 @@ export default function Briefing() {
     }
   }
 
+  async function apagarDadosPessoais() {
+    try {
+      await api(`/api/oportunidades/${oportunidade.id}/apagar-dados-pessoais`, { method: "POST" });
+      avisar(`Dados pessoais de ${oportunidade.empresa} apagados.`);
+      setConfirmandoLgpd(false);
+      setRecarga((n) => n + 1);
+    } catch (e) {
+      avisar(mensagemDe(e));
+    }
+  }
+
   return (
     <div className={estilos.pagina}>
       <nav className={estilos.acoes} aria-label="Ações do briefing">
@@ -73,14 +93,38 @@ export default function Briefing() {
         <Botao variante="primario" onClick={() => window.print()}>
           Gerar PDF
         </Botao>
+        {eu?.cargo === "diretor" && !confirmandoLgpd && (
+          <Botao variante="fantasma" onClick={() => setConfirmandoLgpd(true)}>
+            Apagar dados pessoais (LGPD)
+          </Botao>
+        )}
       </nav>
+
+      {confirmandoLgpd && (
+        <div role="group" aria-label="Confirmar exclusão dos dados pessoais" className={estilos.lgpd}>
+          <p>
+            Isso apaga o contato, telefone, e-mail e quem decide de {oportunidade.empresa}. Os dados do projeto ficam, e o histórico registra o pedido. Não dá
+            para desfazer.
+          </p>
+          <div className={estilos.acoes}>
+            <Botao variante="primario" onClick={apagarDadosPessoais}>
+              Apagar de vez
+            </Botao>
+            <Botao variante="fantasma" onClick={() => setConfirmandoLgpd(false)}>
+              Cancelar
+            </Botao>
+          </div>
+        </div>
+      )}
 
       <article className={estilos.folha}>
         <header className={estilos.cabeca}>
           <div className={estilos.marca}>MecTRIA</div>
           <div>
             <h1>Briefing para Projetos</h1>
-            <p>Diagnóstica de {formatarDia(reuniao.dataHora.slice(0, 10))} · {reuniao.dataHora.slice(11, 16)}</p>
+            <p>
+              Diagnóstica de {formatarDia(reuniao.dataHora.slice(0, 10))} · {reuniao.dataHora.slice(11, 16)}
+            </p>
           </div>
         </header>
 

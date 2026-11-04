@@ -72,3 +72,9 @@
 .objecoes p {
   margin: 0;
 }
+
+.baixar {
+  padding: 8px 0;
+  color: var(--texto);
+  text-underline-offset: 3px;
+}

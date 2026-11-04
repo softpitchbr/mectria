@@ -122,7 +122,24 @@
   color: var(--vermelho-texto);
 }
 
+.lgpd {
+  display: grid;
+  gap: 10px;
+  max-width: 640px;
+  padding: 14px 16px;
+  border: 1px solid var(--vermelho-texto);
+  border-radius: 8px;
+}
+
+.lgpd p {
+  margin: 0;
+}
+
 @media print {
+  .lgpd {
+    display: none;
+  }
+
   /* A margem fica na página (repete em todas); a folha da tela perde o recuo. */
   @page {
     size: A4;

@@ -7,6 +7,8 @@ import { onRequestPost as postPerdida } from "../../functions/api/reativacao/[id
 import { onRequestPost as postReuniao } from "../../functions/api/reativacao/[id]/reuniao";
 import { onRequestGet as getReativacao } from "../../functions/api/reativacao/index";
 import { onRequestGet as getNumerosDoTime } from "../../functions/api/time/numeros";
+import { onRequestGet as getExportar } from "../../functions/api/exportar/[arquivo]";
+import { onRequestPost as postApagar } from "../../functions/api/oportunidades/[id]/apagar-dados-pessoais";
 import { registrarProposta } from "../followup";
 import { criar } from "../pessoas";
 import type { DadosApi, Env, Pessoa } from "../tipos";
@@ -90,4 +92,25 @@ test("números do time: só o diretor acessa, o mês padrão é o atual e mês i
   expect(await corpo(r)).toMatchObject({ mes: hoje.slice(0, 7), propostas: 0, conversao: null });
   expect(await corpo(await chamar(g(getNumerosDoTime), "dir@mectria.com", { busca: "?mes=2026-10" }))).toMatchObject({ mes: "2026-10" });
   expect((await chamar(g(getNumerosDoTime), "dir@mectria.com", { busca: "?mes=2026-13" })).status).toBe(400);
+});
+
+test("exportações e LGPD: só o diretor; CSV e JSON com o nome do arquivo", async () => {
+  const id = await propostaEmFollowup("Alfa");
+  for (const email of ["clo@mectria.com", "pro@mectria.com", "hun@mectria.com"]) {
+    expect((await chamar(g(getExportar), email, { params: { arquivo: "historico.csv" } })).status).toBe(403);
+    expect((await chamar(g(postApagar), email, { corpo: {}, params: { id } })).status).toBe(403);
+  }
+  const csv = await chamar(g(getExportar), "dir@mectria.com", { params: { arquivo: "historico.csv" }, busca: `?mes=${hoje.slice(0, 7)}` });
+  expect(csv.status).toBe(200);
+  expect(csv.headers.get("Content-Type")).toBe("text/csv; charset=utf-8");
+  expect(csv.headers.get("Content-Disposition")).toBe(`attachment; filename="historico-${hoje.slice(0, 7)}.csv"`);
+  expect(await csv.text()).toContain("Alfa;");
+  expect((await chamar(g(getExportar), "dir@mectria.com", { params: { arquivo: "historico.csv" }, busca: "?mes=2026-13" })).status).toBe(400);
+  const json = await chamar(g(getExportar), "dir@mectria.com", { params: { arquivo: "tudo.json" } });
+  expect(json.headers.get("Content-Disposition")).toBe(`attachment; filename="hub-mectria-${hoje}.json"`);
+  expect(Object.keys((await corpo<{ tabelas: object }>(json)).tabelas)).toContain("oportunidades");
+  expect((await chamar(g(getExportar), "dir@mectria.com", { params: { arquivo: "outro.txt" } })).status).toBe(404);
+
+  expect((await chamar(g(postApagar), "dir@mectria.com", { corpo: {}, params: { id } })).status).toBe(200);
+  expect((await chamar(g(postApagar), "dir@mectria.com", { corpo: {}, params: { id: "999" } })).status).toBe(404);
 });

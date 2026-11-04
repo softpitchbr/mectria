@@ -165,4 +165,6 @@ test("a aba Mês troca o mês e relê os números", async () => {
   await userEvent.selectOptions(screen.getByRole("combobox", { name: "Mês" }), anterior);
   await vi.waitFor(() => expect(falso.mock.calls.some(([url]) => String(url).includes(`/api/time/numeros?mes=${anterior}`))).toBe(true));
   expect(await screen.findByRole("region", { name: "Resumo do mês" })).toHaveTextContent("Propostas9");
+  expect(screen.getByRole("link", { name: "Baixar o histórico do mês (CSV)" })).toHaveAttribute("href", `/api/exportar/historico.csv?mes=${anterior}`);
+  expect(screen.getByRole("link", { name: "Baixar todos os dados (JSON)" })).toHaveAttribute("href", "/api/exportar/tudo.json");
 });

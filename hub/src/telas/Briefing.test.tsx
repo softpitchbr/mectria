@@ -1,4 +1,4 @@
-import { screen } from "@testing-library/react";
+import { screen, within } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import { abrir, fingirApi, PESSOAS } from "../teste/ajuda";
 
@@ -76,4 +76,31 @@ test("o briefing mostra o próximo passo e o resumo copiado leva a data e o clos
   const copiado = (escrever.mock.calls[0] as unknown as [string])[0];
   expect(copiado).toContain("apresenta a proposta em Qua, 18/11 às 14:00.");
   expect(copiado).toMatch(/Vinícius Miguel · MecTRIA$/);
+});
+
+test("o diretor apaga os dados pessoais com confirmação", async () => {
+  let apagou = false;
+  fingirApi({
+    "/api/eu": { corpo: PESSOAS.diretor },
+    "GET /api/reunioes/5": () => ({ corpo: apagou ? { ...FICHA, oportunidade: { ...FICHA.oportunidade, contato: "Dados apagados (LGPD)" } } : FICHA }),
+    "POST /api/oportunidades/1/apagar-dados-pessoais": () => {
+      apagou = true;
+      return { corpo: { ok: true } };
+    },
+  } as never);
+  abrir("/reunioes/5/briefing");
+  await userEvent.click(await screen.findByRole("button", { name: "Apagar dados pessoais (LGPD)" }));
+  expect(apagou).toBe(false);
+  const confirmacao = screen.getByRole("group", { name: "Confirmar exclusão dos dados pessoais" });
+  expect(confirmacao).toHaveTextContent("contato, telefone, e-mail e quem decide de Usinagem Alfa");
+  await userEvent.click(within(confirmacao).getByRole("button", { name: "Apagar de vez" }));
+  await vi.waitFor(() => expect(apagou).toBe(true));
+  expect(await screen.findByText("Dados apagados (LGPD)")).toBeInTheDocument();
+});
+
+test("o closer não vê o botão de apagar dados pessoais", async () => {
+  api();
+  abrir("/reunioes/5/briefing");
+  await screen.findByRole("button", { name: "Gerar PDF" });
+  expect(screen.queryByRole("button", { name: "Apagar dados pessoais (LGPD)" })).toBeNull();
 });
