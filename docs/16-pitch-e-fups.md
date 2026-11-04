@@ -1,26 +1,44 @@
-# Pitch de parceria e FUPs de 7 dias
+# Jornada de parcerias e FUPs de 7 dias
 
-Rascunho de 04/11/2026, para a call com a MecTRIA na semana de 09/11. O pitch de parceria é o eixo: a apresentação de proposta, o fechamento e os FUPs giram em torno dele. Quando for validado, a cadência abaixo substitui a de 15 dias da versão 0.2 (que hoje está no hub só como estrutura).
+Rascunho de 04/11/2026, para a call com a MecTRIA na semana de 09/11. A jornada de parcerias é o eixo: a apresentação de proposta, o fechamento e os FUPs giram em torno dela. Quando for validado, a cadência abaixo substitui a de 15 dias da versão 0.2 (que hoje está no hub só como estrutura).
 
-## 1. Pitch de parceria
+## 1. Jornada de parcerias
 
-**Situação:** aguardando o material do Lucas sobre a parceria.
+### A ideia (Lucas, 04/11/2026)
 
-**Onde entra na proposta.** Depois do valor × preço (quanto o projeto vale no mercado sênior) vem o investimento: primeiro o preço de tabela, depois a condição de parceria, válida por 7 dias. É a mesma revelação em etapas do deck de referência (`06-referencias-de-execucao.md`).
+- O Movimento Empresa Júnior existe para apoiar o empreendedorismo com soluções financeiramente mais viáveis, porque os membros não recebem pró-labore nem ganham pelos projetos.
+- O que o membro leva de um projeto é o resultado: quando o projeto dá um resultado admirável, ele vira um case na carreira dele. Por isso o time é o primeiro interessado em que o projeto dê certo.
+- Como os valores ficam abaixo do mercado, o volume de reuniões e de novos parceiros é alto. Para ter controle da capacidade de produção, a MecTRIA pede uma formalidade: um sim ou um não em até 7 dias.
 
-**O que o pitch precisa explicar:**
+### A fala do closer
 
-1. O que é o Movimento Empresa Júnior e o lugar da MecTRIA nele.
-2. Por que a condição de uma empresa júnior é mais flexível: sem fins lucrativos, a receita volta para a formação dos membros, e os projetos têm orientação de professores da UFTM.
-3. O que é a condição de parceria, ou seja, o que o cliente ganha.
-4. O que a parceria pede do cliente: a decisão em 7 dias e, se houver, uma contrapartida (case, depoimento, indicação).
-5. Por que 7 dias: os projetos de parceria começam em ciclos, toda segunda-feira, com as equipes alocadas no fim de semana.
+> Antes de te mostrar o investimento, deixa eu te explicar como funciona a nossa jornada de parcerias.
+>
+> A MecTRIA faz parte do Movimento Empresa Júnior, que existe para apoiar o empreendedorismo com soluções financeiramente mais viáveis. Aqui ninguém recebe pró-labore nem ganha pelos projetos. O que o membro leva de um projeto é o resultado: quando o projeto dá um resultado admirável, ele vira um case na carreira dele. Então o time é o primeiro interessado em que o projeto de vocês dê certo.
+>
+> Como a gente trabalha com valores abaixo do mercado, temos um volume bem alto de reuniões e de novos parceiros. Para ter controle da nossa capacidade de produção, pedimos uma formalidade: um sim ou um não em até 7 dias. Combinado?
+
+### Onde entra na proposta
+
+No slide de valor × preço, **antes de mostrar o preço**. A jornada explica por que o valor fica abaixo do mercado, e o "Combinado?" é um pacto: quando o cliente vê o investimento, ele já aceitou responder em até 7 dias. No fechamento, a data do sim ou não é o D7.
+
+A jornada também responde a duas objeções comuns:
+- **"Vocês são estudantes?"** O resultado do projeto é o que o membro leva para a carreira, e há orientação de professores da UFTM.
+- **"Vou pensar."** O pensar tem prazo, que já foi combinado.
+
+Se o cliente pedir mais tempo, o closer pergunta: "O que precisaria acontecer para vocês terem a resposta nesses 7 dias?"
+
+### No hub, depois da validação
+
+- O pacto do fechamento passa a ser "Combinou o sim ou não em até 7 dias".
+- A data da decisão no fechamento já vem preenchida com o D7.
+- A fala acima entra no slide de valor × preço da apresentação de cada serviço.
 
 ## 2. FUPs de 7 dias
 
 ### Regras
 
-- A janela é de 7 dias corridos a partir da reunião (D0). No D7, a condição de parceria vence.
+- A janela é de 7 dias corridos a partir da reunião (D0). O D7 é o dia combinado para o sim ou não.
 - Os toques só saem em dia útil.
 - Toda janela de 7 dias passa por uma sexta-feira, e nela sai o **FUP fixo de sexta**. Se a sexta cai num dia que já teria toque, a mensagem de sexta fica no lugar dele. Se a reunião foi numa sexta, a sexta seguinte é o próprio D7, e as duas mensagens viram uma só.
 - A ligação fica no meio da janela, num dia sem outro toque e fora da sexta.
@@ -46,7 +64,7 @@ As chaves entre `{}` o hub preenche sozinho: `{contato}`, `{servico}`, `{dor}` (
 >
 > Como combinamos, segue a proposta do projeto de {servico}, pensado para resolver o que você me contou: {dor}.
 >
-> A condição de parceria vale até {data_decisao}. Qualquer dúvida até lá, me chama por aqui.
+> Como te expliquei na jornada de parcerias, combinamos o sim ou não até {data_decisao}, para eu organizar a capacidade do time. Qualquer dúvida até lá, me chama por aqui.
 >
 > {vendedor}, da MecTRIA
 
@@ -70,23 +88,22 @@ Se não atender, no WhatsApp:
 >
 > Então queria entender: o que ainda precisamos alinhar para avançarmos?
 
-**D7 · WhatsApp.** Fechar a janela sem pressão.
+**D7 · WhatsApp.** Pedir o sim ou não combinado, sem pressão.
 
-> Fala, {contato}, tudo bem? Hoje é o último dia da condição de parceria que conversamos. Se fizer sentido seguir, me dá um ok por aqui que eu já coloco vocês no próximo ciclo de projetos. Se agora não for o momento, sem problema: me avisa e eu deixo vocês tranquilos.
+> Fala, {contato}, tudo bem? Hoje é o dia que combinamos para o sim ou não da parceria. Se fizer sentido seguir, me dá um ok por aqui que eu já coloco vocês no próximo ciclo de projetos. Se agora não for o momento, sem problema, é só me falar: assim eu libero a vaga para outro parceiro.
 
 **Sexta que também é o D7** (reunião numa sexta):
 
-> Fala, {contato}, tudo bem? Hoje fecha a condição de parceria que conversamos, e na segunda começa o próximo ciclo de projetos. Vou me reunir com o time de Projetos neste fim de semana para pré-alocar as equipes. O que ainda precisamos alinhar para vocês entrarem nesse ciclo?
+> Fala, {contato}, tudo bem? Hoje é o dia que combinamos para o sim ou não da parceria, e na segunda começa o próximo ciclo de projetos. Vou me reunir com o time de Projetos neste fim de semana para pré-alocar as equipes. O que ainda precisamos alinhar para vocês entrarem nesse ciclo?
 
 ## 3. Em aberto
 
 | # | Pergunta | Quem responde |
 |---|---|---|
-| 1 | Os detalhes da parceria: o que o cliente ganha e o que ela pede dele | Lucas (material a caminho) |
-| 2 | A condição vence em 7 dias corridos? A política comercial fala em fechar em até 5 dias úteis (pedido 27) | Lucas e Marcelo |
-| 3 | O ciclo de projetos que começa toda segunda e a pré-alocação no fim de semana já existem na MecTRIA? A sexta fixa só funciona se isso for verdade. Quem é o "time de Projetos" que se reúne? | MecTRIA, na call |
-| 4 | O D0 vai por WhatsApp e por e-mail, ou só por WhatsApp? | MecTRIA |
-| 5 | Depois do D7 sem resposta: nutrição com retorno em 45 dias, como hoje, ou outro prazo? | Lucas e Marcelo |
+| 1 | O ciclo de projetos que começa toda segunda e a pré-alocação no fim de semana já existem na MecTRIA? A sexta fixa só funciona se isso for verdade. Quem é o "time de Projetos" que se reúne? | MecTRIA, na call |
+| 2 | Os 7 dias são corridos? A política comercial deles fala em fechar em até 5 dias úteis (pedido 27) | Lucas e Marcelo |
+| 3 | O D0 vai por WhatsApp e por e-mail, ou só por WhatsApp? | MecTRIA |
+| 4 | Depois do D7 sem resposta: nutrição com retorno em 45 dias, como hoje, ou outro prazo? | Lucas e Marcelo |
 
 ## 4. No hub
 
