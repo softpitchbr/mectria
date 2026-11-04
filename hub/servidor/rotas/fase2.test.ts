@@ -154,10 +154,11 @@ test("rotina: PUT de item automático dá 409; de item manual, devolve o dia com
   expect(auto.status).toBe(409);
   expect(await corpo(auto)).toEqual({ erro: "conflito", mensagem: "Esse item se marca sozinho." });
 
-  const manual = await chamar(g(putItem), "clo@mectria.com", { metodo: "PUT", corpo: { feito: true }, params: { chave: "confirmar-reunioes" } });
+  // Fase 7: a tarefa manual do closer com lead em negociação é "fup-negociacao".
+  const manual = await chamar(g(putItem), "clo@mectria.com", { metodo: "PUT", corpo: { feito: true }, params: { chave: "fup-negociacao" } });
   expect(manual.status).toBe(200);
   const dia = await corpo<{ itens: { chave: string; feito: boolean }[] }>(manual);
-  expect(dia.itens.find((i) => i.chave === "confirmar-reunioes")?.feito).toBe(true);
+  expect(dia.itens.find((i) => i.chave === "fup-negociacao")?.feito).toBe(true);
 
   expect((await chamar(g(putItem), "clo@mectria.com", { metodo: "PUT", corpo: { feito: true }, params: { chave: "nao-existe" } })).status).toBe(404);
   expect((await chamar(g(getHistorico), "clo@mectria.com")).status).toBe(200);
@@ -205,7 +206,8 @@ test("histórico conta o toque e a ligação feitos depois de abrir a rotina", a
   await chamar(g(getRotina), "clo@mectria.com");
   await chamar(g(patchToque), "clo@mectria.com", { metodo: "PATCH", corpo: { canal: "WhatsApp", resultado: "ok" }, params: { id: String(toques[0].id) } });
   const [hojeC] = await corpo<{ feitos: number }[]>(await chamar(g(getHistorico), "clo@mectria.com"));
-  expect(hojeC.feitos).toBe(1);
+  // Fase 7: o toque feito, mais as tarefas de AP e de construção, feitas sozinhas porque não há lead nesses blocos.
+  expect(hojeC.feitos).toBe(3);
 
   await chamar(g(getRotina), "hun@mectria.com");
   await chamar(g(postLigacao), "hun@mectria.com", { corpo: { resultado: "atendeu" } });

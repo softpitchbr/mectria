@@ -1,6 +1,7 @@
 import { nomeDoToque } from "../compartilhado/cadencia";
 import { reativacoesDoDia } from "./reativacao";
-import { META_CONEXOES_SEMANA, META_LIGACOES_DIA, MINIMO_LIGACOES_DIA, ROTINA_FIXA } from "../compartilhado/dados/rotinas";
+import { reagendamentosDoDia } from "./reagendamento";
+import { BLOCOS_DA_ROTINA, META_CONEXOES_SEMANA, META_LIGACOES_DIA, MINIMO_LIGACOES_DIA } from "../compartilhado/dados/rotinas";
 import { ehDiaUtil, inicioDaSemana } from "../compartilhado/datas";
 import type { ContagemLigacoes, DiaDeRotina, ItemRotina, ResultadoLigacao, ResumoPessoa } from "../compartilhado/oportunidade";
 import { listarReunioes } from "./oportunidades";
@@ -88,47 +89,31 @@ export async function rotinaDoDia(db: D1Database, pessoa: Pessoa, dia: string, p
   const salvo = new Map(linhas.map((l) => [l.chave, l]));
   const itens: ItemRotina[] = [];
 
-  for (const fixo of ROTINA_FIXA[pessoa.cargo]) {
-    if (fixo.chave === "ligacoes") {
-      const { total } = await contarLigacoes(db, pessoa.id, dia);
-      itens.push({
-        ...fixo,
-        origem: "fixo",
-        automatico: true,
-        feito: total >= MINIMO_LIGACOES_DIA,
-        contagem: { feitas: total, meta: META_LIGACOES_DIA },
-      });
-    } else {
-      itens.push({ ...fixo, origem: "fixo", automatico: false, feito: !!salvo.get(fixo.chave)?.feito_em });
-    }
-  }
+  const blocosDoCargo = BLOCOS_DA_ROTINA[pessoa.cargo];
+  const leads = pessoa.cargo === "closer" ? await leadsPorEtapa(db, pessoa.id) : null;
 
-  if (pessoa.cargo === "closer") {
-    for (const r of await listarReunioes(db, dia, dia, { closerId: pessoa.id })) {
-      if (r.situacao === "cancelada") continue;
-      const chave = `reuniao:${r.id}`;
-      const oQue = r.tipo === "diagnostica" ? "diagnóstica" : "apresentação";
-      itens.push({
-        chave,
-        titulo: `Confirmar a ${oQue} com ${r.empresa} às ${r.dataHora.slice(11, 16)}`,
-        origem: "gerado",
-        automatico: false,
-        feito: !!salvo.get(chave)?.feito_em,
-      });
+  for (const bloco of blocosDoCargo) {
+    for (const fixo of bloco.fixos) {
+      if (fixo.chave === "cold-call") {
+        const c = await contarLigacoes(db, pessoa.id, dia);
+        itens.push({
+          chave: fixo.chave,
+          titulo: fixo.titulo,
+          bloco: bloco.id,
+          origem: "fixo",
+          automatico: true,
+          feito: c.total >= MINIMO_LIGACOES_DIA,
+          contagem: { feitas: c.conexoesSemana, meta: c.metaConexoesSemana },
+        });
+      } else if (fixo.automaticoQuandoVazio && leads && (leads[bloco.id] ?? 0) === 0) {
+        // Docs/17: se o bloco não tem nenhum lead, a tarefa fica feita. Chave própria, para não deixar a tarefa
+        // de verdade marcada quando um lead entrar no bloco no mesmo dia.
+        itens.push({ chave: `${fixo.chave}-sem-lead`, titulo: fixo.titulo, bloco: bloco.id, origem: "fixo", automatico: true, feito: true });
+      } else {
+        itens.push({ chave: fixo.chave, titulo: fixo.titulo, bloco: bloco.id, origem: "fixo", automatico: false, feito: !!salvo.get(fixo.chave)?.feito_em });
+      }
     }
-    for (const t of await toquesDoDia(db, pessoa.id, dia)) {
-      itens.push({
-        chave: `toque:${t.id}`,
-        titulo: `${nomeDoToque(t.codigo)} · ${t.empresa}`,
-        origem: "gerado",
-        automatico: true,
-        feito: t.feito_em !== null,
-        link: `/follow-up?proposta=${t.proposta_id}`,
-      });
-    }
-    for (const r of await reativacoesDoDia(db, pessoa, dia)) {
-      itens.push({ chave: `reativar:${r.id}`, titulo: `Reativar ${r.empresa}`, origem: "gerado", automatico: true, feito: r.feito, link: "/follow-up?aba=reativacao" });
-    }
+    for (const gerado of await geradosDoBloco(db, pessoa, dia, bloco.id)) itens.push({ ...gerado, bloco: bloco.id });
   }
 
   if (persistir) {
@@ -136,7 +121,7 @@ export async function rotinaDoDia(db: D1Database, pessoa: Pessoa, dia: string, p
     const comandos = [
       db
         .prepare(
-          `DELETE FROM rotinas WHERE pessoa_id = ? AND dia = ? AND origem = 'gerado' AND feito_em IS NULL
+          `DELETE FROM rotinas WHERE pessoa_id = ? AND dia = ? AND (origem = 'fixo' OR feito_em IS NULL)
            AND chave NOT IN (SELECT value FROM json_each(?))`,
         )
         .bind(pessoa.id, dia, JSON.stringify(atuais)),
@@ -158,14 +143,83 @@ export async function rotinaDoDia(db: D1Database, pessoa: Pessoa, dia: string, p
   }
 
   const feitos = itens.filter((i) => i.feito).length;
-  return { dia, itens, feitos, total: itens.length };
+  const blocos = blocosDoCargo.map((b) => {
+    const doBloco = itens.filter((i) => i.bloco === b.id);
+    return { id: b.id, titulo: b.titulo, orientacao: b.orientacao, feitos: doBloco.filter((i) => i.feito).length, total: doBloco.length };
+  });
+  return { dia, itens, feitos, total: itens.length, blocos };
+}
+
+/** Quantos leads o closer tem em cada bloco: em negociação (follow-up), em AP e em construção de proposta. */
+async function leadsPorEtapa(db: D1Database, closerId: number): Promise<Record<string, number>> {
+  const l = await db
+    .prepare(
+      `SELECT
+         (SELECT COUNT(*) FROM oportunidades WHERE closer_id = ?1 AND situacao = 'em_followup') AS fechamento,
+         (SELECT COUNT(*) FROM reunioes r JOIN oportunidades o ON o.id = r.oportunidade_id
+          WHERE o.closer_id = ?1 AND o.situacao = 'proposta_marcada' AND r.tipo = 'proposta' AND r.situacao IN ('marcada', 'em_andamento')
+            AND r.variaveis IS NOT NULL AND json_extract(r.variaveis, '$.valor') IS NOT NULL) AS ap,
+         (SELECT COUNT(*) FROM reunioes r JOIN oportunidades o ON o.id = r.oportunidade_id
+          WHERE o.closer_id = ?1 AND o.situacao = 'proposta_marcada' AND r.tipo = 'proposta' AND r.situacao IN ('marcada', 'em_andamento')
+            AND (r.variaveis IS NULL OR json_extract(r.variaveis, '$.valor') IS NULL)) AS construcao`,
+    )
+    .bind(closerId)
+    .first<{ fechamento: number; ap: number; construcao: number }>();
+  return { fechamento: l?.fechamento ?? 0, ap: l?.ap ?? 0, construcao: l?.construcao ?? 0 };
+}
+
+/** Os itens gerados de cada bloco: reagendar e confirmar (hunter); toques do dia e reativar (closer). */
+async function geradosDoBloco(db: D1Database, pessoa: Pessoa, dia: string, bloco: string): Promise<ItemRotina[]> {
+  if (bloco === "reagendamentos") {
+    return (await reagendamentosDoDia(db, pessoa, dia)).map((r) => ({
+      chave: `reagendar:${r.oportunidadeId}`,
+      titulo: `Reagendar ${r.empresa}`,
+      origem: "gerado" as const,
+      automatico: true,
+      feito: r.feito,
+      link: "/",
+    }));
+  }
+  if (bloco === "confirmacoes") {
+    return (await listarReunioes(db, dia, dia, { hunterId: pessoa.id }))
+      .filter((r) => r.tipo === "diagnostica" && r.situacao !== "cancelada")
+      .map((r) => ({
+        chave: `confirmar:${r.id}`,
+        titulo: `Confirmar a diagnóstica de ${r.empresa} às ${r.dataHora.slice(11, 16)}`,
+        origem: "gerado" as const,
+        automatico: true,
+        feito: !!r.confirmadaEm || r.situacao === "concluida",
+        link: "/",
+      }));
+  }
+  if (bloco === "fechamento") {
+    return (await toquesDoDia(db, pessoa.id, dia)).map((t) => ({
+      chave: `toque:${t.id}`,
+      titulo: `${nomeDoToque(t.codigo)} · ${t.empresa}`,
+      origem: "gerado" as const,
+      automatico: true,
+      feito: t.feito_em !== null,
+      link: `/follow-up?proposta=${t.proposta_id}`,
+    }));
+  }
+  if (bloco === "reativacao") {
+    return (await reativacoesDoDia(db, pessoa, dia)).map((r) => ({
+      chave: `reativar:${r.id}`,
+      titulo: `Reativar ${r.empresa}`,
+      origem: "gerado" as const,
+      automatico: true,
+      feito: r.feito,
+      link: "/follow-up?aba=reativacao",
+    }));
+  }
+  return [];
 }
 
 /** Regrava a rotina do dia de uma pessoa depois de algo que marca item sozinho (toque, ligação). */
 export async function atualizarRotinaDe(db: D1Database, pessoaId: number | null, dia: string): Promise<void> {
   if (pessoaId === null) return;
   const pessoa = await buscarPorId(db, pessoaId);
-  if (pessoa && pessoa.ativo && ROTINA_FIXA[pessoa.cargo].length > 0) await rotinaDoDia(db, pessoa, dia);
+  if (pessoa && pessoa.ativo && BLOCOS_DA_ROTINA[pessoa.cargo].length > 0) await rotinaDoDia(db, pessoa, dia);
 }
 
 /** Marca ou desmarca um item manual do dia. */

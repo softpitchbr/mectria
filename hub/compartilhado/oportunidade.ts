@@ -145,6 +145,16 @@ export interface ItemRotina {
   automatico: boolean;
   contagem?: { feitas: number; meta: number };
   link?: string;
+  /** O bloco de prioridade do item (fase 7). */
+  bloco?: string;
+}
+
+export interface BlocoDoDia {
+  id: string;
+  titulo: string;
+  orientacao: string | null;
+  feitos: number;
+  total: number;
 }
 
 export interface DiaDeRotina {
@@ -152,6 +162,8 @@ export interface DiaDeRotina {
   itens: ItemRotina[];
   feitos: number;
   total: number;
+  /** A rotina em blocos de prioridade, na ordem do dia (fase 7). */
+  blocos?: BlocoDoDia[];
 }
 
 export interface ResumoPessoa {

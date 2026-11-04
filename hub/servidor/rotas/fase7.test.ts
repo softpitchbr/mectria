@@ -1,4 +1,6 @@
 import { applyD1Migrations, env } from "cloudflare:test";
+import { hojeEmSaoPaulo } from "../../compartilhado/datas";
+import { rotinaDoDia } from "../rotina";
 import { onRequest } from "../../functions/api/_middleware";
 import { onRequestGet as getLigacoes, onRequestPost as postLigacao } from "../../functions/api/ligacoes";
 import { onRequestPost as postOportunidade } from "../../functions/api/oportunidades/index";
@@ -92,4 +94,19 @@ test("não compareceu e reagendar pelas rotas; Projetos e outro hunter recebem 4
   expect((await chamar(g(postReagendar), "hun@mectria.com", { corpo: { dataHora: "amanhã", formato: "online" }, params })).status).toBe(400);
   expect((await chamar(g(postReagendar), "hun@mectria.com", { corpo: { dataHora: "2099-01-06T10:00", formato: "online" }, params })).status).toBe(201);
   expect((await chamar(g(postReagendar), "hun@mectria.com", { corpo: { dataHora: "2099-01-06T11:00", formato: "online" }, params })).status).toBe(409);
+});
+
+test("confirmar a diagnóstica pela rota atualiza a rotina do hunter no dia", async () => {
+  const hoje = hojeEmSaoPaulo();
+  const { reuniao } = await criarDiagnostica(
+    env.DB,
+    { empresa: "Rotina", contato: "Ana", telefone: "34999990000", servico: "climatizacao", closerId: closer.id, dataHora: `${hoje}T23:00`, formato: "online" },
+    hunter,
+  );
+  await rotinaDoDia(env.DB, hunter, hoje);
+  const feitoEm = () =>
+    env.DB.prepare("SELECT feito_em FROM rotinas WHERE pessoa_id = ? AND dia = ? AND chave = ?").bind(hunter.id, hoje, `confirmar:${reuniao.id}`).first("feito_em");
+  expect(await feitoEm()).toBeNull();
+  await chamar(g(postConfirmacao), "hun@mectria.com", { corpo: { confirmada: true }, params: { id: String(reuniao.id) } });
+  expect(await feitoEm()).not.toBeNull();
 });

@@ -1,4 +1,6 @@
+import { hojeEmSaoPaulo } from "../../../../compartilhado/datas";
 import { acessarReuniao } from "../../../../servidor/acessoReuniao";
+import { atualizarRotinaDe } from "../../../../servidor/rotina";
 import { registrarConfirmacao } from "../../../../servidor/confirmacao";
 import { erroDaReuniao } from "../../../../servidor/errosDaReuniao";
 import { erro, json } from "../../../../servidor/respostas";
@@ -12,7 +14,10 @@ export const onRequestPost: PagesFunction<Env, "id", DadosApi> = async ({ reques
   const validado = validarConfirmacao(await lerCorpo(request));
   if (!validado.ok) return erro("invalido", validado.mensagem);
   try {
-    return json(await registrarConfirmacao(env.DB, acesso.reuniao.id, validado.dados));
+    const reuniao = await registrarConfirmacao(env.DB, acesso.reuniao.id, validado.dados);
+    // A confirmação marca sozinha o item "Confirmar a diagnóstica" da rotina de quem marcou.
+    await atualizarRotinaDe(env.DB, acesso.oportunidade.hunterId, hojeEmSaoPaulo());
+    return json(reuniao);
   } catch (e) {
     if (e instanceof Error && e.message === "fora_de_ordem") return erro("conflito", "Mande o FUP anterior antes deste.");
     return erroDaReuniao(e, acesso.reuniao.tipo);

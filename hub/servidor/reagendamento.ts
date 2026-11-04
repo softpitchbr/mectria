@@ -51,3 +51,20 @@ export async function reagendarDiagnostica(
   if (!criada) throw new Error("ja_reagendada");
   return reuniaoDeLinha((await db.prepare(`${SELECT_REUNIAO} WHERE r.id = ?`).bind(criada.id).first<LinhaReuniao>())!);
 }
+
+/** Reagendamentos do hunter no dia: os que esperam (a fazer) e os reagendados no dia (feitos). */
+export async function reagendamentosDoDia(db: D1Database, hunter: Pessoa, dia: string): Promise<{ oportunidadeId: number; empresa: string; feito: boolean }[]> {
+  const pendentes = (await listarReagendamentos(db, hunter)).map((r) => ({ oportunidadeId: r.oportunidadeId, empresa: r.empresa, feito: false }));
+  const { results } = await db
+    .prepare(
+      `SELECT DISTINCT o.id AS oportunidade_id, o.empresa FROM reunioes r JOIN oportunidades o ON o.id = r.oportunidade_id
+       WHERE r.tipo = 'diagnostica' AND date(r.criado_em, '-3 hours') = ? AND o.hunter_id = ?
+         AND EXISTS (SELECT 1 FROM reunioes antes WHERE antes.oportunidade_id = o.id AND antes.tipo = 'diagnostica'
+                     AND antes.situacao = 'cancelada' AND antes.motivo = ? AND antes.id < r.id)`,
+    )
+    .bind(dia, hunter.id, MOTIVO_NAO_COMPARECEU)
+    .all<{ oportunidade_id: number; empresa: string }>();
+  const feitos = results.map((r) => ({ oportunidadeId: r.oportunidade_id, empresa: r.empresa, feito: true }));
+  const jaFeitos = new Set(feitos.map((f) => f.oportunidadeId));
+  return [...pendentes.filter((p) => !jaFeitos.has(p.oportunidadeId)), ...feitos];
+}

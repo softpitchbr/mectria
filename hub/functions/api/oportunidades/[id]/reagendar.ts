@@ -1,4 +1,7 @@
+import { hojeEmSaoPaulo } from "../../../../compartilhado/datas";
+import { buscarOportunidade } from "../../../../servidor/oportunidades";
 import { reagendarDiagnostica } from "../../../../servidor/reagendamento";
+import { atualizarRotinaDe } from "../../../../servidor/rotina";
 import { erro, json } from "../../../../servidor/respostas";
 import type { DadosApi, Env } from "../../../../servidor/tipos";
 import { lerCorpo, validarReuniaoDeReativacao } from "../../../../servidor/validacao";
@@ -8,7 +11,11 @@ export const onRequestPost: PagesFunction<Env, "id", DadosApi> = async ({ reques
   const validado = validarReuniaoDeReativacao(await lerCorpo(request));
   if (!validado.ok) return erro("invalido", validado.mensagem);
   try {
-    return json(await reagendarDiagnostica(env.DB, Number(params.id), validado.dados, data.pessoa), 201);
+    const reuniao = await reagendarDiagnostica(env.DB, Number(params.id), validado.dados, data.pessoa);
+    const o = await buscarOportunidade(env.DB, reuniao.oportunidadeId);
+    // O reagendamento marca sozinho o item "Reagendar" da rotina do hunter que marcou.
+    await atualizarRotinaDe(env.DB, o?.hunterId ?? null, hojeEmSaoPaulo());
+    return json(reuniao, 201);
   } catch (e) {
     const motivo = e instanceof Error ? e.message : "";
     if (motivo === "nao_encontrado") return erro("nao_encontrado", "Oportunidade não encontrada.");
