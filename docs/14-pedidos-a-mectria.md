@@ -28,7 +28,7 @@ Levantamento de 08/10/2026. Cruza o escopo do contrato (Anexo I da minuta do con
 | 4 | **Google:** acesso ao Search Console, Analytics e **Ad Grants**; quem gerencia os anúncios; perfil da empresa no Google, se existir | SEO, medição e atualizar os links dos anúncios na virada. O Ad Grants exige a missão no site | Falta |
 | 5 | **E-mail institucional** que vai ser dono das contas do site | Contas no nome da MecTRIA, não de um membro | Falta |
 | 6 | **Data de renovação do Wix Premium** | Cancelar antes de renovar | Falta |
-| 7 | **Lista oficial de serviços** para o site | A carta tem 11, a precificação tem 7 e o protótipo diz "sete frentes" | Falta (decisão) |
+| 7 | **Lista oficial de serviços** para o site | A carta tem 11, a precificação tem 7 e o protótipo diz "sete frentes" | Recebido (04/11): a lista oficial é a carta, com 12 serviços; Emissão de Carbono está em estruturação. Os que mais fecham são Desenvolvimento de Produto e Desenho Técnico |
 | 8 | **Logo vetorial** (SVG, PDF ou AI), mais as versões negativa e símbolo em arquivos separados | O PNG atual é pequeno para telas de alta resolução e para o favicon | Parcial |
 | 9 | **WhatsApp comercial oficial** | CTAs do site e da apresentação. Hoje a proposta usa o celular de um membro, que sai da EJ | Falta |
 | 10 | **Destino dos leads** (planilha da Casa de Dados, CRM ou e-mail) e quem recebe | Ligar os formulários | Falta |
