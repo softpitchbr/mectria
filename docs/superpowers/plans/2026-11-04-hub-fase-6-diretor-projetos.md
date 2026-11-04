@@ -204,6 +204,6 @@ E `docs/16-pitch-e-fups.md` (cadência de 7 dias, sexta fixa e reativação, dec
 
 ## Fora desta fase
 
-- **As apresentações de proposta por serviço e a apresentação padrão da diagnóstica** (Instrumento, S6 e S7): um plano próprio. O motor de duas janelas já existe; cada serviço ganha o próprio arquivo de slides, com os blocos interativos (dores clicáveis, preço revelado em etapas, calculadora).
+- **As apresentações em HTML interativo, uma por serviço, mais a padrão da diagnóstica** (Instrumento, S6 e S7): um plano próprio. A janela separada continua; ela passa a carregar o HTML do serviço, e o hub controla a apresentação por um contrato (slide atual e dados do cliente de um lado; dor clicada, preço revelado e calculadora do outro). O roteiro por slide fica no painel e passa a ser por serviço (decisão do Lucas, 04/11/2026, no `docs/07`).
 - **Celular como controle** (fase 5).
 - **A troca dos textos da versão 0.2** pelo conteúdo real (processos, objeções e playbooks), quando o Lucas entregar.
