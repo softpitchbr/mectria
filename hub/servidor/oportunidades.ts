@@ -39,6 +39,7 @@ export interface LinhaReuniao {
   briefing_enviado_em: string | null;
   oportunidade_situacao: Situacao;
   resultado_proposta: Reuniao["desfecho"];
+  observacoes: string | null;
 }
 
 export function oportunidadeDeLinha(l: LinhaOportunidade): Oportunidade {
@@ -82,6 +83,7 @@ export function reuniaoDeLinha(l: LinhaReuniao): Reuniao {
     briefingEnviadoEm: l.briefing_enviado_em,
     oportunidadeSituacao: l.oportunidade_situacao,
     desfecho: l.resultado_proposta,
+    observacoes: l.observacoes,
   };
 }
 
@@ -92,7 +94,8 @@ export const SELECT_OPORTUNIDADE = `
 
 export const SELECT_REUNIAO = `
   SELECT r.id, r.oportunidade_id, o.empresa, r.tipo, r.data_hora, r.formato, r.situacao, o.closer_id, c.nome AS closer_nome,
-    r.quem_decide, r.iniciada_em, r.encerrada_em, r.resultado, r.motivo, r.briefing_enviado_em, o.situacao AS oportunidade_situacao, r.resultado_proposta
+    r.quem_decide, r.iniciada_em, r.encerrada_em, r.resultado, r.motivo, r.briefing_enviado_em, o.situacao AS oportunidade_situacao, r.resultado_proposta,
+    r.observacoes
   FROM reunioes r
   JOIN oportunidades o ON o.id = r.oportunidade_id
   LEFT JOIN pessoas c ON c.id = o.closer_id`;
@@ -103,17 +106,11 @@ export async function buscarOportunidade(db: D1Database, id: number): Promise<Op
 }
 
 function registrarHistorico(db: D1Database, id: number, de: Situacao | null, para: Situacao, autorId: number, detalhe: string | null = null) {
-  return db
-    .prepare("INSERT INTO historico (oportunidade_id, de, para, detalhe, autor_id) VALUES (?, ?, ?, ?, ?)")
-    .bind(id, de, para, detalhe, autorId);
+  return db.prepare("INSERT INTO historico (oportunidade_id, de, para, detalhe, autor_id) VALUES (?, ?, ?, ?, ?)").bind(id, de, para, detalhe, autorId);
 }
 
 /** O hunter (ou quem marcar) registra a diagnóstica: cria a oportunidade e a reunião. */
-export async function criarDiagnostica(
-  db: D1Database,
-  dados: NovaDiagnostica,
-  autor: Pessoa,
-): Promise<{ oportunidade: Oportunidade; reuniao: Reuniao }> {
+export async function criarDiagnostica(db: D1Database, dados: NovaDiagnostica, autor: Pessoa): Promise<{ oportunidade: Oportunidade; reuniao: Reuniao }> {
   const nova = await db
     .prepare(
       `INSERT INTO oportunidades (empresa, contato, telefone, email, cidade, segmento, origem, servico, hunter_id, closer_id, situacao)
@@ -136,8 +133,8 @@ export async function criarDiagnostica(
   const [, reuniao] = await db.batch([
     registrarHistorico(db, nova.id, null, "diagnostica_marcada", autor.id),
     db
-      .prepare("INSERT INTO reunioes (oportunidade_id, tipo, data_hora, formato) VALUES (?, 'diagnostica', ?, ?) RETURNING id")
-      .bind(nova.id, dados.dataHora, dados.formato),
+      .prepare("INSERT INTO reunioes (oportunidade_id, tipo, data_hora, formato, observacoes) VALUES (?, 'diagnostica', ?, ?, ?) RETURNING id")
+      .bind(nova.id, dados.dataHora, dados.formato, dados.observacoes?.trim() || null),
   ]);
   const idReuniao = (reuniao.results[0] as { id: number }).id;
   const r = await db.prepare(`${SELECT_REUNIAO} WHERE r.id = ?`).bind(idReuniao).first<LinhaReuniao>();
@@ -193,12 +190,7 @@ export async function assumir(db: D1Database, id: number, closer: Pessoa): Promi
 }
 
 /** Reuniões entre dois dias (inclusive), em ordem de data e hora. */
-export async function listarReunioes(
-  db: D1Database,
-  de: string,
-  ate: string,
-  filtro: { closerId?: number; hunterId?: number } = {},
-): Promise<Reuniao[]> {
+export async function listarReunioes(db: D1Database, de: string, ate: string, filtro: { closerId?: number; hunterId?: number } = {}): Promise<Reuniao[]> {
   const condicoes = ["r.data_hora >= ?", "r.data_hora <= ?"];
   const valores: (string | number)[] = [de, `${ate}T23:59`];
   if (filtro.closerId !== undefined) {

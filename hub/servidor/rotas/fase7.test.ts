@@ -1,6 +1,7 @@
 import { applyD1Migrations, env } from "cloudflare:test";
 import { onRequest } from "../../functions/api/_middleware";
 import { onRequestGet as getLigacoes, onRequestPost as postLigacao } from "../../functions/api/ligacoes";
+import { onRequestPost as postOportunidade } from "../../functions/api/oportunidades/index";
 import { criar } from "../pessoas";
 import type { DadosApi, Env, Pessoa } from "../tipos";
 
@@ -48,4 +49,12 @@ test("POST /api/ligacoes aceita conexão e recusa outro valor; GET traz as conex
   expect(c).toMatchObject({ conexao: 1, conexoesSemana: 1, metaConexoesSemana: 8 });
   expect(closer.id).toBeGreaterThan(0);
   expect(hunter.id).toBeGreaterThan(0);
+});
+
+test("observação com mais de 1.000 caracteres dá 400", async () => {
+  const nova = { empresa: "Obs", contato: "Ana", telefone: "34999990000", servico: "climatizacao", closerId: closer.id, dataHora: "2099-01-05T10:00", formato: "online" };
+  expect((await chamar(g(postOportunidade), "hun@mectria.com", { corpo: { ...nova, observacoes: "a".repeat(1001) } })).status).toBe(400);
+  const ok = await chamar(g(postOportunidade), "hun@mectria.com", { corpo: { ...nova, observacoes: "Prefere WhatsApp." } });
+  expect(ok.status).toBe(201);
+  expect(await corpo(ok)).toMatchObject({ reuniao: { observacoes: "Prefere WhatsApp." } });
 });

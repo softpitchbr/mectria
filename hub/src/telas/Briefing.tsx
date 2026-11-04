@@ -149,6 +149,12 @@ export default function Briefing() {
             <dt>Resultado</dt>
             <dd>{resultadoEmTexto(reuniao)}</dd>
           </div>
+          {reuniao.observacoes && (
+            <div>
+              <dt>Observações do hunter</dt>
+              <dd>{reuniao.observacoes}</dd>
+            </div>
+          )}
           {proxima && (
             <>
               <div>

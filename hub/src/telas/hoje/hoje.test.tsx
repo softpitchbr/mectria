@@ -93,8 +93,16 @@ test("marcar diagnóstica cria a oportunidade e conta a ligação", async () => 
   await userEvent.selectOptions(within(form).getByLabelText("Closer"), "2");
   await userEvent.type(within(form).getByLabelText("Data"), "2026-11-10");
   await userEvent.type(within(form).getByLabelText("Hora"), "14:00");
+  await userEvent.type(within(form).getByLabelText("Observações"), "O sócio decide; prefere WhatsApp.");
   await userEvent.click(within(form).getByRole("button", { name: "Marcar diagnóstica" }));
-  expect(oportunidade).toMatchObject({ empresa: "Usinagem Alfa", servico: "climatizacao", closerId: 2, dataHora: "2026-11-10T14:00", formato: "online" });
+  expect(oportunidade).toMatchObject({
+    empresa: "Usinagem Alfa",
+    servico: "climatizacao",
+    closerId: 2,
+    dataHora: "2026-11-10T14:00",
+    formato: "online",
+    observacoes: "O sócio decide; prefere WhatsApp.",
+  });
   expect(ligacoes).toEqual(["marcou"]);
   expect(await screen.findByRole("status")).toHaveTextContent("Diagnóstica marcada com Vinícius Miguel para Ter, 10/11 às 14:00.");
 });

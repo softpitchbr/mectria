@@ -113,3 +113,13 @@ test("Projetos lê o briefing sem a ação de enviar e volta para Briefings", as
   expect(screen.getByRole("link", { name: "← Briefings" })).toHaveAttribute("href", "/briefings");
   expect(screen.queryByRole("link", { name: "← Reuniões" })).toBeNull();
 });
+
+test("o briefing mostra as observações do hunter", async () => {
+  fingirApi({
+    "/api/eu": { corpo: PESSOAS.closer },
+    "GET /api/reunioes/5": { corpo: { ...FICHA, reuniao: { ...FICHA.reuniao, observacoes: "O sócio decide; prefere WhatsApp." } } },
+  } as never);
+  abrir("/reunioes/5/briefing");
+  const linha = (await screen.findByText("Observações do hunter")).closest("div") as HTMLElement;
+  expect(linha).toHaveTextContent("O sócio decide; prefere WhatsApp.");
+});

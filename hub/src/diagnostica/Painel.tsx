@@ -116,6 +116,12 @@ export default function PainelDaDiagnostica() {
         </button>
       </header>
 
+      {ficha.reuniao.observacoes && (
+        <p role="note" aria-label="Observações de quem marcou" className={estilos.observacoes}>
+          <span className="suave">Observações de quem marcou:</span> {ficha.reuniao.observacoes}
+        </p>
+      )}
+
       {rascunho.aviso && (
         <p role="alert" className={estilos.avisoRascunho}>
           {rascunho.aviso}

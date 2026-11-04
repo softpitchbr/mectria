@@ -357,3 +357,10 @@
     padding: 24px 16px;
   }
 }
+
+.observacoes {
+  margin: 0;
+  padding: 8px 12px;
+  border-left: 2px solid var(--linha-viva);
+  max-width: 900px;
+}

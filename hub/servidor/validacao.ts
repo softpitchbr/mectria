@@ -3,10 +3,25 @@ import { MOTIVOS_PERDA } from "../compartilhado/dados/cadencia";
 import { MOTIVOS_NAO_QUALIFICOU } from "../compartilhado/dados/diagnostica";
 import type { Anotacao, Marcacao } from "../compartilhado/diagnostica";
 import { SERVICOS } from "../compartilhado/dados/servicos";
-import { CANAIS_DE_TOQUE, type FechamentoDiagnostica, type NovaDiagnostica, type NovaProposta, type ResultadoLigacao, type ResultadoProposta } from "../compartilhado/oportunidade";
+import {
+  CANAIS_DE_TOQUE,
+  type FechamentoDiagnostica,
+  type NovaDiagnostica,
+  type NovaProposta,
+  type ResultadoLigacao,
+  type ResultadoProposta,
+} from "../compartilhado/oportunidade";
 import { CARGOS, type Cargo } from "../compartilhado/cargos";
 import { normalizarEmail } from "../compartilhado/texto";
-import { IDS_PACTO, slidesDaProposta, type Andamento, type FechamentoProposta, type IdPacto, type PessoaNaSala, type VariaveisProposta } from "../compartilhado/proposta";
+import {
+  IDS_PACTO,
+  slidesDaProposta,
+  type Andamento,
+  type FechamentoProposta,
+  type IdPacto,
+  type PessoaNaSala,
+  type VariaveisProposta,
+} from "../compartilhado/proposta";
 
 export type Validado<T> = { ok: true; dados: T } | { ok: false; mensagem: string };
 
@@ -78,7 +93,6 @@ export async function lerCorpo(req: Request): Promise<unknown> {
 
 // Fase 2 ------------------------------------------------------------------------
 
-
 const DIA = /^\d{4}-\d{2}-\d{2}$/;
 const DIA_E_HORA = /^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}$/;
 
@@ -121,9 +135,13 @@ export function validarNovaDiagnostica(corpo: unknown): Validado<NovaDiagnostica
     return { ok: false, mensagem: "Informe a data e a hora da reunião." };
   }
   if (corpo.formato !== "online" && corpo.formato !== "presencial") return { ok: false, mensagem: "Escolha online ou presencial." };
+  if (corpo.observacoes !== undefined && (typeof corpo.observacoes !== "string" || corpo.observacoes.length > 1000)) {
+    return { ok: false, mensagem: "As observações vão até 1.000 caracteres." };
+  }
   return {
     ok: true,
     dados: {
+      ...(typeof corpo.observacoes === "string" && corpo.observacoes.trim() ? { observacoes: corpo.observacoes.trim() } : {}),
       empresa,
       contato,
       telefone,
@@ -178,7 +196,13 @@ const MENSAGEM_RETOMAR = "Escolha o mês para retomar, deste mês em diante.";
 
 /** Dia para retomar a oportunidade em nutrição: data válida, deste mês em diante. */
 function retomarValido(valor: unknown, hoje: string): valor is string {
-  return typeof valor === "string" && DIA.test(valor) && !Number.isNaN(Date.parse(`${valor}T12:00:00Z`)) && new Date(`${valor}T12:00:00Z`).toISOString().slice(0, 10) === valor && valor.slice(0, 7) >= hoje.slice(0, 7);
+  return (
+    typeof valor === "string" &&
+    DIA.test(valor) &&
+    !Number.isNaN(Date.parse(`${valor}T12:00:00Z`)) &&
+    new Date(`${valor}T12:00:00Z`).toISOString().slice(0, 10) === valor &&
+    valor.slice(0, 7) >= hoje.slice(0, 7)
+  );
 }
 
 export function validarResultado(corpo: unknown, hoje: string = hojeEmSaoPaulo()): Validado<ResultadoProposta> {
@@ -194,7 +218,9 @@ export function validarResultado(corpo: unknown, hoje: string = hojeEmSaoPaulo()
   }
   if (corpo.resultado === "nutricao") {
     if (corpo.retomarEm === undefined) return { ok: true, dados: { resultado: "nutricao" } };
-    return retomarValido(corpo.retomarEm, hoje) ? { ok: true, dados: { resultado: "nutricao", retomarEm: corpo.retomarEm } } : { ok: false, mensagem: MENSAGEM_RETOMAR };
+    return retomarValido(corpo.retomarEm, hoje)
+      ? { ok: true, dados: { resultado: "nutricao", retomarEm: corpo.retomarEm } }
+      : { ok: false, mensagem: MENSAGEM_RETOMAR };
   }
   return { ok: false, mensagem: "Escolha o resultado: ganha, perdida ou nutrição." };
 }
@@ -210,7 +236,9 @@ export function validarToque(corpo: unknown): Validado<{ canal: string; resultad
 export function validarLigacao(corpo: unknown): Validado<ResultadoLigacao> {
   if (!ehObjeto(corpo)) return { ok: false, mensagem: MENSAGEM.corpo };
   const r = corpo.resultado;
-  return r === "nao_atendeu" || r === "atendeu" || r === "conexao" || r === "marcou" ? { ok: true, dados: r } : { ok: false, mensagem: "Resultado da ligação inválido." };
+  return r === "nao_atendeu" || r === "atendeu" || r === "conexao" || r === "marcou"
+    ? { ok: true, dados: r }
+    : { ok: false, mensagem: "Resultado da ligação inválido." };
 }
 
 export function validarFeito(corpo: unknown): Validado<boolean> {
@@ -289,7 +317,10 @@ export function validarVariaveis(corpo: unknown): Validado<VariaveisProposta> {
   if (prazo === null || condicoes === null || equipe === null) return { ok: false, mensagem: "Prazo, condições e time têm até 500 caracteres." };
   if (corpo.valor !== null && !inteiroEntre(corpo.valor, 1, 10_000_000_000)) return { ok: false, mensagem: "Confira o valor." };
   if (!inteiroEntre(corpo.parcelas, 1, 12)) return { ok: false, mensagem: "As parcelas vão de 1 a 12." };
-  return { ok: true, dados: { servico: corpo.servico, escopo, ficaComCliente, valor: corpo.valor as number | null, parcelas: corpo.parcelas, prazo, condicoes, equipe } };
+  return {
+    ok: true,
+    dados: { servico: corpo.servico, escopo, ficaComCliente, valor: corpo.valor as number | null, parcelas: corpo.parcelas, prazo, condicoes, equipe },
+  };
 }
 
 export function validarAndamento(corpo: unknown): Validado<Andamento> {
@@ -360,7 +391,9 @@ export function validarReuniaoDeReativacao(corpo: unknown): Validado<{ dataHora:
 
 export function validarMotivoDePerda(corpo: unknown): Validado<string> {
   if (!ehObjeto(corpo)) return { ok: false, mensagem: MENSAGEM.corpo };
-  return typeof corpo.motivo === "string" && MOTIVOS_PERDA.includes(corpo.motivo) ? { ok: true, dados: corpo.motivo } : { ok: false, mensagem: "Escolha o motivo." };
+  return typeof corpo.motivo === "string" && MOTIVOS_PERDA.includes(corpo.motivo)
+    ? { ok: true, dados: corpo.motivo }
+    : { ok: false, mensagem: "Escolha o motivo." };
 }
 
 export function validarResposta(corpo: unknown): Validado<string> {

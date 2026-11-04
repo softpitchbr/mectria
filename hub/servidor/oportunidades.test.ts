@@ -91,3 +91,10 @@ test("reuniões da semana, em ordem, e filtro por closer e por hunter", async ()
     "Segunda",
   ]);
 });
+
+test("marcar diagnóstica grava as observações", async () => {
+  const { reuniao } = await criarDiagnostica(env.DB, { ...diagnostica("Obs"), observacoes: "Prefere WhatsApp; o sócio decide." }, hunter);
+  expect(reuniao.observacoes).toBe("Prefere WhatsApp; o sócio decide.");
+  const [daAgenda] = await listarReunioes(env.DB, "2026-11-10", "2026-11-10");
+  expect(daAgenda.observacoes).toBe("Prefere WhatsApp; o sócio decide.");
+});

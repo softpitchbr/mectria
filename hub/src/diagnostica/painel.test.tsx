@@ -168,3 +168,13 @@ test("não qualificou pede o mês para retomar e manda retomarEm", async () => {
   await userEvent.click(within(form).getByRole("button", { name: "Encerrar diagnóstica" }));
   await waitFor(() => expect(enviado).toEqual({ resultado: "nao_qualificou", motivo: "Sem orçamento", retomarEm: proximoMes }));
 });
+
+test("o painel mostra as observações de quem marcou", async () => {
+  fingirApi({
+    "/api/eu": { corpo: PESSOAS.closer },
+    "GET /api/reunioes/5": { corpo: { ...FICHA, reuniao: { ...FICHA.reuniao, observacoes: "O sócio decide; prefere WhatsApp." } } },
+    "POST /api/reunioes/5/iniciar": { corpo: FICHA.reuniao },
+  } as never);
+  await abrirPainel();
+  expect(screen.getByRole("note", { name: "Observações de quem marcou" })).toHaveTextContent("O sócio decide; prefere WhatsApp.");
+});

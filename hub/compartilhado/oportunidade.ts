@@ -57,6 +57,8 @@ export interface Reuniao {
   oportunidadeSituacao: Situacao;
   /** Como terminou a reunião de proposta (null na diagnóstica e enquanto não encerra). */
   desfecho: import("./proposta").DesfechoProposta | null;
+  /** Observações de quem marcou a diagnóstica (fase 7). */
+  observacoes?: string | null;
 }
 
 export interface NovaDiagnostica {
@@ -70,6 +72,8 @@ export interface NovaDiagnostica {
   closerId: number;
   dataHora: string;
   formato: "online" | "presencial";
+  /** O que importa da ligação ou do WhatsApp (fase 7), até 1.000 caracteres. */
+  observacoes?: string;
 }
 
 export interface Proposta {

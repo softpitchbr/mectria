@@ -2,6 +2,7 @@ import { useEffect, useState, type FormEvent } from "react";
 import { formatarDia } from "../../../compartilhado/datas";
 import { api } from "../../api/cliente";
 import { avisar } from "../../componentes/Aviso";
+import AreaDeTexto from "../../componentes/AreaDeTexto";
 import Botao from "../../componentes/Botao";
 import Campo from "../../componentes/Campo";
 import Selecao from "../../componentes/Selecao";
@@ -11,7 +12,7 @@ import estilos from "./hoje.module.css";
 /** Formulário da diagnóstica marcada na ligação: cria a oportunidade e a reunião. */
 export default function MarcarDiagnostica({ aoMarcar, aoVoltar }: { aoMarcar: () => void; aoVoltar: () => void }) {
   const [closers, setClosers] = useState<{ id: number; nome: string }[]>([]);
-  const [c, setC] = useState({ empresa: "", contato: "", telefone: "", servico: "", closerId: "", data: "", hora: "", formato: "online" });
+  const [c, setC] = useState({ empresa: "", contato: "", telefone: "", servico: "", closerId: "", data: "", hora: "", formato: "online", observacoes: "" });
   const [erro, setErro] = useState("");
   const [enviando, setEnviando] = useState(false);
   const mudar = (campo: keyof typeof c) => (e: { target: { value: string } }) => setC((x) => ({ ...x, [campo]: e.target.value }));
@@ -37,6 +38,7 @@ export default function MarcarDiagnostica({ aoMarcar, aoVoltar }: { aoMarcar: ()
           closerId: Number(c.closerId) || 0,
           dataHora: `${c.data}T${c.hora}`,
           formato: c.formato,
+          ...(c.observacoes.trim() ? { observacoes: c.observacoes.trim() } : {}),
         }),
       });
       await api("/api/ligacoes", { method: "POST", body: JSON.stringify({ resultado: "marcou" }) });
@@ -76,6 +78,13 @@ export default function MarcarDiagnostica({ aoMarcar, aoVoltar }: { aoMarcar: ()
         <Campo rotulo="Data" type="date" value={c.data} onChange={mudar("data")} />
         <Campo rotulo="Hora" type="time" value={c.hora} onChange={mudar("hora")} />
       </div>
+      <AreaDeTexto
+        rotulo="Observações"
+        value={c.observacoes}
+        onChange={mudar("observacoes")}
+        maxLength={1000}
+        placeholder="O que importa da ligação ou do WhatsApp: quem decide, o que chamou a atenção, o melhor canal"
+      />
       {erro && (
         <p role="alert" className={estilos.erro}>
           {erro}
