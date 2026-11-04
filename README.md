@@ -24,6 +24,7 @@ Meta: conversão entre proposta e fechamento de ~25% para **40%**. Kick-off em 0
 | [`docs/13-apresentacao-atual-mectria.md`](docs/13-apresentacao-atual-mectria.md) | Análise da apresentação de proposta atual (Ap Gallu) contra a sequência do Método TRIA |
 | [`docs/14-pedidos-a-mectria.md`](docs/14-pedidos-a-mectria.md) | Checklist do que falta pedir à MecTRIA, por prazo e por frente |
 | [`docs/15-hub-template.md`](docs/15-hub-template.md) | Especificação do template novo do hub comercial: arquitetura, telas por cargo, modo reunião, sistema visual Prancheta, dados, erros e testes |
+| [`docs/16-pitch-e-fups.md`](docs/16-pitch-e-fups.md) | Pitch de parceria (o eixo da proposta) e a cadência de FUPs de 7 dias com a sexta fixa: regras, datas e mensagens |
 | [`hub/`](hub/) | Hub comercial novo (React + Cloudflare): login pelo e-mail, navegação por cargo, busca Ctrl K, Time e o sistema visual Prancheta. Fase 1 de 6; como rodar em [`hub/README.md`](hub/README.md) e como publicar em [`hub/IMPLANTACAO.md`](hub/IMPLANTACAO.md) |
 | [`hub-comercial/`](hub-comercial/) | Versão 0.2 do hub do vendedor, a ser substituída pelo `hub/`. O conteúdo de `js/dados/` (GPCTBA, roteiros, objeções, cadências) será reaproveitado. Abrir `index.html` no navegador |
 | [`contrato/`](contrato/) | Minuta do contrato com a MecTRIA, notas das decisões, o PDF para envio e o script que gera o PDF |
