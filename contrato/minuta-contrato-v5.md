@@ -1,6 +1,6 @@
-# Minuta v4 · Contrato de prestação de serviços
+# Minuta v5 · Contrato de prestação de serviços
 
-> **Uso interno.** Versão de 25/10/2026, depois do registro do contrato social da Triângulo na JUCEMG (23/10/2026). Muda da v3: o NIRE na qualificação da CONTRATADA e a cláusula 2.6, que ratifica os serviços prestados desde o kick-off. Falta só o CPF do interveniente, que fica em branco no PDF do repositório. Assinatura só eletrônica: sem testemunhas, sem rubricas, com a data da última assinatura. Os representantes das empresas (Lucas e Arthur) assinam sem CPF, por decisão do Lucas. Ver `notas-v4.md`. CPFs nunca entram no repositório. O PDF é gerado por `gerar-pdf.py`.
+> **Uso interno.** Versão de 04/11/2026, depois da revisão do Marcelo ("tudo nos conformes, só ajeitar o relatório"). Muda da v4 só o relatório mensal: cláusulas 5.6, 5.7 e 11.3, regras 5 e 6 do Anexo II e o novo Anexo IV, com o modelo do relatório (`relatorio-mensal-mectria.xlsx`). Falta só o CPF do interveniente, que fica em branco no PDF do repositório. Assinatura só eletrônica: sem testemunhas, sem rubricas, com a data da última assinatura. Os representantes das empresas (Lucas e Arthur) assinam sem CPF, por decisão do Lucas. Ver `notas-v5.md`. CPFs nunca entram no repositório. O PDF é gerado por `gerar-pdf.py`.
 
 ---
 
@@ -76,8 +76,8 @@ As partes celebram este contrato, que se rege pelas cláusulas a seguir.
 5.3. Dar feedback consolidado e por escrito em até **5 (cinco) dias úteis** após cada entrega submetida à validação.
 5.4. Pagar o domínio e os serviços de terceiros que contratar (ex.: plano do chatbot), mantendo-os ativos.
 5.5. **Usar a nova apresentação e o roteiro do vendedor** em todas as reuniões de apresentação de proposta a partir da capacitação, e participar das capacitações e do roleplay.
-5.6. **Registrar todas as propostas** apresentadas, e o seu resultado, na planilha de taxa de fechamento fornecida pela CONTRATADA.
-5.7. Enviar o **relatório mensal de vendas** do Anexo II até o dia 5 de cada mês e permitir a sua verificação.
+5.6. **Registrar cada proposta** apresentada, e o seu resultado, na parte de propostas do relatório mensal (Anexo IV). Uma proposta esquecida e lançada assim que apontada não é descumprimento.
+5.7. **Atualizar o relatório mensal** no modelo do Anexo IV e avisar a CONTRATADA por e-mail até o dia 5 de cada mês, **inclusive nos meses sem venda**, a partir do relatório de dezembro de 2026 e até a quitação das parcelas ou até o relatório de dezembro de 2027, o que vier primeiro, e permitir a sua verificação.
 5.8. Pagar as parcelas devidas nos termos da Cláusula 3.
 
 ### Cláusula 6 · Validação e aceite
@@ -132,6 +132,8 @@ As partes celebram este contrato, que se rege pelas cláusulas a seguir.
 - a) deixar de usar a apresentação e o roteiro, ou de registrar as propostas (cláusulas 5.5 e 5.6), por 2 (dois) meses seguidos; ou
 - b) deixar de enviar o relatório mensal (cláusula 5.7).
 
+Atraso, erro ou omissão no relatório corrigidos dentro desses 15 (quinze) dias não geram nenhuma consequência.
+
 11.4. Nas hipóteses das cláusulas 11.2 e 11.3, as parcelas já pagas são descontadas do valor devido.
 
 11.5. Se a rescisão for por descumprimento da CONTRATADA, não são devidas parcelas de etapas não entregues.
@@ -149,7 +151,7 @@ As partes celebram este contrato, que se rege pelas cláusulas a seguir.
 
 13.3. **Alterações.** Qualquer alteração deste contrato só tem validade se feita por termo aditivo escrito, assinado pelas duas partes.
 
-13.4. **Integralidade.** Este contrato e seus anexos formam o acordo integral entre as partes sobre o seu objeto e substituem quaisquer propostas, escopos, apresentações e entendimentos anteriores, verbais ou escritos.
+13.4. **Integralidade.** Este contrato e seus anexos (I · Escopo, II · Regra de pagamento pelo resultado, III · Base da média de referência e IV · Relatório mensal) formam o acordo integral entre as partes sobre o seu objeto e substituem quaisquer propostas, escopos, apresentações e entendimentos anteriores, verbais ou escritos.
 
 13.5. **Prevalência.** Em caso de conflito entre o corpo deste contrato e os seus anexos, prevalece o corpo do contrato.
 
@@ -210,7 +212,7 @@ Kick-off em **09/10/2026** (sexta). Semanas de segunda a sexta.
 | **T · Tela** | Site novo responsivo em ambiente de homologação; arquitetura e navegação revisadas; SEO local (mapa do site por palavra-chave, robots.txt, llms.txt); CTAs e formulários de qualificação; especificação e implantação do chatbot; migração do blog e redirecionamentos | Estrutura e layout do site |
 | **R · Retórica** | Proposta de valor, diferenciais, público, tom e mensagens-chave (Primal Branding sobre a identidade atual); textos institucionais e de serviços aplicados no site; processo comercial visual, do hunter ao closer; mapa de objeções e contornos | Textos (copy) |
 | **I · Instrumento** | Apresentação de proposta web, interativa e responsiva, com narrativa fixa, micro pactos, bloco valor × preço e calculadora de investimento; versão em PDF; roteiro do vendedor slide a slide | Apresentação comercial |
-| **A · Acompanhamento** | Capacitação do time comercial; roleplay com feedback; planilha de taxa de fechamento proposta a proposta; acompanhamento (abaixo) | Encerramento |
+| **A · Acompanhamento** | Capacitação do time comercial; roleplay com feedback; planilha do relatório mensal, com a taxa de fechamento proposta a proposta (Anexo IV); acompanhamento (abaixo) | Encerramento |
 
 ### Acompanhamento (07/12/2026 a 05/02/2027)
 - 1 (uma) reunião por mês, de até 1 hora, em dezembro, janeiro e fevereiro. A de fevereiro é a reunião de encerramento.
@@ -240,7 +242,8 @@ Acessos ao Wix, ao domínio e às ferramentas do Google; e-mail institucional pa
 2. **Uma parcela liberada nunca volta a ficar suspensa**, mesmo que o resultado acumulado caia depois. Parcela paga nunca é devolvida.
 3. Em cada mês são pagas no máximo **2 parcelas**. As liberadas acima disso ficam para os meses seguintes.
 4. A parcela não liberada até 31/12/2027 deixa de ser devida. Parcelas liberadas até essa data continuam devidas e são pagas nos meses seguintes, respeitado o limite do item 3.
-5. A apuração é mensal: a CONTRATANTE envia o relatório até o dia 5 e paga as parcelas do mês até o dia 15. O primeiro relatório, de dezembro de 2026, vence em 05/01/2027.
+5. A apuração é mensal: a CONTRATANTE atualiza o relatório até o dia 5, a CONTRATADA envia o extrato da apuração até o dia 10 e a CONTRATANTE paga as parcelas do mês até o dia 15. O primeiro relatório, de dezembro de 2026, vence em 05/01/2027.
+6. Se discordar do extrato, a CONTRATANTE contesta por escrito até o dia 15, apontando o erro. A parte não contestada é paga no prazo. A parte contestada é conferida com os contratos ou com o registro no portal da Brasil Júnior e, se devida, é paga em até 10 dias depois de esclarecida.
 
 ### Exemplo (valores ilustrativos)
 
@@ -251,8 +254,8 @@ Acessos ao Wix, ao domínio e às ferramentas do Google; e-mail institucional pa
 | 3 | R$ 10.000 | +R$ 5.000 | R$ 8.000 | 6 | 2 (limite) | 4 (R$ 3.000) |
 | 4 | R$ 2.000 | −R$ 3.000 | R$ 5.000 | 6 (não volta; a conta daria 4) | 2 | **6 (R$ 4.500): quitado** |
 
-### Relatório mensal (até o dia 5)
-Para cada contrato assinado no mês: cliente, data de assinatura, valor total e serviço. Também os cancelamentos do mês. A CONTRATADA pode pedir cópia dos contratos ou o registro equivalente no portal da Brasil Júnior, e a CONTRATANTE os fornece em até 10 dias.
+### Relatório mensal
+O conteúdo, o formato, o envio e a comprovação do relatório estão no **Anexo IV**.
 
 ---
 
@@ -266,3 +269,39 @@ Números informados pela CONTRATANTE em 07/10/2026.
 | 2026, de janeiro a outubro (para registro) | R$ 40.800,00, sendo R$ 38.600,00 registrados no portal da Brasil Júnior e R$ 2.200,00 de projeto sem contrato | 10 | R$ 4.080,00 |
 
 As partes adotam como média de referência o faturamento de 2025, de R$ 5.000,00 por mês, compatível com a faixa de R$ 5.000,00 a R$ 6.000,00 mensais informada pela CONTRATANTE. A média é fixa durante todo o contrato e não é recalculada.
+
+---
+
+## Anexo IV · Relatório mensal
+
+### Formato
+O relatório é a planilha **"Relatório mensal · Contrato Triângulo Solutions × MecTRIA"**, fornecida pela CONTRATADA e compartilhada entre as partes (Excel ou Google Sheets). É uma planilha só, atualizada todo mês. Quando o hub comercial estiver em uso, o relatório pode sair dele, com o mesmo conteúdo.
+
+### Prazo e envio
+- Até o **dia 5** de cada mês, com os dados do mês anterior.
+- O responsável pelo projeto (cláusula 5.1) atualiza a planilha, marca o "último mês informado" e avisa por e-mail a CONTRATADA (cláusula 13.2).
+- **Mês sem venda também é informado.** Basta marcar o mês e avisar.
+- Vale do relatório de dezembro de 2026 (até 05/01/2027) até a quitação das parcelas ou até o relatório de dezembro de 2027, o que vier primeiro.
+
+### Parte 1 · Vendas (define o pagamento)
+Uma linha por contrato assinado no mês: cliente, serviço, data de assinatura, valor total do contrato, forma de pagamento e, se houver, o número da proposta. Para o contrato cancelado, a data do cancelamento. Só desconta o cancelamento feito em até 30 dias da assinatura, no mês em que acontece (Anexo II).
+
+### Parte 2 · Propostas (mede o projeto; não muda o pagamento)
+Uma linha por proposta apresentada: cliente, serviço, closer, data da apresentação, valor proposto, se usou a apresentação nova, situação (em aberto, ganha ou perdida) e, quando decidida, a data da decisão, o valor fechado e o motivo da perda.
+
+### Métricas (calculadas pela planilha)
+
+| Métrica | Como é calculada | Para que serve |
+|---|---|---|
+| Vendido líquido no mês | Contratos assinados no mês − cancelamentos que descontam | Base do pagamento (Anexo II) |
+| Resultado acumulado e parcelas | Regras do Anexo II, na aba Extrato | Valor a pagar no mês |
+| Taxa de fechamento | Propostas ganhas ÷ (ganhas + perdidas) decididas no mês | Meta do projeto: de ~25% para 40% |
+| Uso da apresentação nova | Propostas com a apresentação nova ÷ propostas apresentadas no mês | Mostra se o processo está em uso (cláusula 5.5) |
+| Desconto médio | 1 − valor fechado ÷ valor proposto, nas ganhas | Acompanhar o desconto concedido |
+| Ticket médio | Valor fechado ÷ propostas ganhas | Acompanhar o valor por projeto |
+
+### Extrato e conferência
+- A CONTRATADA confere o relatório e envia o extrato até o dia 10 (Anexo II, regra 5). A própria planilha já mostra o extrato, para as duas partes verem o mesmo número.
+- A CONTRATADA pode pedir cópia dos contratos ou o registro no portal da Brasil Júnior. A CONTRATANTE os envia em até 10 dias.
+- Erro ou omissão corrigido quando apontado não é descumprimento. Só a falta do relatório depois da notificação e do prazo de 15 dias tem a consequência da cláusula 11.3.
+
