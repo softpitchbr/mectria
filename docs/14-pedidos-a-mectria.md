@@ -24,7 +24,7 @@ Lista de 04/11/2026, reorganizada para a reunião de terça, 10/11, às 18h30. O
 
 - [x] **Quem conduz a diagnóstica:** normalmente hunter + projetista (resposta de 04/11). No hub, o hunter passa a abrir o painel (fase 6).
 - [ ] **Os leads em conversa no CRM.** Parcial: a lista de status e marcadores chegou em 04/11 (`17-processo-comercial.md`). Confirmar se é o status Contato estabelecido mais o marcador Retornar. **Trava:** o texto da rotina do hunter.
-- [ ] **Em que grupo o hunter avisa a reunião confirmada,** e se a mensagem cita o projetista no lugar do closer. **Trava:** a mensagem do grupo no hub.
+- [ ] **Os grupos do hunter.** Parcial: são o Comercial & Projetos (pergunta se algum projetista pode no horário) e o Comercial (conversa sobre o lead), resposta de 04/11. Confirmar se o aviso de "confirmada" vai no Comercial & Projetos, citando o projetista. **Trava:** a mensagem do grupo no hub.
 
 ### Para validar com eles
 
@@ -47,7 +47,7 @@ Lista de 04/11/2026, reorganizada para a reunião de terça, 10/11, às 18h30. O
 
 ### Para a Retórica e as apresentações
 
-- [ ] **Objeções reais:** 30 minutos com os closers (Vinícius Miguel e João Guilherme) sobre o que o cliente diz quando não fecha, e os motivos das propostas perdidas (24). **Serve para:** o guia de objeções.
+- [ ] **Objeções reais:** 30 minutos com os closers, e com o Vinícius Miguel (hunter) e o João Guilherme, que já estiveram em reuniões de proposta, sobre o que o cliente diz quando não fecha, e os motivos das propostas perdidas (24). **Serve para:** o guia de objeções.
 - [ ] **Políticas que respondem objeções:** revisões incluídas, suporte depois da entrega, confidencialidade, como o projeto segue nas férias e na troca de gestão, e se indicam parceiros de fabricação (39). **Serve para:** o guia de objeções.
 - [ ] **Referência de valor de mercado por serviço** (28). **Serve para:** a âncora do valor × preço. Se não tiverem, a Triângulo pesquisa.
 - [ ] **Dados para a calculadora:** custo de mão de obra, de parada de máquina, de multa NR-12 etc., um caso real por serviço (29). **Serve para:** a calculadora da apresentação.

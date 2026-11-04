@@ -21,9 +21,10 @@ flowchart TD
     E -- sim, é conexão --> F{Aceitou a reunião?}
     F -- não --> D
     F -- sim --> G[Marca a diagnóstica no hub, com as observações]
-    G --> H[Confirmação: FUP 1, 2 e 3 no dia da reunião]
+    G --> G2[Pergunta no Comercial & Projetos se um projetista pode no horário]
+    G2 --> H[Confirmação: FUP 1, 2 e 3 no dia da reunião]
     H --> I{Confirmou?}
-    I -- sim --> J[Avisa no grupo do comercial: confirmada com o closer]
+    I -- sim --> J[Avisa no Comercial & Projetos: confirmada com o projetista]
     I -- não compareceu --> C
 ```
 
@@ -34,9 +35,11 @@ flowchart TD
    - O que conta é a **conexão**: a ligação em que o hunter fala com quem decide.
    - O foco da ligação é **despertar a curiosidade** para o lead aceitar a reunião, não explicar o serviço.
    - O script de cold call e o de cold message ainda vão ser escritos.
-5. **Marca a diagnóstica.** Registra no hub, com as observações importantes da ligação ou do WhatsApp.
+5. **Marca a diagnóstica.** Registra no hub, com as observações importantes da ligação ou do WhatsApp, e pergunta no grupo **Comercial & Projetos** se algum projetista pode no horário.
 6. **Confirma a reunião** com as três mensagens da seção 3.
-7. **Avisa o time.** Com a confirmação do lead, informa no grupo do comercial que a reunião está confirmada com o closer.
+7. **Avisa o time.** Com a confirmação do lead, informa no Comercial & Projetos que a reunião está confirmada com o projetista (leitura a confirmar).
+
+**Os grupos (resposta de um hunter, 04/11/2026):** são dois. No **Comercial & Projetos**, o hunter pergunta se algum projetista pode em tal horário. No **Comercial**, o time troca ideia sobre o lead.
 
 ### Status e marcadores do CRM da MecTRIA (recebidos em 04/11/2026)
 
@@ -102,9 +105,13 @@ Três mensagens pelo WhatsApp, no dia da reunião. Só sai a seguinte se a anter
 
 > Está por aí? 🙏
 
-**Quando o lead confirma**, o hunter avisa no grupo do comercial:
+**Ao marcar** (rascunho), o hunter pergunta no Comercial & Projetos:
 
-> Reunião confirmada: {empresa} ({contato}), {data} às {hora}, {formato}, com {closer}.
+> Diagnóstica marcada: {empresa}, {data} às {hora}, {formato}. Algum projetista pode nesse horário?
+
+**Quando o lead confirma** (rascunho), o hunter avisa no Comercial & Projetos:
+
+> Reunião confirmada: {empresa} ({contato}), {data} às {hora}, {formato}, com {projetista}.
 
 ## 4. A diagnóstica
 
@@ -160,7 +167,6 @@ O que depende da MecTRIA está também na pauta da reunião de 10/11, em `14-ped
 | # | Pergunta | Quem responde |
 |---|---|---|
 | 1 | "Em conversa" é o status Contato estabelecido mais o marcador Retornar? | MecTRIA |
-| 2 | A mensagem do grupo diz "com {closer}"; com hunter + projetista na diagnóstica, ela deve citar o projetista? | MecTRIA |
-| 4 | Em que grupo o hunter avisa a confirmação, e se o hub deve só gerar o texto para copiar | MecTRIA |
+| 4 | O aviso de "confirmada" vai no Comercial & Projetos, citando o projetista? E o hub só gera o texto para copiar? | MecTRIA |
 | 5 | Quantos clientes a MecTRIA já atendeu, para o {nº de clientes} do cold call (pedido 17) | MecTRIA |
 | 6 | Os professores orientadores são todos doutores? O roteiro diz só "professores" até confirmar (pedido 18) | MecTRIA |
