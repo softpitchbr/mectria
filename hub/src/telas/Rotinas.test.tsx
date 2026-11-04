@@ -45,7 +45,7 @@ test("marcar item manual chama o PUT e atualiza o medidor", async () => {
   expect(await screen.findByRole("meter", { name: "Rotina de hoje" })).toHaveAttribute("aria-valuenow", "1");
   await userEvent.click(screen.getByRole("checkbox", { name: "Confirmar as reuniões do dia" }));
   expect(enviado).toEqual({ feito: true });
-  expect(await screen.findByText("2/5")).toBeInTheDocument();
+  expect(await screen.findByText("40% · 2/5")).toBeInTheDocument();
   expect(screen.getByRole("checkbox", { name: "Confirmar as reuniões do dia" })).toBeChecked();
 });
 
@@ -97,6 +97,40 @@ test("diretor vê a rotina do time", async () => {
   const time = await screen.findByRole("list", { name: "Rotina do time hoje" });
   const [carlos, hugo] = within(time).getAllByRole("listitem");
   expect(carlos).toHaveTextContent("3/4");
+  expect(carlos).toHaveTextContent("75%");
   expect(carlos).toHaveTextContent("1 atrasado");
   expect(hugo).toHaveTextContent("Hunter");
+});
+
+const DIA_EM_BLOCOS = {
+  dia: "2026-11-16",
+  itens: [
+    item("fup-negociacao", "Abrir o Follow-up e fazer o FUP de todos os leads em negociação", true, { bloco: "fechamento" }),
+    item("toque:7", "D1 · WhatsApp · Usinagem Alfa", false, { automatico: true, link: "/follow-up?proposta=7", bloco: "fechamento" }),
+    item("fup-ap-sem-lead", "Fazer o FUP dos leads em Apresentação de Proposta e agendar as APs", true, { automatico: true, bloco: "ap" }),
+    item("construir-propostas", "Construir as propostas pendentes", false, { bloco: "construcao" }),
+  ],
+  feitos: 2,
+  total: 4,
+  blocos: [
+    { id: "fechamento", titulo: "Fechamento e negociação", orientacao: "Prioridade máxima, senso de urgência.", feitos: 1, total: 2 },
+    { id: "ap", titulo: "Apresentação de Proposta (AP)", orientacao: "Não deixar lead parado.", feitos: 1, total: 1 },
+    { id: "construcao", titulo: "Construção de proposta", orientacao: "Nenhum lead fica mais de 3 dias nesta etapa.", feitos: 0, total: 1 },
+    { id: "reativacao", titulo: "Reativação", orientacao: "Simples e constante.", feitos: 0, total: 0 },
+  ],
+};
+
+test("a rotina aparece em blocos com feitas de total e a orientação; o topo mostra o % do dia", async () => {
+  fingirApi({
+    "/api/eu": { corpo: PESSOAS.closer },
+    "GET /api/rotina": { corpo: DIA_EM_BLOCOS },
+    "GET /api/rotina/historico": { corpo: [] },
+  });
+  abrir("/rotinas");
+  const fechamento = await screen.findByRole("region", { name: "Fechamento e negociação" });
+  expect(fechamento).toHaveTextContent("1 de 2");
+  expect(fechamento).toHaveTextContent("Prioridade máxima, senso de urgência.");
+  expect(within(fechamento).getByRole("list", { name: "Itens de Fechamento e negociação" })).toHaveTextContent("D1 · WhatsApp · Usinagem Alfa");
+  expect(screen.getByRole("region", { name: "Reativação" })).toHaveTextContent("Nada neste bloco hoje.");
+  expect(screen.getByRole("meter", { name: "Rotina de hoje" })).toHaveTextContent("50%");
 });

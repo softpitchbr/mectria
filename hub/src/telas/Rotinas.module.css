@@ -219,3 +219,31 @@
     grid-template-columns: minmax(0, 1fr) auto;
   }
 }
+
+.blocos {
+  display: grid;
+  gap: 20px;
+}
+
+.bloco {
+  display: grid;
+  gap: 8px;
+}
+
+.cabecaDoBloco {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 12px;
+}
+
+.cabecaDoBloco h3 {
+  margin: 0;
+  font-size: 15px;
+}
+
+.orientacao {
+  margin: 0;
+  font-size: 13px;
+  max-width: 70ch;
+}

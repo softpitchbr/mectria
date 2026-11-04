@@ -46,8 +46,44 @@ function LinhaDoItem({ item, aoMarcar }: { item: ItemRotina; aoMarcar: (chave: s
   );
 }
 
-/** O checklist do dia; usado aqui e no Hoje. */
+/** % do dia: feitos sobre o total (0% quando a rotina está vazia). */
+export function percentualDaRotina(feitos: number, total: number): string {
+  return `${total === 0 ? 0 : Math.round((feitos / total) * 100)}%`;
+}
+
+/** O checklist do dia, em blocos de prioridade (docs/17); usado aqui e no Hoje. */
 export function ChecklistDaRotina({ dia, aoMarcar }: { dia: DiaDeRotina; aoMarcar: (chave: string, feito: boolean) => void }) {
+  if (dia.blocos?.length) {
+    return (
+      <div className={estilos.blocos}>
+        {dia.blocos.map((b, i) => {
+          const itens = dia.itens.filter((item) => item.bloco === b.id);
+          return (
+            <section key={b.id} aria-label={b.titulo} className={estilos.bloco}>
+              <header className={estilos.cabecaDoBloco}>
+                <h3>
+                  <span className="mono suave">{i + 1}.</span> {b.titulo}
+                </h3>
+                <span className="mono suave">
+                  {b.feitos} de {b.total}
+                </span>
+              </header>
+              {b.orientacao && <p className={`suave ${estilos.orientacao}`}>{b.orientacao}</p>}
+              {itens.length === 0 ? (
+                <p className="suave">Nada neste bloco hoje.</p>
+              ) : (
+                <ul className={estilos.checklist} aria-label={`Itens de ${b.titulo}`}>
+                  {itens.map((item) => (
+                    <LinhaDoItem key={item.chave} item={item} aoMarcar={aoMarcar} />
+                  ))}
+                </ul>
+              )}
+            </section>
+          );
+        })}
+      </div>
+    );
+  }
   return (
     <ul className={estilos.checklist} aria-label="Itens da rotina">
       {dia.itens.map((item) => (
@@ -106,7 +142,12 @@ function RotinaPessoal() {
       )}
       {dia && (
         <Painel className={estilos.hoje}>
-          <Medidor rotulo="Rotina de hoje" valor={dia.feitos} total={dia.total} texto={`${dia.feitos}/${dia.total}`} />
+          <Medidor
+            rotulo="Rotina de hoje"
+            valor={dia.feitos}
+            total={dia.total}
+            texto={`${percentualDaRotina(dia.feitos, dia.total)} · ${dia.feitos}/${dia.total}`}
+          />
           <ChecklistDaRotina dia={dia} aoMarcar={marcar} />
         </Painel>
       )}
@@ -147,7 +188,10 @@ export function RotinaDoTime({ pessoas }: { pessoas: ResumoPessoa[] }) {
           <span className="suave">{ROTULO_CARGO[p.pessoa.cargo as Cargo] ?? p.pessoa.cargo}</span>
           <Segmentos feitos={p.rotina.feitos} total={p.rotina.total} />
           <span className="mono">
-            {p.rotina.feitos}/{p.rotina.total}
+            {percentualDaRotina(p.rotina.feitos, p.rotina.total)}{" "}
+            <span className="suave">
+              · {p.rotina.feitos}/{p.rotina.total}
+            </span>
           </span>
           <span className={p.atrasados > 0 ? estilos.atrasado : "suave"}>
             {p.atrasados === 0 ? "em dia" : `${p.atrasados} ${p.atrasados === 1 ? "atrasado" : "atrasados"}`}
@@ -190,7 +234,9 @@ export default function Rotinas({ eu }: { eu: Eu }) {
       <header>
         <h1>Rotinas</h1>
         <p className="suave">
-          {eu.cargo === "diretor" ? "Quem cumpriu a rotina hoje e quem tem follow-up atrasado." : "O que o seu dia precisa ter. Os itens automáticos se marcam sozinhos."}
+          {eu.cargo === "diretor"
+            ? "Quem cumpriu a rotina hoje e quem tem follow-up atrasado."
+            : "O que o seu dia precisa ter. Os itens automáticos se marcam sozinhos."}
         </p>
       </header>
       {eu.cargo === "diretor" ? <RotinaDoTimeCarregada /> : <RotinaPessoal />}
