@@ -64,7 +64,7 @@ Cada decisão traz o que foi decidido, o porquê e o custo se estiver errada.
 
 ## Revisão final
 
-- interrompida — o revisor parou no limite semanal da conta (volta às 21h UTC, 18h de Brasília); retomar o mesmo revisor depois disso.
+- A revisão parou uma vez no limite semanal da conta e foi retomada depois das 21h UTC (18h de Brasília), do ponto em que estava.
 - revisor separado (modelo mais capaz), pacote 485a528..ede597e; nenhum crítico, 3 importantes, 9 menores.
 - fixed I1 (a exclusão LGPD contava como decisão: ganha de outubro voltava em novembro, datas do CSV e do tempo médio mudavam, os 45 dias reiniciavam e "Reativar" virava feito) — "apagar dados pessoais não conta como decisão nem mexe na reativação" RED→GREEN, suite app 235/235, api 155/155, e2e 38/38
 - fixed I2 (nomes de quem decide e de quem assina ficavam nas respostas da ficha) — "o briefing de uma oportunidade apagada não mostra o nome" (com a ficha) RED→GREEN, suite 235/235 e 155/155
