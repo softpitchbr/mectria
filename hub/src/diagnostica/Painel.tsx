@@ -157,7 +157,13 @@ export default function PainelDaDiagnostica() {
               contato={ficha.oportunidade.contato}
               respostas={rascunho.respostas}
               antesDeEncerrar={() => rascunho.sincronizar()}
-              aoEncerrar={() => {
+              aoEncerrar={(resultado) => {
+                if (resultado === "nao_compareceu") {
+                  // Não há briefing de no-show: o hunter reagenda pelo Hoje.
+                  avisar("Reunião cancelada: o cliente não compareceu. Reagende no Hoje.");
+                  navegar("/");
+                  return;
+                }
                 avisar("Diagnóstica encerrada.");
                 navegar(`/reunioes/${reuniaoId}/briefing`);
               }}

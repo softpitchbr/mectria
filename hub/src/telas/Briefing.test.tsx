@@ -123,3 +123,14 @@ test("o briefing mostra as observações do hunter", async () => {
   const linha = (await screen.findByText("Observações do hunter")).closest("div") as HTMLElement;
   expect(linha).toHaveTextContent("O sócio decide; prefere WhatsApp.");
 });
+
+test("o briefing de uma reunião cancelada mostra que o cliente não compareceu e não oferece enviar", async () => {
+  fingirApi({
+    "/api/eu": { corpo: PESSOAS.closer },
+    "GET /api/reunioes/5": { corpo: { ...FICHA, reuniao: { ...FICHA.reuniao, situacao: "cancelada", resultado: null, motivo: "Cliente não compareceu" } } },
+  } as never);
+  abrir("/reunioes/5/briefing");
+  const linha = (await screen.findByText("Resultado")).closest("div") as HTMLElement;
+  expect(linha).toHaveTextContent("Cliente não compareceu");
+  expect(screen.queryByRole("button", { name: "Marcar como enviado para Projetos" })).toBeNull();
+});

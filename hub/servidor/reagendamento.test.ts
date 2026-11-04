@@ -1,5 +1,5 @@
 import { applyD1Migrations, env } from "cloudflare:test";
-import { encerrarDiagnostica } from "./diagnostica";
+import { encerrarDiagnostica, marcarBriefingEnviado } from "./diagnostica";
 import { buscarOportunidade, criarDiagnostica } from "./oportunidades";
 import { criar } from "./pessoas";
 import { listarReagendamentos, reagendarDiagnostica } from "./reagendamento";
@@ -56,4 +56,9 @@ test("reagendar cria uma reunião só, mesmo chamado duas vezes, e leva as obser
   expect(marcadas.results).toEqual([{ observacoes: "Prefere WhatsApp." }]);
   expect(await listarReagendamentos(env.DB, hunter)).toEqual([]);
   await expect(reagendarDiagnostica(env.DB, oportunidade.id, nova, hunter2)).rejects.toThrow("sem_permissao");
+});
+
+test("o briefing de um no-show não vai para Projetos", async () => {
+  const { reuniao } = await noShow("Briefing");
+  await expect(marcarBriefingEnviado(env.DB, reuniao.id)).rejects.toThrow("nao_concluida");
 });

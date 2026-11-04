@@ -22,7 +22,7 @@ export default function Fechamento({
   contato: string;
   respostas: Respostas;
   antesDeEncerrar: () => Promise<boolean>;
-  aoEncerrar: () => void;
+  aoEncerrar: (resultado: "proposta_marcada" | "nao_qualificou" | "nao_compareceu") => void;
 }) {
   const [resultado, setResultado] = useState<"proposta_marcada" | "nao_qualificou" | "nao_compareceu" | null>(null);
   const [c, setC] = useState({ data: "", hora: "", formato: "online", quemDecide: "", motivo: "", retomarEm: "" });
@@ -53,7 +53,7 @@ export default function Fechamento({
             ? { resultado }
             : { resultado, motivo: c.motivo, ...(c.retomarEm ? { retomarEm: c.retomarEm } : {}) };
       await api(`/api/reunioes/${reuniaoId}/encerrar`, { method: "POST", body: JSON.stringify(corpo) });
-      aoEncerrar();
+      aoEncerrar(resultado);
     } catch (falha) {
       setErro(mensagemDe(falha));
       setEnviando(false);

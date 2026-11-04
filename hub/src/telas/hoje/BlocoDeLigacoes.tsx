@@ -66,8 +66,9 @@ export default function BlocoDeLigacoes({ eu, inicial, aoMudar }: { eu: Eu; inic
     return (
       <MarcarDiagnostica
         aoVoltar={() => setMarcando(false)}
-        aoMarcar={async () => {
-          setMarcando(false);
+        aoMarcar={() => setMarcando(false)}
+        aoRegistrar={async () => {
+          // O "marcou" conta como conexão: a contagem do Hoje atualiza mesmo se o hunter fechar com Esc.
           try {
             const nova = await api<ContagemLigacoes>("/api/ligacoes");
             setContagem(nova);

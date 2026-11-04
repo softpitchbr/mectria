@@ -98,14 +98,16 @@ export async function fichaDaReuniao(db: D1Database, reuniaoId: number): Promise
     reuniao,
     oportunidade: (await buscarOportunidade(db, reuniao.oportunidadeId))!,
     respostas: Object.fromEntries((respostas.results as { pergunta_id: string; resposta: string }[]).map((r) => [r.pergunta_id, r.resposta])),
-    anotacoes: (anotacoes.results as { id_cliente: string; minuto: number; passo: string; marcacao: Marcacao | null; texto: string; criado_em: string }[]).map((a) => ({
-      idCliente: a.id_cliente,
-      minuto: a.minuto,
-      passo: a.passo,
-      marcacao: a.marcacao,
-      texto: a.texto,
-      criadoEm: a.criado_em,
-    })),
+    anotacoes: (anotacoes.results as { id_cliente: string; minuto: number; passo: string; marcacao: Marcacao | null; texto: string; criado_em: string }[]).map(
+      (a) => ({
+        idCliente: a.id_cliente,
+        minuto: a.minuto,
+        passo: a.passo,
+        marcacao: a.marcacao,
+        texto: a.texto,
+        criadoEm: a.criado_em,
+      }),
+    ),
     pendencias: (pendencias.results as Record<string, unknown>[]).map(
       (p): Pendencia => ({
         id: p.id as number,
@@ -179,7 +181,12 @@ export async function encerrarDiagnostica(db: D1Database, reuniaoId: number, f: 
   return (await buscarReuniao(db, reuniaoId))!;
 }
 
+/** Marca o briefing como enviado para Projetos; só de diagnóstica concluída (um no-show não tem briefing). */
 export async function marcarBriefingEnviado(db: D1Database, reuniaoId: number): Promise<Reuniao> {
-  await db.prepare("UPDATE reunioes SET briefing_enviado_em = COALESCE(briefing_enviado_em, datetime('now')) WHERE id = ?").bind(reuniaoId).run();
+  const marcou = await db
+    .prepare("UPDATE reunioes SET briefing_enviado_em = COALESCE(briefing_enviado_em, datetime('now')) WHERE id = ? AND situacao = 'concluida' RETURNING id")
+    .bind(reuniaoId)
+    .first();
+  if (!marcou) throw new Error("nao_concluida");
   return (await buscarReuniao(db, reuniaoId))!;
 }

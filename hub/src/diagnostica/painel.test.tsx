@@ -194,4 +194,7 @@ test("o fechamento manda nao_compareceu", async () => {
   expect(within(form).getByText(/volta para o hunter reagendar/)).toBeInTheDocument();
   await userEvent.click(within(form).getByRole("button", { name: "Encerrar diagnóstica" }));
   await waitFor(() => expect(enviado).toEqual({ resultado: "nao_compareceu" }));
+  // Não há briefing de no-show: volta para o Hoje, onde o hunter reagenda.
+  await waitFor(() => expect(window.location.pathname).toBe("/"));
+  expect(await screen.findByRole("status")).toHaveTextContent("Reunião cancelada: o cliente não compareceu. Reagende no Hoje.");
 });

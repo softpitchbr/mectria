@@ -12,7 +12,7 @@ import { mensagemDe, OPCOES_SERVICO } from "../followup/comum";
 import estilos from "./hoje.module.css";
 
 /** Formulário da diagnóstica marcada na ligação: cria a oportunidade e a reunião. */
-export default function MarcarDiagnostica({ aoMarcar, aoVoltar }: { aoMarcar: () => void; aoVoltar: () => void }) {
+export default function MarcarDiagnostica({ aoMarcar, aoVoltar, aoRegistrar }: { aoMarcar: () => void; aoVoltar: () => void; aoRegistrar?: () => void }) {
   const [closers, setClosers] = useState<{ id: number; nome: string }[]>([]);
   const [c, setC] = useState({ empresa: "", contato: "", telefone: "", servico: "", closerId: "", data: "", hora: "", formato: "online", observacoes: "" });
   const [erro, setErro] = useState("");
@@ -47,6 +47,7 @@ export default function MarcarDiagnostica({ aoMarcar, aoVoltar }: { aoMarcar: ()
       await api("/api/ligacoes", { method: "POST", body: JSON.stringify({ resultado: "marcou" }) });
       const closer = closers.find((x) => String(x.id) === c.closerId)?.nome ?? "o closer";
       avisar(`Diagnóstica marcada com ${closer} para ${formatarDia(c.data)} às ${c.hora}.`);
+      aoRegistrar?.();
       // Docs/17: ao marcar, o hunter pergunta no Comercial & Projetos se algum projetista pode no horário.
       setMensagemDoGrupo(
         preencherModelo(MENSAGEM_GRUPO_MARCADA, {

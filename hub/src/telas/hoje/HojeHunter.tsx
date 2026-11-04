@@ -68,7 +68,12 @@ export default function HojeHunter({ eu }: { eu: Eu }) {
         </Botao>
       </Painel>
 
-      <Reagendamentos aoReagendar={carregarReunioes} />
+      <Reagendamentos
+        aoReagendar={() => {
+          carregarReunioes();
+          rotina.recarregar();
+        }}
+      />
 
       <Painel>
         <h2 className={estilos.subtitulo}>Diagnósticas que marquei</h2>
@@ -82,7 +87,9 @@ export default function HojeHunter({ eu }: { eu: Eu }) {
                   {formatarDia(r.dataHora.slice(0, 10))} · {r.dataHora.slice(11, 16)}
                 </span>
                 <span>{r.empresa}</span>
-                {r.dataHora.slice(0, 10) === hoje && r.situacao !== "concluida" && r.oportunidadeSituacao === "diagnostica_marcada" ? (
+                {r.situacao === "cancelada" ? (
+                  <span className="suave">{r.motivo === "Cliente não compareceu" ? "Não compareceu" : "Cancelada"}</span>
+                ) : r.dataHora.slice(0, 10) === hoje && r.situacao !== "concluida" && r.oportunidadeSituacao === "diagnostica_marcada" ? (
                   <Link to={`/reunioes/${r.id}/diagnostica`} aria-label={`Iniciar a diagnóstica de ${r.empresa}`}>
                     {r.situacao === "em_andamento" ? "Continuar" : "Iniciar"}
                   </Link>
@@ -93,7 +100,10 @@ export default function HojeHunter({ eu }: { eu: Eu }) {
                   <ConfirmacaoDaDiagnostica
                     reuniao={r}
                     eu={eu}
-                    aoMudar={(nova) => setReunioes((lista) => lista.map((x) => (x.id === nova.id ? { ...x, ...nova } : x)))}
+                    aoMudar={(nova) => {
+                      setReunioes((lista) => lista.map((x) => (x.id === nova.id ? { ...x, ...nova } : x)));
+                      rotina.recarregar();
+                    }}
                   />
                 )}
               </li>

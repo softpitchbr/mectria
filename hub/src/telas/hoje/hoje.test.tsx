@@ -527,3 +527,53 @@ test("o diretor vê as conexões da semana de cada hunter", async () => {
   expect(helena).toHaveTextContent("Helena Hunter9 de 8");
   expect(within(lista).queryByText(/Carlos/)).toBeNull();
 });
+
+test("a diagnóstica cancelada hoje mostra 'Não compareceu', sem Iniciar nem confirmação", async () => {
+  hunterComDiagnostica(diagnosticaDeHoje({ situacao: "cancelada", motivo: "Cliente não compareceu" }), () => ({}));
+  abrir("/");
+  const lista = await screen.findByRole("list", { name: "Diagnósticas que marquei" });
+  expect(lista).toHaveTextContent("Não compareceu");
+  expect(within(lista).queryByRole("link", { name: /Iniciar/ })).toBeNull();
+  expect(screen.queryByRole("group", { name: "Confirmação de Usinagem Alfa" })).toBeNull();
+});
+
+test("Confirmada atualiza a rotina do Hoje", async () => {
+  hunterComDiagnostica(diagnosticaDeHoje({ fupsConfirmacao: 1 }), () => diagnosticaDeHoje({ fupsConfirmacao: 1, confirmadaEm: "2026-11-10 12:00:00" }));
+  const falso = vi.mocked(fetch);
+  abrir("/");
+  const grupo = await screen.findByRole("group", { name: "Confirmação de Usinagem Alfa" });
+  const rotinas = () => falso.mock.calls.filter(([url]) => String(url).endsWith("/api/rotina")).length;
+  await vi.waitFor(() => expect(rotinas()).toBeGreaterThan(0));
+  const antes = rotinas();
+  await userEvent.click(within(grupo).getByRole("button", { name: "Confirmada" }));
+  await vi.waitFor(() => expect(rotinas()).toBeGreaterThan(antes));
+});
+
+test("marcar a diagnóstica atualiza as conexões do Hoje mesmo sem voltar às ligações", async () => {
+  const falso = fingirApi({
+    "/api/eu": { corpo: PESSOAS.hunter },
+    "GET /api/ligacoes": { corpo: contagem(0, 0, 0) },
+    "POST /api/ligacoes": { corpo: contagem(1, 0, 0, 1) },
+    "GET /api/rotina": { corpo: ROTINA_VAZIA },
+    "GET /api/reunioes": { corpo: [] },
+    "GET /api/closers": { corpo: [{ id: 2, nome: "Carlos Closer" }] },
+    "POST /api/oportunidades": { status: 201, corpo: { oportunidade: {}, reuniao: { dataHora: "2026-11-10T14:00" } } },
+  });
+  abrir("/");
+  await userEvent.click(await screen.findByRole("button", { name: "Começar o bloco" }));
+  await userEvent.click(screen.getByRole("button", { name: /Marcou diagnóstica/ }));
+  const form = screen.getByRole("form", { name: "Marcar diagnóstica" });
+  await userEvent.type(within(form).getByLabelText("Empresa"), "Usinagem Alfa");
+  await userEvent.type(within(form).getByLabelText("Contato"), "Ana Souza");
+  await userEvent.type(within(form).getByLabelText("Telefone"), "34999990000");
+  await userEvent.selectOptions(within(form).getByLabelText("Serviço"), "climatizacao");
+  await within(form).findByRole("option", { name: "Carlos Closer" });
+  await userEvent.selectOptions(within(form).getByLabelText("Closer"), "2");
+  await userEvent.type(within(form).getByLabelText("Data"), "2026-11-10");
+  await userEvent.type(within(form).getByLabelText("Hora"), "14:00");
+  const leituras = () => falso.mock.calls.filter(([url, init]) => String(url).endsWith("/api/ligacoes") && !(init as RequestInit | undefined)?.method).length;
+  const antes = leituras();
+  await userEvent.click(within(form).getByRole("button", { name: "Marcar diagnóstica" }));
+  await screen.findByRole("region", { name: "Mensagem para o Comercial & Projetos" });
+  await vi.waitFor(() => expect(leituras()).toBeGreaterThan(antes));
+});

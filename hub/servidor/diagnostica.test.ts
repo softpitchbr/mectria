@@ -68,7 +68,9 @@ test("não qualificou vai para nutrição com o motivo", async () => {
   expect((await buscarOportunidade(env.DB, oportunidadeId))?.situacao).toBe("nutricao");
 });
 
-test("briefing marcado como enviado", async () => {
+test("briefing marcado como enviado, só depois da diagnóstica concluída", async () => {
+  await expect(marcarBriefingEnviado(env.DB, reuniaoId)).rejects.toThrow("nao_concluida");
+  await encerrarDiagnostica(env.DB, reuniaoId, { resultado: "nao_qualificou", motivo: "Outro" }, closer);
   await marcarBriefingEnviado(env.DB, reuniaoId);
   expect((await fichaDaReuniao(env.DB, reuniaoId))?.reuniao.briefingEnviadoEm).toBeTruthy();
 });

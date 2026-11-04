@@ -11,6 +11,7 @@ import { mensagemDe, nomeDoServico } from "./followup/comum";
 import estilos from "./Briefing.module.css";
 
 function resultadoEmTexto(r: Reuniao): string {
+  if (r.situacao === "cancelada") return r.motivo ?? "Reunião cancelada";
   if (r.resultado === "proposta_marcada") return "Proposta marcada";
   if (r.resultado === "nao_qualificou") return `Não qualificou${r.motivo ? `: ${r.motivo}` : ""}`;
   return "Diagnóstica em andamento";
@@ -88,7 +89,7 @@ export default function Briefing() {
         {reuniao.briefingEnviadoEm ? (
           <span className="mono suave">Enviado para Projetos</span>
         ) : (
-          eu?.cargo !== "projetos" && <Botao onClick={marcarEnviado}>Marcar como enviado para Projetos</Botao>
+          eu?.cargo !== "projetos" && reuniao.situacao === "concluida" && <Botao onClick={marcarEnviado}>Marcar como enviado para Projetos</Botao>
         )}
         <Botao variante="primario" onClick={() => window.print()}>
           Gerar PDF

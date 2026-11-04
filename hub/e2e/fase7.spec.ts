@@ -49,7 +49,7 @@ test.describe("closer", () => {
   test("vê a rotina em blocos e o alerta da proposta em construção", async ({ page }) => {
     await page.goto("/rotinas");
     await expect(page.getByRole("region", { name: "Fechamento e negociação" })).toBeVisible();
-    await expect(page.getByRole("region", { name: "Construção de proposta" })).toContainText("Construir as propostas pendentes");
+    await expect(page.getByRole("region", { name: "Construção de proposta" })).toContainText("construir as propostas pendentes");
     await expect(page.getByRole("meter", { name: "Rotina de hoje" })).toContainText("%");
     await page.goto("/apresentacoes");
     const molde = page.getByRole("list", { name: "Propostas para preparar" }).locator("li", { hasText: "Molde Atrasado" });
