@@ -66,3 +66,33 @@ INSERT INTO oportunidades (empresa, contato, telefone, origem, servico, closer_i
 VALUES ('Estrutura Leste', 'Bia', '34999990005', 'cold call', 'estruturas-metalicas', (SELECT id FROM pessoas WHERE email = 'clo@mectria.com'), 'proposta_marcada');
 INSERT INTO reunioes (oportunidade_id, tipo, data_hora, formato, quem_decide)
 VALUES ((SELECT id FROM oportunidades WHERE empresa = 'Estrutura Leste'), 'proposta', date('now', '-3 hours') || 'T23:50', 'online', 'Bia');
+
+-- Fase 6: uma oportunidade em nutrição cujo mês de retomar já chegou, uma proposta em follow-up com uma
+-- dúvida técnica aberta para Projetos, uma ganha no mês e uma diagnóstica de hoje marcada pela Helena.
+INSERT INTO oportunidades (empresa, contato, telefone, origem, servico, closer_id, situacao, retomar_em)
+VALUES ('Forja Nutrida', 'Davi', '34999990006', 'cold call', 'climatizacao', (SELECT id FROM pessoas WHERE email = 'clo@mectria.com'), 'nutricao', date('now', '-3 hours', '-1 day'));
+INSERT INTO propostas (oportunidade_id, servico, valor, apresentada_em, quem_decide)
+VALUES ((SELECT id FROM oportunidades WHERE empresa = 'Forja Nutrida'), 'climatizacao', 1800000, date('now', '-3 hours', '-75 days'), 'Davi');
+INSERT INTO historico (oportunidade_id, de, para, detalhe)
+VALUES ((SELECT id FROM oportunidades WHERE empresa = 'Forja Nutrida'), 'em_followup', 'nutricao', 'semente do teste');
+
+INSERT INTO oportunidades (empresa, contato, telefone, origem, servico, closer_id, situacao)
+VALUES ('Usinagem Pendente', 'Eva', '34999990007', 'cold call', 'climatizacao', (SELECT id FROM pessoas WHERE email = 'clo@mectria.com'), 'em_followup');
+INSERT INTO propostas (oportunidade_id, servico, valor, apresentada_em, quem_decide)
+VALUES ((SELECT id FROM oportunidades WHERE empresa = 'Usinagem Pendente'), 'climatizacao', 1200000, date('now', '-3 hours'), 'Eva');
+INSERT INTO toques (proposta_id, codigo, previsto_para) SELECT p.id, 'D0', date('now', '-3 hours') FROM propostas p JOIN oportunidades o ON o.id = p.oportunidade_id WHERE o.empresa = 'Usinagem Pendente';
+INSERT INTO pendencias (oportunidade_id, texto, prazo)
+VALUES ((SELECT id FROM oportunidades WHERE empresa = 'Usinagem Pendente'), 'Qual a vazão necessária no galpão?', date('now', '-3 hours'));
+
+INSERT INTO oportunidades (empresa, contato, telefone, origem, servico, closer_id, situacao, valor_fechado)
+VALUES ('Bomba Ganha', 'Fábio', '34999990008', 'cold call', 'climatizacao', (SELECT id FROM pessoas WHERE email = 'clo@mectria.com'), 'ganha', 900000);
+INSERT INTO propostas (oportunidade_id, servico, valor, apresentada_em, quem_decide)
+VALUES ((SELECT id FROM oportunidades WHERE empresa = 'Bomba Ganha'), 'climatizacao', 1000000, date('now', '-3 hours'), 'Fábio');
+INSERT INTO historico (oportunidade_id, de, para, detalhe)
+VALUES ((SELECT id FROM oportunidades WHERE empresa = 'Bomba Ganha'), 'em_followup', 'ganha', 'semente do teste');
+
+INSERT INTO oportunidades (empresa, contato, telefone, origem, servico, hunter_id, closer_id, situacao)
+VALUES ('Solda Hunter', 'Gil', '34999990009', 'cold call', 'climatizacao',
+        (SELECT id FROM pessoas WHERE email = 'hun@mectria.com'), (SELECT id FROM pessoas WHERE email = 'clo@mectria.com'), 'diagnostica_marcada');
+INSERT INTO reunioes (oportunidade_id, tipo, data_hora, formato)
+VALUES ((SELECT id FROM oportunidades WHERE empresa = 'Solda Hunter'), 'diagnostica', date('now', '-3 hours') || 'T23:20', 'online');

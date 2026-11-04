@@ -42,10 +42,11 @@ test.describe("diretor", () => {
 test.describe("hunter", () => {
   test.use(como("hun@mectria.com"));
 
-  test("vê Hoje, Playbooks e Rotinas e não entra no Time", async ({ page }) => {
+  test("vê Hoje, Reuniões, Playbooks e Rotinas e não entra no Time", async ({ page }) => {
     await page.goto("/");
     await expect(page.getByRole("heading", { level: 1 })).toContainText("Helena");
-    expect(await rotulos(page)).toEqual(["Hoje", "Playbooks", "Rotinas"]);
+    // Fase 6: o hunter conduz a diagnóstica que marcou, então vê Reuniões.
+    expect(await rotulos(page)).toEqual(["Hoje", "Reuniões", "Playbooks", "Rotinas"]);
     await page.goto("/time");
     await expect(page.getByText("Seu acesso não inclui Time. Fale com o diretor comercial da MecTRIA.")).toBeVisible();
   });
