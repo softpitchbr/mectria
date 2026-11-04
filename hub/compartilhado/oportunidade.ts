@@ -59,6 +59,9 @@ export interface Reuniao {
   desfecho: import("./proposta").DesfechoProposta | null;
   /** Observações de quem marcou a diagnóstica (fase 7). */
   observacoes?: string | null;
+  /** Último FUP de confirmação enviado (0 a 3) e quando o lead confirmou (fase 7). */
+  fupsConfirmacao?: number;
+  confirmadaEm?: string | null;
 }
 
 export interface NovaDiagnostica {

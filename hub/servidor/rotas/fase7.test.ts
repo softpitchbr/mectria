@@ -2,6 +2,8 @@ import { applyD1Migrations, env } from "cloudflare:test";
 import { onRequest } from "../../functions/api/_middleware";
 import { onRequestGet as getLigacoes, onRequestPost as postLigacao } from "../../functions/api/ligacoes";
 import { onRequestPost as postOportunidade } from "../../functions/api/oportunidades/index";
+import { onRequestPost as postConfirmacao } from "../../functions/api/reunioes/[id]/confirmacao";
+import { criarDiagnostica } from "../oportunidades";
 import { criar } from "../pessoas";
 import type { DadosApi, Env, Pessoa } from "../tipos";
 
@@ -57,4 +59,18 @@ test("observação com mais de 1.000 caracteres dá 400", async () => {
   const ok = await chamar(g(postOportunidade), "hun@mectria.com", { corpo: { ...nova, observacoes: "Prefere WhatsApp." } });
   expect(ok.status).toBe(201);
   expect(await corpo(ok)).toMatchObject({ reuniao: { observacoes: "Prefere WhatsApp." } });
+});
+
+test("o hunter que marcou e o closer dono confirmam; outro hunter recebe 403; corpo inválido dá 400", async () => {
+  const { reuniao } = await criarDiagnostica(
+    env.DB,
+    { empresa: "Alfa", contato: "Ana", telefone: "34999990000", servico: "climatizacao", closerId: closer.id, dataHora: "2099-01-05T10:00", formato: "online" },
+    hunter,
+  );
+  const params = { id: String(reuniao.id) };
+  expect((await chamar(g(postConfirmacao), "hun2@mectria.com", { corpo: { fup: 1 }, params })).status).toBe(403);
+  expect((await chamar(g(postConfirmacao), "hun@mectria.com", { corpo: { fup: 4 }, params })).status).toBe(400);
+  expect(await corpo(await chamar(g(postConfirmacao), "hun@mectria.com", { corpo: { fup: 1 }, params }))).toMatchObject({ fupsConfirmacao: 1 });
+  expect((await chamar(g(postConfirmacao), "hun@mectria.com", { corpo: { fup: 3 }, params })).status).toBe(409);
+  expect(await corpo(await chamar(g(postConfirmacao), "clo@mectria.com", { corpo: { confirmada: true }, params }))).toHaveProperty("confirmadaEm");
 });

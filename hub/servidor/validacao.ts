@@ -401,3 +401,12 @@ export function validarResposta(corpo: unknown): Validado<string> {
   const resposta = textoEntre(corpo.resposta, 1, 2000);
   return resposta ? { ok: true, dados: resposta } : { ok: false, mensagem: "Escreva a resposta (até 2.000 caracteres)." };
 }
+
+// Fase 7 ------------------------------------------------------------------------
+
+export function validarConfirmacao(corpo: unknown): Validado<{ fup: 1 | 2 | 3 } | { confirmada: true }> {
+  if (!ehObjeto(corpo)) return { ok: false, mensagem: MENSAGEM.corpo };
+  if (corpo.confirmada === true) return { ok: true, dados: { confirmada: true } };
+  if (corpo.fup === 1 || corpo.fup === 2 || corpo.fup === 3) return { ok: true, dados: { fup: corpo.fup } };
+  return { ok: false, mensagem: "Escolha o FUP (1, 2 ou 3) ou a confirmação." };
+}

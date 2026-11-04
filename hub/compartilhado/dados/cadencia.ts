@@ -151,5 +151,8 @@ export const VARIAVEIS: Record<string, string> = {
   "tempo": "tempo desde a reunião",
   "hunter": "seu nome",
   "segmento": "segmento",
-  "clientes": "nº de clientes"
+  "clientes": "nº de clientes",
+  "hora": "hora",
+  "formato": "formato",
+  "projetista": "projetista"
 };
