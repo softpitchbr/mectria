@@ -2,7 +2,7 @@ import { useMemo, useState, type JSX } from "react";
 import { NavLink, useParams, useSearchParams } from "react-router";
 import { ROTULO_TOQUE } from "../../compartilhado/cadencia";
 import { CADENCIA, REGRAS_FOLLOWUP } from "../../compartilhado/dados/cadencia";
-import { ANTES_COLD_CALL, GATEKEEPER, ROTEIRO_COLD_CALL, TENTATIVAS_COLD_CALL } from "../../compartilhado/dados/cold-call";
+import { ANTES_COLD_CALL, COLD_MESSAGE, GATEKEEPER, OBJETIVO_COLD_CALL, ROTEIRO_COLD_CALL, TENTATIVAS_COLD_CALL } from "../../compartilhado/dados/cold-call";
 import { DIAGNOSTICA } from "../../compartilhado/dados/diagnostica";
 import { ETAPAS_OBJECAO, OBJECOES } from "../../compartilhado/dados/objecoes";
 import { PLAYBOOK_PROPOSTA } from "../../compartilhado/dados/playbooks";
@@ -39,30 +39,54 @@ function ColdCall() {
     <div className={estilos.conteudo}>
       <Painel>
         <h2>Antes de ligar</h2>
-        <ul className={estilos.lista}>{ANTES_COLD_CALL.map((t) => <li key={t}>{t}</li>)}</ul>
+        <ul className={estilos.lista}>
+          {ANTES_COLD_CALL.map((t) => (
+            <li key={t}>{t}</li>
+          ))}
+        </ul>
       </Painel>
       <section className={estilos.secao}>
         <h2>Roteiro da ligação</h2>
-        <ol className={estilos.passos}>
+        <p className="suave">{OBJETIVO_COLD_CALL}</p>
+        <ol className={estilos.passos} aria-label="Roteiro da ligação">
           {ROTEIRO_COLD_CALL.map((p) => (
             <li key={p.titulo}>
               <h3>{p.titulo}</h3>
-              <p className={estilos.fala}>{p.fala}</p>
+              {p.fala && <p className={estilos.fala}>{p.fala}</p>}
+              {p.desvios?.map((d) => (
+                <p key={d.quando} className={estilos.fala}>
+                  <strong>{d.quando}:</strong> {d.fala}
+                </p>
+              ))}
               {p.dica && <p className="suave">{p.dica}</p>}
             </li>
           ))}
         </ol>
       </section>
       <Painel>
+        <section aria-label="Cold message">
+          <h2>Cold message</h2>
+          <p className="suave">Para o WhatsApp, quando a ligação não completa ou como primeiro contato.</p>
+          <p className={estilos.fala}>{COLD_MESSAGE}</p>
+        </section>
+      </Painel>
+      <Painel>
         <h2>Recepção (gatekeeper)</h2>
-        <ul className={estilos.lista}>{GATEKEEPER.map((t) => <li key={t}>{t}</li>)}</ul>
+        <ul className={estilos.lista}>
+          {GATEKEEPER.map((t) => (
+            <li key={t}>{t}</li>
+          ))}
+        </ul>
       </Painel>
       <Painel>
         <h2>Quando o decisor não atende</h2>
         <ul className={estilos.lista}>
           {TENTATIVAS_COLD_CALL.map((t, i) => (
             <li key={i}>
-              <span className="mono">D{t.dia} · {t.canal}</span> {t.texto}
+              <span className="mono">
+                D{t.dia} · {t.canal}
+              </span>{" "}
+              {t.texto}
             </li>
           ))}
         </ul>
@@ -76,7 +100,11 @@ function Diagnostica() {
     <div className={estilos.conteudo}>
       <Painel>
         <h2>Antes da reunião ({DIAGNOSTICA.duracao})</h2>
-        <ul className={estilos.lista}>{DIAGNOSTICA.preparacao.map((t) => <li key={t}>{t}</li>)}</ul>
+        <ul className={estilos.lista}>
+          {DIAGNOSTICA.preparacao.map((t) => (
+            <li key={t}>{t}</li>
+          ))}
+        </ul>
       </Painel>
       {DIAGNOSTICA.blocos.map((b) => (
         <section key={b.id} className={estilos.secao}>
@@ -84,7 +112,11 @@ function Diagnostica() {
             {b.letra} · {b.titulo}
           </h2>
           <p className="suave">{b.intro}</p>
-          <ul className={estilos.lista}>{b.perguntas.map((p) => <li key={p.id}>{p.texto}</li>)}</ul>
+          <ul className={estilos.lista}>
+            {b.perguntas.map((p) => (
+              <li key={p.id}>{p.texto}</li>
+            ))}
+          </ul>
         </section>
       ))}
       <Painel>
@@ -102,7 +134,11 @@ function Proposta() {
     <div className={estilos.conteudo}>
       <Painel>
         <h2>Antes da apresentação ({PLAYBOOK_PROPOSTA.duracao})</h2>
-        <ul className={estilos.lista}>{PLAYBOOK_PROPOSTA.antes.map((t) => <li key={t}>{t}</li>)}</ul>
+        <ul className={estilos.lista}>
+          {PLAYBOOK_PROPOSTA.antes.map((t) => (
+            <li key={t}>{t}</li>
+          ))}
+        </ul>
       </Painel>
       <section className={estilos.secao}>
         <h2>Passos</h2>
@@ -114,18 +150,30 @@ function Proposta() {
               </h3>
               <p className="suave">{p.objetivo}</p>
               {"fala" in p && p.fala && <p className={estilos.fala}>{p.fala}</p>}
-              {"pacto" in p && p.pacto && <p><strong>Pacto:</strong> {String(p.pacto)}</p>}
+              {"pacto" in p && p.pacto && (
+                <p>
+                  <strong>Pacto:</strong> {String(p.pacto)}
+                </p>
+              )}
             </li>
           ))}
         </ol>
       </section>
       <Painel>
         <h2>Pactos</h2>
-        <ul className={estilos.lista}>{PLAYBOOK_PROPOSTA.pactos.map((p) => <li key={p.id}>{p.texto}</li>)}</ul>
+        <ul className={estilos.lista}>
+          {PLAYBOOK_PROPOSTA.pactos.map((p) => (
+            <li key={p.id}>{p.texto}</li>
+          ))}
+        </ul>
       </Painel>
       <Painel>
         <h2>Condições</h2>
-        <ul className={estilos.lista}>{PLAYBOOK_PROPOSTA.regrasCondicao.map((t) => <li key={t}>{t}</li>)}</ul>
+        <ul className={estilos.lista}>
+          {PLAYBOOK_PROPOSTA.regrasCondicao.map((t) => (
+            <li key={t}>{t}</li>
+          ))}
+        </ul>
       </Painel>
     </div>
   );
@@ -191,7 +239,11 @@ function FollowUp() {
     <div className={estilos.conteudo}>
       <Painel>
         <h2>Regras</h2>
-        <ul className={estilos.lista}>{REGRAS_FOLLOWUP.map((t) => <li key={t}>{t}</li>)}</ul>
+        <ul className={estilos.lista}>
+          {REGRAS_FOLLOWUP.map((t) => (
+            <li key={t}>{t}</li>
+          ))}
+        </ul>
       </Painel>
       <ol className={estilos.passos}>
         {CADENCIA.map((t) => (
@@ -230,7 +282,12 @@ export default function Playbooks({ eu }: { eu: Eu }) {
       </header>
       <nav aria-label="Playbooks" className={estilos.abas}>
         {abas.map((a) => (
-          <NavLink key={a.id} to={`/playbooks/${a.id}`} className={a.id === atual.id ? estilos.abaAtual : estilos.aba} aria-current={a.id === atual.id ? "page" : undefined}>
+          <NavLink
+            key={a.id}
+            to={`/playbooks/${a.id}`}
+            className={a.id === atual.id ? estilos.abaAtual : estilos.aba}
+            aria-current={a.id === atual.id ? "page" : undefined}
+          >
             {a.rotulo}
           </NavLink>
         ))}

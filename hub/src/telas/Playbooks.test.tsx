@@ -45,3 +45,12 @@ test("a diagnóstica mostra os blocos GPCTBA + C&I", async () => {
   expect(await screen.findByRole("heading", { name: "G · Objetivos" })).toBeInTheDocument();
   expect(screen.getByRole("heading", { name: "C&I · Consequências e implicações" })).toBeInTheDocument();
 });
+
+test("a aba Cold call mostra os desvios e a cold message", async () => {
+  fingirApi({ "/api/eu": { corpo: PESSOAS.hunter } });
+  abrir("/playbooks/cold-call");
+  const roteiro = await screen.findByRole("list", { name: "Roteiro da ligação" });
+  expect(roteiro).toHaveTextContent("Se não tiver o minuto");
+  expect(roteiro).toHaveTextContent("Se já conhece");
+  expect(screen.getByRole("region", { name: "Cold message" })).toHaveTextContent("Topa reservar 30 minutos esta semana");
+});

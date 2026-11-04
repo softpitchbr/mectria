@@ -246,3 +246,8 @@
     grid-column: 1 / -1;
   }
 }
+
+.desvio {
+  border-left: 2px solid var(--linha-viva);
+  padding-left: 10px;
+}

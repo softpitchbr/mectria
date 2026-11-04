@@ -24,7 +24,7 @@ test("hunter registra ligações pelo teclado no bloco em foco", async () => {
     "POST /api/ligacoes": (init) => {
       enviados.push(JSON.parse(String(init?.body)).resultado);
       n++;
-      return { corpo: n === 1 ? contagem(1, 1, 0) : contagem(2, 1, 1) };
+      return { corpo: n === 1 ? contagem(1, 1, 0) : n === 2 ? contagem(2, 1, 1) : contagem(3, 1, 1, 0, 1) };
     },
     "GET /api/rotina": { corpo: ROTINA_VAZIA },
     "GET /api/reunioes": { corpo: [] },
@@ -35,10 +35,32 @@ test("hunter registra ligações pelo teclado no bloco em foco", async () => {
   await userEvent.keyboard("1");
   await within(foco).findByText("1 sem resposta");
   await userEvent.keyboard("2");
-  expect(enviados).toEqual(["nao_atendeu", "atendeu"]);
-  expect(await within(foco).findByText("Meta do dia batida")).toBeInTheDocument();
-  expect(within(foco).getByRole("meter", { name: "Ligações de hoje" })).toHaveAttribute("aria-valuenow", "2");
+  await userEvent.keyboard("3");
+  expect(enviados).toEqual(["nao_atendeu", "atendeu", "conexao"]);
+  await vi.waitFor(() => expect(within(foco).getByRole("meter", { name: "Conexões da semana" })).toHaveAttribute("aria-valuenow", "1"));
+  expect(within(foco).getByRole("meter", { name: "Conexões da semana" })).toHaveAttribute("aria-valuemax", "8");
+  expect(foco).toHaveTextContent("3 ligações hoje");
   expect(within(foco).getByText("1 sem resposta")).toBeInTheDocument();
+});
+
+test("tecla 4 abre marcar diagnóstica e copiar cold message leva o nome do hunter", async () => {
+  const escrever = vi.fn(async () => undefined);
+  Object.defineProperty(navigator, "clipboard", { value: { writeText: escrever }, configurable: true });
+  fingirApi({
+    "/api/eu": { corpo: PESSOAS.hunter },
+    "GET /api/ligacoes": { corpo: contagem(0, 0, 0) },
+    "GET /api/rotina": { corpo: ROTINA_VAZIA },
+    "GET /api/reunioes": { corpo: [] },
+    "GET /api/closers": { corpo: [] },
+  });
+  abrir("/");
+  await userEvent.click(await screen.findByRole("button", { name: "Começar o bloco" }));
+  const foco = screen.getByRole("dialog", { name: "Bloco de ligações" });
+  expect(within(foco).getByRole("list", { name: "Roteiro da ligação" })).toHaveTextContent("Me dá só 30 segundos?");
+  await userEvent.click(within(foco).getByRole("button", { name: "Copiar cold message" }));
+  expect(escrever).toHaveBeenCalledWith(expect.stringContaining("Aqui é o Hugo, da MecTRIA."));
+  await userEvent.keyboard("4");
+  expect(screen.getByRole("form", { name: "Marcar diagnóstica" })).toBeInTheDocument();
 });
 
 test("marcar diagnóstica cria a oportunidade e conta a ligação", async () => {
