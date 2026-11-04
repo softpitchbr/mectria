@@ -44,10 +44,17 @@ export default function HojeHunter({ eu }: { eu: Eu }) {
         {contagem && (
           <>
             <p className={estilos.total}>
-              <NumeroRolante valor={contagem.total} /> <span className="suave">de {contagem.meta} ligações hoje</span>
+              <NumeroRolante valor={contagem.conexoesSemana} /> <span className="suave">de {contagem.metaConexoesSemana} conexões na semana</span>
             </p>
-            <Medidor rotulo="Meta do dia" valor={contagem.total} total={contagem.meta} texto={`${contagem.total}/${contagem.meta}`} />
-            <p className="suave">{contagem.naoAtendeu} sem resposta para o WhatsApp</p>
+            <Medidor
+              rotulo="Conexões da semana"
+              valor={contagem.conexoesSemana}
+              total={contagem.metaConexoesSemana}
+              texto={`${contagem.conexoesSemana}/${contagem.metaConexoesSemana}`}
+            />
+            <p className="suave">
+              {contagem.total} ligações hoje · {contagem.naoAtendeu} sem resposta para o WhatsApp
+            </p>
           </>
         )}
         <Botao

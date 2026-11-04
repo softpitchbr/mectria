@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 import { Link } from "react-router";
+import { META_CONEXOES_SEMANA } from "../../../compartilhado/dados/rotinas";
 import { formatarDia, formatarReais } from "../../../compartilhado/datas";
 import type { NumerosDoTime } from "../../../compartilhado/numeros";
 import type { ResumoPessoa, Reuniao } from "../../../compartilhado/oportunidade";
@@ -39,6 +40,26 @@ export default function HojeDiretor() {
         <h2 className={estilos.subtitulo}>Rotina do time hoje</h2>
         <RotinaDoTime pessoas={resumo.pessoas} />
       </Painel>
+
+      {(() => {
+        const hunters = resumo.pessoas.filter((p) => p.conexoesSemana !== undefined);
+        if (hunters.length === 0) return null;
+        return (
+          <Painel>
+            <h2 className={estilos.subtitulo}>Conexões da semana</h2>
+            <ul className={estilos.atrasados} aria-label="Conexões da semana por hunter">
+              {hunters.map((p) => (
+                <li key={p.pessoa.id}>
+                  <span>{p.pessoa.nome}</span>
+                  <span className={`mono ${p.conexoesSemana! >= META_CONEXOES_SEMANA ? "" : "suave"}`}>
+                    {p.conexoesSemana} de {META_CONEXOES_SEMANA}
+                  </span>
+                </li>
+              ))}
+            </ul>
+          </Painel>
+        );
+      })()}
 
       <Painel>
         <h2 className={estilos.subtitulo}>Follow-ups atrasados por pessoa</h2>

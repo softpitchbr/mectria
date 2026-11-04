@@ -490,3 +490,40 @@ test("o Hoje do hunter reagenda em foco a diagnóstica em que o cliente não com
   await vi.waitFor(() => expect(enviado).toEqual({ dataHora: "2099-01-06T10:00", formato: "online" }));
   await vi.waitFor(() => expect(screen.queryByRole("list", { name: "Reagendar" })).toBeNull());
 });
+
+test("o hunter vê as conexões da semana de 8 no Hoje", async () => {
+  fingirApi({
+    "/api/eu": { corpo: PESSOAS.hunter },
+    "GET /api/ligacoes": { corpo: contagem(5, 2, 1, 1, 2) },
+    "GET /api/rotina": { corpo: ROTINA_VAZIA },
+    "GET /api/reunioes": { corpo: [] },
+  });
+  abrir("/");
+  const medidor = await screen.findByRole("meter", { name: "Conexões da semana" });
+  expect(medidor).toHaveAttribute("aria-valuenow", "3");
+  expect(medidor).toHaveAttribute("aria-valuemax", "8");
+  expect(screen.getByText(/5 ligações hoje/)).toBeInTheDocument();
+});
+
+test("o diretor vê as conexões da semana de cada hunter", async () => {
+  fingirApi({
+    "/api/eu": { corpo: PESSOAS.diretor },
+    "GET /api/time/resumo": {
+      corpo: {
+        pessoas: [
+          { pessoa: { id: 1, nome: "Hugo Hunter", cargo: "hunter" }, rotina: { feitos: 1, total: 2 }, atrasados: 0, conexoesSemana: 3 },
+          { pessoa: { id: 4, nome: "Helena Hunter", cargo: "hunter" }, rotina: { feitos: 2, total: 2 }, atrasados: 0, conexoesSemana: 9 },
+          { pessoa: { id: 2, nome: "Carlos Closer", cargo: "closer" }, rotina: { feitos: 3, total: 4 }, atrasados: 0 },
+        ],
+        reunioesDaSemana: [],
+      },
+    },
+    "GET /api/time/numeros": { corpo: NUMEROS_VAZIOS },
+  } as never);
+  abrir("/");
+  const lista = await screen.findByRole("list", { name: "Conexões da semana por hunter" });
+  const [hugo, helena] = within(lista).getAllByRole("listitem");
+  expect(hugo).toHaveTextContent("Hugo Hunter3 de 8");
+  expect(helena).toHaveTextContent("Helena Hunter9 de 8");
+  expect(within(lista).queryByText(/Carlos/)).toBeNull();
+});
