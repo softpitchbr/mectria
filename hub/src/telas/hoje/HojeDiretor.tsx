@@ -1,19 +1,28 @@
 import { useEffect, useState } from "react";
-import { formatarDia } from "../../../compartilhado/datas";
+import { Link } from "react-router";
+import { formatarDia, formatarReais } from "../../../compartilhado/datas";
+import type { NumerosDoTime } from "../../../compartilhado/numeros";
 import type { ResumoPessoa, Reuniao } from "../../../compartilhado/oportunidade";
 import { api } from "../../api/cliente";
+import NumeroRolante from "../../componentes/NumeroRolante";
 import Painel from "../../componentes/Painel";
 import { RotinaDoTime } from "../Rotinas";
 import { mensagemDe } from "../followup/comum";
+import { formatarPercentual } from "../time/numeros";
 import { primeiroNome } from "./comum";
 import estilos from "./hoje.module.css";
 
-/** Hoje do diretor: rotina do time, atrasados por pessoa e reuniões da semana. */
+/** Hoje do diretor: rotina do time, atrasados por pessoa, reuniões da semana e os números do mês. */
 export default function HojeDiretor() {
   const [resumo, setResumo] = useState<{ pessoas: ResumoPessoa[]; reunioesDaSemana: Reuniao[] } | null>(null);
   const [erro, setErro] = useState("");
 
+  const [numeros, setNumeros] = useState<NumerosDoTime | null>(null);
+
   useEffect(() => {
+    api<NumerosDoTime>("/api/time/numeros")
+      .then(setNumeros)
+      .catch(() => undefined);
     api<{ pessoas: ResumoPessoa[]; reunioesDaSemana: Reuniao[] }>("/api/time/resumo")
       .then(setResumo)
       .catch((e: unknown) => setErro(mensagemDe(e)));
@@ -66,8 +75,38 @@ export default function HojeDiretor() {
       </Painel>
 
       <Painel className={estilos.largo}>
-        <p className={`mono ${estilos.sobre}`}>EM CONSTRUÇÃO</p>
-        <p>Conversão e valor vendido chegam na fase 6.</p>
+        <section aria-label="Este mês">
+          <h2 className={estilos.subtitulo}>Este mês</h2>
+          {numeros ? (
+            <dl className={estilos.numeros}>
+              <div>
+                <dt className="suave">Propostas</dt>
+                <dd>
+                  <NumeroRolante valor={numeros.propostas} />
+                </dd>
+              </div>
+              <div>
+                <dt className="suave">Fechadas</dt>
+                <dd>
+                  <NumeroRolante valor={numeros.ganhas} />
+                </dd>
+              </div>
+              <div>
+                <dt className="suave">Conversão</dt>
+                <dd className="mono">{formatarPercentual(numeros.conversao)}</dd>
+              </div>
+              <div>
+                <dt className="suave">Valor vendido</dt>
+                <dd className="mono">{formatarReais(numeros.valorVendido)}</dd>
+              </div>
+            </dl>
+          ) : (
+            <p className="mono suave">Carregando os números…</p>
+          )}
+          <p className="suave">
+            O detalhe por closer, a rotina de cada pessoa e as objeções estão em <Link to="/time">Time, na aba Mês</Link>.
+          </p>
+        </section>
       </Painel>
     </div>
   );

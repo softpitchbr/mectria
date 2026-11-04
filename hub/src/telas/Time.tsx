@@ -1,4 +1,5 @@
 import { useEffect, useState, type FormEvent, type KeyboardEvent } from "react";
+import AbaMes from "./time/AbaMes";
 import { CARGOS, ROTULO_CARGO, type Cargo } from "../../compartilhado/cargos";
 import type { Pessoa } from "../../compartilhado/pessoa";
 import { api, ErroApi } from "../api/cliente";
@@ -110,14 +111,7 @@ function FormularioNovaPessoa({ aoCriar }: { aoCriar: (p: Pessoa) => void }) {
         <h2>Adicionar pessoa</h2>
         <div className={estilos.campos}>
           <Campo rotulo="Nome" value={nome} onChange={(e) => setNome(e.target.value)} autoComplete="off" />
-          <Campo
-            rotulo="E-mail"
-            type="email"
-            value={email}
-            onChange={(e) => setEmail(e.target.value)}
-            placeholder="nome@mectria.com"
-            autoComplete="off"
-          />
+          <Campo rotulo="E-mail" type="email" value={email} onChange={(e) => setEmail(e.target.value)} placeholder="nome@mectria.com" autoComplete="off" />
           <div className={estilos.campoCargo}>
             <label htmlFor="novo-cargo">Cargo</label>
             <SeletorDeCargo id="novo-cargo" rotulo="Cargo" valor={cargo} aoMudar={setCargo} />
@@ -138,6 +132,7 @@ function FormularioNovaPessoa({ aoCriar }: { aoCriar: (p: Pessoa) => void }) {
 
 /** Time: o diretor cadastra pessoas, troca cargos e desativa quem saiu. */
 export default function Time({ eu }: { eu: Eu }) {
+  const [aba, setAba] = useState<"pessoas" | "mes">("pessoas");
   const [pessoas, setPessoas] = useState<Pessoa[] | null>(null);
   const [erroLista, setErroLista] = useState("");
 
@@ -172,55 +167,89 @@ export default function Time({ eu }: { eu: Eu }) {
         <p className="suave">Quem entra no hub e o que cada cargo vê. Ninguém é apagado: quem sai fica inativo.</p>
       </header>
 
-      <FormularioNovaPessoa
-        aoCriar={(nova) => {
-          setPessoas((lista) => [...(lista ?? []), nova]);
-          avisar(`${nova.nome.split(" ")[0]} entrou no time.`);
-        }}
-      />
+      <div role="tablist" aria-label="Seções do time" className={estilos.abas}>
+        {(
+          [
+            ["pessoas", "Pessoas"],
+            ["mes", "Mês"],
+          ] as const
+        ).map(([id, rotulo]) => (
+          <button
+            key={id}
+            type="button"
+            role="tab"
+            id={`aba-${id}`}
+            aria-selected={aba === id}
+            aria-controls={`painel-${id}`}
+            className={estilos.aba}
+            onClick={() => setAba(id)}
+          >
+            {rotulo}
+          </button>
+        ))}
+      </div>
 
-      {erroLista && (
-        <p role="alert" className={estilos.erro}>
-          {erroLista}
-        </p>
+      {aba === "mes" && (
+        <div role="tabpanel" id="painel-mes" aria-labelledby="aba-mes">
+          <AbaMes />
+        </div>
       )}
 
-      {pessoas === null && !erroLista && <p className="mono suave">Carregando o time…</p>}
+      {aba === "pessoas" && (
+        <div role="tabpanel" id="painel-pessoas" aria-labelledby="aba-pessoas" className={estilos.time}>
+          <FormularioNovaPessoa
+            aoCriar={(nova) => {
+              setPessoas((lista) => [...(lista ?? []), nova]);
+              avisar(`${nova.nome.split(" ")[0]} entrou no time.`);
+            }}
+          />
 
-      {pessoas && (
-        <ul className={estilos.lista} aria-label="Pessoas do time">
-          {pessoas.map((p) => (
-            <li key={p.id} className={p.ativo ? estilos.linha : `${estilos.linha} ${estilos.inativa}`}>
-              <div className={estilos.quem}>
-                <NomeEditavel pessoa={p} aoSalvar={(nome) => mudar(p, { nome }, `Nome trocado para ${nome}.`)} />
-                {p.id === eu.id && <Tag>Você</Tag>}
-                <span className={`mono suave ${estilos.email}`}>{p.email}</span>
-              </div>
-              <SeletorDeCargo
-                rotulo={`Cargo de ${p.nome}`}
-                valor={p.cargo}
-                aoMudar={(cargo) => mudar(p, { cargo }, `${p.nome.split(" ")[0]} agora é ${ROTULO_CARGO[cargo]}.`)}
-              />
-              <Tag tipo={p.ativo ? "hoje" : "neutro"} className={estilos.estado}>{p.ativo ? "Ativa" : "Inativa"}</Tag>
-              <div className={estilos.acao}>
-                {p.id !== eu.id &&
-                  (p.ativo ? (
-                    <Botao
-                      variante="fantasma"
-                      aria-label={`Desativar ${p.nome}`}
-                      onClick={() => mudar(p, { ativo: false }, `${p.nome.split(" ")[0]} foi desativada.`)}
-                    >
-                      Desativar
-                    </Botao>
-                  ) : (
-                    <Botao aria-label={`Reativar ${p.nome}`} onClick={() => mudar(p, { ativo: true }, `${p.nome.split(" ")[0]} voltou ao time.`)}>
-                      Reativar
-                    </Botao>
-                  ))}
-              </div>
-            </li>
-          ))}
-        </ul>
+          {erroLista && (
+            <p role="alert" className={estilos.erro}>
+              {erroLista}
+            </p>
+          )}
+
+          {pessoas === null && !erroLista && <p className="mono suave">Carregando o time…</p>}
+
+          {pessoas && (
+            <ul className={estilos.lista} aria-label="Pessoas do time">
+              {pessoas.map((p) => (
+                <li key={p.id} className={p.ativo ? estilos.linha : `${estilos.linha} ${estilos.inativa}`}>
+                  <div className={estilos.quem}>
+                    <NomeEditavel pessoa={p} aoSalvar={(nome) => mudar(p, { nome }, `Nome trocado para ${nome}.`)} />
+                    {p.id === eu.id && <Tag>Você</Tag>}
+                    <span className={`mono suave ${estilos.email}`}>{p.email}</span>
+                  </div>
+                  <SeletorDeCargo
+                    rotulo={`Cargo de ${p.nome}`}
+                    valor={p.cargo}
+                    aoMudar={(cargo) => mudar(p, { cargo }, `${p.nome.split(" ")[0]} agora é ${ROTULO_CARGO[cargo]}.`)}
+                  />
+                  <Tag tipo={p.ativo ? "hoje" : "neutro"} className={estilos.estado}>
+                    {p.ativo ? "Ativa" : "Inativa"}
+                  </Tag>
+                  <div className={estilos.acao}>
+                    {p.id !== eu.id &&
+                      (p.ativo ? (
+                        <Botao
+                          variante="fantasma"
+                          aria-label={`Desativar ${p.nome}`}
+                          onClick={() => mudar(p, { ativo: false }, `${p.nome.split(" ")[0]} foi desativada.`)}
+                        >
+                          Desativar
+                        </Botao>
+                      ) : (
+                        <Botao aria-label={`Reativar ${p.nome}`} onClick={() => mudar(p, { ativo: true }, `${p.nome.split(" ")[0]} voltou ao time.`)}>
+                          Reativar
+                        </Botao>
+                      ))}
+                  </div>
+                </li>
+              ))}
+            </ul>
+          )}
+        </div>
       )}
     </div>
   );

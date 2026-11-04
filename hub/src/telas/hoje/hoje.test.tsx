@@ -1,6 +1,6 @@
 import { screen, within } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
-import { abrir, fingirApi, PESSOAS } from "../../teste/ajuda";
+import { abrir, fingirApi, NUMEROS_VAZIOS, PESSOAS } from "../../teste/ajuda";
 
 const ROTINA_VAZIA = { dia: "2026-11-09", itens: [], feitos: 0, total: 0 };
 const contagem = (total: number, naoAtendeu: number, atendeu: number, marcou = 0) => ({ total, naoAtendeu, atendeu, marcou, meta: 2 });
@@ -184,7 +184,20 @@ test("diretor vê atrasados por pessoa em ordem", async () => {
   const atrasados = await screen.findByRole("list", { name: "Follow-ups atrasados por pessoa" });
   expect(within(atrasados).getAllByRole("listitem").map((l) => l.textContent)).toEqual(["Carlos · 3", "Clara · 1"]);
   expect(screen.getByRole("list", { name: "Reuniões da semana" })).toHaveTextContent("Agro Gama");
-  expect(screen.getByText("Conversão e valor vendido chegam na fase 6.")).toBeInTheDocument();
+});
+
+test("Hoje do diretor mostra conversão e valor vendido do mês", async () => {
+  fingirApi({
+    "/api/eu": { corpo: PESSOAS.diretor },
+    "GET /api/time/resumo": { corpo: { pessoas: [], reunioesDaSemana: [] } },
+    "GET /api/time/numeros": { corpo: { ...NUMEROS_VAZIOS, propostas: 4, ganhas: 1, perdidas: 1, conversao: 0.5, valorVendido: 1250000 } },
+  });
+  abrir("/");
+  const mes = await screen.findByRole("region", { name: "Este mês" });
+  await within(mes).findByText("50%");
+  expect(mes).toHaveTextContent("R$ 12.500,00");
+  expect(mes).toHaveTextContent("Propostas4");
+  expect(mes).toHaveTextContent("Fechadas1");
 });
 
 test("Projetos vê o aviso da fase 6", async () => {
