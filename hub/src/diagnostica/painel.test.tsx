@@ -1,6 +1,7 @@
 import { act, screen, waitFor, within } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import { DIAGNOSTICA } from "../../compartilhado/dados/diagnostica";
+import { diasDepois, hojeEmSaoPaulo } from "../../compartilhado/datas";
 import { abrir, fingirApi, PESSOAS } from "../teste/ajuda";
 
 const FICHA = {
@@ -147,4 +148,23 @@ test("o campo da anotação aceita até 2.000 caracteres, o mesmo limite do serv
   await abrirPainel();
   await userEvent.keyboard("n");
   expect(screen.getByRole("textbox", { name: "Anotação" })).toHaveAttribute("maxLength", "2000");
+});
+
+test("não qualificou pede o mês para retomar e manda retomarEm", async () => {
+  let enviado: unknown;
+  api({
+    "POST /api/reunioes/5/encerrar": (init?: RequestInit) => {
+      enviado = JSON.parse(String(init?.body));
+      return { corpo: { ...FICHA.reuniao, situacao: "concluida", resultado: "nao_qualificou" } };
+    },
+  });
+  await abrirPainel();
+  await userEvent.click(screen.getByRole("button", { name: "Ir para Fechamento" }));
+  const form = screen.getByRole("form", { name: "Fechamento da diagnóstica" });
+  await userEvent.click(within(form).getByRole("radio", { name: "Não qualificou" }));
+  await userEvent.selectOptions(within(form).getByLabelText("Motivo"), "Sem orçamento");
+  const proximoMes = `${diasDepois(`${hojeEmSaoPaulo().slice(0, 7)}-01`, 32).slice(0, 7)}-01`;
+  await userEvent.selectOptions(within(form).getByRole("combobox", { name: "Retomar em" }), proximoMes);
+  await userEvent.click(within(form).getByRole("button", { name: "Encerrar diagnóstica" }));
+  await waitFor(() => expect(enviado).toEqual({ resultado: "nao_qualificou", motivo: "Sem orçamento", retomarEm: proximoMes }));
 });

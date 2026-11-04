@@ -1,5 +1,6 @@
 import { screen, within } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
+import { diasDepois, hojeEmSaoPaulo } from "../../compartilhado/datas";
 import { abrir, fingirApi, PESSOAS } from "../teste/ajuda";
 
 function item(id: number, empresa: string, estado: string, codigo: string, extra: { atrasados?: number; dor?: string } = {}) {
@@ -169,13 +170,28 @@ test("com o foco aberto, o botão da página deixa de ser vermelho", async () =>
   expect(botao).not.toHaveClass("primario");
 });
 
-test("nutrição não promete lembrete que o hub não faz", async () => {
-  fingirApi({ "/api/eu": { corpo: PESSOAS.closer }, "GET /api/followup": { corpo: [ATRASADA] } });
+test("nutrição pede o mês para retomar e manda retomarEm", async () => {
+  const enviados: unknown[] = [];
+  fingirApi({
+    "/api/eu": { corpo: PESSOAS.closer },
+    "GET /api/followup": { corpo: [ATRASADA] },
+    "POST /api/oportunidades/1/resultado": (init) => {
+      enviados.push(JSON.parse(String(init?.body)));
+      return { corpo: { ...ATRASADA.oportunidade, situacao: "nutricao" } };
+    },
+  });
   abrir("/follow-up");
   await userEvent.click(await screen.findByRole("button", { name: /Usinagem Alfa/ }));
   await userEvent.click(screen.getByRole("button", { name: "Registrar resultado da proposta" }));
-  await userEvent.click(screen.getByRole("radio", { name: "Nutrição" }));
-  expect(screen.getByText("A oportunidade sai do follow-up e fica em nutrição.")).toBeInTheDocument();
+  const foco = screen.getByRole("dialog");
+  await userEvent.click(within(foco).getByRole("radio", { name: "Nutrição" }));
+  expect(within(foco).getByText(/volta na aba Reativação/)).toBeInTheDocument();
+  const retomar = within(foco).getByRole("combobox", { name: "Retomar em" });
+  expect(retomar).toHaveDisplayValue("Em 45 dias (o cliente não deu prazo)");
+  const proximoMes = `${diasDepois(`${hojeEmSaoPaulo().slice(0, 7)}-01`, 32).slice(0, 7)}-01`;
+  await userEvent.selectOptions(retomar, proximoMes);
+  await userEvent.click(within(foco).getByRole("button", { name: "Registrar resultado" }));
+  await vi.waitFor(() => expect(enviados).toEqual([{ resultado: "nutricao", retomarEm: proximoMes }]));
 });
 
 test("proposta de oportunidade de colega: assume e depois registra", async () => {

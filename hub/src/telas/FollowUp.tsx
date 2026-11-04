@@ -11,6 +11,7 @@ import type { Eu } from "../sessao/useEu";
 import { mensagemDe, nomeDoServico } from "./followup/comum";
 import NovaProposta from "./followup/NovaProposta";
 import Resultado from "./followup/Resultado";
+import Reativacao from "./followup/Reativacao";
 import ToqueEmFoco from "./followup/ToqueEmFoco";
 import estilos from "./FollowUp.module.css";
 
@@ -81,6 +82,7 @@ export default function FollowUp({ eu }: { eu: Eu }) {
   }, [carregar]);
 
   // Links da rotina e do Hoje: ?proposta=ID abre o próximo toque da proposta (?toque=ID também funciona).
+  const aba = busca.get("aba") === "reativacao" ? "reativacao" : "propostas";
   const propostaPedida = busca.get("proposta");
   const toquePedido = busca.get("toque");
   useEffect(() => {
@@ -121,17 +123,40 @@ export default function FollowUp({ eu }: { eu: Eu }) {
         </Botao>
       </header>
 
-      {erro && (
+      <div role="tablist" aria-label="Follow-up e reativação" className={estilos.abas}>
+        {(
+          [
+            ["propostas", "Propostas"],
+            ["reativacao", "Reativação"],
+          ] as const
+        ).map(([id, rotulo]) => (
+          <button
+            key={id}
+            type="button"
+            role="tab"
+            aria-selected={aba === id}
+            className={estilos.aba}
+            onClick={() => setBusca(id === "reativacao" ? { aba: "reativacao" } : {}, { replace: true })}
+          >
+            {rotulo}
+          </button>
+        ))}
+      </div>
+
+      {aba === "reativacao" && <Reativacao />}
+
+      {aba === "propostas" && erro && (
         <p role="alert" className={estilos.erro}>
           {erro}
         </p>
       )}
-      {lista === null && !erro && <p className="mono suave">Carregando…</p>}
-      {lista?.length === 0 && (
+      {aba === "propostas" && lista === null && !erro && <p className="mono suave">Carregando…</p>}
+      {aba === "propostas" && lista?.length === 0 && (
         <p className={`suave ${estilos.vazio}`}>Nenhuma proposta na rua. Registre a próxima proposta apresentada para o hub montar os toques.</p>
       )}
 
-      {lista &&
+      {aba === "propostas" &&
+        lista &&
         GRUPOS.map(({ estado, titulo }) => {
           const doGrupo = lista.filter((i) => i.estado === estado);
           if (doGrupo.length === 0) return null;

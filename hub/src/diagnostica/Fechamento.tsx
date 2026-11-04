@@ -1,4 +1,6 @@
 import { useState, type FormEvent } from "react";
+import { mesesParaRetomar } from "../telas/followup/meses";
+import { hojeEmSaoPaulo } from "../../compartilhado/datas";
 import { DIAGNOSTICA, MOTIVOS_NAO_QUALIFICOU } from "../../compartilhado/dados/diagnostica";
 import { resumoDoFechamento, type Respostas } from "../../compartilhado/diagnostica";
 import { api } from "../api/cliente";
@@ -23,7 +25,8 @@ export default function Fechamento({
   aoEncerrar: () => void;
 }) {
   const [resultado, setResultado] = useState<"proposta_marcada" | "nao_qualificou" | null>(null);
-  const [c, setC] = useState({ data: "", hora: "", formato: "online", quemDecide: "", motivo: "" });
+  const [c, setC] = useState({ data: "", hora: "", formato: "online", quemDecide: "", motivo: "", retomarEm: "" });
+  const [meses] = useState(() => mesesParaRetomar(hojeEmSaoPaulo()));
   const [erro, setErro] = useState("");
   const [enviando, setEnviando] = useState(false);
   const mudar = (campo: keyof typeof c) => (e: { target: { value: string } }) => setC((x) => ({ ...x, [campo]: e.target.value }));
@@ -46,7 +49,7 @@ export default function Fechamento({
       const corpo =
         resultado === "proposta_marcada"
           ? { resultado, dataHora: `${c.data}T${c.hora}`, formato: c.formato, quemDecide: c.quemDecide.trim() }
-          : { resultado, motivo: c.motivo };
+          : { resultado, motivo: c.motivo, ...(c.retomarEm ? { retomarEm: c.retomarEm } : {}) };
       await api(`/api/reunioes/${reuniaoId}/encerrar`, { method: "POST", body: JSON.stringify(corpo) });
       aoEncerrar();
     } catch (falha) {
@@ -94,7 +97,17 @@ export default function Fechamento({
         </div>
       )}
       {resultado === "nao_qualificou" && (
-        <Selecao rotulo="Motivo" vazio="Escolha o motivo" value={c.motivo} onChange={mudar("motivo")} opcoes={MOTIVOS_NAO_QUALIFICOU.map((m) => ({ valor: m, rotulo: m }))} />
+        <>
+          <Selecao
+            rotulo="Motivo"
+            vazio="Escolha o motivo"
+            value={c.motivo}
+            onChange={mudar("motivo")}
+            opcoes={MOTIVOS_NAO_QUALIFICOU.map((m) => ({ valor: m, rotulo: m }))}
+          />
+          <Selecao rotulo="Retomar em" vazio="Em 45 dias (o cliente não deu prazo)" value={c.retomarEm} onChange={mudar("retomarEm")} opcoes={meses} />
+          <p className="suave">A oportunidade vai para nutrição e volta na aba Reativação do closer no mês escolhido.</p>
+        </>
       )}
       {erro && (
         <p role="alert" className={estilos.erro}>

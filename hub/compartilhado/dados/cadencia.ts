@@ -79,6 +79,11 @@ export const TOQUES_ANTIGOS: DadosDoToque[] = [
   }
 ];
 
+/** Mensagem de reativação (docs/16, seção 4), sem mudar o texto. {tempo} é o tempo desde a última reunião ("3 meses"). */
+export const REATIVACAO = {
+  "modelo": "Opa, {contato}, tudo bem? A gente conversou há mais ou menos {tempo} e lembro que, na época, acabamos não avançando. Mas fiquei com uma boa impressão da nossa conversa e não queria deixar esse contato esfriar, porque parecia ter uma aderência legal entre o seu momento e o que conseguimos fazer por aqui. O que acha de marcarmos 10 ou 15 minutinhos para retomar com calma e ver se ainda existe espaço para avançarmos?"
+};
+
 export const NUTRICAO: { dias: 45; modelo: string } = {
   "dias": 45,
   "modelo": "Oi, {contato}, tudo bem? Faz um tempo que conversamos sobre {servico}. Como está esse assunto aí? Estamos abrindo agenda para novos projetos em [mês]."
@@ -142,5 +147,6 @@ export const VARIAVEIS: Record<string, string> = {
   "fraseValor": "frase de valor",
   "valor": "valor",
   "parcelas": "parcelas",
-  "descontoAVista": "desconto à vista"
+  "descontoAVista": "desconto à vista",
+  "tempo": "tempo desde a reunião"
 };

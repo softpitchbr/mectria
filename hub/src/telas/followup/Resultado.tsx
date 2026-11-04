@@ -1,6 +1,6 @@
 import { useState, type FormEvent } from "react";
 import { MOTIVOS_PERDA } from "../../../compartilhado/dados/cadencia";
-import { lerReais } from "../../../compartilhado/datas";
+import { hojeEmSaoPaulo, lerReais } from "../../../compartilhado/datas";
 import type { ItemFollowup } from "../../../compartilhado/oportunidade";
 import { api } from "../../api/cliente";
 import { avisar } from "../../componentes/Aviso";
@@ -8,6 +8,7 @@ import Botao from "../../componentes/Botao";
 import Campo from "../../componentes/Campo";
 import Selecao from "../../componentes/Selecao";
 import { mensagemDe } from "./comum";
+import { mesesParaRetomar } from "./meses";
 import estilos from "./followup.module.css";
 
 type Escolha = "ganha" | "perdida" | "nutricao";
@@ -18,6 +19,8 @@ export default function Resultado({ item, aoRegistrar }: { item: ItemFollowup; a
   const [escolha, setEscolha] = useState<Escolha | null>(null);
   const [valor, setValor] = useState("");
   const [motivo, setMotivo] = useState("");
+  const [retomarEm, setRetomarEm] = useState("");
+  const [meses] = useState(() => mesesParaRetomar(hojeEmSaoPaulo()));
   const [erro, setErro] = useState("");
   const [enviando, setEnviando] = useState(false);
 
@@ -28,7 +31,12 @@ export default function Resultado({ item, aoRegistrar }: { item: ItemFollowup; a
     if (escolha === "perdida" && !motivo) return setErro("Escolha o motivo.");
     setErro("");
     setEnviando(true);
-    const corpo = escolha === "ganha" ? { resultado: "ganha", valor } : escolha === "perdida" ? { resultado: "perdida", motivo } : { resultado: "nutricao" };
+    const corpo =
+      escolha === "ganha"
+        ? { resultado: "ganha", valor }
+        : escolha === "perdida"
+          ? { resultado: "perdida", motivo }
+          : { resultado: "nutricao", ...(retomarEm ? { retomarEm } : {}) };
     try {
       await api(`/api/oportunidades/${item.oportunidade.id}/resultado`, { method: "POST", body: JSON.stringify(corpo) });
       avisar(`${item.oportunidade.empresa}: ${ROTULOS[escolha].toLowerCase()}.`);
@@ -51,11 +59,30 @@ export default function Resultado({ item, aoRegistrar }: { item: ItemFollowup; a
           </label>
         ))}
       </fieldset>
-      {escolha === "ganha" && <Campo rotulo="Valor fechado" inputMode="decimal" placeholder="12.500,00" value={valor} onChange={(e) => setValor(e.target.value)} />}
-      {escolha === "perdida" && (
-        <Selecao rotulo="Motivo" vazio="Escolha o motivo" value={motivo} onChange={(e) => setMotivo(e.target.value)} opcoes={MOTIVOS_PERDA.map((m) => ({ valor: m, rotulo: m }))} />
+      {escolha === "ganha" && (
+        <Campo rotulo="Valor fechado" inputMode="decimal" placeholder="12.500,00" value={valor} onChange={(e) => setValor(e.target.value)} />
       )}
-      {escolha === "nutricao" && <p className="suave">A oportunidade sai do follow-up e fica em nutrição.</p>}
+      {escolha === "perdida" && (
+        <Selecao
+          rotulo="Motivo"
+          vazio="Escolha o motivo"
+          value={motivo}
+          onChange={(e) => setMotivo(e.target.value)}
+          opcoes={MOTIVOS_PERDA.map((m) => ({ valor: m, rotulo: m }))}
+        />
+      )}
+      {escolha === "nutricao" && (
+        <>
+          <Selecao
+            rotulo="Retomar em"
+            vazio="Em 45 dias (o cliente não deu prazo)"
+            value={retomarEm}
+            onChange={(e) => setRetomarEm(e.target.value)}
+            opcoes={meses}
+          />
+          <p className="suave">A oportunidade sai do follow-up e volta na aba Reativação no mês escolhido.</p>
+        </>
+      )}
       {erro && (
         <p role="alert" className={estilos.erro}>
           {erro}

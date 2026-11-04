@@ -106,3 +106,30 @@
   border-left: 2px solid var(--vermelho-texto);
   padding-left: 8px;
 }
+
+.abas {
+  display: flex;
+  gap: 4px;
+  border-bottom: 1px solid var(--linha);
+}
+
+.aba {
+  border: 0;
+  background: none;
+  color: var(--suave);
+  font: inherit;
+  padding: 8px 14px;
+  border-bottom: 2px solid transparent;
+  margin-bottom: -1px;
+  cursor: pointer;
+}
+
+.aba[aria-selected="true"] {
+  color: var(--texto);
+  border-bottom-color: var(--vermelho-texto);
+}
+
+.aba:focus-visible {
+  outline: 2px solid var(--vermelho-texto);
+  outline-offset: 2px;
+}

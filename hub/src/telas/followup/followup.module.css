@@ -144,3 +144,16 @@
 .respostas p {
   margin: 0;
 }
+
+.reativar {
+  display: grid;
+  gap: 10px;
+  padding: 14px 16px;
+  border: 1px solid var(--linha);
+  border-radius: 8px;
+  background: var(--painel);
+}
+
+.reativar p {
+  margin: 0;
+}
