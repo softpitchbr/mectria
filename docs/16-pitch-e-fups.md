@@ -99,6 +99,10 @@ Se não atender, no WhatsApp:
 
 > Fala, {contato}, tudo bem? Hoje é o dia que combinamos para o sim ou não da parceria, e na segunda começa o próximo ciclo de projetos. Vou me reunir com o time de Projetos neste fim de semana para pré-alocar as equipes. O que ainda precisamos alinhar para vocês entrarem nesse ciclo?
 
+### Sugestão a validar (Vinícius, 04/11/2026)
+
+Hoje não há incentivo para fechar rápido. O Vinícius sugeriu um "micro pacto de tempo": "até tal dia é esse o valor". Ele combina com a jornada: o valor apresentado valeria até o D7, a mesma data do sim ou não. A validar com o Marcelo na reunião de 10/11, junto com a política de desconto (hoje uns 5% à vista).
+
 ## 3. Decidido (Lucas, 04/11/2026)
 
 - **Ciclo de segunda:** passa a existir na MecTRIA. A sexta fixa usa esse ciclo como gatilho de urgência.

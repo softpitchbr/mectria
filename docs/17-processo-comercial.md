@@ -168,5 +168,5 @@ O que depende da MecTRIA está também na pauta da reunião de 10/11, em `14-ped
 |---|---|---|
 | 1 | "Em conversa" é o status Contato estabelecido mais o marcador Retornar? | MecTRIA |
 | 4 | O aviso de "confirmada" vai no Comercial & Projetos, citando o projetista? E o hub só gera o texto para copiar? | MecTRIA |
-| 5 | Quantos clientes a MecTRIA já atendeu, para o {nº de clientes} do cold call (pedido 17) | MecTRIA |
-| 6 | Os professores orientadores são todos doutores? O roteiro diz só "professores" até confirmar (pedido 18) | MecTRIA |
+| 5 | Quantos clientes a MecTRIA já atendeu, para o {nº de clientes} do cold call (pedido 17). O Vinícius não tem o número; pedir ao Marcelo | Marcelo |
+| 6 | Os professores orientadores são todos doutores? Pelo Vinícius, normalmente sim; o roteiro diz só "professores" até a MecTRIA confirmar (pedido 18) | MecTRIA |
