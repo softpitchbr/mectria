@@ -64,6 +64,9 @@ export interface Reuniao {
   confirmadaEm?: string | null;
   /** Nome do contato da oportunidade, para as mensagens da confirmação (fase 7). */
   contato?: string;
+  /** Proposta com o valor preparado (AP) ou não (em construção), e o dia em que a oportunidade entrou na situação atual (fase 7). */
+  valorPreparado?: boolean;
+  naEtapaDesde?: string | null;
 }
 
 export interface NovaDiagnostica {

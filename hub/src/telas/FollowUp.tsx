@@ -1,7 +1,8 @@
 import { useCallback, useEffect, useState } from "react";
+import { diasNaEtapa } from "../../compartilhado/etapa";
 import { useSearchParams } from "react-router";
 import { ROTULO_TOQUE, canalDoToque } from "../../compartilhado/cadencia";
-import { formatarDia, formatarReais } from "../../compartilhado/datas";
+import { formatarDia, formatarReais, hojeEmSaoPaulo } from "../../compartilhado/datas";
 import type { EstadoFollowup, ItemFollowup } from "../../compartilhado/oportunidade";
 import { api } from "../api/cliente";
 import Botao from "../componentes/Botao";
@@ -52,6 +53,12 @@ function CartaoDaProposta({ item, eu, aoAbrir }: { item: ItemFollowup; eu: Eu; a
         ) : (
           "Cadência terminada: registre o resultado"
         )}
+      </span>
+      <span className="suave">
+        {(() => {
+          const dias = diasNaEtapa(proposta.apresentadaEm, hojeEmSaoPaulo()) ?? 0;
+          return `Em negociação há ${dias} ${dias === 1 ? "dia" : "dias"}`;
+        })()}
       </span>
       {item.respostasTecnicas?.length ? (
         <span className={estilos.respostaTecnica}>Projetos respondeu: {item.respostasTecnicas[item.respostasTecnicas.length - 1].resposta}</span>

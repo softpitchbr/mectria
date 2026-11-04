@@ -81,3 +81,12 @@
   color: var(--vermelho-texto);
   font-weight: 500;
 }
+
+.etapa {
+  display: inline-flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 8px;
+  font-size: 13px;
+  color: var(--suave);
+}

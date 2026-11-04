@@ -243,3 +243,12 @@ test("o card do follow-up mostra a resposta de Projetos", async () => {
   await userEvent.click(cartao);
   expect(within(screen.getByRole("dialog")).getByRole("list", { name: "Respostas de Projetos" })).toHaveTextContent("Qual a vazão?3 m³/h");
 });
+
+test("o cartão do follow-up mostra os dias em negociação", async () => {
+  const hoje = hojeEmSaoPaulo();
+  const emNegociacao = item(11, "Bomba Norte", "em_dia", "D1");
+  emNegociacao.proposta.apresentadaEm = diasDepois(hoje, -5);
+  fingirApi({ "/api/eu": { corpo: PESSOAS.closer }, "GET /api/followup": { corpo: [emNegociacao] } });
+  abrir("/follow-up");
+  expect(await screen.findByRole("button", { name: /Bomba Norte/ })).toHaveTextContent("Em negociação há 5 dias");
+});

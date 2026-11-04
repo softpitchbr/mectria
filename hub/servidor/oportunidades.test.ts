@@ -1,5 +1,6 @@
 import { applyD1Migrations, env } from "cloudflare:test";
 import { assumir, buscarOportunidade, criarDiagnostica, listarOportunidades, listarReunioes, mudarSituacao } from "./oportunidades";
+import { encerrarDiagnostica } from "./diagnostica";
 import { criar } from "./pessoas";
 import type { Pessoa } from "./tipos";
 
@@ -97,4 +98,14 @@ test("marcar diagnóstica grava as observações", async () => {
   expect(reuniao.observacoes).toBe("Prefere WhatsApp; o sócio decide.");
   const [daAgenda] = await listarReunioes(env.DB, "2026-11-10", "2026-11-10");
   expect(daAgenda.observacoes).toBe("Prefere WhatsApp; o sócio decide.");
+});
+
+test("a reunião de proposta traz se o valor foi preparado e desde quando a oportunidade está na etapa", async () => {
+  const { reuniao } = await criarDiagnostica(env.DB, diagnostica("Etapa"), hunter);
+  await encerrarDiagnostica(env.DB, reuniao.id, { resultado: "proposta_marcada", dataHora: "2026-11-20T10:00", formato: "online", quemDecide: "Ana" }, closer);
+  await env.DB.prepare("UPDATE historico SET em = '2026-11-02 15:00:00' WHERE para = 'proposta_marcada'").run();
+  const [proposta] = await listarReunioes(env.DB, "2026-11-20", "2026-11-20");
+  expect(proposta).toMatchObject({ tipo: "proposta", valorPreparado: false, naEtapaDesde: "2026-11-02" });
+  await env.DB.prepare(`UPDATE reunioes SET variaveis = '{"valor":1250000}' WHERE id = ?`).bind(proposta.id).run();
+  expect((await listarReunioes(env.DB, "2026-11-20", "2026-11-20"))[0].valorPreparado).toBe(true);
 });

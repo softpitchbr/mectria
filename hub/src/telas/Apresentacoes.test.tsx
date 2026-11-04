@@ -1,5 +1,6 @@
 import { screen, within } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
+import { diasDepois, hojeEmSaoPaulo } from "../../compartilhado/datas";
 import { variaveisIniciais } from "../../compartilhado/proposta";
 import { abrir, fingirApi, PESSOAS } from "../teste/ajuda";
 
@@ -82,4 +83,25 @@ test("o hunter não vê Apresentações", async () => {
   fingirApi({ "/api/eu": { corpo: PESSOAS.hunter } });
   abrir("/apresentacoes");
   expect(await screen.findByText("Seu acesso não inclui Apresentações. Fale com o diretor comercial da MecTRIA.")).toBeInTheDocument();
+});
+
+test("Apresentações mostra há quantos dias a proposta está em construção, com o alerta depois de 3 dias", async () => {
+  const hoje = hojeEmSaoPaulo();
+  fingirApi({
+    "/api/eu": { corpo: PESSOAS.closer },
+    "GET /api/reunioes": {
+      corpo: [
+        { ...R(7, "Usinagem Alfa", "proposta", "proposta_marcada"), valorPreparado: false, naEtapaDesde: diasDepois(hoje, -4) },
+        { ...R(8, "Forja Pronta", "proposta", "proposta_marcada"), valorPreparado: true, naEtapaDesde: diasDepois(hoje, -6) },
+      ],
+    },
+  } as never);
+  abrir("/apresentacoes");
+  const lista = await screen.findByRole("list", { name: "Propostas para preparar" });
+  const alfa = within(lista).getByText("Usinagem Alfa").closest("li") as HTMLElement;
+  expect(alfa).toHaveTextContent("Em construção há 4 dias");
+  expect(alfa).toHaveTextContent("Passou de 3 dias");
+  const pronta = within(lista).getByText("Forja Pronta").closest("li") as HTMLElement;
+  expect(pronta).toHaveTextContent("Proposta pronta");
+  expect(pronta).not.toHaveTextContent("Passou de 3 dias");
 });

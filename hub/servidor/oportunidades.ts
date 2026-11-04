@@ -43,6 +43,8 @@ export interface LinhaReuniao {
   fups_confirmacao: number;
   confirmada_em: string | null;
   contato: string;
+  valor_preparado: number;
+  na_etapa_desde: string | null;
 }
 
 export function oportunidadeDeLinha(l: LinhaOportunidade): Oportunidade {
@@ -90,6 +92,8 @@ export function reuniaoDeLinha(l: LinhaReuniao): Reuniao {
     fupsConfirmacao: l.fups_confirmacao,
     confirmadaEm: l.confirmada_em,
     contato: l.contato,
+    valorPreparado: l.valor_preparado === 1,
+    naEtapaDesde: l.na_etapa_desde,
   };
 }
 
@@ -101,7 +105,9 @@ export const SELECT_OPORTUNIDADE = `
 export const SELECT_REUNIAO = `
   SELECT r.id, r.oportunidade_id, o.empresa, r.tipo, r.data_hora, r.formato, r.situacao, o.closer_id, c.nome AS closer_nome,
     r.quem_decide, r.iniciada_em, r.encerrada_em, r.resultado, r.motivo, r.briefing_enviado_em, o.situacao AS oportunidade_situacao, r.resultado_proposta,
-    r.observacoes, r.fups_confirmacao, r.confirmada_em, o.contato
+    r.observacoes, r.fups_confirmacao, r.confirmada_em, o.contato,
+    (r.variaveis IS NOT NULL AND json_extract(r.variaveis, '$.valor') IS NOT NULL) AS valor_preparado,
+    (SELECT date(MAX(h.em), '-3 hours') FROM historico h WHERE h.oportunidade_id = o.id AND h.para = o.situacao AND h.de IS NOT h.para) AS na_etapa_desde
   FROM reunioes r
   JOIN oportunidades o ON o.id = r.oportunidade_id
   LEFT JOIN pessoas c ON c.id = o.closer_id`;

@@ -1,4 +1,6 @@
 import { useEffect, useMemo, useState, type FormEvent } from "react";
+import { ALERTA_CONSTRUCAO_DIAS, diasNaEtapa, etapaDaProposta } from "../../compartilhado/etapa";
+import Tag from "../componentes/Tag";
 import { diasDepois, formatarDia, formatarReais, hojeEmSaoPaulo, lerReais } from "../../compartilhado/datas";
 import { SERVICOS } from "../../compartilhado/dados/servicos";
 import type { Reuniao } from "../../compartilhado/oportunidade";
@@ -97,6 +99,19 @@ function PrepararProposta({ reuniao, aoSalvar }: { reuniao: Reuniao; aoSalvar: (
   );
 }
 
+/** Docs/17, "sempre pra direita": há quantos dias a proposta está em construção, com o alerta depois de 3 dias. */
+function EtapaDaProposta({ reuniao }: { reuniao: Reuniao }) {
+  const etapa = etapaDaProposta({ valorPreparado: !!reuniao.valorPreparado });
+  if (etapa === "ap") return <span className="suave">Proposta pronta</span>;
+  const dias = diasNaEtapa(reuniao.naEtapaDesde, hojeEmSaoPaulo());
+  return (
+    <span className={estilos.etapa}>
+      {dias === null ? "Em construção" : `Em construção há ${dias} ${dias === 1 ? "dia" : "dias"}`}
+      {dias !== null && dias > ALERTA_CONSTRUCAO_DIAS && <Tag tipo="atrasado">Passou de {ALERTA_CONSTRUCAO_DIAS} dias</Tag>}
+    </span>
+  );
+}
+
 /** Apresentações: as propostas para preparar (variáveis de cada cliente) e o catálogo. */
 export default function Apresentacoes({ eu: _eu }: { eu: Eu }) {
   const [reunioes, setReunioes] = useState<Reuniao[] | null>(null);
@@ -147,6 +162,7 @@ export default function Apresentacoes({ eu: _eu }: { eu: Eu }) {
                   {formatarDia(r.dataHora.slice(0, 10))} · {r.dataHora.slice(11, 16)}
                 </span>
                 <strong>{r.empresa}</strong>
+                <EtapaDaProposta reuniao={r} />
                 <Botao onClick={(e) => setAberta({ reuniao: r, origem: e.currentTarget.closest("li") })}>Preparar</Botao>
               </li>
             ))}
