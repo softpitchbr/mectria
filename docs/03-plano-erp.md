@@ -107,7 +107,8 @@ O hub novo (`hub/`) substitui a versão 0.2 do hub do vendedor (tarefa 45). Espe
 57. [R] Hub novo · fase 5: celular como controle da reunião (QR code)
 58. [R] Hub novo · fase 6: números do diretor, Briefings e pendências técnicas de Projetos, cadência de 7 dias, reativação e o hunter conduzindo a diagnóstica · feita em 04/11 (revisada e corrigida; para mostrar na reunião de 10/11)
 59. [R] Sessão de aceite do hub: roleplay de 30 minutos com o Marcelo e dois vendedores
-60. [R] Validar com o Marcelo os modelos de rotina e a meta diária de ligações
+60. [R] Validar com o Marcelo os modelos de rotina e a meta diária de ligações · substituída pelas metas de 04/11 (8 conexões por semana e o % da rotina), a validar em 10/11
+61. [R] Hub novo · fase 7: processo comercial (rotina em blocos com o % do dia, conexão e meta de 8 por semana, cold call novo, observações, FUPs de confirmação, cliente não compareceu e dias na etapa) · feita em 04/11 (em revisão; para mostrar na reunião de 10/11)
 
 Se a hospedagem recomendada (Cloudflare) for aceita, a tarefa **8** passa a ser "Publicar na hospedagem definitiva, com entrega a partir de São Paulo": nessa opção não há servidor para mudar de região.
 

@@ -96,3 +96,24 @@ VALUES ('Solda Hunter', 'Gil', '34999990009', 'cold call', 'climatizacao',
         (SELECT id FROM pessoas WHERE email = 'hun@mectria.com'), (SELECT id FROM pessoas WHERE email = 'clo@mectria.com'), 'diagnostica_marcada');
 INSERT INTO reunioes (oportunidade_id, tipo, data_hora, formato)
 VALUES ((SELECT id FROM oportunidades WHERE empresa = 'Solda Hunter'), 'diagnostica', date('now', '-3 hours') || 'T23:20', 'online');
+
+-- Fase 7: uma diagnóstica de hoje da Helena para confirmar, um no-show da Helena para reagendar e uma proposta do Carlos
+-- em construção há 4 dias (reunião de proposta daqui a 5 dias, sem valor preparado).
+INSERT INTO oportunidades (empresa, contato, telefone, origem, servico, hunter_id, closer_id, situacao)
+VALUES ('Caldeira Confirma', 'Iara', '34999990010', 'cold call', 'climatizacao',
+        (SELECT id FROM pessoas WHERE email = 'hun@mectria.com'), (SELECT id FROM pessoas WHERE email = 'clo@mectria.com'), 'diagnostica_marcada');
+INSERT INTO reunioes (oportunidade_id, tipo, data_hora, formato, observacoes)
+VALUES ((SELECT id FROM oportunidades WHERE empresa = 'Caldeira Confirma'), 'diagnostica', date('now', '-3 hours') || 'T23:10', 'online', 'O sócio decide; prefere WhatsApp.');
+
+INSERT INTO oportunidades (empresa, contato, telefone, origem, servico, hunter_id, closer_id, situacao)
+VALUES ('Usina Faltosa', 'João', '34999990011', 'cold call', 'climatizacao',
+        (SELECT id FROM pessoas WHERE email = 'hun@mectria.com'), (SELECT id FROM pessoas WHERE email = 'clo@mectria.com'), 'diagnostica_marcada');
+INSERT INTO reunioes (oportunidade_id, tipo, data_hora, formato, situacao, motivo, encerrada_em)
+VALUES ((SELECT id FROM oportunidades WHERE empresa = 'Usina Faltosa'), 'diagnostica', date('now', '-3 hours', '-1 day') || 'T10:00', 'online', 'cancelada', 'Cliente não compareceu', datetime('now', '-1 day'));
+
+INSERT INTO oportunidades (empresa, contato, telefone, origem, servico, closer_id, situacao)
+VALUES ('Molde Atrasado', 'Lia', '34999990012', 'cold call', 'climatizacao', (SELECT id FROM pessoas WHERE email = 'clo@mectria.com'), 'proposta_marcada');
+INSERT INTO reunioes (oportunidade_id, tipo, data_hora, formato, quem_decide)
+VALUES ((SELECT id FROM oportunidades WHERE empresa = 'Molde Atrasado'), 'proposta', date('now', '-3 hours', '+5 days') || 'T15:00', 'online', 'Lia');
+INSERT INTO historico (oportunidade_id, de, para, detalhe, em)
+VALUES ((SELECT id FROM oportunidades WHERE empresa = 'Molde Atrasado'), 'diagnostica_marcada', 'proposta_marcada', 'semente do teste', datetime('now', '-4 days'));

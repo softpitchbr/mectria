@@ -146,6 +146,8 @@ As diagnósticas e as APs marcadas para o dia são obrigação de agenda, não t
 
 ## 6. O que isso muda no hub
 
+Tudo desta tabela foi construído na fase 7 do hub (04/11/2026), para validar na reunião de 10/11. As escolhas da construção estão em `07-decisoes-e-pendencias.md`.
+
 | O que muda | Onde | Hoje |
 |---|---|---|
 | A rotina do hunter segue a ordem do fluxo: leads em conversa, reagendamentos, bloco de cold call e confirmações do dia | Rotinas | Bloco de ligações, WhatsApp e registro das diagnósticas |

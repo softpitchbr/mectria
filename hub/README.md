@@ -2,13 +2,14 @@
 
 O hub do vendedor da MecTRIA: login pelo e-mail, navegação por cargo (hunter, closer, diretor comercial e projetos), busca Ctrl K e o sistema visual Prancheta, nos temas claro e escuro. A especificação está em [`docs/15-hub-template.md`](../docs/15-hub-template.md).
 
-Pronto até agora (fases 1 a 4 e 6; a 5, o celular como controle, fica para depois):
+Pronto até agora (fases 1 a 4, 6 e 7; a 5, o celular como controle, fica para depois):
 
 - **Base:** login, cargos, navegação, busca, Time e os dois temas.
 - **Rotina e follow-up:** o Hoje de cada cargo (bloco de ligações do hunter em modo foco, próxima reunião do closer, resumo do time para o diretor), a seção Rotinas (checklist do dia e histórico) e o Follow-up (janela de 7 dias com D0, D1, ligação, sexta fixa e D7, atraso e o toque em modo foco, com a mensagem pronta; as propostas antigas continuam com os toques D3 a D15).
 - **Diagnóstica:** a agenda em Reuniões, o painel em tela cheia (GPCTBA + C&I e as perguntas técnicas do serviço, uma de cada vez; anotações com N e marcações; fechamento obrigatório), o rascunho guardado no computador quando a internet cai, o briefing para Projetos em PDF, os Playbooks de consulta e a busca de clientes, roteiros e objeções.
 - **Reunião de proposta em duas janelas:** a seção Apresentações (preparar as variáveis de cada cliente e o catálogo com a apresentação de exemplo de 13 slides), a janela da apresentação que o cliente vê, o painel sincronizado pelo próprio navegador (fala com as palavras do cliente, pactos, quem está na sala, tempo por bloco, objeções com O, anotações com N e o aviso de quem decide antes do preço) e o fechamento obrigatório, que registra a proposta, sugere o D7 como data da decisão e cria os toques de follow-up sozinho.
 - **Diretor, Projetos e reativação (fase 6):** os números do mês no Hoje do diretor e na aba Mês de Time (propostas, fechadas, conversão, valor vendido, tempo da diagnóstica à decisão, números por closer, % da rotina de cada pessoa e objeções), as exportações (CSV do histórico do mês e todos os dados em JSON) e a exclusão de dados pessoais a pedido (LGPD) no briefing; a seção Briefings e o Hoje de Projetos, com as pendências técnicas respondidas em foco e a resposta no card do follow-up; a aba Reativação, com o mês para retomar escolhido ao mandar para nutrição; e o hunter conduzindo a diagnóstica que marcou.
+- **Processo comercial (fase 7):** a rotina em blocos de prioridade com o % do dia (hunter: leads em conversa, reagendamentos, cold call e confirmações; closer: fechamento, AP, construção e reativação, com a tarefa feita sozinha quando o bloco está vazio), a conexão nas ligações e a meta de 8 conexões por semana, o cold call novo com os desvios e a cold message, as observações ao marcar a diagnóstica, os FUPs de confirmação e a mensagem para o Comercial & Projetos, o "Cliente não compareceu" com o reagendamento do hunter e há quantos dias cada lead está na etapa (alerta depois de 3 dias em construção).
 
 - Interface: React + Vite, servida pelo Cloudflare Pages.
 - API: Pages Functions em `functions/api/`, com a lógica em `servidor/`.
@@ -48,7 +49,7 @@ O CI (`.github/workflows/hub.yml`) roda os três em todo push que mexe em `hub/`
 
 ```
 hub/
-  migrations/                      0001 pessoas · 0002 oportunidades, reuniões, propostas, toques, rotinas, ligações e histórico · 0003 fichas, anotações e pendências · 0004 uma pendência por anotação · 0005 preparação, andamento e desfecho da proposta · 0006 mês para retomar e resposta das pendências
+  migrations/                      0001 pessoas · 0002 oportunidades, reuniões, propostas, toques, rotinas, ligações e histórico · 0003 fichas, anotações e pendências · 0004 uma pendência por anotação · 0005 preparação, andamento e desfecho da proposta · 0006 mês para retomar e resposta das pendências · 0007 conexão nas ligações, observações e confirmação da diagnóstica
   compartilhado/                   usado pela interface e pela API
     cargos.ts, pessoa.ts           cargos, rótulos e o tipo Pessoa
     permissoes.ts                  seções, fase de cada uma e quem pode fazer o quê
@@ -70,6 +71,8 @@ hub/
     numeros.ts                     números do mês do diretor
     exportar.ts                    CSV do histórico, exportação completa e exclusão de dados pessoais (LGPD)
     pendencias.ts                  pendências técnicas de Projetos e os briefings enviados
+    confirmacao.ts                 FUPs de confirmação e a diagnóstica confirmada
+    reagendamento.ts               cliente não compareceu: a lista e o reagendamento do hunter
     rotina.ts                      ligações, rotina do dia, histórico e resumo do time
     diagnostica.ts                 ficha, anotações, pendências técnicas e fechamento da diagnóstica
     proposta.ts                    preparação, andamento e fechamento da proposta (proposta e toques numa transação)
@@ -80,7 +83,7 @@ hub/
     rotas/                         testes das rotas (em functions/ todo arquivo vira rota)
   functions/api/                   rotas: _middleware (quem é a pessoa), eu, pessoas, closers, oportunidades,
                                    propostas, followup, toques, ligacoes, reunioes (a ficha, a proposta, as variáveis e o andamento),
-                                   rotina, time/resumo, time/numeros, numeros/mes, reativacao, pendencias, briefings, exportar, 404
+                                   rotina, time/resumo, time/numeros, numeros/mes, reativacao, reagendamentos, pendencias, briefings, exportar, 404
   src/
     estilo/                        tokens, grade técnica e fontes
     tema/                          tema claro/escuro e teste de contraste
