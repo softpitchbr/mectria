@@ -4,6 +4,32 @@ Levantamento de 08/10/2026. Cruza o escopo do contrato (Anexo I da minuta do con
 
 **Legenda de status:** Recebido · Parcial · Falta
 
+## Pauta da reunião de terça, 10/11/2026, 18h30
+
+Tudo o que precisamos coletar nesta reunião. Ir completando conforme surgir.
+
+**Para a apresentação e o cold call**
+- [ ] Quantos clientes já atenderam, quantos projetos entregaram e quantos clientes voltaram (pedido 17). Vai no cold call ("como já fizemos com X clientes") e no slide de números.
+- [ ] Anos de experiência: a MecTRIA é de 2013 (manual), então são 13 anos. Confirmar.
+- [ ] Professores orientadores: nomes, áreas, autorização para citar e se são doutores (pedido 18). O cold call diz só "professores" até confirmar.
+- [ ] Cases e depoimentos, com autorização (pedidos 15 e 16), começando por Desenvolvimento de Produto e Desenho Técnico.
+
+**Para o processo comercial (`17-processo-comercial.md`)**
+- [ ] O nome da etiqueta dos leads em conversa no CRM ("Em contato"?).
+- [ ] Quem conduz a diagnóstica: hunter, closer, projetista, ou varia.
+- [ ] Em que grupo o hunter avisa a reunião confirmada.
+- [ ] O fluxo de 3 dias da planilha v4 está em uso? (pedido 42). A regra nova é no máximo 3 dias em construção de proposta.
+- [ ] A política comercial em vigor: parcelas, desconto à vista e desconto máximo (pedido 27).
+- [ ] Avisar as metas novas: 8 conexões por semana dos hunters e o % da rotina por pessoa, no lugar das 10 ligações por dia.
+
+**Para o hub e a publicação**
+- [ ] As respostas aos pontos V1 a V7 do PDF de 04/11 (o V3 perguntava da meta antiga de ligações).
+- [ ] E-mail institucional para as contas e acesso ao DNS de mectria.com (P1 e P2 do PDF; pedidos 5 e 2).
+- [ ] Quem terá login, com e-mail e cargo, e quem é o diretor comercial no hub (P3; pedido 31).
+- [ ] Alguém de Projetos para os briefings e as dúvidas técnicas (P4).
+- [ ] As propostas que estão na rua hoje (P5; pedido 43).
+- [ ] A planilha do Histórico, para o CSV do diretor sair no formato deles (pedido 33).
+
 ## Já recebido (não pedir de novo)
 
 | Item | Onde está |

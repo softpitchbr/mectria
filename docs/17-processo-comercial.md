@@ -6,7 +6,7 @@ Partes prontas: as metas, o dia do hunter, o roteiro de cold call (com um rascun
 
 ## Metas (Lucas, 04/11/2026)
 
-- **Meta do time: 8 conexões por semana.** Conexão é a ligação ou a conversa com quem decide. Substitui a meta antiga de 10 ligações por dia (cold call ou cold message), que ninguém cumpria, e a de 1 a 2 ligações por dia que estava no hub.
+- **Meta dos hunters: 8 conexões por semana.** Só o hunter prospecta, então a meta é dele. Conexão é a ligação ou a conversa com quem decide. Substitui a meta antiga de 10 ligações por dia (cold call ou cold message), que ninguém cumpria, e a de 1 a 2 ligações por dia que estava no hub.
 - **Meta de cada pessoa: cumprir a rotina do dia.** O que conta é o % da rotina feito, todo dia.
 
 ## 1. O dia do hunter
@@ -106,19 +106,23 @@ Três mensagens pelo WhatsApp, no dia da reunião. Só sai a seguinte se a anter
 
 A rotina do closer é organizada por prioridade, da etapa mais perto do fechamento para a mais longe. Cada bloco tem as suas tarefas, que contam no % do dia, e uma orientação. Se um bloco não tiver nenhum lead, a tarefa é marcada como feita.
 
+As diagnósticas e as APs marcadas para o dia são obrigação de agenda, não tarefa de rotina, e não contam no %.
+
+**Regra "sempre pra direita":** o lead está sempre andando em direção à negociação. Ele fica no máximo 3 dias em construção de proposta. Em Apresentação de Proposta pode esperar a data da AP, que às vezes é uma semana depois.
+
 **1. Fechamento e negociação**
 - Abrir o Follow-up pela manhã e fazer o FUP de todos os leads em negociação.
 - **Prioridade máxima, senso de urgência:** qualquer contrato, ligação ou reunião que surgir vem primeiro. Uma oportunidade clara de fechamento, ou uma retomada quente, passa na frente da ordem do dia.
 
 **2. Apresentação de Proposta (AP)**
 - Abrir todos os leads em Apresentação de Proposta e fazer o FUP para definir o próximo passo.
-- Mandar mensagem para agendar a AP. Quando não fizer sentido agendar, gravar uma proposta personalizada e enviar.
+- Mandar mensagem para agendar a AP. Quando estiver muito difícil marcar e a proposta estiver empacando, gravar um vídeo com a proposta personalizada e enviar. Os closers ainda não fazem isso; passam a fazer.
 - *Orientação:* não deixar lead parado muito tempo nesta etapa.
 
 **3. Construção de proposta**
 - Abrir todos os leads em construção de proposta e construir as propostas pendentes.
 - Chamar os leads para coletar o que ficou pendente da reunião, se faltar algo.
-- *Orientação:* mandar o briefing para Projetos no mesmo dia e garantir que a proposta fique pronta antes da AP. Na rotina de origem, o lead não passa mais de 1 dia nesta etapa; na MecTRIA, a proposta depende de Projetos e do Adm-Fin (fluxo de 3 dias), então o prazo é a confirmar.
+- *Orientação:* mandar o briefing para Projetos no mesmo dia. Nenhum lead fica mais de 3 dias nesta etapa.
 
 **4. Reativação**
 - Abrir a aba Reativação e enviar os FUPs planejados do dia.
@@ -131,7 +135,9 @@ A rotina do closer é organizada por prioridade, da etapa mais perto do fechamen
 |---|---|---|
 | A rotina do hunter segue a ordem do fluxo: leads "Em contato", reagendamentos, bloco de cold call e confirmações do dia | Rotinas | Bloco de ligações, WhatsApp e registro das diagnósticas |
 | A rotina passa a ser por blocos de prioridade, cada um com as suas tarefas, o progresso (feitas de total), a orientação e o % do dia. A do closer segue a seção 5 | Rotinas e Hoje | Uma lista única de itens |
-| As metas passam a ser 8 conexões por semana para o time e o % da rotina por pessoa por dia | Hoje do hunter e do diretor | 1 a 2 ligações por dia |
+| As metas passam a ser 8 conexões por semana dos hunters e o % da rotina por pessoa por dia | Hoje do hunter e do diretor | 1 a 2 ligações por dia |
+| As reuniões do dia saem da rotina do closer (ficam na agenda e no Hoje) | Rotinas | O hub gera "Confirmar a diagnóstica com…" na rotina |
+| Cada lead mostra há quantos dias está na etapa, com alerta quando passa de 3 dias em construção de proposta | Follow-up e Apresentações | Não tem |
 | As ligações contam a **conexão** (falou com quem decide) separada de "atendeu" | Bloco de ligações | Não atendeu, atendeu e marcou |
 | A diagnóstica marcada ganha o campo **Observações** | Marcar diagnóstica | Não tem |
 | O roteiro do bloco de ligações passa a ser o da seção 2, com os desvios (30 segundos; conhece ou não o MEJ) e a cold message pronta para copiar | Bloco de ligações | Roteiro da versão 0.2 |
@@ -141,14 +147,12 @@ A rotina do closer é organizada por prioridade, da etapa mais perto do fechamen
 
 ## 7. Em aberto
 
+O que depende da MecTRIA está também na pauta da reunião de 10/11, em `14-pedidos-a-mectria.md`.
+
 | # | Pergunta | Quem responde |
 |---|---|---|
 | 1 | O nome da etiqueta dos leads em conversa no CRM ("Em contato"?) | MecTRIA |
 | 2 | Quem conduz a diagnóstica: hunter, closer, projetista, ou varia? | MecTRIA, na call |
-| 3 | As 8 conexões por semana são do time todo (somando os hunters) ou de cada hunter? | Lucas |
 | 4 | Em que grupo o hunter avisa a confirmação, e se o hub deve só gerar o texto para copiar | MecTRIA |
 | 5 | Quantos clientes a MecTRIA já atendeu, para o {nº de clientes} do cold call (pedido 17) | MecTRIA |
 | 6 | Os professores orientadores são todos doutores? O roteiro diz só "professores" até confirmar (pedido 18) | MecTRIA |
-| 7 | A rotina do closer tem mais blocos depois da reativação (por exemplo, as diagnósticas do dia)? | Lucas |
-| 8 | Quantos dias o lead pode ficar em construção de proposta na MecTRIA (1 dia, como na rotina de origem, ou o fluxo de 3 dias)? | Lucas e Marcelo |
-| 9 | A proposta personalizada gravada é um vídeo? Os closers da MecTRIA já fazem isso? | Lucas |
