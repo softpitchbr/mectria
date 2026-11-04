@@ -105,7 +105,7 @@ O hub novo (`hub/`) substitui a versão 0.2 do hub do vendedor (tarefa 45). Espe
 55. [R] Hub novo · fase 3: diagnóstica com ficha, perguntas no painel, anotações e briefing em PDF · feita em 02/11 (revisada e corrigida; decisões do plano aguardando a confirmação do Lucas)
 56. [R] Hub novo · fase 4: reunião de proposta em duas janelas, com pactos, quem está na sala e tempo por bloco · feita em 03/11 (revisada e corrigida; decisões do plano aguardando a confirmação do Lucas)
 57. [R] Hub novo · fase 5: celular como controle da reunião (QR code)
-58. [R] Hub novo · fase 6: números do diretor, Briefings e pendências técnicas de Projetos, cadência de 7 dias, reativação e o hunter conduzindo a diagnóstica · construída em 04/11 (em revisão; para mostrar na reunião de 10/11)
+58. [R] Hub novo · fase 6: números do diretor, Briefings e pendências técnicas de Projetos, cadência de 7 dias, reativação e o hunter conduzindo a diagnóstica · feita em 04/11 (revisada e corrigida; para mostrar na reunião de 10/11)
 59. [R] Sessão de aceite do hub: roleplay de 30 minutos com o Marcelo e dois vendedores
 60. [R] Validar com o Marcelo os modelos de rotina e a meta diária de ligações
 

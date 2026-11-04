@@ -64,5 +64,25 @@ Cada decisão traz o que foi decidido, o porquê e o custo se estiver errada.
 
 ## Revisão final
 
-(a preencher com o resultado da revisão do branch)
+- interrompida — o revisor parou no limite semanal da conta (volta às 21h UTC, 18h de Brasília); retomar o mesmo revisor depois disso.
+- revisor separado (modelo mais capaz), pacote 485a528..ede597e; nenhum crítico, 3 importantes, 9 menores.
+- fixed I1 (a exclusão LGPD contava como decisão: ganha de outubro voltava em novembro, datas do CSV e do tempo médio mudavam, os 45 dias reiniciavam e "Reativar" virava feito) — "apagar dados pessoais não conta como decisão nem mexe na reativação" RED→GREEN, suite app 235/235, api 155/155, e2e 38/38
+- fixed I2 (nomes de quem decide e de quem assina ficavam nas respostas da ficha) — "o briefing de uma oportunidade apagada não mostra o nome" (com a ficha) RED→GREEN, suite 235/235 e 155/155
+- fixed I3 (Projetos recebia o valor fechado e o motivo da perda na ficha) — "Projetos recebe a ficha completa..." com as asserções novas RED→GREEN, suite 235/235 e 155/155
+- fixed M4, regraduado para importante (Projetos via no briefing "Marcar como enviado", que dá 403, e o link para Reuniões, que dá sem acesso) — "Projetos lê o briefing sem a ação de enviar e volta para Briefings" RED→GREEN
+- fixed M1, regraduado para importante (o % da rotina é a meta nova; as ações da reativação não atualizavam a rotina) — "as ações da reativação atualizam a rotina do closer no dia" RED→GREEN
+- Ruling: M2 (diretor e Projetos aparecem na rotina do mês) fica — a meta "cumprir a rotina do dia" é de cada pessoa e todos os cargos têm rotina fixa — custo se errado: duas linhas a mais na lista.
+- minor (deferred): M3 — por closer não soma o total quando o diretor é o closer ou o closer está inativo (falta uma linha "Outros").
+- minor (deferred): M5 — ao trocar o mês, os números do mês anterior ficam na tela até chegar o novo.
+- minor (deferred): M6 — depois de um 409 na reativação, a lista não recarrega e o cartão fica.
+- minor (deferred): M7 — a resposta de uma pendência respondida não pode ser corrigida pela tela (o servidor aceita).
+- minor (deferred): M8 — se os números do Hoje do diretor falham, fica "Carregando os números…" para sempre.
+- minor (deferred): M9 — as abas do Follow-up não têm tabpanel, aria-controls nem navegação por setas.
+- minor (deferred): a mensagem de 403 de acessoReuniao diz "outro closer" para qualquer cargo.
+- Ruling (recusado a julgar pelo revisor): Projetos vê a faixa de orçamento (b-faixa) no briefing — é o desenho da fase 3, e Projetos precisa dela para dimensionar — custo se errado: Projetos vê uma faixa de preço do cliente.
+- Ruling (recusado a julgar): o contato apagado aparece como "Dados apagados (LGPD)" dentro das mensagens prontas — o closer vê que precisa de outro contato — custo se errado: texto estranho numa mensagem que não deve ser enviada.
+- Ruling (recusado a julgar): o tempo médio conta da primeira diagnóstica, então uma reativada inclui o tempo em nutrição — mede o ciclo inteiro do cliente — custo se errado: média mais alta.
+- Ruling (recusado a julgar): Projetos pode abrir pelo endereço o painel de uma diagnóstica em andamento; o servidor recusa as gravações — seguro, só confuso — custo se errado: um aviso de erro para quem digitou o endereço.
+
+Verificação final: typecheck ok; app 235/235; api 155/155; e2e 38/38.
 
