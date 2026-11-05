@@ -275,12 +275,12 @@ As partes adotam como média de referência o faturamento de 2025, de R$ 5.000,0
 ## Anexo IV · Relatório mensal
 
 ### Formato
-O relatório é a planilha **"Relatório mensal · Contrato Triângulo Solutions × MecTRIA"**, fornecida pela CONTRATADA e compartilhada entre as partes (Excel ou Google Sheets). É uma planilha só, atualizada todo mês. Quando o hub comercial estiver em uso, o relatório pode sair dele, com o mesmo conteúdo.
+O relatório é a planilha **"Relatório mensal"** (abas Comece aqui, Vendas, Propostas e Painel), fornecida pela CONTRATADA e compartilhada entre as partes (Excel ou Google Sheets). É uma planilha só, atualizada todo mês. Quando o hub comercial estiver em uso, o relatório pode sair dele, com o mesmo conteúdo.
 
 ### Prazo e envio
 - Até o **dia 5** de cada mês, com os dados do mês anterior.
-- O responsável pelo projeto (cláusula 5.1) atualiza a planilha, marca o "último mês informado" e avisa por e-mail a CONTRATADA (cláusula 13.2).
-- **Mês sem venda também é informado.** Basta marcar o mês e avisar.
+- O responsável pelo projeto (cláusula 5.1) atualiza as abas Vendas e Propostas, marca o mês como fechado no Painel e avisa por e-mail a CONTRATADA (cláusula 13.2).
+- **Mês sem venda também é informado.** Basta fechar o mês no Painel e avisar.
 - Vale do relatório de dezembro de 2026 (até 05/01/2027) até a quitação das parcelas ou até o relatório de dezembro de 2027, o que vier primeiro.
 
 ### Parte 1 · Vendas (define o pagamento)
@@ -294,14 +294,14 @@ Uma linha por proposta apresentada: cliente, serviço, closer, data da apresenta
 | Métrica | Como é calculada | Para que serve |
 |---|---|---|
 | Vendido líquido no mês | Contratos assinados no mês − cancelamentos que descontam | Base do pagamento (Anexo II) |
-| Resultado acumulado e parcelas | Regras do Anexo II, na aba Extrato | Valor a pagar no mês |
+| Resultado acumulado e parcelas | Regras do Anexo II, no Painel | Valor a pagar no mês |
 | Taxa de fechamento | Propostas ganhas ÷ (ganhas + perdidas) decididas no mês | Meta do projeto: de ~25% para 40% |
 | Uso da apresentação nova | Propostas com a apresentação nova ÷ propostas apresentadas no mês | Mostra se o processo está em uso (cláusula 5.5) |
 | Desconto médio | 1 − valor fechado ÷ valor proposto, nas ganhas | Acompanhar o desconto concedido |
 | Ticket médio | Valor fechado ÷ propostas ganhas | Acompanhar o valor por projeto |
 
 ### Extrato e conferência
-- A CONTRATADA confere o relatório e envia o extrato até o dia 10 (Anexo II, regra 5). A própria planilha já mostra o extrato, para as duas partes verem o mesmo número.
+- A CONTRATADA confere o relatório e envia o extrato até o dia 10 (Anexo II, regra 5). O Painel da planilha já mostra o extrato, para as duas partes verem o mesmo número.
 - A CONTRATADA pode pedir cópia dos contratos ou o registro no portal da Brasil Júnior. A CONTRATANTE os envia em até 10 dias.
 - Erro ou omissão corrigido quando apontado não é descumprimento. Só a falta do relatório depois da notificação e do prazo de 15 dias tem a consequência da cláusula 11.3.
 

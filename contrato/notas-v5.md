@@ -1,6 +1,6 @@
 # Notas da minuta v5
 
-Minuta: `minuta-contrato-v5.md`. PDF: `contrato-mectria-minuta-v5.pdf`, gerado com `gerar-pdf.py`; o CPF do interveniente sai em branco. Modelo do relatório mensal: `relatorio-mensal-mectria.xlsx`, gerado com `gerar-relatorio-mensal.py`. As versões anteriores estão no histórico do git.
+Minuta: `minuta-contrato-v5.md`. PDF: `contrato-mectria-minuta-v5.pdf`, gerado com `gerar-pdf.py`; o CPF do interveniente sai em branco. Modelo do relatório mensal: `relatorio-mensal-mectria.xlsx`, gerado com `gerar-relatorio-mensal.py`. Em 05/11 a planilha foi refeita para ficar mais didática, a pedido do Lucas: abas Comece aqui (3 passos), Vendas, Propostas e Painel (cartões do mês, extrato e números comerciais), com as cores do manual da MecTRIA, exemplos sob cada campo e listas de escolha. O mês é fechado escolhendo "Sim" no Painel. As versões anteriores estão no histórico do git.
 
 ## O que mudou da v4 (04/11/2026)
 
