@@ -117,3 +117,7 @@ INSERT INTO reunioes (oportunidade_id, tipo, data_hora, formato, quem_decide)
 VALUES ((SELECT id FROM oportunidades WHERE empresa = 'Molde Atrasado'), 'proposta', date('now', '-3 hours', '+5 days') || 'T15:00', 'online', 'Lia');
 INSERT INTO historico (oportunidade_id, de, para, detalhe, em)
 VALUES ((SELECT id FROM oportunidades WHERE empresa = 'Molde Atrasado'), 'diagnostica_marcada', 'proposta_marcada', 'semente do teste', datetime('now', '-4 days'));
+
+-- Roteiro da demo (docs/18): o briefing da diagnóstica da Caldeiraria Sul já foi para Projetos, para aparecer em Briefings.
+UPDATE reunioes SET briefing_enviado_em = datetime('now', '-4 days')
+WHERE tipo = 'diagnostica' AND oportunidade_id = (SELECT id FROM oportunidades WHERE empresa = 'Caldeiraria Sul');
