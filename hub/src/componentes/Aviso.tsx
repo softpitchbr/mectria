@@ -1,4 +1,5 @@
 import { useSyncExternalStore } from "react";
+import { createPortal } from "react-dom";
 import estilos from "./Aviso.module.css";
 
 const DURACAO = 2400;
@@ -26,13 +27,15 @@ function assinar(ouvinte: () => void) {
 
 export function Avisos() {
   const texto = useSyncExternalStore(assinar, () => atual);
-  return (
+  // Direto no body, como o modo foco: dentro do #raiz o aviso ficaria por baixo do foco.
+  return createPortal(
     <div role="status" aria-live="polite" className={estilos.regiao}>
       {texto && (
         <p key={texto} className={estilos.aviso}>
           {texto}
         </p>
       )}
-    </div>
+    </div>,
+    document.body,
   );
 }

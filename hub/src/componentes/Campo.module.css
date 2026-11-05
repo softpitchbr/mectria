@@ -34,3 +34,43 @@
   border-color: var(--linha-viva);
   box-shadow: 0 0 0 3px var(--luz), 0 0 0 1px var(--vermelho-texto);
 }
+
+.selecao,
+.area {
+  font: inherit;
+  font-size: 15px;
+  border-radius: 9px;
+  border: 1px solid var(--linha);
+  background: var(--fundo);
+  color: var(--texto);
+  transition: border-color var(--rapido) var(--curva), box-shadow var(--rapido) var(--curva);
+}
+
+.selecao {
+  min-height: 40px;
+  padding: 0 34px 0 12px;
+  appearance: none;
+  cursor: pointer;
+  background:
+    linear-gradient(45deg, transparent 50%, var(--suave) 50%) calc(100% - 18px) 50% / 5px 5px no-repeat,
+    linear-gradient(135deg, var(--suave) 50%, transparent 50%) calc(100% - 13px) 50% / 5px 5px no-repeat,
+    var(--fundo);
+}
+
+.area {
+  padding: 10px 12px;
+  resize: vertical;
+  line-height: 1.5;
+}
+
+.selecao:hover,
+.area:hover {
+  border-color: var(--linha-viva);
+}
+
+.selecao:focus,
+.area:focus {
+  outline: none;
+  border-color: var(--linha-viva);
+  box-shadow: 0 0 0 3px var(--luz), 0 0 0 1px var(--vermelho-texto);
+}

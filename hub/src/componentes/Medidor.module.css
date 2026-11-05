@@ -1,0 +1,70 @@
+.medidor {
+  display: grid;
+  gap: 8px;
+}
+
+.cabeca {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  gap: 12px;
+}
+
+.rotulo {
+  font-size: 11px;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--suave);
+}
+
+.texto {
+  font-size: 13px;
+  color: var(--texto);
+}
+
+/* Cota: traços verticais nas pontas e setas, como no desenho técnico. */
+.cota {
+  position: relative;
+  height: 14px;
+  border-left: 1px solid var(--linha-viva);
+  border-right: 1px solid var(--linha-viva);
+}
+
+.trilho {
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: 50%;
+  height: 1px;
+  background: var(--linha-viva);
+}
+
+.trilho::before,
+.trilho::after {
+  content: "";
+  position: absolute;
+  top: -3px;
+  border: 3.5px solid transparent;
+}
+
+.trilho::before {
+  left: 0;
+  border-right: 6px solid var(--linha-viva);
+  border-left: 0;
+}
+
+.trilho::after {
+  right: 0;
+  border-left: 6px solid var(--linha-viva);
+  border-right: 0;
+}
+
+.preenchido {
+  position: absolute;
+  left: 0;
+  top: calc(50% - 2px);
+  height: 4px;
+  border-radius: 2px;
+  background: var(--texto);
+  transition: width var(--medio) var(--curva);
+}

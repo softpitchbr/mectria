@@ -95,6 +95,21 @@ A R começa já, em paralelo com a T, e monta o processo comercial completo no h
 49. [R] Cadência de follow-up das propostas apresentadas
 50. [R] Portfólio da MecTRIA para mandar no WhatsApp (publicar no site com a frente T)
 
+### Tarefas a acrescentar (hub novo, decisões de 01 e 02/11)
+O hub novo (`hub/`) substitui a versão 0.2 do hub do vendedor (tarefa 45). Especificação em `15-hub-template.md`; registro de cada fase em `docs/superpowers/registros/`. O script `supabase/scripts/mectria-progresso-2026-11-02.sql` do ERP acrescenta estas tarefas ao quadro.
+
+51. [R] Especificar o template do hub comercial novo (arquitetura, cargos, modo reunião e visual Prancheta) · feita em 02/11
+52. [R] Hub novo · fase 1 (base): login por e-mail, cargos, navegação, busca Ctrl K, Time e temas claro e escuro · feita em 02/11
+53. [R] Publicar o hub novo nas contas da MecTRIA (Cloudflare, GitHub, login do Access e hub.mectria.com) · aguardando as contas
+54. [R] Hub novo · fase 2: Hoje de cada cargo, Rotinas, Follow-up com atraso e modo foco dos toques · feita em 02/11 (revisada e corrigida)
+55. [R] Hub novo · fase 3: diagnóstica com ficha, perguntas no painel, anotações e briefing em PDF · feita em 02/11 (revisada e corrigida; decisões do plano aguardando a confirmação do Lucas)
+56. [R] Hub novo · fase 4: reunião de proposta em duas janelas, com pactos, quem está na sala e tempo por bloco · feita em 03/11 (revisada e corrigida; decisões do plano aguardando a confirmação do Lucas)
+57. [R] Hub novo · fase 5: celular como controle da reunião (QR code)
+58. [R] Hub novo · fase 6: números do diretor, Briefings e pendências técnicas de Projetos, cadência de 7 dias, reativação e o hunter conduzindo a diagnóstica · feita em 04/11 (revisada e corrigida; para mostrar na reunião de 10/11)
+59. [R] Sessão de aceite do hub: roleplay de 30 minutos com o Marcelo e dois vendedores
+60. [R] Validar com o Marcelo os modelos de rotina e a meta diária de ligações · substituída pelas metas de 04/11 (8 conexões por semana e o % da rotina), a validar em 10/11
+61. [R] Hub novo · fase 7: processo comercial (rotina em blocos com o % do dia, conexão e meta de 8 por semana, cold call novo, observações, FUPs de confirmação, cliente não compareceu e dias na etapa) · feita em 04/11 (revisada e corrigida; para mostrar na reunião de 10/11)
+
 Se a hospedagem recomendada (Cloudflare) for aceita, a tarefa **8** passa a ser "Publicar na hospedagem definitiva, com entrega a partir de São Paulo": nessa opção não há servidor para mudar de região.
 
 ## 3. Anotações · um post-it por bloco

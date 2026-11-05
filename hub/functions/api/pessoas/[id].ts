@@ -1,5 +1,5 @@
 import { podeGerenciarPessoas } from "../../../compartilhado/permissoes";
-import { atualizar, buscarPorId, contarDiretoresAtivos } from "../../../servidor/pessoas";
+import { atualizarProtegendoDiretor, buscarPorId } from "../../../servidor/pessoas";
 import { erro, json } from "../../../servidor/respostas";
 import type { DadosApi, Env } from "../../../servidor/tipos";
 import { lerCorpo, validarMudancas } from "../../../servidor/validacao";
@@ -21,11 +21,7 @@ export const onRequestPatch: PagesFunction<Env, "id", DadosApi> = async ({ reque
     return erro("conflito", "Você não pode desativar o seu próprio acesso.");
   }
 
-  const deixaDeSerDiretor =
-    alvo.cargo === "diretor" && alvo.ativo && (mudancas.ativo === false || (mudancas.cargo !== undefined && mudancas.cargo !== "diretor"));
-  if (deixaDeSerDiretor && (await contarDiretoresAtivos(env.DB)) <= 1) {
-    return erro("ultimo_diretor", "O time precisa de pelo menos um diretor comercial ativo.");
-  }
-
-  return json(await atualizar(env.DB, alvo.id, mudancas));
+  const atualizada = await atualizarProtegendoDiretor(env.DB, alvo.id, mudancas);
+  if (!atualizada) return erro("ultimo_diretor", "O time precisa de pelo menos um diretor comercial ativo.");
+  return json(atualizada);
 };

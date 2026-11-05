@@ -1,17 +1,27 @@
 import { useEffect, useState } from "react";
-import { createBrowserRouter, Link, RouterProvider, useOutletContext, type RouteObject } from "react-router";
+import { createBrowserRouter, Link, Outlet, RouterProvider, useOutletContext, type RouteObject } from "react-router";
 import { podeVer, SECOES, type Secao } from "../compartilhado/permissoes";
 import { Avisos } from "./componentes/Aviso";
 import Botao from "./componentes/Botao";
 import Painel from "./componentes/Painel";
+import PainelDaDiagnostica from "./diagnostica/Painel";
 import { useLuzDoCursor } from "./efeitos/luz";
 import { useEu, type Eu } from "./sessao/useEu";
 import EmConstrucao from "./shell/EmConstrucao";
 import Layout from "./shell/Layout";
 import SemAcesso from "./shell/SemAcesso";
+import Briefing from "./telas/Briefing";
+import FollowUp from "./telas/FollowUp";
+import Playbooks from "./telas/Playbooks";
 import Hoje from "./telas/Hoje";
+import Reunioes from "./telas/Reunioes";
+import Rotinas from "./telas/Rotinas";
 import Time from "./telas/Time";
 import Vitrine from "./telas/Vitrine";
+import JanelaDaApresentacao from "./apresentacao/JanelaDaApresentacao";
+import Apresentacoes from "./telas/Apresentacoes";
+import Briefings from "./telas/Briefings";
+import PainelDaProposta from "./reuniao/PainelDaProposta";
 import estilos from "./App.module.css";
 
 const TITULO = "Hub comercial MecTRIA";
@@ -28,6 +38,12 @@ function PaginaDaSecao({ secao }: { secao: Secao }) {
   if (!podeVer(eu.cargo, secao)) return <SemAcesso secao={info.rotulo} />;
   if (secao === "hoje") return <Hoje eu={eu} />;
   if (secao === "time") return <Time eu={eu} />;
+  if (secao === "followup") return <FollowUp eu={eu} />;
+  if (secao === "rotinas") return <Rotinas eu={eu} />;
+  if (secao === "reunioes") return <Reunioes eu={eu} />;
+  if (secao === "playbooks") return <Playbooks eu={eu} />;
+  if (secao === "apresentacoes") return <Apresentacoes eu={eu} />;
+  if (secao === "briefings") return <Briefings />;
   return <EmConstrucao secao={info.rotulo} fase={info.fase} icone={info.icone} />;
 }
 
@@ -61,7 +77,12 @@ function Raiz() {
       </main>
     );
   }
-  return <Layout eu={sessao.eu} />;
+  return <Outlet context={sessao.eu} />;
+}
+
+/** As telas com as barras do hub (o painel da reunião e o briefing ficam fora). */
+function ComBarras() {
+  return <Layout eu={useOutletContext<Eu>()} />;
 }
 
 function criarRotas(): RouteObject[] {
@@ -71,8 +92,26 @@ function criarRotas(): RouteObject[] {
       : { path: s.caminho.slice(1), element: <PaginaDaSecao secao={s.id} /> },
   );
   const rotas: RouteObject[] = [
-    { path: "/", element: <Raiz />, children: [...secoes, { path: "*", element: <NaoEncontrada /> }] },
+    {
+      path: "/",
+      element: <Raiz />,
+      children: [
+        {
+          element: <ComBarras />,
+          children: [
+            ...secoes,
+            { path: "playbooks/:aba", element: <PaginaDaSecao secao="playbooks" /> },
+            { path: "*", element: <NaoEncontrada /> },
+          ],
+        },
+        { path: "reunioes/:id/diagnostica", element: <PainelDaDiagnostica /> },
+        { path: "reunioes/:id/proposta", element: <PainelDaProposta /> },
+        { path: "reunioes/:id/briefing", element: <Briefing /> },
+      ],
+    },
   ];
+  // A janela do cliente fica fora da Raiz: não chama a API (tudo vem do painel) e nunca mostra aviso de sessão.
+  rotas.unshift({ path: "/apresentacao/:id", element: <JanelaDaApresentacao /> });
   if (import.meta.env.DEV) rotas.unshift({ path: "/vitrine", element: <Vitrine /> });
   return rotas;
 }

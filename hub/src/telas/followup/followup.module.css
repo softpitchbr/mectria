@@ -1,0 +1,159 @@
+.toque {
+  display: grid;
+  gap: 28px;
+  grid-template-columns: minmax(0, 1.3fr) minmax(0, 1fr);
+}
+
+.roteiro,
+.registro,
+.resultado,
+.nova {
+  display: grid;
+  gap: 14px;
+  align-content: start;
+}
+
+.sobre {
+  font-size: 12px;
+  letter-spacing: 0.06em;
+  color: var(--suave);
+}
+
+.mensagem {
+  margin: 0;
+  padding: 16px;
+  border: 1px solid var(--linha);
+  border-left: 2px solid var(--vinho);
+  border-radius: 10px;
+  background: var(--fundo);
+  white-space: pre-wrap;
+  line-height: 1.6;
+}
+
+.acoes {
+  display: flex;
+  gap: 10px;
+}
+
+.dica {
+  font-size: 14px;
+}
+
+.registro {
+  padding-left: 28px;
+  border-left: 1px solid var(--linha);
+}
+
+.registro h3 {
+  font-size: 15px;
+}
+
+.link {
+  justify-self: start;
+  padding: 0;
+  border: 0;
+  background: none;
+  color: var(--suave);
+  font: inherit;
+  font-size: 14px;
+  text-decoration: underline;
+  text-underline-offset: 3px;
+  cursor: pointer;
+}
+
+.link:hover {
+  color: var(--texto);
+}
+
+.erro {
+  color: var(--vermelho-texto);
+  font-size: 14px;
+  font-weight: 500;
+}
+
+.opcoes {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin: 0;
+  padding: 0;
+  border: 0;
+}
+
+.opcoes legend {
+  margin-bottom: 8px;
+  font-size: 13px;
+}
+
+.opcao,
+.opcaoMarcada {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 8px 14px;
+  border: 1px solid var(--linha);
+  border-radius: 10px;
+  background: var(--painel);
+  cursor: pointer;
+}
+
+.opcaoMarcada {
+  border-color: var(--linha-viva);
+  background: var(--fundo);
+  box-shadow: inset 0 0 0 1px var(--linha-viva);
+}
+
+.grade {
+  display: grid;
+  gap: 14px;
+  grid-template-columns: repeat(auto-fill, minmax(min(100%, 220px), 1fr));
+}
+
+@media (max-width: 760px) {
+  .toque {
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  .registro {
+    padding-left: 0;
+    padding-top: 20px;
+    border-left: 0;
+    border-top: 1px solid var(--linha);
+  }
+}
+
+.respostas {
+  display: grid;
+  gap: 8px;
+  margin-top: 8px;
+}
+
+.respostas h3 {
+  margin: 0;
+  font-size: 14px;
+}
+
+.respostas ul {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: grid;
+  gap: 8px;
+}
+
+.respostas p {
+  margin: 0;
+}
+
+.reativar {
+  display: grid;
+  gap: 10px;
+  padding: 14px 16px;
+  border: 1px solid var(--linha);
+  border-radius: 8px;
+  background: var(--painel);
+}
+
+.reativar p {
+  margin: 0;
+}

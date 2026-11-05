@@ -27,6 +27,21 @@ export const PESSOAS = {
   projetos: { id: 4, nome: "Paulo Projetos", email: "pro@mectria.com", cargo: "projetos" },
 } as const;
 
+/** Números do mês sem nada registrado (GET /api/time/numeros). */
+export const NUMEROS_VAZIOS = {
+  mes: "2026-11",
+  propostas: 0,
+  ganhas: 0,
+  perdidas: 0,
+  conversao: null,
+  valorVendido: 0,
+  tempoMedioDias: null,
+  pactosPorReuniao: null,
+  objecoes: [],
+  porCloser: [],
+  rotina: [],
+};
+
 /** Renderiza o app inteiro já no caminho pedido. */
 export function abrir(caminho: string) {
   window.history.replaceState({}, "", caminho);

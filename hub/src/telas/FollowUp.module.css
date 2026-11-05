@@ -1,0 +1,135 @@
+.followup {
+  display: grid;
+  gap: 28px;
+}
+
+.cabeca {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: end;
+  justify-content: space-between;
+  gap: 16px;
+}
+
+.cabeca .mono {
+  margin-top: 6px;
+  font-size: 13px;
+}
+
+.grupo {
+  display: grid;
+  gap: 12px;
+}
+
+.grupo h2 {
+  font-size: 12px;
+  font-weight: 500;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+.lista {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: grid;
+  gap: 12px;
+  grid-template-columns: repeat(auto-fill, minmax(min(100%, 320px), 1fr));
+}
+
+.cartao {
+  width: 100%;
+  display: grid;
+  gap: 6px;
+  padding: 16px 18px;
+  border: 1px solid var(--linha);
+  border-radius: 14px;
+  background: var(--painel);
+  box-shadow: inset 0 1px 0 var(--realce), var(--sombra);
+  color: var(--texto);
+  font: inherit;
+  text-align: left;
+  cursor: pointer;
+  transition: border-color var(--rapido) var(--curva), transform var(--rapido) var(--curva);
+}
+
+.cartao:hover {
+  border-color: var(--linha-viva);
+}
+
+.cartao:active {
+  transform: translateY(1px);
+}
+
+.linhaTopo {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+}
+
+.linhaTopo strong {
+  font-weight: 500;
+  font-size: 16px;
+}
+
+.valor {
+  white-space: nowrap;
+}
+
+.toque {
+  font-size: 13px;
+  color: var(--suave);
+}
+
+.codigo {
+  display: inline-block;
+  padding: 1px 6px;
+  border: 1px solid var(--linha-viva);
+  border-radius: 5px;
+  color: var(--texto);
+}
+
+.vazio {
+  max-width: 560px;
+}
+
+.erro {
+  color: var(--vermelho-texto);
+  font-weight: 500;
+}
+
+.respostaTecnica {
+  font-size: 13px;
+  color: var(--texto);
+  border-left: 2px solid var(--vermelho-texto);
+  padding-left: 8px;
+}
+
+.abas {
+  display: flex;
+  gap: 4px;
+  border-bottom: 1px solid var(--linha);
+}
+
+.aba {
+  border: 0;
+  background: none;
+  color: var(--suave);
+  font: inherit;
+  padding: 8px 14px;
+  border-bottom: 2px solid transparent;
+  margin-bottom: -1px;
+  cursor: pointer;
+}
+
+.aba[aria-selected="true"] {
+  color: var(--texto);
+  border-bottom-color: var(--vermelho-texto);
+}
+
+.aba:focus-visible {
+  outline: 2px solid var(--vermelho-texto);
+  outline-offset: 2px;
+}

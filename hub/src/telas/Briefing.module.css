@@ -1,0 +1,172 @@
+/* O briefing é sempre claro, como tudo o que sai do hub para fora (spec, seção 7). */
+.pagina {
+  min-height: 100vh;
+  display: grid;
+  justify-items: center;
+  gap: 20px;
+  padding: 24px 16px 64px;
+}
+
+.acoes {
+  width: min(210mm, 100%);
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 10px;
+}
+
+.acoes a {
+  margin-right: auto;
+  color: var(--suave);
+  text-underline-offset: 3px;
+}
+
+.folha {
+  width: min(210mm, 100%);
+  min-height: 297mm;
+  padding: 18mm;
+  background: #ffffff;
+  color: #1f1e1c;
+  border-radius: 6px;
+  box-shadow: 0 10px 40px -20px rgba(0, 0, 0, 0.5);
+  font-size: 11pt;
+  line-height: 1.5;
+}
+
+.cabeca {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  padding-bottom: 14px;
+  border-bottom: 2px solid #780000;
+}
+
+.marca {
+  padding: 8px 12px;
+  background: #780000;
+  color: #ffffff;
+  /* Sem isso, o "Salvar como PDF" (sem gráficos de fundo) tira a caixa vinho e o texto branco some. */
+  -webkit-print-color-adjust: exact;
+  print-color-adjust: exact;
+  font-family: "Poppins", sans-serif;
+  font-weight: 600;
+  border-radius: 4px;
+}
+
+.cabeca h1 {
+  font-size: 18pt;
+  color: #1f1e1c;
+}
+
+.cabeca p {
+  color: #6b6762;
+}
+
+.ficha {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+  gap: 10px 16px;
+  margin: 16px 0 8px;
+}
+
+.ficha dt,
+.item dt {
+  font-size: 9pt;
+  color: #6b6762;
+}
+
+.ficha dd {
+  margin: 0;
+  font-weight: 500;
+}
+
+/* A seção pode continuar na página seguinte (uma seção longa não empurra tudo); o que não quebra é cada resposta. */
+.secao {
+  margin-top: 18px;
+}
+
+.secao h2 {
+  font-size: 12pt;
+  color: #780000;
+  border-bottom: 1px solid #e2dfd9;
+  padding-bottom: 4px;
+  margin-bottom: 8px;
+  break-after: avoid;
+}
+
+.item {
+  padding: 6px 0;
+  break-inside: avoid;
+}
+
+.item dd {
+  margin: 2px 0 0;
+  white-space: pre-wrap;
+}
+
+.vazio {
+  margin-top: 24px;
+  color: #6b6762;
+}
+
+.rodape {
+  margin-top: 28px;
+  padding-top: 8px;
+  border-top: 1px solid #e2dfd9;
+  font-size: 8pt;
+  color: #6b6762;
+}
+
+.erro {
+  padding: 24px;
+  color: var(--vermelho-texto);
+}
+
+.lgpd {
+  display: grid;
+  gap: 10px;
+  max-width: 640px;
+  padding: 14px 16px;
+  border: 1px solid var(--vermelho-texto);
+  border-radius: 8px;
+}
+
+.lgpd p {
+  margin: 0;
+}
+
+@media print {
+  .lgpd {
+    display: none;
+  }
+
+  /* A margem fica na página (repete em todas); a folha da tela perde o recuo. */
+  @page {
+    size: A4;
+    margin: 18mm;
+  }
+
+  :global(body) {
+    background: #ffffff !important;
+  }
+
+  :global(body)::before {
+    display: none;
+  }
+
+  .acoes {
+    display: none;
+  }
+
+  .pagina {
+    padding: 0;
+  }
+
+  .folha {
+    width: auto;
+    min-height: auto;
+    padding: 0;
+    box-shadow: none;
+    border-radius: 0;
+  }
+}

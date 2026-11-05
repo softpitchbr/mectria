@@ -1,0 +1,94 @@
+/* O que o cliente vê é sempre claro e segue o manual da MecTRIA (spec, seção 7). Cores fixas: não mudam com o tema.
+   O slide tem 1280 × 720 e o componente aplica a escala (transform), para quebrar as linhas igual em qualquer tamanho. */
+.moldura {
+  position: relative;
+  width: 100%;
+  aspect-ratio: 16 / 9;
+  overflow: hidden;
+}
+
+.slide,
+.capa {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 1280px;
+  height: 720px;
+  transform-origin: 0 0;
+  overflow: hidden;
+  padding: 77px 90px;
+  background: #ffffff;
+  color: #1f1e1c;
+  font-family: "IBM Plex Sans", sans-serif;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  gap: 26px;
+}
+
+.capa {
+  background: #780000;
+  color: #ffffff;
+}
+
+.rotulo {
+  margin: 0;
+  font-family: "IBM Plex Mono", monospace;
+  font-size: 20px;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: #780000;
+}
+
+.capa .rotulo {
+  color: #f2d6d6;
+}
+
+.titulo {
+  margin: 0;
+  font-family: "Poppins", sans-serif;
+  font-weight: 600;
+  font-size: 59px;
+  line-height: 1.15;
+  color: inherit;
+}
+
+.linhas {
+  margin: 13px 0 0;
+  padding: 0;
+  list-style: none;
+  display: grid;
+  gap: 18px;
+  font-size: 28px;
+  line-height: 1.4;
+}
+
+.linhas li {
+  padding-left: 31px;
+  border-left: 5px solid #780000;
+}
+
+.capa .linhas li {
+  border-left-color: #ffffff;
+}
+
+.marca {
+  position: absolute;
+  right: 51px;
+  bottom: 38px;
+  font-family: "Poppins", sans-serif;
+  font-weight: 600;
+  font-size: 18px;
+  color: #780000;
+}
+
+.capa .marca {
+  color: #ffffff;
+}
+
+.falta {
+  background: #fde8e8;
+  color: #b3242a;
+  border-radius: 4px;
+  padding: 0 4px;
+}

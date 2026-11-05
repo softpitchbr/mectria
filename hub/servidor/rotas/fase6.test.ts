@@ -1,0 +1,215 @@
+import { applyD1Migrations, env } from "cloudflare:test";
+import { hojeEmSaoPaulo } from "../../compartilhado/datas";
+import { onRequest } from "../../functions/api/_middleware";
+import { onRequestPost as postResultado } from "../../functions/api/oportunidades/[id]/resultado";
+import { onRequestPost as postAdiar } from "../../functions/api/reativacao/[id]/adiar";
+import { onRequestPost as postPerdida } from "../../functions/api/reativacao/[id]/perdida";
+import { onRequestPost as postReuniao } from "../../functions/api/reativacao/[id]/reuniao";
+import { onRequestGet as getReativacao } from "../../functions/api/reativacao/index";
+import { onRequestGet as getNumerosDoTime } from "../../functions/api/time/numeros";
+import { onRequestGet as getExportar } from "../../functions/api/exportar/[arquivo]";
+import { onRequestPost as postApagar } from "../../functions/api/oportunidades/[id]/apagar-dados-pessoais";
+import { onRequestGet as getBriefings } from "../../functions/api/briefings";
+import { onRequestGet as getFollowup } from "../../functions/api/followup";
+import { onRequestGet as getNumerosMes } from "../../functions/api/numeros/mes";
+import { onRequestPost as postFechar } from "../../functions/api/pendencias/[id]/fechar";
+import { onRequestPost as postResponder } from "../../functions/api/pendencias/[id]/responder";
+import { onRequestGet as getPendencias } from "../../functions/api/pendencias/index";
+import { onRequestPost as postAnotacao } from "../../functions/api/reunioes/[id]/anotacoes";
+import { onRequestPost as postEncerrar } from "../../functions/api/reunioes/[id]/encerrar";
+import { onRequestPost as postIniciar } from "../../functions/api/reunioes/[id]/iniciar";
+import { onRequestGet as getProposta } from "../../functions/api/reunioes/[id]/proposta";
+import { onRequestGet as getFicha } from "../../functions/api/reunioes/[id]";
+import { onRequestPut as putRespostas } from "../../functions/api/reunioes/[id]/respostas";
+import { criarDiagnostica } from "../oportunidades";
+import { registrarProposta } from "../followup";
+import { rotinaDoDia } from "../rotina";
+import { criar } from "../pessoas";
+import type { DadosApi, Env, Pessoa } from "../tipos";
+
+type Manipulador = (contexto: never) => Response | Promise<Response>;
+
+let closer: Pessoa;
+const hoje = hojeEmSaoPaulo();
+
+beforeEach(async () => {
+  await applyD1Migrations(env.DB, env.TEST_MIGRATIONS);
+  for (const t of ["historico", "toques", "propostas", "reunioes", "oportunidades", "rotinas", "ligacoes", "pessoas"]) {
+    await env.DB.exec(`DELETE FROM ${t}`);
+  }
+  await criar(env.DB, { nome: "Diana Diretora", email: "dir@mectria.com", cargo: "diretor" });
+  closer = await criar(env.DB, { nome: "Carlos Closer", email: "clo@mectria.com", cargo: "closer" });
+  await criar(env.DB, { nome: "Clara Closer", email: "clo2@mectria.com", cargo: "closer" });
+  await criar(env.DB, { nome: "Hugo Hunter", email: "hun@mectria.com", cargo: "hunter" });
+  await criar(env.DB, { nome: "Paulo Projetos", email: "pro@mectria.com", cargo: "projetos" });
+});
+
+async function chamar(
+  manipulador: Manipulador,
+  email: string,
+  opcoes: { metodo?: string; corpo?: unknown; params?: Record<string, string>; busca?: string } = {},
+) {
+  const metodo = opcoes.metodo ?? (opcoes.corpo === undefined ? "GET" : "POST");
+  const request = new Request(`http://localhost:8788/api/x${opcoes.busca ?? ""}`, {
+    method: metodo,
+    headers: { "X-Dev-Email": email, "Content-Type": "application/json" },
+    body: opcoes.corpo === undefined ? undefined : JSON.stringify(opcoes.corpo),
+  });
+  const ambiente: Env = { ...env, AMBIENTE: "dev" };
+  const base = { request, env: ambiente, params: opcoes.params ?? {}, data: {} as DadosApi, functionPath: "/api/x", waitUntil() {}, passThroughOnException() {} };
+  const rota = { ...base, next: async () => new Response(null, { status: 404 }) };
+  return onRequest({ ...base, next: async () => manipulador(rota as never) } as never);
+}
+
+const g = (m: unknown) => m as Manipulador;
+const corpo = async <T = Record<string, unknown>>(r: Response) => (await r.json()) as T;
+
+async function propostaEmFollowup(empresa: string): Promise<string> {
+  const { proposta } = await registrarProposta(
+    env.DB,
+    { empresa, contato: "Ana", servico: "climatizacao", valor: 1250000, apresentadaEm: hoje, quemDecide: "Ana" },
+    closer,
+  );
+  return String(proposta.oportunidadeId);
+}
+
+test("rotas da reativação: nutrição com o mês, lista, adia, marca reunião e perde; hunter recebe 403; mês inválido dá 400", async () => {
+  const id = await propostaEmFollowup("Alfa");
+  const params = { id };
+  expect((await chamar(g(postResultado), "clo@mectria.com", { corpo: { resultado: "nutricao", retomarEm: "2020-01-01" }, params })).status).toBe(400);
+  expect((await chamar(g(postResultado), "clo@mectria.com", { corpo: { resultado: "nutricao", retomarEm: `${hoje.slice(0, 7)}-01` }, params })).status).toBe(200);
+
+  const lista = await chamar(g(getReativacao), "clo@mectria.com");
+  expect((await corpo<{ oportunidade: { empresa: string } }[]>(lista)).map((i) => i.oportunidade.empresa)).toEqual(["Alfa"]);
+  expect((await chamar(g(getReativacao), "hun@mectria.com")).status).toBe(403);
+  expect((await chamar(g(getReativacao), "clo2@mectria.com").then((r) => corpo<unknown[]>(r))).length).toBe(0);
+
+  expect((await chamar(g(postAdiar), "clo@mectria.com", { corpo: { retomarEm: "amanhã" }, params })).status).toBe(400);
+  expect((await chamar(g(postAdiar), "clo2@mectria.com", { corpo: { retomarEm: "2099-01-01" }, params })).status).toBe(403);
+  expect((await chamar(g(postAdiar), "clo@mectria.com", { corpo: { retomarEm: "2099-01-01" }, params })).status).toBe(200);
+  expect(await chamar(g(getReativacao), "clo@mectria.com").then((r) => corpo<unknown[]>(r))).toEqual([]);
+
+  expect((await chamar(g(postReuniao), "clo@mectria.com", { corpo: { dataHora: "ontem", formato: "online" }, params })).status).toBe(400);
+  const marcada = await chamar(g(postReuniao), "clo@mectria.com", { corpo: { dataHora: `${hoje}T15:00`, formato: "online" }, params });
+  expect(marcada.status).toBe(201);
+  expect(await corpo(marcada)).toMatchObject({ oportunidade: { situacao: "diagnostica_marcada" }, reuniao: { tipo: "diagnostica" } });
+  expect((await chamar(g(postReuniao), "clo@mectria.com", { corpo: { dataHora: `${hoje}T16:00`, formato: "online" }, params })).status).toBe(409);
+  expect((await chamar(g(postPerdida), "clo@mectria.com", { corpo: { motivo: "Preço" }, params })).status).toBe(409);
+  expect((await chamar(g(postPerdida), "clo@mectria.com", { corpo: { motivo: "Preço" }, params: { id: "999" } })).status).toBe(404);
+});
+
+test("números do time: só o diretor acessa, o mês padrão é o atual e mês inválido dá 400", async () => {
+  expect((await chamar(g(getNumerosDoTime), "clo@mectria.com")).status).toBe(403);
+  expect((await chamar(g(getNumerosDoTime), "pro@mectria.com")).status).toBe(403);
+  const r = await chamar(g(getNumerosDoTime), "dir@mectria.com");
+  expect(r.status).toBe(200);
+  expect(await corpo(r)).toMatchObject({ mes: hoje.slice(0, 7), propostas: 0, conversao: null });
+  expect(await corpo(await chamar(g(getNumerosDoTime), "dir@mectria.com", { busca: "?mes=2026-10" }))).toMatchObject({ mes: "2026-10" });
+  expect((await chamar(g(getNumerosDoTime), "dir@mectria.com", { busca: "?mes=2026-13" })).status).toBe(400);
+});
+
+test("exportações e LGPD: só o diretor; CSV e JSON com o nome do arquivo", async () => {
+  const id = await propostaEmFollowup("Alfa");
+  for (const email of ["clo@mectria.com", "pro@mectria.com", "hun@mectria.com"]) {
+    expect((await chamar(g(getExportar), email, { params: { arquivo: "historico.csv" } })).status).toBe(403);
+    expect((await chamar(g(postApagar), email, { corpo: {}, params: { id } })).status).toBe(403);
+  }
+  const csv = await chamar(g(getExportar), "dir@mectria.com", { params: { arquivo: "historico.csv" }, busca: `?mes=${hoje.slice(0, 7)}` });
+  expect(csv.status).toBe(200);
+  expect(csv.headers.get("Content-Type")).toBe("text/csv; charset=utf-8");
+  expect(csv.headers.get("Content-Disposition")).toBe(`attachment; filename="historico-${hoje.slice(0, 7)}.csv"`);
+  expect(await csv.text()).toContain("Alfa;");
+  expect((await chamar(g(getExportar), "dir@mectria.com", { params: { arquivo: "historico.csv" }, busca: "?mes=2026-13" })).status).toBe(400);
+  const json = await chamar(g(getExportar), "dir@mectria.com", { params: { arquivo: "tudo.json" } });
+  expect(json.headers.get("Content-Disposition")).toBe(`attachment; filename="hub-mectria-${hoje}.json"`);
+  expect(Object.keys((await corpo<{ tabelas: object }>(json)).tabelas)).toContain("oportunidades");
+  expect((await chamar(g(getExportar), "dir@mectria.com", { params: { arquivo: "outro.txt" } })).status).toBe(404);
+
+  expect((await chamar(g(postApagar), "dir@mectria.com", { corpo: {}, params: { id } })).status).toBe(200);
+  expect((await chamar(g(postApagar), "dir@mectria.com", { corpo: {}, params: { id: "999" } })).status).toBe(404);
+});
+
+test("pendências: Projetos lista, responde e fecha; closer não responde; Projetos não acessa follow-up nem números", async () => {
+  const id = await propostaEmFollowup("Alfa");
+  const linha = await env.DB.prepare("INSERT INTO pendencias (oportunidade_id, texto, prazo) VALUES (?, 'Qual a vazão?', ?) RETURNING id").bind(Number(id), hoje).first<{ id: number }>();
+  const params = { id: String(linha!.id) };
+
+  const lista = await chamar(g(getPendencias), "pro@mectria.com");
+  expect(lista.status).toBe(200);
+  expect((await corpo<{ pendencia: { texto: string } }[]>(lista)).map((p) => p.pendencia.texto)).toEqual(["Qual a vazão?"]);
+  expect((await chamar(g(getPendencias), "clo@mectria.com")).status).toBe(403);
+  expect((await chamar(g(getPendencias), "dir@mectria.com")).status).toBe(200);
+
+  expect((await chamar(g(postResponder), "clo@mectria.com", { corpo: { resposta: "3 m³/h" }, params })).status).toBe(403);
+  expect((await chamar(g(postResponder), "pro@mectria.com", { corpo: { resposta: " " }, params })).status).toBe(400);
+  expect((await chamar(g(postFechar), "pro@mectria.com", { corpo: {}, params })).status).toBe(409);
+  const respondida = await chamar(g(postResponder), "pro@mectria.com", { corpo: { resposta: "3 m³/h" }, params });
+  expect(await corpo(respondida)).toMatchObject({ situacao: "respondida", respondidaPor: "Paulo Projetos" });
+  expect((await chamar(g(postFechar), "pro@mectria.com", { corpo: {}, params })).status).toBe(200);
+  expect((await chamar(g(postFechar), "pro@mectria.com", { corpo: {}, params })).status).toBe(409);
+  expect((await chamar(g(postResponder), "pro@mectria.com", { corpo: { resposta: "x" }, params: { id: "999" } })).status).toBe(404);
+
+  expect((await chamar(g(getBriefings), "pro@mectria.com")).status).toBe(200);
+  expect((await chamar(g(getBriefings), "clo@mectria.com")).status).toBe(403);
+  expect((await chamar(g(getFollowup), "pro@mectria.com")).status).toBe(403);
+  expect((await chamar(g(getNumerosMes), "pro@mectria.com")).status).toBe(403);
+  const doCloser = await corpo<{ respostasTecnicas: { resposta: string }[] }[]>(await chamar(g(getFollowup), "clo@mectria.com"));
+  expect(doCloser[0].respostasTecnicas.map((p) => p.resposta)).toEqual(["3 m³/h"]);
+});
+
+test("o hunter que marcou inicia, anota e encerra a diagnóstica; não abre a proposta nem a de outro hunter; o closer dono continua", async () => {
+  const hugo = await env.DB.prepare("SELECT * FROM pessoas WHERE email = 'hun@mectria.com'").first<Pessoa>();
+  const outro = await criar(env.DB, { nome: "Helena Hunter", email: "hun2@mectria.com", cargo: "hunter" });
+  const marcar = (empresa: string, quem: Pessoa) =>
+    criarDiagnostica(env.DB, { empresa, contato: "Ana", telefone: "34999990000", servico: "climatizacao", closerId: closer.id, dataHora: `${hoje}T10:00`, formato: "online" }, quem);
+  const { reuniao } = await marcar("Alfa", hugo!);
+  const params = { id: String(reuniao.id) };
+  expect((await chamar(g(postIniciar), "hun@mectria.com", { corpo: {}, params })).status).toBe(200);
+  const nota = { idCliente: "h-1", minuto: 3, passo: "cl-area", marcacao: "tecnico", texto: "Pé-direito de 9 m" };
+  expect((await chamar(g(postAnotacao), "hun@mectria.com", { corpo: nota, params })).status).toBe(200);
+  expect((await chamar(g(postAnotacao), "hun2@mectria.com", { corpo: { ...nota, idCliente: "h-2" }, params })).status).toBe(403);
+  const encerrou = await chamar(g(postEncerrar), "hun@mectria.com", {
+    corpo: { resultado: "proposta_marcada", dataHora: `${hoje}T16:00`, formato: "online", quemDecide: "Ana (sócia)" },
+    params,
+  });
+  expect(encerrou.status).toBe(200);
+  const proposta = await env.DB.prepare("SELECT id FROM reunioes WHERE tipo = 'proposta' AND oportunidade_id = ?").bind(reuniao.oportunidadeId).first<{ id: number }>();
+  expect((await chamar(g(getProposta), "hun@mectria.com", { params: { id: String(proposta!.id) } })).status).toBe(403);
+  expect((await chamar(g(getProposta), "clo@mectria.com", { params: { id: String(proposta!.id) } })).status).toBe(200);
+
+  const deOutro = await marcar("Beta", outro);
+  expect((await chamar(g(postIniciar), "hun@mectria.com", { corpo: {}, params: { id: String(deOutro.reuniao.id) } })).status).toBe(403);
+  expect((await chamar(g(postIniciar), "clo@mectria.com", { corpo: {}, params: { id: String(deOutro.reuniao.id) } })).status).toBe(200);
+});
+
+test("Projetos recebe a ficha completa da diagnóstica, com as respostas, para ler o briefing", async () => {
+  const hugo = await env.DB.prepare("SELECT * FROM pessoas WHERE email = 'hun@mectria.com'").first<Pessoa>();
+  const { reuniao } = await criarDiagnostica(
+    env.DB,
+    { empresa: "Gama", contato: "Ana", telefone: "34999990000", servico: "climatizacao", closerId: closer.id, dataHora: `${hoje}T10:00`, formato: "online" },
+    hugo!,
+  );
+  const params = { id: String(reuniao.id) };
+  await chamar(g(postIniciar), "hun@mectria.com", { corpo: {}, params });
+  await chamar(g(putRespostas), "hun@mectria.com", { metodo: "PUT", corpo: { respostas: [{ perguntaId: "c-dor", resposta: "calor" }] }, params });
+  await env.DB.prepare("UPDATE oportunidades SET valor_fechado = 900000, motivo_perda = 'Preço' WHERE id = ?").bind(reuniao.oportunidadeId).run();
+  const ficha = await corpo<{ respostas?: Record<string, string>; oportunidade: Record<string, unknown> }>(await chamar(g(getFicha), "pro@mectria.com", { params }));
+  expect(ficha.respostas).toEqual({ "c-dor": "calor" });
+  // Projetos não vê valores (spec, seção 4): o valor fechado e o motivo da perda não saem para Projetos.
+  expect(ficha.oportunidade).not.toHaveProperty("valorFechado");
+  expect(ficha.oportunidade).not.toHaveProperty("motivoPerda");
+  const doCloser = await corpo<{ oportunidade: Record<string, unknown> }>(await chamar(g(getFicha), "clo@mectria.com", { params }));
+  expect(doCloser.oportunidade.valorFechado).toBe(900000);
+  expect((await chamar(g(putRespostas), "pro@mectria.com", { metodo: "PUT", corpo: { respostas: [] }, params })).status).toBe(403);
+});
+
+test("as ações da reativação atualizam a rotina do closer no dia", async () => {
+  const id = await propostaEmFollowup("Rotina");
+  await chamar(g(postResultado), "clo@mectria.com", { corpo: { resultado: "nutricao", retomarEm: `${hoje.slice(0, 7)}-01` }, params: { id } });
+  await rotinaDoDia(env.DB, closer, hoje);
+  const antes = await env.DB.prepare("SELECT feito_em FROM rotinas WHERE pessoa_id = ? AND dia = ? AND chave = ?").bind(closer.id, hoje, `reativar:${id}`).first<{ feito_em: string | null }>();
+  expect(antes?.feito_em).toBeNull();
+  expect((await chamar(g(postAdiar), "clo@mectria.com", { corpo: { retomarEm: "2099-01-01" }, params: { id } })).status).toBe(200);
+  const depois = await env.DB.prepare("SELECT feito_em FROM rotinas WHERE pessoa_id = ? AND dia = ? AND chave = ?").bind(closer.id, hoje, `reativar:${id}`).first<{ feito_em: string | null }>();
+  expect(depois?.feito_em).not.toBeNull();
+});

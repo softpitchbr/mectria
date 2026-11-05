@@ -31,7 +31,7 @@ Desenhado com o Lucas entre 01/11 e 02/11/2026, parte por parte, com aprovação
 | Tema claro e escuro; o escuro é grafite, não preto; a grade técnica fica no fundo de todas as telas | Lucas, 02/11/2026 |
 | Modo reunião em duas formas: duas janelas lado a lado (padrão) e o celular como controle remoto | Lucas, 02/11/2026 |
 | Painel da reunião com anotações livres marcadas (Objeção, Técnico, Escopo, Próximo passo), quem está na sala, tempo por bloco e fechamento obrigatório | Lucas, 02/11/2026 |
-| Interface em React. Roteiros, perguntas, objeções e cadências ficam em arquivos do código; um editor para o diretor fica para depois | Lucas, 02/11/2026 (aprovação da Parte 1) |
+| Interface em React. Roteiros, perguntas, objeções e cadências ficam em arquivos do código; um editor para o diretor fica para depois (os serviços passaram a ser cadastrados pelo diretor em 04/11/2026; ver seção 12) | Lucas, 02/11/2026 (aprovação da Parte 1) |
 
 ## 3. Arquitetura
 
@@ -252,7 +252,7 @@ O plano de implementação segue estas fases, cada uma testável e mostrável so
 
 - **Conteúdo das apresentações:** a diagnóstica, o portfólio e as propostas por serviço, com valor × preço e calculadora. Este template entrega o motor da janela da apresentação e a sincronização.
 - **Revisão do conteúdo dos playbooks e da copy** (Retórica), com as respostas da MecTRIA.
-- **Editor de roteiros** para o diretor mexer sem a Triângulo.
+- **Editor de roteiros** para o diretor mexer sem a Triângulo, **exceto os serviços**: desde 04/11/2026, o diretor cadastra serviços no hub e anexa a cada um a apresentação de proposta em HTML, o roteiro por slide e as perguntas técnicas da diagnóstica (ver `07-decisoes-e-pendencias.md`). Cadências, objeções e playbooks continuam nos arquivos do código.
 - **Integração com o banco de leads** da MecTRIA.
 - **Calculadora ao vivo** no painel.
 

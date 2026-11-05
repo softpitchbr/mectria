@@ -1,0 +1,275 @@
+.colunas {
+  display: grid;
+  gap: 16px;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  align-items: start;
+}
+
+.largo {
+  grid-column: 1 / -1;
+}
+
+.cartaoPrincipal {
+  display: grid;
+  gap: 14px;
+  align-content: start;
+}
+
+.sobre {
+  font-size: 11px;
+  letter-spacing: 0.08em;
+  color: var(--suave);
+}
+
+.subtitulo {
+  margin-bottom: 12px;
+  font-size: 16px;
+}
+
+.total {
+  font-size: 15px;
+}
+
+.total > span:first-child {
+  font-size: 40px;
+  line-height: 1;
+  margin-right: 6px;
+}
+
+.secao {
+  display: grid;
+  gap: 12px;
+}
+
+.empresa {
+  font-size: 22px;
+}
+
+.botoes {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 12px;
+}
+
+.numeros {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 12px;
+  margin: 0;
+}
+
+.numeros dt {
+  font-size: 13px;
+}
+
+.numeros dd {
+  margin: 4px 0 0;
+  font-size: 28px;
+  font-weight: 500;
+}
+
+.lista,
+.atrasados {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: grid;
+}
+
+.lista li {
+  display: grid;
+  grid-template-columns: 120px minmax(0, 1fr) auto;
+  align-items: center;
+  gap: 12px;
+  padding: 10px 0;
+  border-top: 1px solid var(--linha);
+  font-size: 14px;
+}
+
+.lista li:first-child,
+.atrasados li:first-child {
+  border-top: 0;
+}
+
+.lista a {
+  color: var(--texto);
+  text-underline-offset: 3px;
+  text-decoration-color: var(--linha-viva);
+}
+
+.atrasados li {
+  padding: 10px 0;
+  border-top: 1px solid var(--linha);
+  color: var(--vermelho-texto);
+  font-family: "IBM Plex Mono", monospace;
+  font-weight: 500;
+}
+
+.verTodos {
+  display: inline-block;
+  margin-top: 12px;
+  color: var(--suave);
+  font-size: 14px;
+  text-underline-offset: 3px;
+}
+
+/* Bloco de ligações em foco. */
+.bloco {
+  display: grid;
+  grid-template-columns: minmax(0, 1.4fr) minmax(0, 1fr);
+  gap: 28px;
+}
+
+.roteiro {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  display: grid;
+  gap: 16px;
+}
+
+.roteiro li {
+  display: grid;
+  gap: 4px;
+  padding-left: 14px;
+  border-left: 2px solid var(--linha-viva);
+}
+
+.roteiro h3 {
+  font-size: 14px;
+}
+
+.roteiro p {
+  font-size: 14px;
+  line-height: 1.55;
+}
+
+.painelLigacoes {
+  display: grid;
+  gap: 12px;
+  align-content: start;
+  padding-left: 28px;
+  border-left: 1px solid var(--linha);
+}
+
+.meta {
+  font-weight: 500;
+}
+
+.resultados {
+  display: grid;
+  gap: 10px;
+  margin-top: 6px;
+}
+
+.resultado {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  min-height: 52px;
+  padding: 0 16px;
+  border: 1px solid var(--linha);
+  border-radius: 12px;
+  background: var(--painel);
+  color: var(--texto);
+  font: inherit;
+  font-size: 15px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: border-color var(--rapido) var(--curva), transform var(--rapido) var(--curva);
+}
+
+.resultado:hover {
+  border-color: var(--linha-viva);
+}
+
+.resultado:active {
+  transform: translateY(1px);
+}
+
+.resultado kbd {
+  display: inline-grid;
+  place-items: center;
+  width: 24px;
+  height: 24px;
+  border: 1px solid var(--linha-viva);
+  border-radius: 6px;
+  font-size: 12px;
+  color: var(--suave);
+}
+
+.marcou {
+  border-color: var(--linha-viva);
+  background: var(--fundo);
+}
+
+.formulario {
+  display: grid;
+  gap: 16px;
+}
+
+.grade {
+  display: grid;
+  gap: 14px;
+  grid-template-columns: repeat(auto-fill, minmax(min(100%, 220px), 1fr));
+}
+
+.erro {
+  color: var(--vermelho-texto);
+  font-size: 14px;
+  font-weight: 500;
+}
+
+@media (max-width: 900px) {
+  .colunas {
+    grid-template-columns: minmax(0, 1fr);
+  }
+}
+
+@media (max-width: 760px) {
+  .bloco {
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  .painelLigacoes {
+    order: -1;
+    padding-left: 0;
+    border-left: 0;
+  }
+
+  .lista li {
+    grid-template-columns: minmax(0, 1fr) auto;
+  }
+
+  .lista li > :first-child {
+    grid-column: 1 / -1;
+  }
+}
+
+.desvio {
+  border-left: 2px solid var(--linha-viva);
+  padding-left: 10px;
+}
+
+.confirmacao {
+  grid-column: 1 / -1;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 6px;
+}
+
+.confirmada {
+  font-size: 13px;
+  color: var(--texto);
+  border-left: 2px solid var(--vermelho-texto);
+  padding-left: 8px;
+}
+
+.mensagemGrupo {
+  margin: 0;
+  padding: 12px 14px;
+  border: 1px solid var(--linha);
+  border-radius: 6px;
+}

@@ -10,6 +10,9 @@ on:
       - "hub/**"
       - ".github/workflows/hub.yml"
 
+permissions:
+  contents: read
+
 jobs:
   verificar:
     runs-on: ubuntu-latest

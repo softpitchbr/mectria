@@ -1,0 +1,17 @@
+.numero {
+  display: inline-flex;
+  overflow: hidden;
+  font-variant-numeric: tabular-nums;
+}
+
+.entra {
+  display: inline-block;
+  animation: rolar var(--rapido) var(--curva);
+}
+
+@keyframes rolar {
+  from {
+    opacity: 0;
+    transform: translateY(60%);
+  }
+}

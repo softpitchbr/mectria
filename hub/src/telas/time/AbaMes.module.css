@@ -1,0 +1,80 @@
+.mes {
+  display: grid;
+  gap: 20px;
+}
+
+.topo {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: end;
+  gap: 12px;
+}
+
+.seletor {
+  min-width: 220px;
+}
+
+.numeros {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+  gap: 16px;
+  margin: 0;
+}
+
+.numeros dt {
+  font-size: 13px;
+}
+
+.numeros dd {
+  margin: 4px 0 0;
+  font-size: 24px;
+  font-weight: 500;
+}
+
+.subtitulo {
+  margin: 0 0 12px;
+  font-size: 16px;
+}
+
+.tabela {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 14px;
+}
+
+.tabela th,
+.tabela td {
+  padding: 8px 6px;
+  text-align: left;
+  border-bottom: 1px solid var(--linha);
+}
+
+.tabela thead th {
+  font-weight: 500;
+  color: var(--suave);
+}
+
+.lista,
+.objecoes {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: grid;
+  gap: 8px;
+}
+
+.lista li {
+  display: flex;
+  justify-content: space-between;
+  gap: 12px;
+}
+
+.objecoes p {
+  margin: 0;
+}
+
+.baixar {
+  padding: 8px 0;
+  color: var(--texto);
+  text-underline-offset: 3px;
+}

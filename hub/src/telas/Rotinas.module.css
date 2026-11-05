@@ -1,0 +1,249 @@
+.rotinas {
+  display: grid;
+  gap: 28px;
+  max-width: 820px;
+}
+
+.rotinas header {
+  display: grid;
+  gap: 6px;
+}
+
+.hoje {
+  display: grid;
+  gap: 18px;
+}
+
+.checklist {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: grid;
+}
+
+.item {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  padding: 11px 0;
+  border-top: 1px solid var(--linha);
+}
+
+.item:first-child {
+  border-top: 0;
+}
+
+.marca {
+  display: inline-flex;
+  align-items: center;
+  gap: 12px;
+  min-width: 0;
+  cursor: pointer;
+}
+
+.marca input {
+  position: absolute;
+  opacity: 0;
+  width: 1px;
+  height: 1px;
+}
+
+.marca input:focus-visible + .check {
+  outline: 2px solid var(--vermelho-texto);
+  outline-offset: 2px;
+  border-radius: 4px;
+}
+
+.check {
+  flex: none;
+  width: 20px;
+  height: 20px;
+  fill: none;
+  stroke-width: 1.6;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+
+.check rect {
+  stroke: var(--linha-viva);
+  transition: fill var(--rapido) var(--curva), stroke var(--rapido) var(--curva);
+}
+
+.check path {
+  stroke: var(--fundo);
+  stroke-dasharray: 12;
+  stroke-dashoffset: 12;
+  transition: stroke-dashoffset var(--medio) var(--curva);
+}
+
+.check[data-feito="true"] rect {
+  fill: var(--texto);
+  stroke: var(--texto);
+}
+
+/* O check se desenha. */
+.check[data-feito="true"] path {
+  stroke-dashoffset: 0;
+}
+
+.titulo {
+  position: relative;
+  min-width: 0;
+}
+
+.titulo a {
+  color: inherit;
+  text-underline-offset: 3px;
+  text-decoration-color: var(--linha-viva);
+}
+
+/* A linha se fecha sobre o item feito. */
+.titulo::after {
+  content: "";
+  position: absolute;
+  left: 0;
+  top: 52%;
+  height: 1px;
+  width: 0;
+  background: var(--suave);
+  transition: width var(--medio) var(--curva);
+}
+
+.feito .titulo {
+  color: var(--suave);
+}
+
+.feito .titulo::after {
+  width: 100%;
+}
+
+.contagem,
+.sozinho {
+  flex: none;
+  font-size: 12px;
+  color: var(--suave);
+}
+
+.secao {
+  display: grid;
+  gap: 12px;
+}
+
+.secao h2,
+.subtitulo {
+  font-size: 16px;
+}
+
+.subtitulo {
+  margin-bottom: 12px;
+}
+
+.historico,
+.time {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: grid;
+}
+
+.historico li,
+.time li {
+  display: grid;
+  align-items: center;
+  gap: 14px;
+  padding: 10px 0;
+  border-top: 1px solid var(--linha);
+  font-size: 14px;
+}
+
+.historico li {
+  grid-template-columns: 90px minmax(0, 1fr) 48px 80px;
+}
+
+.time li {
+  grid-template-columns: minmax(0, 1.4fr) minmax(0, 1fr) minmax(0, 1.2fr) 48px 96px;
+}
+
+.historico li:first-child,
+.time li:first-child {
+  border-top: 0;
+}
+
+.nome {
+  font-weight: 500;
+}
+
+.segmentos {
+  display: flex;
+  gap: 3px;
+}
+
+.segmento,
+.segmentoFeito {
+  flex: 1;
+  height: 6px;
+  border-radius: 2px;
+  background: var(--linha);
+}
+
+.segmentoFeito {
+  background: var(--texto);
+}
+
+.cumprida {
+  font-size: 12px;
+  font-weight: 500;
+}
+
+.atrasado {
+  color: var(--vermelho-texto);
+  font-weight: 500;
+}
+
+.erro {
+  color: var(--vermelho-texto);
+  font-weight: 500;
+}
+
+@media (max-width: 760px) {
+  .historico li {
+    grid-template-columns: 76px minmax(0, 1fr) 40px;
+  }
+
+  .historico .cumprida {
+    grid-column: 2 / -1;
+  }
+
+  .time li {
+    grid-template-columns: minmax(0, 1fr) auto;
+  }
+}
+
+.blocos {
+  display: grid;
+  gap: 20px;
+}
+
+.bloco {
+  display: grid;
+  gap: 8px;
+}
+
+.cabecaDoBloco {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 12px;
+}
+
+.cabecaDoBloco h3 {
+  margin: 0;
+  font-size: 15px;
+}
+
+.orientacao {
+  margin: 0;
+  font-size: 13px;
+  max-width: 70ch;
+}

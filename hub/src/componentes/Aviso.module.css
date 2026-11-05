@@ -2,7 +2,7 @@
   position: fixed;
   left: 50%;
   bottom: 24px;
-  z-index: 50;
+  z-index: 70; /* acima do modo foco (55) e da busca (60) */
   transform: translateX(-50%);
   pointer-events: none;
 }

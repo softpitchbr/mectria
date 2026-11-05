@@ -12,10 +12,10 @@ async function rotulosDaNavegacao(nome = "Seções") {
     .map((l) => l.getAttribute("aria-label"));
 }
 
-test("hunter vê Hoje, Playbooks e Rotinas e não vê Time", async () => {
+test("hunter vê Hoje, Reuniões, Playbooks e Rotinas e não vê Time", async () => {
   fingirApi({ "/api/eu": { corpo: PESSOAS.hunter } });
   abrir("/");
-  expect(await rotulosDaNavegacao()).toEqual(["Hoje", "Playbooks", "Rotinas"]);
+  expect(await rotulosDaNavegacao()).toEqual(["Hoje", "Reuniões", "Playbooks", "Rotinas"]);
 });
 
 test("diretor vê as 8 seções", async () => {
@@ -39,10 +39,10 @@ test("hunter abrindo /time direto vê que a seção não é do cargo dele", asyn
   expect(await screen.findByText("Seu acesso não inclui Time. Fale com o diretor comercial da MecTRIA.")).toBeInTheDocument();
 });
 
-test("closer abrindo uma seção de fase futura vê quando ela chega", async () => {
-  fingirApi({ "/api/eu": { corpo: PESSOAS.closer } });
-  abrir("/reunioes");
-  expect(await screen.findByText("Reuniões chega na fase 3.")).toBeInTheDocument();
+test("diretor abre a seção Briefings, que chegou na fase 6", async () => {
+  fingirApi({ "/api/eu": { corpo: PESSOAS.diretor }, "GET /api/briefings": { corpo: [] }, "GET /api/pendencias": { corpo: [] } } as never);
+  abrir("/briefings");
+  expect(await screen.findByRole("heading", { name: "Briefings", level: 1 })).toBeInTheDocument();
 });
 
 test("/api/eu respondendo 403 mostra a tela de sem acesso", async () => {

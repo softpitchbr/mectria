@@ -1,6 +1,7 @@
 import { screen, within } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
-import { abrir, fingirApi, PESSOAS } from "../teste/ajuda";
+import { diasDepois, hojeEmSaoPaulo } from "../../compartilhado/datas";
+import { abrir, fingirApi, NUMEROS_VAZIOS, PESSOAS } from "../teste/ajuda";
 
 const LISTA = [
   { ...PESSOAS.closer, ativo: true, criadoEm: "2026-11-02 10:00:00", atualizadoEm: "2026-11-02 10:00:00" },
@@ -122,4 +123,48 @@ test("Esc desiste de renomear sem chamar a API", async () => {
   await userEvent.keyboard("{Escape}");
   expect(screen.queryByRole("textbox", { name: "Novo nome de Vinícius Miguel" })).not.toBeInTheDocument();
   expect(falso.mock.calls.some(([, init]) => init?.method === "PATCH")).toBe(false);
+});
+
+test("a aba Mês troca o mês e relê os números", async () => {
+  let chamadas = 0;
+  const falso = fingirApi({
+    "/api/eu": { corpo: PESSOAS.diretor },
+    "GET /api/pessoas": { corpo: LISTA },
+    "GET /api/time/numeros": () => ({
+      corpo:
+        chamadas++ === 0
+          ? {
+              ...NUMEROS_VAZIOS,
+              propostas: 3,
+              ganhas: 1,
+              perdidas: 1,
+              conversao: 0.5,
+              valorVendido: 1250000,
+              tempoMedioDias: 7,
+              objecoes: [{ texto: "Achei caro", empresa: "Hélice", closer: "Carlos Closer", dia: "2026-11-03" }],
+              porCloser: [{ pessoa: { id: 2, nome: "Carlos Closer", cargo: "closer" }, propostas: 3, ganhas: 1, valorVendido: 1250000 }],
+              rotina: [
+                { pessoa: { id: 2, nome: "Carlos Closer", cargo: "closer" }, feitos: 3, total: 4 },
+                { pessoa: { id: 1, nome: "Hugo Hunter", cargo: "hunter" }, feitos: 0, total: 0 },
+              ],
+            }
+          : { ...NUMEROS_VAZIOS, mes: "2026-10", propostas: 9 },
+    }),
+  });
+  abrir("/time");
+  await userEvent.click(await screen.findByRole("tab", { name: "Mês" }));
+  const porCloser = await screen.findByRole("table", { name: "Números por closer" });
+  expect(porCloser).toHaveTextContent("Carlos Closer");
+  expect(porCloser).toHaveTextContent("R$ 12.500,00");
+  expect(screen.getByRole("list", { name: "Rotina no mês" })).toHaveTextContent("Carlos Closer75%");
+  expect(screen.getByRole("list", { name: "Rotina no mês" })).toHaveTextContent("Hugo Hunternão abriu a rotina");
+  expect(screen.getByRole("list", { name: "Objeções do mês" })).toHaveTextContent("Achei caro");
+
+  // O mês anterior ao atual está sempre na lista dos últimos 12 meses.
+  const anterior = diasDepois(`${hojeEmSaoPaulo().slice(0, 7)}-01`, -1).slice(0, 7);
+  await userEvent.selectOptions(screen.getByRole("combobox", { name: "Mês" }), anterior);
+  await vi.waitFor(() => expect(falso.mock.calls.some(([url]) => String(url).includes(`/api/time/numeros?mes=${anterior}`))).toBe(true));
+  expect(await screen.findByRole("region", { name: "Resumo do mês" })).toHaveTextContent("Propostas9");
+  expect(screen.getByRole("link", { name: "Baixar o histórico do mês (CSV)" })).toHaveAttribute("href", `/api/exportar/historico.csv?mes=${anterior}`);
+  expect(screen.getByRole("link", { name: "Baixar todos os dados (JSON)" })).toHaveAttribute("href", "/api/exportar/tudo.json");
 });
