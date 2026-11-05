@@ -28,7 +28,7 @@ Meta: conversão entre proposta e fechamento de ~25% para **40%**. Kick-off em 0
 | [`docs/17-processo-comercial.md`](docs/17-processo-comercial.md) | Processo comercial em fluxo: o dia do hunter, a confirmação da diagnóstica (FUP 1, 2 e 3) e o que isso muda no hub |
 | [`hub/`](hub/) | Hub comercial novo (React + Cloudflare): login pelo e-mail, navegação por cargo, busca Ctrl K, Time e o sistema visual Prancheta. Fase 1 de 6; como rodar em [`hub/README.md`](hub/README.md) e como publicar em [`hub/IMPLANTACAO.md`](hub/IMPLANTACAO.md) |
 | [`hub-comercial/`](hub-comercial/) | Versão 0.2 do hub do vendedor, a ser substituída pelo `hub/`. O conteúdo de `js/dados/` (GPCTBA, roteiros, objeções, cadências) será reaproveitado. Abrir `index.html` no navegador |
-| [`contrato/`](contrato/) | Minuta do contrato com a MecTRIA, notas das decisões, o PDF para envio e o script que gera o PDF |
+| [`contrato/`](contrato/) | Minuta do contrato com a MecTRIA, notas das decisões, o PDF para envio, o modelo do relatório mensal (`relatorio-mensal-mectria.xlsx`) e os scripts que geram o PDF e a planilha |
 | [`docs/glossario.md`](docs/glossario.md) | Erros da transcrição e termos do projeto |
 | [`docs/reunioes/`](docs/reunioes/) | Resumos e transcrições completas das reuniões |
 | [`referencias/`](referencias/) | Escopo original em PDF, deck institucional da Triângulo, proposta do Marcelo para a cláusula de resultado e, em `referencias/mectria/`, os materiais enviados pela MecTRIA (manual, carta, planilhas e logo) |

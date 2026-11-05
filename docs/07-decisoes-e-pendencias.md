@@ -31,6 +31,7 @@ Atualizar este arquivo sempre que algo for decidido ou resolvido.
 | **Grupos do comercial:** são dois. No Comercial & Projetos, o hunter pergunta se algum projetista pode no horário da diagnóstica; no Comercial, o time troca ideia sobre o lead. O Vinícius Miguel é hunter (não closer) | Resposta de um hunter ao Lucas, 04/11/2026 |
 | **Quem conduz a diagnóstica:** normalmente o hunter com um projetista. No hub, o hunter que marcou abre, conduz e encerra o painel da diagnóstica; a proposta continua com o closer | Resposta da MecTRIA ao Lucas, 04/11/2026 |
 | **Decisões da fase 6 confirmadas** (`docs/superpowers/plans/2026-11-04-hub-fase-6-diretor-projetos.md`): conversão = ganhas ÷ (ganhas + perdidas) do mês, sem a nutrição; valor vendido pela data do ganho; objeções do mês em lista; CSV com colunas genéricas até a planilha do Histórico; só o diretor apaga dados pessoais (LGPD); reativação em 45 dias quando o closer não escolhe o mês; resposta de Projetos no card do follow-up; fase 6 antes da 5. Entram também o % da rotina por pessoa no mês e o hunter conduzindo a diagnóstica. A fase 6 é mostrada na reunião de 10/11 | Lucas, 04/11/2026 |
+| **Relatório mensal definido (proposta ao Marcelo):** uma planilha compartilhada com vendas (definem o pagamento) e propostas (medem o projeto); extrato da Triângulo até o dia 10; contestação até o dia 15; atraso ou erro corrigido em 15 dias sem consequência. Minuta v5, Anexo IV | Pedido do Marcelo (WhatsApp, 03/11/2026); proposta de 04/11/2026, aguardando o ok dele |
 | **Contrato retomado:** contrato social da Triângulo registrado na JUCEMG em 23/10/2026 (NIRE 31218662179). Minuta v4 com o NIRE e a ratificação dos serviços desde o kick-off | Lucas, 25/10/2026 |
 | Contrato pausado até o CNPJ da Triângulo (LTDA) ficar ativo (superado em 25/10) | Lucas, 08/10/2026 |
 | **Kick-off na sexta, 09/10/2026.** Execução de 12/10 a 04/12, acompanhamento de 07/12/2026 a 05/02/2027 | Lucas, 06/10/2026 |
@@ -124,7 +125,7 @@ Manual de identidade visual, Carta de Serviços e planilhas de precificação (2
 - **Descritor do logo** ("Consultoria em Engenharia Mecânica") é diferente da assinatura oficial ("Empresa Júnior de Engenharia Mecânica da UFTM").
 - **Fonte do corpo no site:** o manual usa Calibri, que não é fonte web.
 - **Incentivo de fechamento:** a planilha antiga dava desconto para quem fechava em até 5 dias úteis; a v4 tirou. Decidir com o Marcelo se volta como gatilho do micro pacto de fechamento, respeitando o piso (desconto máximo de ~13%).
-- **Planilha de taxa de fechamento (tarefa 34):** ampliar o Histórico deles em vez de criar outra planilha.
+- **Planilha de taxa de fechamento (tarefa 34):** resolvida pelo relatório mensal do contrato (`contrato/relatorio-mensal-mectria.xlsx`, aba Propostas), em 04/11. O Histórico da MecTRIA continua sendo deles.
 - **Status da planilha v4:** já está em uso? Quem montou?
 - **Apresentação atual (Ap Gallu):** analisada só pelo texto (`13-apresentacao-atual-mectria.md`). Falta o PDF para ver o visual, saber se é o modelo padrão e receber mais 2 ou 3 propostas (uma ganha e uma perdida).
 

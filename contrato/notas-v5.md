@@ -1,8 +1,34 @@
-# Notas da minuta v4
+# Notas da minuta v5
 
-Minuta: `minuta-contrato-v4.md`. PDF: `contrato-mectria-minuta-v4.pdf`, gerado com `gerar-pdf.py`; o CPF do interveniente sai em branco. As versões anteriores estão no histórico do git.
+Minuta: `minuta-contrato-v5.md`. PDF: `contrato-mectria-minuta-v5.pdf`, gerado com `gerar-pdf.py`; o CPF do interveniente sai em branco. Modelo do relatório mensal: `relatorio-mensal-mectria.xlsx`, gerado com `gerar-relatorio-mensal.py`. As versões anteriores estão no histórico do git.
 
-## O que mudou da v3 (25/10/2026)
+## O que mudou da v4 (04/11/2026)
+
+O Marcelo revisou a v4 e respondeu, em 03/11 pelo WhatsApp: "está tudo nos conformes, só temos que ajeitar a questão do relatório para não termos problemas referenciados no contrato; fala pra gente como você quer esse relatório, as métricas etc." A v5 mexe **só no relatório**:
+
+| Onde | Antes (v4) | Agora (v5) |
+|---|---|---|
+| 5.6 | "Registrar todas as propostas na planilha de taxa de fechamento fornecida pela CONTRATADA" | Registrar cada proposta na parte de propostas do relatório (Anexo IV). Proposta esquecida e lançada quando apontada não é descumprimento |
+| 5.7 | "Enviar o relatório mensal de vendas do Anexo II até o dia 5" | Atualizar o relatório no modelo do Anexo IV e avisar por e-mail até o dia 5, **inclusive em mês sem venda**, de dez/2026 até a quitação ou até o relatório de dez/2027 |
+| 11.3 | Notificação + 15 dias para regularizar | Igual, mais: **atraso, erro ou omissão corrigidos nesses 15 dias não geram consequência** |
+| Anexo II, regra 5 | Relatório até o dia 5, pagamento até o dia 15 | Relatório até o dia 5, **extrato da Triângulo até o dia 10**, pagamento até o dia 15 |
+| Anexo II, regra 6 (nova) | — | Contestação do extrato por escrito até o dia 15. A parte não contestada é paga no prazo; a contestada é conferida e, se devida, paga em até 10 dias |
+| Anexo IV (novo) | — | Formato, prazo, as duas partes do relatório (vendas e propostas), as métricas e a conferência |
+| 13.4 | "Este contrato e seus anexos" | Lista os quatro anexos |
+
+**O relatório em uma frase:** uma planilha só, compartilhada. A MecTRIA lança os contratos e as propostas do mês, marca o mês como informado até o dia 5 e avisa por e-mail. A planilha calcula sozinha o resumo e o extrato.
+
+**Separação que protege as duas partes:**
+- A **parte de vendas** define o pagamento.
+- A **parte de propostas** mede o projeto (taxa de fechamento, uso da apresentação nova, desconto, ticket) e não muda o valor de nenhuma parcela.
+
+### Mensagem para o Marcelo
+
+> Marcelo, ajustei o relatório no contrato. É uma planilha só, que a gente compartilha (vai em anexo o modelo). Todo mês, até o dia 5, vocês lançam duas coisas: (1) os contratos assinados no mês, com cliente, serviço, data e valor, e os cancelamentos; (2) as propostas apresentadas, com o valor, se usaram a apresentação nova e o resultado. Mês sem venda é só marcar o mês e avisar. A planilha já calcula o resumo e o extrato das parcelas, então os dois lados veem o mesmo número; eu confiro e mando o extrato até o dia 10, e vocês pagam ou contestam até o dia 15. As propostas servem só para medir o projeto (taxa de fechamento, que a meta é 40%) e não mudam o valor de nenhuma parcela. E deixei escrito que atraso ou erro corrigido em até 15 dias depois do aviso não gera problema nenhum. Está tudo no Anexo IV da versão 5.
+
+## Histórico das versões anteriores
+
+### O que mudou da v3 (25/10/2026)
 - **Contrato social da Triângulo registrado na JUCEMG** em 23/10/2026, com efeitos desde 08/10/2026 (NIRE 31218662179, protocolo 26/711.400-1). Razão social, CNPJ e sede iguais aos da minuta. Os três sócios continuam administrando isoladamente, então o Lucas assina sozinho.
 - O NIRE entrou na qualificação da CONTRATADA.
 - **Cláusula 2.6:** ratifica os serviços prestados desde o kick-off de 09/10/2026, porque o contrato vai ser assinado com a execução já em andamento. **Supõe que o kick-off aconteceu em 09/10. Se foi em outra data, ajustar 2.1, 2.2, 2.6 e o Anexo I.**
