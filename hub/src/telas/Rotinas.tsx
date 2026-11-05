@@ -39,6 +39,7 @@ function LinhaDoItem({ item, aoMarcar }: { item: ItemRotina; aoMarcar: (chave: s
       {item.contagem && (
         <span className={`mono ${estilos.contagem}`}>
           {item.contagem.feitas}/{item.contagem.meta}
+          {item.contagem.rotulo ? ` ${item.contagem.rotulo}` : ""}
         </span>
       )}
       {item.automatico && !item.contagem && <span className={`mono ${estilos.sozinho}`}>marca sozinho</span>}

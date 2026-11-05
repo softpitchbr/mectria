@@ -221,7 +221,7 @@ test("rotina do hunter em 4 blocos: cold call com as conexões da semana, confir
 
   let dia = await rotinaDoDia(env.DB, hunter, "2026-11-16");
   expect(blocos(dia)).toEqual(["conversa", "reagendamentos", "cold-call", "confirmacoes"]);
-  expect(dia.itens.find((i) => i.chave === "cold-call")).toMatchObject({ feito: true, automatico: true, contagem: { feitas: 1, meta: 8 } });
+  expect(dia.itens.find((i) => i.chave === "cold-call")).toMatchObject({ feito: true, automatico: true, contagem: { feitas: 1, meta: 8, rotulo: "conexões na semana" } });
   expect(dia.itens.find((i) => i.chave === `confirmar:${hoje.id}`)).toMatchObject({ titulo: "Confirmar a diagnóstica de Confirma às 15:00", feito: false, bloco: "confirmacoes" });
   expect(dia.itens.find((i) => i.chave === `reagendar:${faltou.oportunidade.id}`)).toMatchObject({ titulo: "Reagendar Faltou", feito: false, bloco: "reagendamentos" });
 

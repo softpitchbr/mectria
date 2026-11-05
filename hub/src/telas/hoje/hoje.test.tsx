@@ -467,7 +467,9 @@ test("Confirmada copia a mensagem do grupo com a empresa e o formato", async () 
 test("o Hoje do hunter reagenda em foco a diagnóstica em que o cliente não compareceu", async () => {
   let enviado: unknown;
   let reagendou = false;
-  const naoVeio = { ...diagnosticaDeHoje({ id: 9, empresa: "Forja Faltosa", situacao: "cancelada", motivo: "Cliente não compareceu", dataHora: "2026-11-03T10:00" }) };
+  const naoVeio = {
+    ...diagnosticaDeHoje({ id: 9, empresa: "Forja Faltosa", situacao: "cancelada", motivo: "Cliente não compareceu", dataHora: "2026-11-03T10:00" }),
+  };
   fingirApi({
     "/api/eu": { corpo: PESSOAS.hunter },
     "GET /api/ligacoes": { corpo: contagem(0, 0, 0) },
@@ -576,4 +578,37 @@ test("marcar a diagnóstica atualiza as conexões do Hoje mesmo sem voltar às l
   await userEvent.click(within(form).getByRole("button", { name: "Marcar diagnóstica" }));
   await screen.findByRole("region", { name: "Mensagem para o Comercial & Projetos" });
   await vi.waitFor(() => expect(leituras()).toBeGreaterThan(antes));
+});
+
+test("uma ligação no singular, e o Hoje mostra o % da rotina", async () => {
+  fingirApi({
+    "/api/eu": { corpo: PESSOAS.hunter },
+    "GET /api/ligacoes": { corpo: contagem(1, 1, 0) },
+    "GET /api/rotina": {
+      corpo: {
+        dia: "2026-11-09",
+        itens: [
+          { chave: "leads-em-conversa", titulo: "Abrir os leads em conversa", origem: "fixo", feito: true, automatico: false },
+          { chave: "cold-call", titulo: "Fazer o bloco de cold call", origem: "fixo", feito: false, automatico: true },
+        ],
+        feitos: 1,
+        total: 2,
+      },
+    },
+    "GET /api/reunioes": { corpo: [] },
+  });
+  abrir("/");
+  expect(await screen.findByText(/1 ligação hoje/)).toBeInTheDocument();
+  expect(screen.getByRole("heading", { name: /Rotina de hoje/ })).toHaveTextContent("50% · 1/2");
+  await userEvent.click(screen.getByRole("button", { name: "Começar o bloco" }));
+  expect(screen.getByRole("dialog", { name: "Bloco de ligações" })).toHaveTextContent("1 ligação hoje");
+});
+
+test("cada FUP mostra a sua hora no botão", async () => {
+  hunterComDiagnostica(diagnosticaDeHoje(), () => diagnosticaDeHoje());
+  abrir("/");
+  const grupo = await screen.findByRole("group", { name: "Confirmação de Usinagem Alfa" });
+  expect(within(grupo).getByRole("button", { name: /FUP 1/ })).toHaveTextContent("FUP 1 · início do dia");
+  expect(within(grupo).getByRole("button", { name: /FUP 2/ })).toHaveTextContent("FUP 2 · 13:00");
+  expect(within(grupo).getByRole("button", { name: /FUP 3/ })).toHaveTextContent("FUP 3 · 14:30");
 });

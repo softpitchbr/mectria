@@ -143,7 +143,7 @@ export interface ItemRotina {
   feito: boolean;
   /** Marca sozinho (ligações, toques): não tem checkbox. */
   automatico: boolean;
-  contagem?: { feitas: number; meta: number };
+  contagem?: { feitas: number; meta: number; /** O que a contagem conta, quando não é óbvio ("conexões na semana"). */ rotulo?: string };
   link?: string;
   /** O bloco de prioridade do item (fase 7). */
   bloco?: string;

@@ -103,7 +103,7 @@ export async function rotinaDoDia(db: D1Database, pessoa: Pessoa, dia: string, p
           origem: "fixo",
           automatico: true,
           feito: c.total >= MINIMO_LIGACOES_DIA,
-          contagem: { feitas: c.conexoesSemana, meta: c.metaConexoesSemana },
+          contagem: { feitas: c.conexoesSemana, meta: c.metaConexoesSemana, rotulo: "conexões na semana" },
         });
       } else if (fixo.automaticoQuandoVazio && leads && (leads[bloco.id] ?? 0) === 0) {
         // Docs/17: se o bloco não tem nenhum lead, a tarefa fica feita. Chave própria, para não deixar a tarefa

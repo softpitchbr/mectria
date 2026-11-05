@@ -134,3 +134,20 @@ test("a rotina aparece em blocos com feitas de total e a orientação; o topo mo
   expect(screen.getByRole("region", { name: "Reativação" })).toHaveTextContent("Nada neste bloco hoje.");
   expect(screen.getByRole("meter", { name: "Rotina de hoje" })).toHaveTextContent("50%");
 });
+
+test("o item de cold call diz que a contagem é de conexões na semana", async () => {
+  fingirApi({
+    "/api/eu": { corpo: PESSOAS.hunter },
+    "GET /api/rotina": {
+      corpo: {
+        dia: "2026-11-16",
+        itens: [item("cold-call", "Fazer o bloco de cold call", true, { automatico: true, contagem: { feitas: 1, meta: 8, rotulo: "conexões na semana" } })],
+        feitos: 1,
+        total: 1,
+      },
+    },
+    "GET /api/rotina/historico": { corpo: [] },
+  });
+  abrir("/rotinas");
+  expect(await screen.findByText("1/8 conexões na semana")).toBeInTheDocument();
+});

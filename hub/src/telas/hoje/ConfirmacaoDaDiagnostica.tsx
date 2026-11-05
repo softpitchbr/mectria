@@ -1,5 +1,6 @@
 import { useState } from "react";
 import { preencherModelo } from "../../../compartilhado/cadencia";
+import { horaDoFup } from "../../../compartilhado/confirmacao";
 import { FUPS_CONFIRMACAO, GRUPO_CONFIRMACAO, MENSAGEM_GRUPO_CONFIRMADA } from "../../../compartilhado/dados/confirmacao";
 import { formatarDia } from "../../../compartilhado/datas";
 import type { Reuniao } from "../../../compartilhado/oportunidade";
@@ -61,7 +62,7 @@ export default function ConfirmacaoDaDiagnostica({ reuniao, eu, aoMudar }: { reu
     <div role="group" aria-label={`Confirmação de ${reuniao.empresa}`} className={estilos.confirmacao}>
       {reuniao.confirmadaEm ? (
         <>
-          <span className={estilos.confirmada}>Confirmada pelo cliente</span>
+          <span className={estilos.confirmada}>✓ Confirmada pelo cliente</span>
           <Botao variante="fantasma" onClick={() => copiar(preencherModelo(MENSAGEM_GRUPO_CONFIRMADA, valores), "Aviso copiado.")}>
             Copiar o aviso do grupo
           </Botao>
@@ -77,7 +78,7 @@ export default function ConfirmacaoDaDiagnostica({ reuniao, eu, aoMudar }: { reu
               aria-label={`FUP ${f.numero}: ${f.quando}${f.numero <= feitos ? " (enviado)" : ""}`}
               onClick={() => mandarFup(f.numero, f.modelo)}
             >
-              FUP {f.numero}
+              FUP {f.numero} · {horaDoFup(f.numero, valores.hora) ?? "início do dia"}
               {f.numero <= feitos ? " ✓" : ""}
             </Botao>
           ))}
