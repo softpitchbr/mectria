@@ -103,7 +103,7 @@ export default function BlocoDeLigacoes({ eu, inicial, aoMudar }: { eu: Eu; inic
       </div>
       <aside className={estilos.painelLigacoes}>
         <p className={estilos.total}>
-          <NumeroRolante valor={contagem.total} /> <span className="suave">ligações hoje</span>
+          <NumeroRolante valor={contagem.total} /> <span className="suave">{contagem.total === 1 ? "ligação" : "ligações"} hoje</span>
         </p>
         <Medidor
           rotulo="Conexões da semana"

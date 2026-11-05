@@ -9,7 +9,7 @@ import Medidor from "../../componentes/Medidor";
 import NumeroRolante from "../../componentes/NumeroRolante";
 import Painel from "../../componentes/Painel";
 import type { Eu } from "../../sessao/useEu";
-import { ChecklistDaRotina, useRotinaDeHoje } from "../Rotinas";
+import { ChecklistDaRotina, percentualDaRotina, useRotinaDeHoje } from "../Rotinas";
 import BlocoDeLigacoes from "./BlocoDeLigacoes";
 import ConfirmacaoDaDiagnostica from "./ConfirmacaoDaDiagnostica";
 import Reagendamentos from "./Reagendamentos";
@@ -53,7 +53,7 @@ export default function HojeHunter({ eu }: { eu: Eu }) {
               texto={`${contagem.conexoesSemana}/${contagem.metaConexoesSemana}`}
             />
             <p className="suave">
-              {contagem.total} ligações hoje · {contagem.naoAtendeu} sem resposta para o WhatsApp
+              {contagem.total} {contagem.total === 1 ? "ligação" : "ligações"} hoje · {contagem.naoAtendeu} sem resposta para o WhatsApp
             </p>
           </>
         )}
@@ -117,7 +117,7 @@ export default function HojeHunter({ eu }: { eu: Eu }) {
           <h2 className={estilos.subtitulo}>
             Rotina de hoje{" "}
             <span className="mono suave">
-              {rotina.dia.feitos}/{rotina.dia.total}
+              {percentualDaRotina(rotina.dia.feitos, rotina.dia.total)} · {rotina.dia.feitos}/{rotina.dia.total}
             </span>
           </h2>
           <ChecklistDaRotina dia={rotina.dia} aoMarcar={rotina.marcar} />

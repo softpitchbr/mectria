@@ -263,7 +263,7 @@
 .confirmada {
   font-size: 13px;
   color: var(--texto);
-  border-left: 2px solid var(--vermelho-texto);
+  border-left: 2px solid var(--texto);
   padding-left: 8px;
 }
 

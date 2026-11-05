@@ -72,3 +72,11 @@ Cada decisão traz o que foi decidido, o porquê e o custo se estiver errada.
 - Ruling (recusado a julgar): a cold message copiada sai com [contato] e [segmento], porque os dados do lead estão no CRM — custo se errado: o hunter completa à mão.
 
 Verificação final: typecheck ok; app 257/257; api 179/179; e2e 42/42.
+
+## Depois do merge (05/11/2026)
+
+Quatro dos menores adiados foram corrigidos antes da reunião de 10/11, cada um com teste antes:
+- "1 ligação hoje" no singular (Hoje do hunter e bloco de ligações);
+- a hora de cada FUP no próprio botão ("FUP 2 · 13:00"; o FUP 1 diz "início do dia"), calculada por `horaDoFup` em `compartilhado/confirmacao.ts`;
+- "Confirmada pelo cliente" com o check e a cor do texto, não o vermelho de alerta;
+- o cold call na rotina mostra "1/8 conexões na semana", e o cabeçalho da rotina no Hoje mostra o % do dia.

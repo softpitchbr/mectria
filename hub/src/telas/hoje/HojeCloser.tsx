@@ -9,7 +9,7 @@ import Medidor from "../../componentes/Medidor";
 import NumeroRolante from "../../componentes/NumeroRolante";
 import Painel from "../../componentes/Painel";
 import Tag from "../../componentes/Tag";
-import { ChecklistDaRotina, useRotinaDeHoje } from "../Rotinas";
+import { ChecklistDaRotina, percentualDaRotina, useRotinaDeHoje } from "../Rotinas";
 import { proximaReuniao, quantoFalta } from "./comum";
 import estilos from "./hoje.module.css";
 
@@ -95,7 +95,7 @@ export default function HojeCloser() {
           <h2 className={estilos.subtitulo}>
             Rotina de hoje{" "}
             <span className="mono suave">
-              {rotina.dia.feitos}/{rotina.dia.total}
+              {percentualDaRotina(rotina.dia.feitos, rotina.dia.total)} · {rotina.dia.feitos}/{rotina.dia.total}
             </span>
           </h2>
           <ChecklistDaRotina dia={rotina.dia} aoMarcar={rotina.marcar} />
