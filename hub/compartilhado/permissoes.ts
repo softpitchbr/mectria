@@ -76,3 +76,10 @@ export function eDonoDaOportunidade(pessoa: { id: number; cargo: Cargo }, closer
 export function podeResponderPendencia(cargo: Cargo): boolean {
   return cargo === "projetos" || cargo === "diretor";
 }
+
+// Fase 8 ------------------------------------------------------------------------
+
+/** Cria e edita os serviços e anexa a apresentação de cada um. */
+export function podeCadastrarServicos(cargo: Cargo): boolean {
+  return cargo === "diretor";
+}
