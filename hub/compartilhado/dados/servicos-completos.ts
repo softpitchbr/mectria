@@ -1,4 +1,6 @@
-// Conteúdo migrado de hub-comercial/js/dados/servicos.js (versão 0.2), sem mudar o texto. Rascunho até a validação com a MecTRIA.
+// A carta de serviços de origem: o conteúdo de hub-comercial/js/dados/servicos.js (versão 0.2), sem mudar o texto.
+// Desde a fase 8 os serviços ficam no banco e o diretor edita no hub; este arquivo é a semente da migração 0008.
+import type { Servico } from "../servico";
 import type { Pergunta } from "./diagnostica";
 
 export interface ServicoCompleto {
@@ -1182,3 +1184,21 @@ export const SERVICOS_COMPLETOS: ServicoCompleto[] = [
     "precificacao": "Sem precificação."
   }
 ];
+
+/** Os 12 da carta no formato do banco (a semente da migração 0008). */
+export function servicosDaCarta(): Servico[] {
+  return SERVICOS_COMPLETOS.map((s) => ({
+    id: s.id,
+    nome: s.nome,
+    sigla: s.sigla,
+    resumo: s.resumo,
+    dores: s.dores,
+    entregamos: s.entregamos,
+    ficaComCliente: s.ficaComCliente,
+    ancoraValor: s.ancoraValor,
+    situacao: s.emEstruturacao ? "em_estruturacao" : "ativo",
+    perguntas: s.perguntas,
+    roteiro: null,
+    apresentacao: null,
+  }));
+}

@@ -4,6 +4,8 @@ export type { Pessoa };
 
 export interface Env {
   DB: D1Database;
+  /** As apresentações em HTML de cada serviço (chave apresentacao/{id}). */
+  APRESENTACOES: KVNamespace;
   AMBIENTE: "dev" | "producao";
   /** Equipe do Cloudflare Access, ex.: "mectria" em mectria.cloudflareaccess.com. */
   ACCESS_EQUIPE?: string;

@@ -14,6 +14,7 @@ export default defineWorkersConfig(async () => {
           miniflare: {
             compatibilityDate: "2025-09-01",
             d1Databases: ["DB"],
+            kvNamespaces: ["APRESENTACOES"],
             bindings: { AMBIENTE: "dev", TEST_MIGRATIONS: migracoes },
           },
         },
