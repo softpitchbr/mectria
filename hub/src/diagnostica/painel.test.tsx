@@ -200,3 +200,17 @@ test("o fechamento manda nao_compareceu", async () => {
   await waitFor(() => expect(window.location.pathname).toBe("/"));
   expect(await screen.findByRole("status")).toHaveTextContent("Reunião cancelada: o cliente não compareceu. Reagende no Hoje.");
 });
+
+test("o painel da diagnóstica usa as perguntas técnicas da ficha, sem as desativadas", async () => {
+  const perguntasDoServico = [
+    { id: "x-area", tipo: "curto", texto: "Qual é a área do galpão?", bloco: "parametros" },
+    { id: "x-velha", tipo: "curto", texto: "Pergunta desativada?", bloco: "escopo", inativa: true },
+  ];
+  api({ "GET /api/reunioes/5": { corpo: { ...FICHA, perguntasDoServico } } });
+  await abrirPainel();
+  await userEvent.keyboard("{ArrowRight}".repeat(25));
+  expect(screen.getByText("Qual é a área do galpão?")).toBeInTheDocument();
+  await userEvent.keyboard("{ArrowRight}");
+  expect(screen.queryByText("Pergunta desativada?")).not.toBeInTheDocument();
+  expect(screen.getByRole("heading", { level: 2 })).toHaveTextContent("Escopo geral");
+});

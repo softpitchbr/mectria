@@ -137,3 +137,15 @@ test("o briefing de uma reunião cancelada mostra que o cliente não compareceu 
   expect(linha).toHaveTextContent("Cliente não compareceu");
   expect(screen.queryByRole("button", { name: "Marcar como enviado para Projetos" })).toBeNull();
 });
+
+test("o briefing mostra a resposta de uma pergunta desativada", async () => {
+  const perguntasDoServico = [{ id: "x-velha", tipo: "curto", texto: "Qual era a pergunta antiga?", bloco: "escopo", inativa: true }];
+  fingirApi({
+    "/api/eu": { corpo: PESSOAS.closer },
+    "GET /api/reunioes/5": { corpo: { ...FICHA, respostas: { ...FICHA.respostas, "x-velha": "Resposta antiga" }, perguntasDoServico } },
+  });
+  abrir("/reunioes/5/briefing");
+  const secao = (await screen.findByRole("heading", { name: "Técnico do serviço" })).closest("section")!;
+  expect(secao).toHaveTextContent("Qual era a pergunta antiga?");
+  expect(secao).toHaveTextContent("Resposta antiga");
+});

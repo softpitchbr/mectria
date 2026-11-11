@@ -2,7 +2,6 @@ import { useEffect, useMemo, useState, type FormEvent } from "react";
 import { ALERTA_CONSTRUCAO_DIAS, diasNaEtapa, etapaDaProposta } from "../../compartilhado/etapa";
 import Tag from "../componentes/Tag";
 import { diasDepois, formatarDia, formatarReais, hojeEmSaoPaulo, lerReais } from "../../compartilhado/datas";
-import { servicosDaCarta } from "../../compartilhado/dados/servicos-completos";
 import type { Reuniao } from "../../compartilhado/oportunidade";
 import {
   faltandoNaProposta,
@@ -22,6 +21,7 @@ import Campo from "../componentes/Campo";
 import Foco from "../componentes/Foco";
 import Painel from "../componentes/Painel";
 import Selecao from "../componentes/Selecao";
+import { opcoesDeServico, useServicos } from "../servicos/servicos";
 import type { Eu } from "../sessao/useEu";
 import { mensagemDe } from "./followup/comum";
 import estilos from "./Apresentacoes.module.css";
@@ -30,6 +30,7 @@ const AINDA_VEM = ["Reunião diagnóstica", "Portfólio", "Uma proposta por serv
 
 /** A preparação da proposta de um cliente, em modo foco: as variáveis que a apresentação usa. */
 function PrepararProposta({ reuniao, aoSalvar }: { reuniao: Reuniao; aoSalvar: () => void }) {
+  const servicos = useServicos();
   const [v, setV] = useState<VariaveisProposta | null>(null);
   const [valor, setValor] = useState("");
   const [erro, setErro] = useState("");
@@ -71,7 +72,7 @@ function PrepararProposta({ reuniao, aoSalvar }: { reuniao: Reuniao; aoSalvar: (
       <p className="mono suave">
         Reunião de {formatarDia(reuniao.dataHora.slice(0, 10))} às {reuniao.dataHora.slice(11, 16)}
       </p>
-      <Selecao rotulo="Serviço" value={v.servico} onChange={mudar("servico")} opcoes={servicosDaCarta().map((s) => ({ valor: s.id, rotulo: s.nome }))} />
+      <Selecao rotulo="Serviço" value={v.servico} onChange={mudar("servico")} opcoes={opcoesDeServico(servicos, v.servico)} />
       <AreaDeTexto rotulo="Escopo incluído" rows={5} maxLength={2000} value={v.escopo} onChange={mudar("escopo")} />
       <AreaDeTexto rotulo="O que fica com o cliente" rows={4} maxLength={2000} value={v.ficaComCliente} onChange={mudar("ficaComCliente")} />
       <div className={estilos.grade}>
@@ -125,8 +126,10 @@ export default function Apresentacoes({ eu: _eu }: { eu: Eu }) {
       .catch((e: unknown) => setErro(mensagemDe(e)));
   }, []);
 
+  const servicos = useServicos();
   const exemplo = useMemo(() => {
-    const climatizacao = servicosDaCarta().find((s) => s.id === "climatizacao") ?? null;
+    // O catálogo de exemplo usa a Climatização cadastrada; sem ela, o nome do serviço fica para completar.
+    const climatizacao = servicos?.find((s) => s.id === "climatizacao") ?? null;
     const { valores, doCliente } = valoresDaProposta({
       oportunidade: { empresa: "Cliente de exemplo", contato: "", servico: "climatizacao" },
       variaveis: variaveisIniciais("climatizacao", climatizacao),
@@ -135,7 +138,7 @@ export default function Apresentacoes({ eu: _eu }: { eu: Eu }) {
       servico: climatizacao,
     });
     return montarSlides(slidesDaProposta(), valores, doCliente);
-  }, []);
+  }, [servicos]);
 
   const paraPreparar = (reunioes ?? []).filter(
     (r) => r.tipo === "proposta" && (r.situacao === "marcada" || r.situacao === "em_andamento") && r.oportunidadeSituacao === "proposta_marcada",
