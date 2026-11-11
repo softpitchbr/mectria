@@ -127,6 +127,7 @@ test.describe("briefing impresso", () => {
           respostas,
           anotacoes: [1, 2, 3].map((n) => ({ idCliente: `a${n}`, minuto: n * 10, passo: "c-dor", marcacao: "tecnico", texto: longa })),
           pendencias: [],
+          perguntasDoServico: [],
         },
       }),
     );

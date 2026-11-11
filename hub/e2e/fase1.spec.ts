@@ -14,10 +14,10 @@ function rotulos(page: Page, nav = "Seções") {
 test.describe("diretor", () => {
   test.use(como("dir@mectria.com"));
 
-  test("vê as 8 seções e adiciona uma pessoa no Time", async ({ page }) => {
+  test("vê as 9 seções e adiciona uma pessoa no Time", async ({ page }) => {
     await page.goto("/");
     await expect(page.getByRole("heading", { level: 1 })).toContainText("Diana");
-    expect(await rotulos(page)).toEqual(["Hoje", "Reuniões", "Follow-up", "Playbooks", "Apresentações", "Rotinas", "Time", "Briefings"]);
+    expect(await rotulos(page)).toEqual(["Hoje", "Reuniões", "Follow-up", "Playbooks", "Apresentações", "Rotinas", "Time", "Briefings", "Serviços"]);
 
     await page.getByRole("navigation", { name: "Seções", exact: true }).getByRole("link", { name: "Time" }).click();
     await expect(page.getByRole("heading", { name: "Time comercial" })).toBeVisible();

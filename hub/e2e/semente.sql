@@ -121,3 +121,20 @@ VALUES ((SELECT id FROM oportunidades WHERE empresa = 'Molde Atrasado'), 'diagno
 -- Roteiro da demo (docs/18): o briefing da diagnóstica da Caldeiraria Sul já foi para Projetos, para aparecer em Briefings.
 UPDATE reunioes SET briefing_enviado_em = datetime('now', '-4 days')
 WHERE tipo = 'diagnostica' AND oportunidade_id = (SELECT id FROM oportunidades WHERE empresa = 'Caldeiraria Sul');
+
+-- Fase 8: os serviços voltam ao que a migração 0008 cadastrou (sem os criados no teste, sem apresentação
+-- própria nem roteiro). "Prensa Nova" (Desenvolvimento de Produto) tem a proposta de hoje com o Carlos,
+-- já preparada, para a reunião com a apresentação em HTML.
+DELETE FROM servicos WHERE ordem > 12;
+UPDATE servicos SET apresentacao = NULL, roteiro = NULL, apresentacao_versao = 0;
+INSERT INTO oportunidades (empresa, contato, telefone, origem, servico, closer_id, situacao)
+VALUES ('Prensa Nova', 'Rui', '34999990020', 'cold call', 'desenvolvimento-de-produto', (SELECT id FROM pessoas WHERE email = 'clo@mectria.com'), 'proposta_marcada');
+INSERT INTO reunioes (oportunidade_id, tipo, data_hora, formato, situacao, resultado, quem_decide, encerrada_em)
+VALUES ((SELECT id FROM oportunidades WHERE empresa = 'Prensa Nova'), 'diagnostica', date('now', '-3 hours', '-4 days') || 'T10:00', 'online', 'concluida', 'proposta_marcada', 'Rui', datetime('now', '-4 days'));
+INSERT INTO fichas (reuniao_id, pergunta_id, resposta)
+VALUES ((SELECT r.id FROM reunioes r JOIN oportunidades o ON o.id = r.oportunidade_id WHERE o.empresa = 'Prensa Nova' AND r.tipo = 'diagnostica'), 'c-dor', 'A prensa manual trava duas vezes por semana');
+INSERT INTO reunioes (oportunidade_id, tipo, data_hora, formato, quem_decide, variaveis)
+VALUES (
+  (SELECT id FROM oportunidades WHERE empresa = 'Prensa Nova'), 'proposta', date('now', '-3 hours') || 'T23:50', 'online', 'Rui',
+  '{"servico":"desenvolvimento-de-produto","escopo":"Modelagem CAD 3D\nDesenhos 2D para fabricação","ficaComCliente":"Fabricação e montagem física","valor":2400000,"parcelas":6,"prazo":"60 dias","condicoes":"","equipe":"Rui e Bia"}'
+);

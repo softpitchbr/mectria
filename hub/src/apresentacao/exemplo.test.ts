@@ -101,3 +101,19 @@ test("o estado com as interações volta a apresentação como estava, e a seta 
   await esperar();
   expect(recebidas.at(-1)).toEqual({ mectria: 1, tipo: "tecla", tecla: "ArrowRight" });
 });
+
+test("a dor do cliente aparece no cartão com a inicial maiúscula", async () => {
+  const { doc, enviar, esperar } = await abrirExemplo();
+  enviar({ ...ESTADO, slide: 5, dados: { ...ESTADO.dados, dor: "a prensa para toda semana" } });
+  await esperar();
+  expect(doc.querySelector('[data-dor="1"]')?.textContent).toBe("A prensa para toda semana");
+});
+
+test("só o slide atual aparece: os outros e as etapas escondidas ficam com display none", async () => {
+  const { doc, janela, enviar, esperar } = await abrirExemplo();
+  enviar({ ...ESTADO, slide: 11 });
+  await esperar();
+  const mostrados = [...doc.querySelectorAll("[data-slide]")].filter((s) => janela.getComputedStyle(s).display !== "none").map((s) => s.getAttribute("data-slide"));
+  expect(mostrados).toEqual(["investimento"]);
+  expect(janela.getComputedStyle(doc.querySelector('[data-etapa="2"]')!).display).toBe("none");
+});

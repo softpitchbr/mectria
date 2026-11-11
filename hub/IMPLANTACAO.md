@@ -26,6 +26,19 @@ Cada comando mostra um `database_id`. No `wrangler.toml`:
 
 A seção de cima, com `database_id = "local"`, é do desenvolvimento e fica como está.
 
+### Apresentações (Workers KV)
+
+As apresentações em HTML de cada serviço ficam no Workers KV (fase 8). Também são duas:
+
+```bash
+npx wrangler kv namespace create hub-mectria-apresentacoes
+npx wrangler kv namespace create hub-mectria-apresentacoes-previa
+```
+
+Cada comando mostra um `id`. No `wrangler.toml`, ele entra no lugar de `PREENCHER` em `[[env.production.kv_namespaces]]` e de `PREENCHER-PREVIA` em `[[env.preview.kv_namespaces]]`. O `id = "local"` de cima é do desenvolvimento.
+
+A exportação completa do diretor (`tudo.json`) leva os serviços, mas não os arquivos HTML: guarde os `.html` enviados numa pasta da MecTRIA.
+
 ## 3. Tabelas
 
 ```bash
@@ -101,6 +114,7 @@ No projeto do Pages: Custom domains → `hub.mectria.com`. Isso depende do acess
 | Pages (o site) | Sem limite de visitas; 500 builds por mês | Não se aplica ao volume da MecTRIA |
 | Workers / Functions (a API) | 100 mil chamadas por dia | Plano pago: US$ 5/mês |
 | D1 (o banco) | 5 milhões de leituras e 100 mil gravações por dia; 5 GB | Plano pago: US$ 5/mês |
+| Workers KV (as apresentações) | 100 mil leituras e 1 mil gravações por dia; 1 GB | Plano pago: US$ 5/mês |
 | Access (o login) | Até 50 pessoas | Cerca de US$ 7/mês por pessoa acima de 50 |
 | Durable Objects (celular como controle, fase 5) | **A confirmar** se entra no grátis | US$ 5/mês (plano pago) |
 

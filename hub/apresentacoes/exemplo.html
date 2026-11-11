@@ -150,10 +150,10 @@
         transition:
           border-color 160ms,
           background 160ms,
-          transform 160ms;
+          box-shadow 160ms;
       }
       .dor:hover {
-        transform: translateY(-2px);
+        box-shadow: 0 6px 18px rgba(31, 30, 28, 0.08);
       }
       .dor[aria-pressed="true"] {
         border-color: var(--vinho);
@@ -234,6 +234,10 @@
       }
       .resultado strong {
         color: var(--vinho);
+      }
+      /* Por último: o display dos slides (flex) venceria o hidden do navegador; o escondido fica escondido de verdade. */
+      [hidden] {
+        display: none !important;
       }
     </style>
   </head>
@@ -438,7 +442,11 @@
         }
 
         function textoDaDor(n) {
-          if (n === 1) return (estado.dados.dor || "").trim() || "[" + ROTULOS.dor + "]";
+          if (n === 1) {
+            // A dor vem no meio da frase (inicial minúscula); no cartão, começa com maiúscula.
+            var dor = (estado.dados.dor || "").trim();
+            return dor ? dor.charAt(0).toUpperCase() + dor.slice(1) : "[" + ROTULOS.dor + "]";
+          }
           var doServico = (estado.dados.doresDoServico || "")
             .split("\n")
             .map(function (d) {
