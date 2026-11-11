@@ -73,3 +73,36 @@
   padding: 12px 0;
   background: var(--fundo);
 }
+
+.enviarArquivo {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  min-height: 40px;
+  padding: 0 16px;
+  border: 1px solid var(--linha);
+  border-radius: 9px;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+.enviarArquivo:focus-within {
+  border-color: var(--linha-viva);
+  box-shadow: 0 0 0 3px var(--luz), 0 0 0 1px var(--vermelho-texto);
+}
+
+/* O input fica por cima do rótulo, invisível: o clique e o teclado continuam nele. */
+.enviarArquivo input {
+  position: absolute;
+  inset: 0;
+  opacity: 0;
+  cursor: pointer;
+}
+
+.confirmacao {
+  display: grid;
+  gap: 10px;
+  padding: 12px 14px;
+  border: 1px solid var(--vermelho-texto);
+  border-radius: 9px;
+}

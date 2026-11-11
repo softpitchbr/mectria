@@ -9,6 +9,7 @@ import Campo from "../../componentes/Campo";
 import Selecao from "../../componentes/Selecao";
 import { recarregarServicos } from "../../servicos/servicos";
 import { mensagemDe } from "../followup/comum";
+import ApresentacaoDoServico from "./ApresentacaoDoServico";
 import { itensDasLinhas, type PerguntaEmEdicao } from "./edicao";
 import EditorDePerguntas from "./EditorDePerguntas";
 import EditorDoRoteiro from "./EditorDoRoteiro";
@@ -155,6 +156,7 @@ export default function EditarServico({ id }: { id: string | null }) {
           </Botao>
         </div>
       </form>
+      {servico && <ApresentacaoDoServico servico={servico} aoMudar={setServico} />}
     </div>
   );
 }

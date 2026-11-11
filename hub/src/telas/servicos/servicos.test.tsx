@@ -1,4 +1,4 @@
-import { screen, waitFor, within } from "@testing-library/react";
+import { act, screen, waitFor, within } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import { servicosDaCarta } from "../../../compartilhado/dados/servicos-completos";
 import { roteiroPadrao } from "../../../compartilhado/proposta";
@@ -149,4 +149,92 @@ test("erro do servidor (409) aparece no formulário", async () => {
   const form = await screen.findByRole("form", { name: "Serviço" });
   await userEvent.click(within(form).getByRole("button", { name: "Salvar" }));
   expect(await within(form).findByRole("alert")).toHaveTextContent("Já existe um serviço com esse nome.");
+});
+
+// A apresentação de proposta do serviço (Task 10) ---------------------------------
+
+const ARQUIVO = { arquivo: "dt.html", bytes: 2048, versao: 2, enviadaEm: "2026-11-11 13:05:00", enviadaPor: "Diana Diretora" };
+const HTML = "<!doctype html><html><body>Proposta</body></html>";
+
+test("enviar um .html manda arquivo e html e mostra a versão nova", async () => {
+  let enviado: Record<string, unknown> | undefined;
+  fingirApi({
+    "/api/eu": { corpo: PESSOAS.diretor },
+    "GET /api/servicos/desenho-tecnico": { corpo: DT },
+    "PUT /api/servicos/desenho-tecnico/apresentacao": (init) => {
+      enviado = corpoDe(init);
+      return { corpo: { ...DT, apresentacao: ARQUIVO } };
+    },
+  });
+  abrir("/servicos/desenho-tecnico");
+  const secao = (await screen.findByRole("heading", { name: "Apresentação de proposta" })).closest("section")!;
+  expect(secao).toHaveTextContent("Sem apresentação própria: a reunião usa a de exemplo.");
+  await userEvent.upload(within(secao).getByLabelText("Enviar apresentação (.html)"), new File([HTML], "dt.html", { type: "text/html" }));
+  await waitFor(() => expect(enviado).toEqual({ arquivo: "dt.html", html: HTML }));
+  await waitFor(() => expect(secao).toHaveTextContent("dt.html · 2 KB · versão 2"));
+  expect(secao).toHaveTextContent("Enviada em 11/11/2026 por Diana Diretora");
+});
+
+test("arquivo de mais de 5 MB é recusado na tela, sem chamar a API", async () => {
+  const falso = fingirApi({ "/api/eu": { corpo: PESSOAS.diretor }, "GET /api/servicos/desenho-tecnico": { corpo: DT } });
+  abrir("/servicos/desenho-tecnico");
+  const secao = (await screen.findByRole("heading", { name: "Apresentação de proposta" })).closest("section")!;
+  const grande = new File([HTML], "grande.html", { type: "text/html" });
+  Object.defineProperty(grande, "size", { value: 5 * 1024 * 1024 + 1 });
+  await userEvent.upload(within(secao).getByLabelText("Enviar apresentação (.html)"), grande);
+  expect(await within(secao).findByRole("alert")).toHaveTextContent("A apresentação passa de 5 MB. Diminua as imagens e envie de novo.");
+  await userEvent.upload(within(secao).getByLabelText("Enviar apresentação (.html)"), new File(["%PDF"], "proposta.pdf", { type: "application/pdf" }), { applyAccept: false });
+  expect(await within(secao).findByRole("alert")).toHaveTextContent("Envie um arquivo .html.");
+  expect(falso.mock.calls.some(([url]) => String(url).endsWith("/apresentacao"))).toBe(false);
+});
+
+test("remover pede confirmação e manda DELETE", async () => {
+  let removeu = false;
+  fingirApi({
+    "/api/eu": { corpo: PESSOAS.diretor },
+    "GET /api/servicos/desenho-tecnico": { corpo: { ...DT, apresentacao: ARQUIVO } },
+    "DELETE /api/servicos/desenho-tecnico/apresentacao": () => {
+      removeu = true;
+      return { corpo: { ...DT, apresentacao: null } };
+    },
+  });
+  abrir("/servicos/desenho-tecnico");
+  const secao = (await screen.findByRole("heading", { name: "Apresentação de proposta" })).closest("section")!;
+  await userEvent.click(within(secao).getByRole("button", { name: "Remover apresentação" }));
+  expect(removeu).toBe(false);
+  expect(within(secao).getByText("Remover a apresentação? As reuniões deste serviço voltam para a de exemplo.")).toBeInTheDocument();
+  await userEvent.click(within(secao).getByRole("button", { name: "Cancelar" }));
+  expect(removeu).toBe(false);
+  await userEvent.click(within(secao).getByRole("button", { name: "Remover apresentação" }));
+  await userEvent.click(within(secao).getByRole("button", { name: "Sim, remover" }));
+  await waitFor(() => expect(secao).toHaveTextContent("Sem apresentação própria: a reunião usa a de exemplo."));
+  expect(removeu).toBe(true);
+});
+
+test("Ver a apresentação abre o iframe do serviço, e Próximo passa o slide", async () => {
+  fingirApi({ "/api/eu": { corpo: PESSOAS.diretor }, "GET /api/servicos/desenho-tecnico": { corpo: { ...DT, apresentacao: ARQUIVO } } });
+  abrir("/servicos/desenho-tecnico");
+  const secao = (await screen.findByRole("heading", { name: "Apresentação de proposta" })).closest("section")!;
+  await userEvent.click(within(secao).getByRole("button", { name: "Ver a apresentação" }));
+  const foco = await screen.findByRole("dialog", { name: "Apresentação · Desenho Técnico" });
+  const iframe = within(foco).getByTitle("Apresentação · Desenho Técnico") as HTMLIFrameElement;
+  expect(iframe.getAttribute("src")).toBe("/api/servicos/desenho-tecnico/apresentacao?v=2");
+  expect(iframe.getAttribute("sandbox")).toBe("allow-scripts");
+  const enviar = vi.spyOn(iframe.contentWindow!, "postMessage");
+  act(() => {
+    window.dispatchEvent(
+      new MessageEvent("message", {
+        data: { mectria: 1, tipo: "pronta", slides: 12, acoes: [{ slide: 0, id: "revelar-preco", rotulo: "Revelar o preço" }], campos: [] },
+        source: iframe.contentWindow,
+      }),
+    );
+  });
+  expect(enviar).toHaveBeenCalledWith(expect.objectContaining({ mectria: 1, tipo: "estado", slide: 0, dados: expect.objectContaining({ empresa: "Cliente de exemplo", servico: "Desenho Técnico" }) }), "*");
+  expect(await within(foco).findByText("Slide 1 de 12")).toBeInTheDocument();
+  expect(within(foco).getByText("A apresentação tem 12 slides e o roteiro tem 13. Ajuste o roteiro em Serviços.")).toBeInTheDocument();
+  await userEvent.click(within(foco).getByRole("button", { name: "Revelar o preço" }));
+  expect(enviar).toHaveBeenCalledWith({ mectria: 1, tipo: "acionar", acao: "revelar-preco" }, "*");
+  await userEvent.click(within(foco).getByRole("button", { name: "Próximo" }));
+  expect(enviar).toHaveBeenCalledWith({ mectria: 1, tipo: "slide", slide: 1 }, "*");
+  expect(within(foco).getByText("Slide 2 de 12")).toBeInTheDocument();
 });

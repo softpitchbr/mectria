@@ -3,6 +3,7 @@ import { ALERTA_CONSTRUCAO_DIAS, diasNaEtapa, etapaDaProposta } from "../../comp
 import Tag from "../componentes/Tag";
 import { diasDepois, formatarDia, formatarReais, hojeEmSaoPaulo, lerReais } from "../../compartilhado/datas";
 import type { Reuniao } from "../../compartilhado/oportunidade";
+import type { Servico } from "../../compartilhado/servico";
 import {
   faltandoNaProposta,
   montarSlides,
@@ -14,6 +15,7 @@ import {
 } from "../../compartilhado/proposta";
 import { api } from "../api/cliente";
 import Slide from "../apresentacao/Slide";
+import VistaDaApresentacao from "../apresentacao/VistaDaApresentacao";
 import AreaDeTexto from "../componentes/AreaDeTexto";
 import { avisar } from "../componentes/Aviso";
 import Botao from "../componentes/Botao";
@@ -26,7 +28,7 @@ import type { Eu } from "../sessao/useEu";
 import { mensagemDe } from "./followup/comum";
 import estilos from "./Apresentacoes.module.css";
 
-const AINDA_VEM = ["Reunião diagnóstica", "Portfólio", "Uma proposta por serviço"];
+const AINDA_VEM = ["Reunião diagnóstica", "Portfólio"];
 
 /** A preparação da proposta de um cliente, em modo foco: as variáveis que a apresentação usa. */
 function PrepararProposta({ reuniao, aoSalvar }: { reuniao: Reuniao; aoSalvar: () => void }) {
@@ -118,6 +120,7 @@ export default function Apresentacoes({ eu: _eu }: { eu: Eu }) {
   const [reunioes, setReunioes] = useState<Reuniao[] | null>(null);
   const [erro, setErro] = useState("");
   const [aberta, setAberta] = useState<{ reuniao: Reuniao; origem: HTMLElement | null } | null>(null);
+  const [vendo, setVendo] = useState<{ servico: Servico; origem: HTMLElement } | null>(null);
 
   useEffect(() => {
     const hoje = hojeEmSaoPaulo();
@@ -187,6 +190,15 @@ export default function Apresentacoes({ eu: _eu }: { eu: Eu }) {
           </div>
         </Painel>
         <div className={estilos.aindaVem}>
+          {(servicos ?? [])
+            .filter((s) => s.apresentacao)
+            .map((s) => (
+              <Painel key={s.id} className={estilos.cartao}>
+                <h3>{s.nome} · apresentação própria</h3>
+                <p className="suave">Versão {s.apresentacao!.versao}, em HTML. Na reunião, a janela do cliente abre esta apresentação.</p>
+                <Botao onClick={(e) => setVendo({ servico: s, origem: e.currentTarget })}>Ver</Botao>
+              </Painel>
+            ))}
           {AINDA_VEM.map((t) => (
             <Painel key={t} className={estilos.cartao}>
               <h3>{t}</h3>
@@ -196,6 +208,11 @@ export default function Apresentacoes({ eu: _eu }: { eu: Eu }) {
         </div>
       </section>
 
+      {vendo && (
+        <Foco titulo={`Apresentação · ${vendo.servico.nome}`} origem={vendo.origem} aoSair={() => setVendo(null)}>
+          <VistaDaApresentacao servico={vendo.servico} />
+        </Foco>
+      )}
       {aberta && (
         <Foco titulo={`Preparar a proposta · ${aberta.reuniao.empresa}`} origem={aberta.origem} aoSair={() => setAberta(null)}>
           <PrepararProposta reuniao={aberta.reuniao} aoSalvar={() => setAberta(null)} />
