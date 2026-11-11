@@ -2,7 +2,10 @@ import { act, screen, within } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import { dataDoD7 } from "../../compartilhado/cadencia";
 import { hojeEmSaoPaulo } from "../../compartilhado/datas";
+import { servicosDaCarta } from "../../compartilhado/dados/servicos-completos";
 import { variaveisIniciais } from "../../compartilhado/proposta";
+
+const CLIMATIZACAO = servicosDaCarta().find((s) => s.id === "climatizacao")!;
 import { abrir, fingirApi, PESSOAS } from "../teste/ajuda";
 import { abrirCanal, type MensagemReuniao } from "./canal";
 
@@ -29,10 +32,11 @@ const REUNIAO = {
 const SESSAO = {
   reuniao: REUNIAO,
   oportunidade: { id: 1, empresa: "Usinagem Alfa", contato: "Ana", servico: "climatizacao", closerId: 2, situacao: "proposta_marcada" },
-  variaveis: { ...variaveisIniciais("climatizacao"), valor: 1250000, prazo: "45 dias", equipe: "Rui e Bia" },
+  variaveis: { ...variaveisIniciais("climatizacao", CLIMATIZACAO), valor: 1250000, prazo: "45 dias", equipe: "Rui e Bia" },
   andamento: { sala: [{ nome: "Bia", decide: true }, { nome: "Ana", decide: false }], pactos: [], tempos: {}, slide: 0 },
   anotacoes: [],
   respostasDaDiagnostica: { "c-dor": "O galpão passa de 38 °C" },
+  servico: CLIMATIZACAO,
 };
 
 function api(extra: Record<string, unknown> = {}) {

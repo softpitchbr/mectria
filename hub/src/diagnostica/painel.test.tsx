@@ -3,6 +3,7 @@ import userEvent from "@testing-library/user-event";
 import { DIAGNOSTICA } from "../../compartilhado/dados/diagnostica";
 import { diasDepois, hojeEmSaoPaulo } from "../../compartilhado/datas";
 import { abrir, fingirApi, PESSOAS } from "../teste/ajuda";
+import { servicosDaCarta } from "../../compartilhado/dados/servicos-completos";
 
 const FICHA = {
   reuniao: {
@@ -26,6 +27,7 @@ const FICHA = {
   respostas: {},
   anotacoes: [],
   pendencias: [],
+  perguntasDoServico: servicosDaCarta().find((s) => s.id === "climatizacao")!.perguntas,
 };
 
 function api(extra: Record<string, unknown> = {}) {

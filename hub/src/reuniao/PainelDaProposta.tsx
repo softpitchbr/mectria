@@ -83,6 +83,7 @@ export default function PainelDaProposta() {
             variaveis: sessao.variaveis,
             respostas: sessao.respostasDaDiagnostica,
             hoje: hojeEmSaoPaulo(),
+            servico: sessao.servico,
           })
         : {
             valores: {} as Record<string, string>,

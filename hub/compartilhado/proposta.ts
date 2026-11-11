@@ -4,9 +4,10 @@ import { VARIAVEIS } from "./dados/cadencia";
 import { DIAGNOSTICA } from "./dados/diagnostica";
 import { EMPRESA } from "./dados/empresa";
 import { PLAYBOOK_PROPOSTA } from "./dados/playbooks";
-import { SERVICOS_COMPLETOS } from "./dados/servicos-completos";
+import type { Interacoes } from "./contrato-apresentacao";
 import type { Anotacao, Respostas } from "./diagnostica";
 import type { Oportunidade, Reuniao } from "./oportunidade";
+import { urlDaApresentacao, type Servico, type SlideDoRoteiro } from "./servico";
 
 export type IdPacto = "agenda" | "dor" | "duvida" | "cliente" | "valor" | "fechamento";
 export const IDS_PACTO: readonly IdPacto[] = PLAYBOOK_PROPOSTA.pactos.map((p) => p.id as IdPacto);
@@ -40,6 +41,8 @@ export interface Andamento {
   pactos: PactoFeito[];
   tempos: Record<string, number>;
   slide: number;
+  /** O que a apresentação em HTML contou (dores, preço, calculadora). Só existe com apresentação própria. */
+  interacoes?: Interacoes;
 }
 
 export type DesfechoProposta = "ganho" | "decidir" | "ajuste" | "perdido";
@@ -57,6 +60,8 @@ export interface SessaoProposta {
   andamento: Andamento;
   anotacoes: Anotacao[];
   respostasDaDiagnostica: Respostas;
+  /** O serviço da proposta (o de variaveis.servico), com o roteiro e a apresentação; null se não existe mais. */
+  servico: Servico | null;
 }
 
 export type Parte = { texto: string; tipo: "texto" | "cliente" | "variavel" | "falta" };
@@ -83,9 +88,8 @@ export interface SlideMontado {
 
 const linhasDe = (itens: readonly string[]) => itens.join("\n");
 
-/** Começo da preparação: escopo e o que fica com o cliente vêm do serviço (Carta de Serviços). */
-export function variaveisIniciais(servicoId: string): VariaveisProposta {
-  const s = SERVICOS_COMPLETOS.find((x) => x.id === servicoId);
+/** Começo da preparação: escopo e o que fica com o cliente vêm do serviço cadastrado. */
+export function variaveisIniciais(servicoId: string, s: Pick<Servico, "entregamos" | "ficaComCliente"> | null): VariaveisProposta {
   return {
     servico: servicoId,
     escopo: s ? linhasDe(s.entregamos) : "",
@@ -108,15 +112,47 @@ export function faltandoNaProposta(v: VariaveisProposta): string[] {
   return falta;
 }
 
-/** "2 min" → 120 s. */
-const segundosDe = (tempo: string) => (Number.parseInt(tempo, 10) || 1) * 60;
+/** "2 min" → 2. */
+const minutosDe = (tempo: string) => Number.parseInt(tempo, 10) || 1;
 
-/** Os 13 slides da apresentação de exemplo, com a fala, a dica, o tempo e o pacto do roteiro. */
-export function slidesDaProposta(): SlideDaProposta[] {
+type PassoDoPlaybook = { fala: string; dica?: string; tempo: string; pacto?: string };
+const passoDe = (id: string | null) => PLAYBOOK_PROPOSTA.passos.find((p) => p.id === id) as PassoDoPlaybook | undefined;
+
+/** O roteiro padrão: os 13 slides da apresentação de exemplo, com a fala, a dica, o pacto e o tempo do playbook. */
+export function roteiroPadrao(): SlideDoRoteiro[] {
+  return APRESENTACAO_EXEMPLO.map((s) => {
+    const passo = passoDe(s.passo);
+    return {
+      id: s.id,
+      titulo: s.titulo,
+      fala: passo?.fala ?? "",
+      ...(passo?.dica ? { dica: passo.dica } : {}),
+      pacto: (passo?.pacto as IdPacto | undefined) ?? null,
+      tempo: passo ? minutosDe(passo.tempo) : 1,
+    };
+  });
+}
+
+/**
+ * Os slides do painel. Sem roteiro, os 13 da apresentação de exemplo (que o hub desenha);
+ * com o roteiro de um serviço, só o título (a apresentação em HTML desenha o resto).
+ */
+export function slidesDaProposta(roteiro?: SlideDoRoteiro[] | null): SlideDaProposta[] {
+  if (roteiro) {
+    return roteiro.map((s, indice) => ({
+      id: s.id,
+      indice,
+      rotulo: "",
+      titulo: s.titulo,
+      linhas: [],
+      fala: s.fala,
+      dica: s.dica,
+      tempoPlanejado: s.tempo * 60,
+      pacto: s.pacto,
+    }));
+  }
   return APRESENTACAO_EXEMPLO.map((s, indice) => {
-    const passo = PLAYBOOK_PROPOSTA.passos.find((p) => p.id === s.passo) as
-      | { fala: string; dica?: string; tempo: string; pacto?: string }
-      | undefined;
+    const passo = passoDe(s.passo);
     return {
       id: s.id,
       indice,
@@ -125,10 +161,29 @@ export function slidesDaProposta(): SlideDaProposta[] {
       linhas: s.linhas,
       fala: passo?.fala ?? "",
       dica: passo?.dica,
-      tempoPlanejado: passo ? segundosDe(passo.tempo) : 60,
+      tempoPlanejado: passo ? minutosDe(passo.tempo) * 60 : 60,
       pacto: (passo?.pacto as IdPacto | undefined) ?? null,
     };
   });
+}
+
+/** Com apresentação própria, o HTML e o roteiro do serviço (ou o padrão); sem ela, a de exemplo. */
+export function apresentacaoDaReuniao(servico: Servico | null): { slides: SlideDaProposta[]; html: string | null } {
+  const html = servico ? urlDaApresentacao(servico) : null;
+  return { slides: html ? slidesDaProposta(servico!.roteiro ?? roteiroPadrao()) : slidesDaProposta(), html };
+}
+
+/** O que vai para a apresentação em HTML: os valores, o valor em centavos e as dores do serviço (CONTRATO.md). */
+export function dadosDaApresentacao(
+  valores: Record<string, string>,
+  variaveis: Pick<VariaveisProposta, "valor">,
+  servico: Pick<Servico, "dores"> | null,
+): Record<string, string> {
+  return {
+    ...valores,
+    ...(variaveis.valor ? { valorCentavos: String(variaveis.valor) } : {}),
+    ...(servico?.dores.length ? { doresDoServico: servico.dores.join("\n") } : {}),
+  };
 }
 
 // Como na 0.2 (hub-comercial/js/base.js): essas respostas entram no meio da frase, com a inicial minúscula.
@@ -155,9 +210,9 @@ export function valoresDaProposta(ctx: {
   variaveis: VariaveisProposta;
   respostas: Respostas;
   hoje: string;
+  servico: Pick<Servico, "nome" | "ancoraValor"> | null;
 }): { valores: Record<string, string>; doCliente: Set<string> } {
-  const { oportunidade, variaveis: v, respostas, hoje } = ctx;
-  const servico = SERVICOS_COMPLETOS.find((s) => s.id === v.servico);
+  const { oportunidade, variaveis: v, respostas, hoje, servico } = ctx;
   const valores: Record<string, string> = {
     contato: oportunidade.contato.trim().split(/\s+/)[0] ?? "",
     empresa: oportunidade.empresa,

@@ -2,7 +2,6 @@ import { hojeEmSaoPaulo, lerReais } from "../compartilhado/datas";
 import { MOTIVOS_PERDA } from "../compartilhado/dados/cadencia";
 import { DIAGNOSTICA, MOTIVOS_NAO_QUALIFICOU, type TipoPergunta } from "../compartilhado/dados/diagnostica";
 import type { Anotacao, Marcacao } from "../compartilhado/diagnostica";
-import { SERVICOS } from "../compartilhado/dados/servicos";
 import {
   CANAIS_DE_TOQUE,
   type FechamentoDiagnostica,
@@ -14,9 +13,9 @@ import {
 import { CARGOS, type Cargo } from "../compartilhado/cargos";
 import { LIMITE_DA_APRESENTACAO, type DadosDoServico, type PerguntaTecnica, type SituacaoServico, type SlideDoRoteiro } from "../compartilhado/servico";
 import { normalizarEmail } from "../compartilhado/texto";
+import { lerInteracoes } from "../compartilhado/contrato-apresentacao";
 import {
   IDS_PACTO,
-  slidesDaProposta,
   type Andamento,
   type FechamentoProposta,
   type IdPacto,
@@ -117,9 +116,10 @@ function valorEmReais(valor: unknown): number | null {
   return centavos !== null && centavos > 0 ? centavos : null;
 }
 
-const servicoValido = (valor: unknown) => SERVICOS.some((s) => s.id === valor);
+/** Os ids aceitos vêm do banco (idsDosServicos): só os vendáveis para oportunidade nova. */
+const servicoValido = (valor: unknown, servicos: ReadonlySet<string>) => typeof valor === "string" && servicos.has(valor);
 
-export function validarNovaDiagnostica(corpo: unknown): Validado<NovaDiagnostica> {
+export function validarNovaDiagnostica(corpo: unknown, servicos: ReadonlySet<string>): Validado<NovaDiagnostica> {
   if (!ehObjeto(corpo)) return { ok: false, mensagem: MENSAGEM.corpo };
   const empresa = textoEntre(corpo.empresa, 2, 120);
   if (!empresa) return { ok: false, mensagem: "Informe a empresa (de 2 a 120 caracteres)." };
@@ -129,7 +129,7 @@ export function validarNovaDiagnostica(corpo: unknown): Validado<NovaDiagnostica
   if (telefone.replace(/\D/g, "").length < 8) return { ok: false, mensagem: "Confira o telefone (com DDD)." };
   const email = typeof corpo.email === "string" ? normalizarEmail(corpo.email) : "";
   if (email && (!FORMATO_EMAIL.test(email) || email.includes(".."))) return { ok: false, mensagem: MENSAGEM.email };
-  if (!servicoValido(corpo.servico)) return { ok: false, mensagem: "Escolha um serviço da lista." };
+  if (!servicoValido(corpo.servico, servicos)) return { ok: false, mensagem: "Escolha um serviço da lista." };
   const closerId = inteiroPositivo(corpo.closerId);
   if (!closerId) return { ok: false, mensagem: "Escolha o closer." };
   if (typeof corpo.dataHora !== "string" || !DIA_E_HORA.test(corpo.dataHora) || Number.isNaN(Date.parse(`${corpo.dataHora}:00-03:00`))) {
@@ -157,13 +157,13 @@ export function validarNovaDiagnostica(corpo: unknown): Validado<NovaDiagnostica
   };
 }
 
-export function validarNovaProposta(corpo: unknown, hoje: string): Validado<NovaProposta> {
+export function validarNovaProposta(corpo: unknown, hoje: string, servicos: ReadonlySet<string>): Validado<NovaProposta> {
   if (!ehObjeto(corpo)) return { ok: false, mensagem: MENSAGEM.corpo };
   const oportunidadeId = corpo.oportunidadeId === undefined || corpo.oportunidadeId === null ? undefined : inteiroPositivo(corpo.oportunidadeId);
   if (oportunidadeId === null) return { ok: false, mensagem: "Oportunidade inválida." };
   const empresa = oportunidadeId ? undefined : textoEntre(corpo.empresa, 2, 120);
   if (empresa === null) return { ok: false, mensagem: "Informe a empresa (de 2 a 120 caracteres)." };
-  if (!servicoValido(corpo.servico)) return { ok: false, mensagem: "Escolha um serviço da lista." };
+  if (!servicoValido(corpo.servico, servicos)) return { ok: false, mensagem: "Escolha um serviço da lista." };
   const valor = valorEmReais(corpo.valor);
   if (!valor) return { ok: false, mensagem: "Informe o valor da proposta em reais (por exemplo, 12.500,00)." };
   if (!diaValido(corpo.apresentadaEm) || corpo.apresentadaEm > hoje) {
@@ -302,14 +302,17 @@ export function validarFechamento(corpo: unknown, hoje: string = hojeEmSaoPaulo(
 
 // Fase 4 ------------------------------------------------------------------------
 
-const IDS_SLIDE = slidesDaProposta().map((s) => s.id);
+/** Os slides vêm do roteiro de cada serviço: o andamento aceita qualquer id de slide (um roteiro editado no meio da reunião não trava a gravação). */
+const ID_DE_SLIDE = /^[a-z0-9-]{1,40}$/;
+const MAXIMO_DE_SLIDES = 60;
 const inteiroEntre = (v: unknown, min: number, max: number): v is number => typeof v === "number" && Number.isInteger(v) && v >= min && v <= max;
 /** Texto que pode ter quebras de linha (escopo, o que fica com o cliente). */
 const textoLivre = (v: unknown, max: number): string | null => (typeof v === "string" && v.length <= max ? v.trim() : null);
 
-export function validarVariaveis(corpo: unknown): Validado<VariaveisProposta> {
+/** servicos: todos os do banco (a proposta de um serviço que ficou inativo continua sendo preparada). */
+export function validarVariaveis(corpo: unknown, servicos: ReadonlySet<string>): Validado<VariaveisProposta> {
   if (!ehObjeto(corpo)) return { ok: false, mensagem: MENSAGEM.corpo };
-  if (typeof corpo.servico !== "string" || !SERVICOS.some((s) => s.id === corpo.servico)) return { ok: false, mensagem: "Escolha um serviço da lista." };
+  if (typeof corpo.servico !== "string" || !servicos.has(corpo.servico)) return { ok: false, mensagem: "Escolha um serviço da lista." };
   const escopo = textoLivre(corpo.escopo, 2000);
   const ficaComCliente = textoLivre(corpo.ficaComCliente, 2000);
   if (escopo === null || ficaComCliente === null) return { ok: false, mensagem: "O escopo e o que fica com o cliente têm até 2.000 caracteres." };
@@ -342,12 +345,17 @@ export function validarAndamento(corpo: unknown): Validado<Andamento> {
     pactos.push({ id: p.id as IdPacto, minuto: p.minuto });
   }
   const tempos: Record<string, number> = {};
-  for (const [id, segundos] of Object.entries(corpo.tempos)) {
-    if (!IDS_SLIDE.includes(id) || !inteiroEntre(segundos, 0, 10_000_000)) return { ok: false, mensagem: "Tempo de slide inválido." };
+  const entradas = Object.entries(corpo.tempos);
+  if (entradas.length > MAXIMO_DE_SLIDES) return { ok: false, mensagem: "Tempo de slide inválido." };
+  for (const [id, segundos] of entradas) {
+    if (!ID_DE_SLIDE.test(id) || !inteiroEntre(segundos, 0, 10_000_000)) return { ok: false, mensagem: "Tempo de slide inválido." };
     tempos[id] = segundos;
   }
-  if (!inteiroEntre(corpo.slide, 0, IDS_SLIDE.length - 1)) return { ok: false, mensagem: "Slide inválido." };
-  return { ok: true, dados: { sala, pactos, tempos, slide: corpo.slide } };
+  if (!inteiroEntre(corpo.slide, 0, MAXIMO_DE_SLIDES - 1)) return { ok: false, mensagem: "Slide inválido." };
+  if (corpo.interacoes === undefined) return { ok: true, dados: { sala, pactos, tempos, slide: corpo.slide } };
+  const interacoes = lerInteracoes(corpo.interacoes);
+  if (!interacoes) return { ok: false, mensagem: "As interações da apresentação vieram inválidas." };
+  return { ok: true, dados: { sala, pactos, tempos, slide: corpo.slide, interacoes } };
 }
 
 export function validarFechamentoProposta(corpo: unknown, hoje: string = hojeEmSaoPaulo()): Validado<FechamentoProposta> {

@@ -1,6 +1,8 @@
 import { screen, within } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import { abrir, fingirApi, PESSOAS } from "../teste/ajuda";
+import { servicosDaCarta } from "../../compartilhado/dados/servicos-completos";
+
 
 const FICHA = {
   reuniao: {
@@ -12,6 +14,7 @@ const FICHA = {
   respostas: { "c-dor": "O galpão passa de 38 °C à tarde", "b-faixa": "Até R$ 30 mil" },
   anotacoes: [{ idCliente: "a", minuto: 12, passo: "x", marcacao: "tecnico", texto: "Pé-direito de 9 m" }],
   pendencias: [],
+  perguntasDoServico: servicosDaCarta().find((s) => s.id === "climatizacao")!.perguntas,
 };
 
 function api(extra: Record<string, unknown> = {}) {

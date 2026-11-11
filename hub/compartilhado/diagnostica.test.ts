@@ -1,10 +1,12 @@
 import { DIAGNOSTICA } from "./dados/diagnostica";
+import { servicosDaCarta } from "./dados/servicos-completos";
 import { briefingDaFicha, resumoDoFechamento, resumoParaCliente, roteiroDaDiagnostica, valoresDasRespostas, type Anotacao } from "./diagnostica";
 
+const perguntasDe = (id: string) => servicosDaCarta().find((s) => s.id === id)!.perguntas;
 const idDe = (chave: string) => DIAGNOSTICA.blocos.flatMap((b) => b.perguntas).find((p) => p.chave === chave)!.id;
 
 test("roteiro de climatização na ordem certa", () => {
-  const grupos = roteiroDaDiagnostica("climatizacao").map((p) => p.grupo);
+  const grupos = roteiroDaDiagnostica(perguntasDe("climatizacao")).map((p) => p.grupo);
   expect(grupos.filter((g) => g === "abertura")).toHaveLength(2);
   expect(grupos.filter((g) => g === "bloco")).toHaveLength(23);
   expect(grupos.filter((g) => g === "tecnica")).toHaveLength(7);
@@ -13,11 +15,11 @@ test("roteiro de climatização na ordem certa", () => {
   // a ordem: abertura, blocos, técnica, escopo, fechamento
   const ordem = [...new Set(grupos)];
   expect(ordem).toEqual(["abertura", "bloco", "tecnica", "escopo", "fechamento"]);
-  expect(roteiroDaDiagnostica("climatizacao")[2]).toMatchObject({ grupo: "bloco", letra: "G" });
+  expect(roteiroDaDiagnostica(perguntasDe("climatizacao"))[2]).toMatchObject({ grupo: "bloco", letra: "G" });
 });
 
 test("serviço sem perguntas técnicas pula direto ao escopo", () => {
-  const grupos = roteiroDaDiagnostica("emissao-de-carbono").map((p) => p.grupo);
+  const grupos = roteiroDaDiagnostica(perguntasDe("emissao-de-carbono")).map((p) => p.grupo);
   expect(grupos).not.toContain("tecnica");
   expect(grupos.indexOf("escopo")).toBe(25);
 });
@@ -49,11 +51,21 @@ test("briefing separa por seção, omite o vazio e traz as anotações técnicas
     { idCliente: "a2", minuto: 15, passo: "x", marcacao: "objecao", texto: "Achou caro o outro orçamento" },
   ];
   const secoes = briefingDaFicha({
-    oportunidade: { servico: "climatizacao" },
     respostas: { [idDe("orcamento")]: "até R$ 30 mil", [idDe("dor")]: "calor" },
     anotacoes,
+    perguntasDoServico: perguntasDe("climatizacao"),
   });
   expect(secoes.map((s) => s.titulo)).toEqual(["Contexto", "Comercial", "Anotações técnicas"]);
   expect(secoes[1].itens[0].resposta).toBe("até R$ 30 mil");
   expect(secoes[2].itens).toEqual([{ pergunta: "Minuto 12", resposta: "Galpão de 800 m², pé-direito de 9 m" }]);
+});
+
+test("a pergunta inativa sai do roteiro e continua no briefing", () => {
+  const perguntas = [
+    { id: "x-area", tipo: "curto" as const, texto: "Qual é a área?", bloco: "parametros" },
+    { id: "x-velha", tipo: "curto" as const, texto: "Pergunta antiga?", bloco: "escopo", inativa: true },
+  ];
+  expect(roteiroDaDiagnostica(perguntas.filter((p) => !p.inativa)).filter((p) => p.grupo === "tecnica").map((p) => p.id)).toEqual(["x-area"]);
+  const secoes = briefingDaFicha({ respostas: { "x-velha": "Sim, 300 m²" }, anotacoes: [], perguntasDoServico: perguntas });
+  expect(secoes).toEqual([{ titulo: "Técnico do serviço", itens: [{ pergunta: "Pergunta antiga?", resposta: "Sim, 300 m²" }] }]);
 });

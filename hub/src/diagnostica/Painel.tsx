@@ -53,7 +53,7 @@ export default function PainelDaDiagnostica() {
     return () => clearInterval(relogio);
   }, [reuniaoId]);
 
-  const roteiro = useMemo(() => (ficha ? roteiroDaDiagnostica(ficha.oportunidade.servico) : []), [ficha]);
+  const roteiro = useMemo(() => (ficha ? roteiroDaDiagnostica(ficha.perguntasDoServico.filter((p) => !p.inativa)) : []), [ficha]);
   const grupos = useMemo(() => [...new Set(roteiro.map(grupoDo))], [roteiro]);
 
   // Volta no mesmo ponto: a primeira pergunta ainda sem resposta (ou a abertura, se nada foi respondido).

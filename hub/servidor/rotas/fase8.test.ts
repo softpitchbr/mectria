@@ -9,6 +9,18 @@ import {
   onRequestPut as putApresentacao,
 } from "../../functions/api/servicos/[id]/apresentacao";
 import { onRequestGet as getServicos, onRequestPost as postServico } from "../../functions/api/servicos/index";
+import { onRequestGet as getExportar } from "../../functions/api/exportar/[arquivo]";
+import { onRequestPost as postOportunidade } from "../../functions/api/oportunidades/index";
+import { onRequestPost as postProposta } from "../../functions/api/propostas";
+import { onRequestGet as getReuniao } from "../../functions/api/reunioes/[id]";
+import { onRequestPut as putAndamento } from "../../functions/api/reunioes/[id]/andamento";
+import { onRequestGet as getProposta } from "../../functions/api/reunioes/[id]/proposta";
+import { onRequestPut as putVariaveis } from "../../functions/api/reunioes/[id]/variaveis";
+import { hojeEmSaoPaulo } from "../../compartilhado/datas";
+import { variaveisIniciais, type SessaoProposta } from "../../compartilhado/proposta";
+import type { FichaCompleta } from "../../compartilhado/oportunidade";
+import { encerrarDiagnostica } from "../diagnostica";
+import { criarDiagnostica } from "../oportunidades";
 import { criar } from "../pessoas";
 import type { DadosApi, Env } from "../tipos";
 
@@ -211,4 +223,92 @@ test("PUT para serviço que não existe dá 404 e não grava no KV", async () =>
   expect(r.status).toBe(404);
   expect(await env.APRESENTACOES.get("apresentacao/nao-existe")).toBeNull();
   expect((await chamar(g(deleteApresentacao), "dir@mectria.com", { metodo: "DELETE", params: { id: "nao-existe" } })).status).toBe(404);
+});
+
+// O serviço do banco na proposta, na diagnóstica e no CSV (Task 5) --------------------
+
+/** Uma diagnóstica de Desenho Técnico concluída, com a proposta marcada para o Carlos. */
+async function propostaDeDesenhoTecnico() {
+  const closer = (await env.DB.prepare("SELECT id, nome, email, cargo, ativo FROM pessoas WHERE email = 'clo@mectria.com'").first<{ id: number }>())!;
+  const hunter = (await env.DB.prepare("SELECT id, nome, email, cargo, ativo FROM pessoas WHERE email = 'hun@mectria.com'").first())! as never;
+  const { reuniao } = await criarDiagnostica(
+    env.DB,
+    { empresa: "Traço Fino", contato: "Rui", telefone: "34999990000", servico: "desenho-tecnico", closerId: closer.id, dataHora: "2026-11-13T10:00", formato: "online" },
+    hunter,
+  );
+  await env.DB.prepare("INSERT INTO fichas (reuniao_id, pergunta_id, resposta) VALUES (?1, 'dt-pecas', '40 peças')").bind(reuniao.id).run();
+  await encerrarDiagnostica(env.DB, reuniao.id, { resultado: "proposta_marcada", dataHora: "2099-11-18T14:00", formato: "online", quemDecide: "Bia" }, closer as never);
+  const p = await env.DB.prepare("SELECT id FROM reunioes WHERE tipo = 'proposta'").first<{ id: number }>();
+  return { diagnostica: { id: String(reuniao.id) }, proposta: { id: String(p!.id) } };
+}
+
+const dtDaCarta = () => servicosDaCarta().find((s) => s.id === "desenho-tecnico")!;
+
+test("a sessão da proposta traz o serviço do banco; editar a âncora muda o serviço da sessão", async () => {
+  const { proposta } = await propostaDeDesenhoTecnico();
+  const antes = await corpo<SessaoProposta>(await chamar(g(getProposta), "clo@mectria.com", { params: proposta }));
+  expect(antes.servico).toMatchObject({ id: "desenho-tecnico", nome: "Desenho Técnico", apresentacao: null, roteiro: null });
+  expect(antes.variaveis.escopo).toContain(dtDaCarta().entregamos[0]);
+  await chamar(g(putServico), "dir@mectria.com", { metodo: "PUT", corpo: { ...dadosDe(dtDaCarta()), ancoraValor: "um escritório de desenho" }, params: { id: "desenho-tecnico" } });
+  const depois = await corpo<SessaoProposta>(await chamar(g(getProposta), "clo@mectria.com", { params: proposta }));
+  expect(depois.servico?.ancoraValor).toBe("um escritório de desenho");
+});
+
+test("andamento com interações é gravado e volta na sessão", async () => {
+  const { proposta } = await propostaDeDesenhoTecnico();
+  const interacoes = { dores: ["Desenho desatualizado"], precoEtapa: 2, calculadora: { "horas-paradas": 10 } };
+  const andamento = { sala: [{ nome: "Bia", decide: true }], pactos: [], tempos: { capa: 5 }, slide: 3, interacoes };
+  expect((await chamar(g(putAndamento), "clo@mectria.com", { metodo: "PUT", corpo: andamento, params: proposta })).status).toBe(200);
+  const sessao = await corpo<SessaoProposta>(await chamar(g(getProposta), "clo@mectria.com", { params: proposta }));
+  expect(sessao.andamento).toEqual(andamento);
+  const ruim = { ...andamento, interacoes: { dores: Array.from({ length: 21 }, (_, i) => `D${i}`), precoEtapa: 0, calculadora: {} } };
+  expect((await chamar(g(putAndamento), "clo@mectria.com", { metodo: "PUT", corpo: ruim, params: proposta })).status).toBe(400);
+});
+
+test("andamento com id de slide fora do exemplo é aceito; slide 60 dá 400", async () => {
+  const { proposta } = await propostaDeDesenhoTecnico();
+  const andamento = { sala: [], pactos: [], tempos: { "abertura-dt": 40, "preco-2": 10 }, slide: 59 };
+  expect((await chamar(g(putAndamento), "clo@mectria.com", { metodo: "PUT", corpo: andamento, params: proposta })).status).toBe(200);
+  expect((await chamar(g(putAndamento), "clo@mectria.com", { metodo: "PUT", corpo: { ...andamento, slide: 60 }, params: proposta })).status).toBe(400);
+  expect((await chamar(g(putAndamento), "clo@mectria.com", { metodo: "PUT", corpo: { ...andamento, tempos: { "Slide Um": 1 } }, params: proposta })).status).toBe(400);
+});
+
+test("marcar diagnóstica com serviço inativo dá 400; o que não existe também", async () => {
+  const closer = await env.DB.prepare("SELECT id FROM pessoas WHERE email = 'clo@mectria.com'").first<{ id: number }>();
+  const nova = { empresa: "Inativa", contato: "Ana", telefone: "34999990000", closerId: closer!.id, dataHora: "2099-01-05T10:00", formato: "online" };
+  await chamar(g(putServico), "dir@mectria.com", { metodo: "PUT", corpo: { ...dadosDe(dtDaCarta()), situacao: "inativo" }, params: { id: "desenho-tecnico" } });
+  expect((await chamar(g(postOportunidade), "hun@mectria.com", { corpo: { ...nova, servico: "desenho-tecnico" } })).status).toBe(400);
+  expect((await chamar(g(postOportunidade), "hun@mectria.com", { corpo: { ...nova, servico: "foguete" } })).status).toBe(400);
+  expect((await chamar(g(postOportunidade), "hun@mectria.com", { corpo: { ...nova, servico: "emissao-de-carbono" } })).status).toBe(201);
+  const propostaAMao = { empresa: "À Mão", contato: "Ana", telefone: "34999990000", servico: "desenho-tecnico", valor: "5.000,00", apresentadaEm: hojeEmSaoPaulo(), quemDecide: "Ana" };
+  expect((await chamar(g(postProposta), "clo@mectria.com", { corpo: propostaAMao })).status).toBe(400);
+});
+
+test("a preparação de uma proposta cujo serviço foi inativado continua salvando", async () => {
+  const { proposta } = await propostaDeDesenhoTecnico();
+  await chamar(g(putServico), "dir@mectria.com", { metodo: "PUT", corpo: { ...dadosDe(dtDaCarta()), situacao: "inativo" }, params: { id: "desenho-tecnico" } });
+  const variaveis = { ...variaveisIniciais("desenho-tecnico", dtDaCarta()), valor: 300000, prazo: "20 dias", equipe: "Rui" };
+  expect((await chamar(g(putVariaveis), "clo@mectria.com", { metodo: "PUT", corpo: variaveis, params: proposta })).status).toBe(200);
+  expect((await chamar(g(putVariaveis), "clo@mectria.com", { metodo: "PUT", corpo: { ...variaveis, servico: "foguete" }, params: proposta })).status).toBe(400);
+});
+
+test("a ficha traz as perguntas do serviço, também a inativa", async () => {
+  const { diagnostica } = await propostaDeDesenhoTecnico();
+  const perguntas = dtDaCarta().perguntas.map((p, i) => (i === 0 ? { ...p, inativa: true } : p));
+  await chamar(g(putServico), "dir@mectria.com", { metodo: "PUT", corpo: { ...dadosDe(dtDaCarta()), perguntas }, params: { id: "desenho-tecnico" } });
+  const ficha = await corpo<FichaCompleta>(await chamar(g(getReuniao), "clo@mectria.com", { params: diagnostica }));
+  expect(ficha.perguntasDoServico).toEqual(perguntas);
+  const paraProjetos = await corpo<FichaCompleta>(await chamar(g(getReuniao), "dir@mectria.com", { params: diagnostica }));
+  expect(paraProjetos.perguntasDoServico[0]).toMatchObject({ id: "dt-pecas", inativa: true });
+});
+
+test("o CSV usa o nome do serviço do banco, também para o inativo; o tudo.json traz os serviços", async () => {
+  const propostaAMao = { empresa: "Traço Grosso", contato: "Ana", telefone: "34999990000", servico: "desenho-tecnico", valor: "5.000,00", apresentadaEm: hojeEmSaoPaulo(), quemDecide: "Ana" };
+  expect((await chamar(g(postProposta), "clo@mectria.com", { corpo: propostaAMao })).status).toBe(201);
+  await chamar(g(putServico), "dir@mectria.com", { metodo: "PUT", corpo: { ...dadosDe(dtDaCarta()), nome: "Desenho Técnico 2D", situacao: "inativo" }, params: { id: "desenho-tecnico" } });
+  const pedido = (arquivo: string) => chamar(g(getExportar), "dir@mectria.com", { params: { arquivo } });
+  const csv = await (await pedido("historico.csv")).text();
+  expect(csv).toContain("Traço Grosso;Desenho Técnico 2D;");
+  const tudo = await corpo<{ tabelas: { servicos: { id: string }[] } }>(await pedido("tudo.json"));
+  expect(tudo.tabelas.servicos).toHaveLength(12);
 });

@@ -2,7 +2,7 @@ import { useEffect, useMemo, useState, type FormEvent } from "react";
 import { ALERTA_CONSTRUCAO_DIAS, diasNaEtapa, etapaDaProposta } from "../../compartilhado/etapa";
 import Tag from "../componentes/Tag";
 import { diasDepois, formatarDia, formatarReais, hojeEmSaoPaulo, lerReais } from "../../compartilhado/datas";
-import { SERVICOS } from "../../compartilhado/dados/servicos";
+import { servicosDaCarta } from "../../compartilhado/dados/servicos-completos";
 import type { Reuniao } from "../../compartilhado/oportunidade";
 import {
   faltandoNaProposta,
@@ -71,7 +71,7 @@ function PrepararProposta({ reuniao, aoSalvar }: { reuniao: Reuniao; aoSalvar: (
       <p className="mono suave">
         Reunião de {formatarDia(reuniao.dataHora.slice(0, 10))} às {reuniao.dataHora.slice(11, 16)}
       </p>
-      <Selecao rotulo="Serviço" value={v.servico} onChange={mudar("servico")} opcoes={SERVICOS.map((s) => ({ valor: s.id, rotulo: s.nome }))} />
+      <Selecao rotulo="Serviço" value={v.servico} onChange={mudar("servico")} opcoes={servicosDaCarta().map((s) => ({ valor: s.id, rotulo: s.nome }))} />
       <AreaDeTexto rotulo="Escopo incluído" rows={5} maxLength={2000} value={v.escopo} onChange={mudar("escopo")} />
       <AreaDeTexto rotulo="O que fica com o cliente" rows={4} maxLength={2000} value={v.ficaComCliente} onChange={mudar("ficaComCliente")} />
       <div className={estilos.grade}>
@@ -126,11 +126,13 @@ export default function Apresentacoes({ eu: _eu }: { eu: Eu }) {
   }, []);
 
   const exemplo = useMemo(() => {
+    const climatizacao = servicosDaCarta().find((s) => s.id === "climatizacao") ?? null;
     const { valores, doCliente } = valoresDaProposta({
       oportunidade: { empresa: "Cliente de exemplo", contato: "", servico: "climatizacao" },
-      variaveis: variaveisIniciais("climatizacao"),
+      variaveis: variaveisIniciais("climatizacao", climatizacao),
       respostas: {},
       hoje: hojeEmSaoPaulo(),
+      servico: climatizacao,
     });
     return montarSlides(slidesDaProposta(), valores, doCliente);
   }, []);

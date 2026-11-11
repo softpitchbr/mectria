@@ -48,7 +48,7 @@ test("exportação completa traz todas as tabelas", async () => {
   await registrarProposta(env.DB, { empresa: "Alfa", contato: "Ana", servico: "climatizacao", valor: 1250000, apresentadaEm: "2026-11-03", quemDecide: "Ana" }, closer);
   const tudo = await exportarTudo(env.DB);
   expect(Object.keys(tudo.tabelas).sort()).toEqual(
-    ["anotacoes", "fichas", "historico", "ligacoes", "oportunidades", "pendencias", "pessoas", "propostas", "reunioes", "rotinas", "toques"].sort(),
+    ["anotacoes", "fichas", "historico", "ligacoes", "oportunidades", "pendencias", "pessoas", "propostas", "reunioes", "rotinas", "servicos", "toques"].sort(),
   );
   expect(tudo.tabelas.oportunidades).toHaveLength(1);
   expect(tudo.tabelas.pessoas).toHaveLength(3);

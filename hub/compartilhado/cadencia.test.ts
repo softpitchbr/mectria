@@ -1,6 +1,6 @@
 import { ROTULO_TOQUE, datasDaCadencia, modeloDoToque, preencherModelo } from "./cadencia";
 import { CADENCIA, MOTIVOS_PERDA } from "./dados/cadencia";
-import { SERVICOS } from "./dados/servicos";
+import { servicosDaCarta } from "./dados/servicos-completos";
 
 const datas = (apresentadaEm: string) => datasDaCadencia(apresentadaEm).map((t) => `${t.codigo} ${t.previstoPara}`);
 
@@ -62,6 +62,6 @@ test("a cadência é a de 7 dias, toda pelo WhatsApp menos a ligação", () => {
     ["D7", "WhatsApp"],
   ]);
   expect(CADENCIA[0].modelo).toContain("Como te expliquei na jornada de parcerias, combinamos o sim ou não até {data_decisao}");
-  expect(SERVICOS).toHaveLength(12);
+  expect(servicosDaCarta()).toHaveLength(12);
   expect(MOTIVOS_PERDA).toContain("Escopo (queria fabricação ou instalação)");
 });

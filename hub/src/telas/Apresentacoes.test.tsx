@@ -1,7 +1,10 @@
 import { screen, within } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import { diasDepois, hojeEmSaoPaulo } from "../../compartilhado/datas";
+import { servicosDaCarta } from "../../compartilhado/dados/servicos-completos";
 import { variaveisIniciais } from "../../compartilhado/proposta";
+
+const CLIMATIZACAO = servicosDaCarta().find((s) => s.id === "climatizacao")!;
 import { abrir, fingirApi, PESSOAS } from "../teste/ajuda";
 
 const R = (id: number, empresa: string, tipo: string, oportunidadeSituacao: string) => ({
@@ -12,10 +15,11 @@ const R = (id: number, empresa: string, tipo: string, oportunidadeSituacao: stri
 const SESSAO = {
   reuniao: R(7, "Usinagem Alfa", "proposta", "proposta_marcada"),
   oportunidade: { id: 7, empresa: "Usinagem Alfa", contato: "Ana", servico: "climatizacao", closerId: 2, situacao: "proposta_marcada" },
-  variaveis: variaveisIniciais("climatizacao"),
+  variaveis: variaveisIniciais("climatizacao", CLIMATIZACAO),
   andamento: { sala: [], pactos: [], tempos: {}, slide: 0 },
   anotacoes: [],
   respostasDaDiagnostica: {},
+  servico: CLIMATIZACAO,
 };
 
 function api(extra: Record<string, unknown> = {}) {
