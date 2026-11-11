@@ -12,7 +12,7 @@ import {
   type ResultadoProposta,
 } from "../compartilhado/oportunidade";
 import { CARGOS, type Cargo } from "../compartilhado/cargos";
-import type { DadosDoServico, PerguntaTecnica, SituacaoServico, SlideDoRoteiro } from "../compartilhado/servico";
+import { LIMITE_DA_APRESENTACAO, type DadosDoServico, type PerguntaTecnica, type SituacaoServico, type SlideDoRoteiro } from "../compartilhado/servico";
 import { normalizarEmail } from "../compartilhado/texto";
 import {
   IDS_PACTO,
@@ -505,4 +505,17 @@ export function validarServico(corpo: unknown): Validado<DadosDoServico> {
     ok: true,
     dados: { nome, sigla, resumo, dores, entregamos, ficaComCliente, ancoraValor, situacao: corpo.situacao as SituacaoServico, perguntas: perguntas.dados, roteiro: roteiro.dados },
   };
+}
+
+/** O arquivo da apresentação: um .html só, com tudo dentro, até 5 MB. */
+export function validarArquivoDaApresentacao(corpo: unknown): Validado<{ arquivo: string; html: string }> {
+  const mensagem = "Envie um arquivo .html.";
+  if (!ehObjeto(corpo)) return { ok: false, mensagem: MENSAGEM.corpo };
+  const arquivo = textoEntre(corpo.arquivo, 1, 120);
+  if (!arquivo || !/\.html?$/i.test(arquivo) || typeof corpo.html !== "string") return { ok: false, mensagem };
+  if (new TextEncoder().encode(corpo.html).length > LIMITE_DA_APRESENTACAO) {
+    return { ok: false, mensagem: "A apresentação passa de 5 MB. Diminua as imagens e envie de novo." };
+  }
+  if (!/<html[\s>]|<!doctype html/i.test(corpo.html)) return { ok: false, mensagem };
+  return { ok: true, dados: { arquivo, html: corpo.html } };
 }

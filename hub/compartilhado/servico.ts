@@ -55,6 +55,9 @@ export interface Servico {
 /** O que o diretor manda ao criar ou editar um serviço. */
 export type DadosDoServico = Omit<Servico, "id" | "apresentacao">;
 
+/** O arquivo HTML da apresentação tem até 5 MB. */
+export const LIMITE_DA_APRESENTACAO = 5 * 1024 * 1024;
+
 export const vendavel = (s: Pick<Servico, "situacao">): boolean => s.situacao !== "inativo";
 
 /** "Adequação à NR-12" vira "adequacao-a-nr-12". */

@@ -3,6 +3,11 @@ import { servicosDaCarta } from "../../compartilhado/dados/servicos-completos";
 import type { DadosDoServico, Servico } from "../../compartilhado/servico";
 import { onRequest } from "../../functions/api/_middleware";
 import { onRequestGet as getServico, onRequestPut as putServico } from "../../functions/api/servicos/[id]";
+import {
+  onRequestDelete as deleteApresentacao,
+  onRequestGet as getApresentacao,
+  onRequestPut as putApresentacao,
+} from "../../functions/api/servicos/[id]/apresentacao";
 import { onRequestGet as getServicos, onRequestPost as postServico } from "../../functions/api/servicos/index";
 import { criar } from "../pessoas";
 import type { DadosApi, Env } from "../tipos";
@@ -139,4 +144,71 @@ test("roteiro com 41 slides ou tempo 0 dá 400", async () => {
 test("GET de um serviço que não existe dá 404", async () => {
   expect((await chamar(g(getServico), "hun@mectria.com", { params: { id: "nao-existe" } })).status).toBe(404);
   expect((await chamar(g(putServico), "dir@mectria.com", { metodo: "PUT", corpo: NOVO, params: { id: "nao-existe" } })).status).toBe(404);
+});
+
+// Apresentação em HTML (Task 3) -----------------------------------------------------
+
+const HTML = "<!doctype html><html><body><h1>Proposta</h1><script>parent.postMessage({ mectria: 1, tipo: 'pronta', slides: 1 }, '*')</script></body></html>";
+const dp = { id: "desenvolvimento-de-produto" };
+const enviar = (email: string, corpoEnviado: unknown, params = dp) => chamar(g(putApresentacao), email, { metodo: "PUT", corpo: corpoEnviado, params });
+
+test("o diretor envia a apresentação; o GET devolve o mesmo HTML com o cabeçalho sandbox allow-scripts, sem allow-same-origin", async () => {
+  const r = await enviar("dir@mectria.com", { arquivo: "dp.html", html: HTML });
+  expect(r.status).toBe(200);
+  expect(await corpo(r)).toMatchObject({
+    id: dp.id,
+    apresentacao: { arquivo: "dp.html", bytes: new TextEncoder().encode(HTML).length, versao: 1, enviadaPor: "Diana Diretora" },
+  });
+  const lida = await chamar(g(getApresentacao), "clo@mectria.com", { params: dp });
+  expect(lida.status).toBe(200);
+  expect(await lida.text()).toBe(HTML);
+  expect(lida.headers.get("Content-Type")).toBe("text/html; charset=utf-8");
+  const csp = lida.headers.get("Content-Security-Policy") ?? "";
+  expect(csp).toMatch(/^sandbox allow-scripts;/);
+  expect(csp).not.toContain("allow-same-origin");
+  expect(csp).toContain("connect-src 'none'");
+  expect(csp).toContain("frame-ancestors 'self'");
+  expect(lida.headers.get("X-Content-Type-Options")).toBe("nosniff");
+});
+
+test("enviar de novo soma a versão (1, 2); remover deixa a apresentação null e o GET dá 404; enviar depois dá versão 3", async () => {
+  await enviar("dir@mectria.com", { arquivo: "dp.html", html: HTML });
+  expect(await corpo(await enviar("dir@mectria.com", { arquivo: "dp-v2.htm", html: HTML.replace("Proposta", "Proposta 2") }))).toMatchObject({
+    apresentacao: { arquivo: "dp-v2.htm", versao: 2 },
+  });
+  const removida = await chamar(g(deleteApresentacao), "dir@mectria.com", { metodo: "DELETE", params: dp });
+  expect(removida.status).toBe(200);
+  expect(await corpo(removida)).toMatchObject({ id: dp.id, apresentacao: null });
+  expect((await chamar(g(getApresentacao), "dir@mectria.com", { params: dp })).status).toBe(404);
+  expect(await env.APRESENTACOES.get(`apresentacao/${dp.id}`)).toBeNull();
+  expect(await corpo(await enviar("dir@mectria.com", { arquivo: "dp.html", html: HTML }))).toMatchObject({ apresentacao: { versao: 3 } });
+});
+
+test("arquivo com mais de 5 MB dá 400 com a mensagem", async () => {
+  const grande = `<html>${"a".repeat(5 * 1024 * 1024)}</html>`;
+  const r = await enviar("dir@mectria.com", { arquivo: "grande.html", html: grande });
+  expect(r.status).toBe(400);
+  expect(await corpo(r)).toMatchObject({ mensagem: "A apresentação passa de 5 MB. Diminua as imagens e envie de novo." });
+});
+
+test("arquivo sem <html dá 400", async () => {
+  const semHtml = await enviar("dir@mectria.com", { arquivo: "dp.html", html: "<h1>Oi</h1>" });
+  expect(semHtml.status).toBe(400);
+  expect(await corpo(semHtml)).toMatchObject({ mensagem: "Envie um arquivo .html." });
+  expect((await enviar("dir@mectria.com", { arquivo: "dp.pdf", html: HTML })).status).toBe(400);
+  expect((await enviar("dir@mectria.com", { arquivo: "dp.html" })).status).toBe(400);
+});
+
+test("o closer lê, mas não envia nem remove (403)", async () => {
+  expect((await enviar("clo@mectria.com", { arquivo: "dp.html", html: HTML })).status).toBe(403);
+  await enviar("dir@mectria.com", { arquivo: "dp.html", html: HTML });
+  expect((await chamar(g(deleteApresentacao), "clo@mectria.com", { metodo: "DELETE", params: dp })).status).toBe(403);
+  expect((await chamar(g(getApresentacao), "hun@mectria.com", { params: dp })).status).toBe(200);
+});
+
+test("PUT para serviço que não existe dá 404 e não grava no KV", async () => {
+  const r = await enviar("dir@mectria.com", { arquivo: "x.html", html: HTML }, { id: "nao-existe" });
+  expect(r.status).toBe(404);
+  expect(await env.APRESENTACOES.get("apresentacao/nao-existe")).toBeNull();
+  expect((await chamar(g(deleteApresentacao), "dir@mectria.com", { metodo: "DELETE", params: { id: "nao-existe" } })).status).toBe(404);
 });
