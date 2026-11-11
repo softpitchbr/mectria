@@ -18,7 +18,7 @@ test("hunter vê Hoje, Reuniões, Playbooks e Rotinas e não vê Time", async ()
   expect(await rotulosDaNavegacao()).toEqual(["Hoje", "Reuniões", "Playbooks", "Rotinas"]);
 });
 
-test("diretor vê as 8 seções", async () => {
+test("diretor vê as 9 seções", async () => {
   fingirApi({ "/api/eu": { corpo: PESSOAS.diretor } });
   abrir("/");
   expect(await rotulosDaNavegacao()).toEqual([
@@ -30,6 +30,7 @@ test("diretor vê as 8 seções", async () => {
     "Rotinas",
     "Time",
     "Briefings",
+    "Serviços",
   ]);
 });
 
@@ -81,7 +82,7 @@ test("no celular, a barra de baixo mostra 4 seções e Mais abre as outras", asy
   expect(await rotulosDaNavegacao("Seções no celular")).toEqual(["Hoje", "Reuniões", "Follow-up", "Playbooks"]);
   await userEvent.click(screen.getByRole("button", { name: "Mais" }));
   const mais = within(screen.getByRole("navigation", { name: "Mais seções" }));
-  expect(mais.getAllByRole("link").map((l) => l.textContent)).toEqual(["Apresentações", "Rotinas", "Time", "Briefings"]);
+  expect(mais.getAllByRole("link").map((l) => l.textContent)).toEqual(["Apresentações", "Rotinas", "Time", "Briefings", "Serviços"]);
 });
 
 test("perfil mostra nome, cargo, tema e o link de sair do Access", async () => {

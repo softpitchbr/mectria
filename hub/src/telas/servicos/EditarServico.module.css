@@ -1,0 +1,75 @@
+.editar {
+  display: grid;
+  gap: 20px;
+  max-width: 860px;
+}
+
+.cabeca {
+  display: grid;
+  gap: 8px;
+}
+
+.formulario {
+  display: grid;
+  gap: 28px;
+}
+
+.secao {
+  display: grid;
+  gap: 14px;
+}
+
+.secao h2 {
+  font-size: 18px;
+}
+
+.secao p {
+  margin: 0;
+}
+
+.grade {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+  gap: 12px;
+}
+
+.item {
+  display: grid;
+  gap: 12px;
+  margin: 0;
+  padding: 14px 16px 16px;
+  border: 1px solid var(--linha);
+  border-radius: 12px;
+  background: var(--painel);
+}
+
+.item legend {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 0 6px;
+  font-weight: 600;
+}
+
+.item[data-inativa="sim"] {
+  opacity: 0.7;
+}
+
+.acoesDoItem {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.erro {
+  margin: 0;
+  color: var(--vermelho-texto);
+  font-weight: 600;
+}
+
+.rodape {
+  position: sticky;
+  bottom: 0;
+  padding: 12px 0;
+  background: var(--fundo);
+}

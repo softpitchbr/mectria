@@ -7,6 +7,7 @@ export type NomeIcone =
   | "rotinas"
   | "time"
   | "briefings"
+  | "servicos"
   | "busca"
   | "sair"
   | "mais"
