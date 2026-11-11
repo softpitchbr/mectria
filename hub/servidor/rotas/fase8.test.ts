@@ -54,9 +54,9 @@ beforeEach(async () => {
   await criar(env.DB, { nome: "Hugo Hunter", email: "hun@mectria.com", cargo: "hunter" });
 });
 
-async function chamar(manipulador: Manipulador, email: string, opcoes: { metodo?: string; corpo?: unknown; params?: Record<string, string> } = {}) {
+async function chamar(manipulador: Manipulador, email: string, opcoes: { metodo?: string; corpo?: unknown; params?: Record<string, string>; busca?: string } = {}) {
   const metodo = opcoes.metodo ?? (opcoes.corpo === undefined ? "GET" : "POST");
-  const request = new Request("http://localhost:8788/api/x", {
+  const request = new Request(`http://localhost:8788/api/x${opcoes.busca ?? ""}`, {
     method: metodo,
     headers: { "X-Dev-Email": email, "Content-Type": "application/json" },
     body: opcoes.corpo === undefined ? undefined : JSON.stringify(opcoes.corpo),
@@ -163,6 +163,8 @@ test("GET de um serviço que não existe dá 404", async () => {
 const HTML = "<!doctype html><html><body><h1>Proposta</h1><script>parent.postMessage({ mectria: 1, tipo: 'pronta', slides: 1 }, '*')</script></body></html>";
 const dp = { id: "desenvolvimento-de-produto" };
 const enviar = (email: string, corpoEnviado: unknown, params = dp) => chamar(g(putApresentacao), email, { metodo: "PUT", corpo: corpoEnviado, params });
+const ler = (versao: number | string, email = "clo@mectria.com", params = dp) => chamar(g(getApresentacao), email, { params, busca: `?v=${versao}` });
+const chavesNoKv = async (id: string) => (await env.APRESENTACOES.list({ prefix: `apresentacao/${id}/` })).keys.map((k) => k.name);
 
 test("o diretor envia a apresentação; o GET devolve o mesmo HTML com o cabeçalho sandbox allow-scripts, sem allow-same-origin", async () => {
   const r = await enviar("dir@mectria.com", { arquivo: "dp.html", html: HTML });
@@ -171,7 +173,7 @@ test("o diretor envia a apresentação; o GET devolve o mesmo HTML com o cabeça
     id: dp.id,
     apresentacao: { arquivo: "dp.html", bytes: new TextEncoder().encode(HTML).length, versao: 1, enviadaPor: "Diana Diretora" },
   });
-  const lida = await chamar(g(getApresentacao), "clo@mectria.com", { params: dp });
+  const lida = await ler(1);
   expect(lida.status).toBe(200);
   expect(await lida.text()).toBe(HTML);
   expect(lida.headers.get("Content-Type")).toBe("text/html; charset=utf-8");
@@ -191,8 +193,8 @@ test("enviar de novo soma a versão (1, 2); remover deixa a apresentação null 
   const removida = await chamar(g(deleteApresentacao), "dir@mectria.com", { metodo: "DELETE", params: dp });
   expect(removida.status).toBe(200);
   expect(await corpo(removida)).toMatchObject({ id: dp.id, apresentacao: null });
-  expect((await chamar(g(getApresentacao), "dir@mectria.com", { params: dp })).status).toBe(404);
-  expect(await env.APRESENTACOES.get(`apresentacao/${dp.id}`)).toBeNull();
+  expect((await ler(2, "dir@mectria.com")).status).toBe(404);
+  expect(await chavesNoKv(dp.id)).toEqual([]);
   expect(await corpo(await enviar("dir@mectria.com", { arquivo: "dp.html", html: HTML }))).toMatchObject({ apresentacao: { versao: 3 } });
 });
 
@@ -215,13 +217,13 @@ test("o closer lê, mas não envia nem remove (403)", async () => {
   expect((await enviar("clo@mectria.com", { arquivo: "dp.html", html: HTML })).status).toBe(403);
   await enviar("dir@mectria.com", { arquivo: "dp.html", html: HTML });
   expect((await chamar(g(deleteApresentacao), "clo@mectria.com", { metodo: "DELETE", params: dp })).status).toBe(403);
-  expect((await chamar(g(getApresentacao), "hun@mectria.com", { params: dp })).status).toBe(200);
+  expect((await ler(1, "hun@mectria.com")).status).toBe(200);
 });
 
 test("PUT para serviço que não existe dá 404 e não grava no KV", async () => {
   const r = await enviar("dir@mectria.com", { arquivo: "x.html", html: HTML }, { id: "nao-existe" });
   expect(r.status).toBe(404);
-  expect(await env.APRESENTACOES.get("apresentacao/nao-existe")).toBeNull();
+  expect(await chavesNoKv("nao-existe")).toEqual([]);
   expect((await chamar(g(deleteApresentacao), "dir@mectria.com", { metodo: "DELETE", params: { id: "nao-existe" } })).status).toBe(404);
 });
 
@@ -311,4 +313,42 @@ test("o CSV usa o nome do serviço do banco, também para o inativo; o tudo.json
   expect(csv).toContain("Traço Grosso;Desenho Técnico 2D;");
   const tudo = await corpo<{ tabelas: { servicos: { id: string }[] } }>(await pedido("tudo.json"));
   expect(tudo.tabelas.servicos).toHaveLength(12);
+});
+
+test("a proposta de uma oportunidade que já existe aceita o serviço dela, mesmo inativado; outro inativo, não", async () => {
+  const closer = await env.DB.prepare("SELECT id FROM pessoas WHERE email = 'clo@mectria.com'").first<{ id: number }>();
+  const hunter = (await env.DB.prepare("SELECT id, nome, email, cargo, ativo FROM pessoas WHERE email = 'hun@mectria.com'").first())! as never;
+  const { oportunidade } = await criarDiagnostica(
+    env.DB,
+    { empresa: "Desenho Antigo", contato: "Ana", telefone: "34999990000", servico: "desenho-tecnico", closerId: closer!.id, dataHora: "2099-01-05T10:00", formato: "online" },
+    hunter,
+  );
+  await chamar(g(putServico), "dir@mectria.com", { metodo: "PUT", corpo: { ...dadosDe(dtDaCarta()), situacao: "inativo" }, params: { id: "desenho-tecnico" } });
+  const nr12 = servicosDaCarta().find((s) => s.id === "nr-12")!;
+  await chamar(g(putServico), "dir@mectria.com", { metodo: "PUT", corpo: { ...dadosDe(nr12), situacao: "inativo" }, params: { id: "nr-12" } });
+  const corpoDaProposta = { oportunidadeId: oportunidade.id, valor: "5.000,00", apresentadaEm: hojeEmSaoPaulo(), quemDecide: "Ana" };
+  expect((await chamar(g(postProposta), "clo@mectria.com", { corpo: { ...corpoDaProposta, servico: "nr-12" } })).status).toBe(400);
+  expect((await chamar(g(postProposta), "clo@mectria.com", { corpo: { ...corpoDaProposta, servico: "desenho-tecnico" } })).status).toBe(201);
+});
+
+test("cada versão fica na chave dela: depois da v2, a v1 ainda abre no endereço dela; depois da v3, não", async () => {
+  await enviar("dir@mectria.com", { arquivo: "dp.html", html: HTML });
+  await enviar("dir@mectria.com", { arquivo: "dp.html", html: HTML.replace("Proposta", "Proposta 2") });
+  expect(await (await ler(2)).text()).toContain("Proposta 2");
+  expect(await (await ler(1)).text()).toBe(HTML);
+  await enviar("dir@mectria.com", { arquivo: "dp.html", html: HTML.replace("Proposta", "Proposta 3") });
+  expect((await ler(1)).status).toBe(404);
+  expect(await (await ler(3)).text()).toContain("Proposta 3");
+  expect(await chavesNoKv(dp.id)).toEqual([`apresentacao/${dp.id}/2`, `apresentacao/${dp.id}/3`]);
+});
+
+test("GET sem ?v, com ?v inválido ou de uma versão que não existe dá 404 sem cache", async () => {
+  await enviar("dir@mectria.com", { arquivo: "dp.html", html: HTML });
+  const semVersao = await chamar(g(getApresentacao), "clo@mectria.com", { params: dp });
+  expect(semVersao.status).toBe(404);
+  expect(semVersao.headers.get("Cache-Control")).toBe("no-store");
+  expect((await ler("abc")).status).toBe(404);
+  const futura = await ler(9);
+  expect(futura.status).toBe(404);
+  expect(futura.headers.get("Cache-Control")).toBe("no-store");
 });

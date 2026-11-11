@@ -141,3 +141,18 @@ test("acionar e calcular do canal chegam ao iframe", async () => {
   await vi.waitFor(() => expect(paraOIframe).toHaveBeenCalledWith({ mectria: 1, tipo: "calcular", valores: { "horas-paradas": 10 } }, "*"));
   painel.canal.fechar();
 });
+
+test("o painel que recarrega recebe de novo a pronta que a apresentação já mandou (ações, campos e slides)", async () => {
+  const { painel, doIframe } = await abrirComHtml();
+  const pronta = { mectria: 1, tipo: "pronta", slides: 13, acoes: [{ slide: 11, id: "revelar-preco", rotulo: "Revelar o preço" }], campos: [] };
+  doIframe(pronta);
+  await vi.waitFor(() => expect(painel.recebidas.filter((m) => m.tipo === "apresentacao")).toHaveLength(1));
+  // O painel novo (F5) manda o estado de novo; a apresentação não manda outra pronta.
+  act(() => painel.canal.enviar({ tipo: "estado", empresa: "Usinagem Alfa", slide: 2, apresentacao: { ...HTML, dados: { ...DADOS } } }));
+  await vi.waitFor(() => expect(painel.recebidas.filter((m) => m.tipo === "apresentacao")).toEqual([{ tipo: "apresentacao", mensagem: pronta }, { tipo: "apresentacao", mensagem: pronta }]));
+  // Outra apresentação (outro endereço): a pronta antiga não vale para ela.
+  act(() => painel.canal.enviar({ tipo: "estado", empresa: "Usinagem Alfa", slide: 0, apresentacao: { ...HTML, url: "/api/servicos/outro/apresentacao?v=1" } }));
+  await new Promise((r) => setTimeout(r, 30));
+  expect(painel.recebidas.filter((m) => m.tipo === "apresentacao")).toHaveLength(2);
+  painel.canal.fechar();
+});

@@ -102,7 +102,7 @@ export default function NovaProposta({ eu, aoRegistrar }: { eu: Eu; aoRegistrar:
             <Campo rotulo="Telefone" inputMode="tel" value={campos.telefone} onChange={mudar("telefone")} />
           </>
         )}
-        <Selecao rotulo="Serviço" vazio="Escolha o serviço" value={campos.servico} onChange={mudar("servico")} opcoes={opcoesDeServico(servicos)} />
+        <Selecao rotulo="Serviço" vazio="Escolha o serviço" value={campos.servico} onChange={mudar("servico")} opcoes={opcoesDeServico(servicos, escolhida?.servico)} />
         <Campo rotulo="Valor" inputMode="decimal" placeholder="12.500,00" value={campos.valor} onChange={mudar("valor")} />
         <Campo rotulo="Apresentada em" type="date" value={campos.apresentadaEm} onChange={mudar("apresentadaEm")} />
         <Campo rotulo="Decisão combinada para" type="date" value={campos.dataDecisao} onChange={mudar("dataDecisao")} />

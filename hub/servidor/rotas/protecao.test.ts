@@ -10,8 +10,8 @@ beforeEach(async () => {
 });
 
 /** Passa pelo middleware como o diretor e diz se a rota seria chamada. */
-async function passar(metodo: string, cabecalhos: Record<string, string>) {
-  const request = new Request("http://localhost:8788/api/pessoas", {
+async function passar(metodo: string, cabecalhos: Record<string, string>, caminho = "/api/pessoas") {
+  const request = new Request(`http://localhost:8788${caminho}`, {
     method: metodo,
     headers: { "X-Dev-Email": "dir@mectria.com", ...cabecalhos },
     body: metodo === "GET" ? undefined : '{"nome":"Xx","email":"x@mectria.com","cargo":"diretor","p":"="}',
@@ -64,4 +64,17 @@ test("pedido do próprio hub passa", async () => {
 test("leitura (GET) não exige Content-Type", async () => {
   const { chegou } = await passar("GET", {});
   expect(chegou).toBe(true);
+});
+
+test("a apresentação em HTML não abre a API dentro do iframe (navegação em quadro), só o próprio arquivo", async () => {
+  for (const destino of ["iframe", "frame", "embed", "object"]) {
+    const { chegou, resposta } = await passar("GET", { "Sec-Fetch-Dest": destino, "Sec-Fetch-Mode": "navigate" }, "/api/oportunidades");
+    expect(chegou).toBe(false);
+    expect(resposta.status).toBe(403);
+  }
+  expect((await passar("GET", { "Sec-Fetch-Dest": "iframe", "Sec-Fetch-Mode": "navigate" }, "/api/servicos/desenho-tecnico/apresentacao")).chegou).toBe(true);
+  expect((await passar("GET", { "Sec-Fetch-Dest": "iframe" }, "/api/servicos/desenho-tecnico/apresentacao/outra")).chegou).toBe(false);
+  expect((await passar("GET", { "Sec-Fetch-Dest": "empty", "Sec-Fetch-Mode": "cors" }, "/api/oportunidades")).chegou).toBe(true);
+  expect((await passar("GET", { "Sec-Fetch-Dest": "document", "Sec-Fetch-Mode": "navigate" }, "/api/exportar/historico.csv")).chegou).toBe(true);
+  expect((await passar("GET", {}, "/api/oportunidades")).chegou).toBe(true);
 });

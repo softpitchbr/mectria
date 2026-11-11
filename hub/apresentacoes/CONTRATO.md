@@ -9,7 +9,8 @@ Este documento é para quem desenha as apresentações. O modelo pronto é o [`e
 - **Um arquivo `.html` só, de até 5 MB.** CSS, JavaScript, imagens e vídeos ficam dentro dele (imagens e vídeos em `data:`).
 - **Fontes:** podem vir do Google Fonts (`fonts.googleapis.com` e `fonts.gstatic.com`) ou ficar em `data:`.
 - **Sem internet:** a apresentação não consegue chamar nenhum endereço (`fetch`, `XMLHttpRequest` e `WebSocket` são bloqueados), nem carregar script ou imagem de fora.
-- **Sem acesso ao hub:** ela roda isolada, sem o login de quem abriu. Não lê dados do hub, só o que o painel manda.
+- **Sem acesso ao hub:** ela roda isolada, sem o login de quem abriu. Não lê dados do hub, só o que o painel manda, e a API do hub não abre dentro dela.
+- **Não navegue para outra página** (`location.href`, `window.open`, links para fora): o navegador não impede a apresentação de trocar a própria página, e os dados do cliente poderiam ir junto. Revise o HTML que vier de fora da MecTRIA antes de enviar.
 - **Tamanho do slide:** desenhe em 1280 × 720 e escale para caber na janela, como o exemplo faz.
 
 ## 2. Como a reunião usa a apresentação

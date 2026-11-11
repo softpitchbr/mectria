@@ -1,6 +1,6 @@
 import { normalizarEmail } from "../../compartilhado/texto";
 import { emailDaRequisicao } from "../../servidor/identidade";
-import { pedidoDeOutroSite } from "../../servidor/protecao";
+import { pedidoDeOutroSite, pedidoEmQuadro } from "../../servidor/protecao";
 import { buscarPorEmail, contarDiretoresAtivos, criar } from "../../servidor/pessoas";
 import { erro } from "../../servidor/respostas";
 import type { DadosApi, Env, Pessoa } from "../../servidor/tipos";
@@ -34,6 +34,7 @@ async function criarDiretorInicial(env: Env, email: string): Promise<Pessoa | nu
 export const onRequest: PagesFunction<Env, string, DadosApi> = async (contexto) => {
   const { request, env } = contexto;
   if (pedidoDeOutroSite(request)) return erro("sem_permissao", "Pedido recusado: ele não veio do hub.");
+  if (pedidoEmQuadro(request)) return erro("sem_permissao", "A API do hub não abre dentro de uma apresentação.");
   const email = await emailDaRequisicao(request, env);
   if (!email) return erro("sem_identidade", "Não conseguimos identificar você. Entre de novo pelo login da MecTRIA.");
 

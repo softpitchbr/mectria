@@ -17,11 +17,17 @@ export default function JanelaDaApresentacao() {
   const [estado, setEstado] = useState<{ empresa: string; slide: number; apresentacao: ApresentacaoNaJanela } | null>(null);
   const canal = useRef<ReturnType<typeof abrirCanal> | null>(null);
   const quadro = useRef<ControleDoQuadro>(null);
+  // A apresentação manda a pronta uma vez só, ao carregar. Um painel que recarrega precisa dela de novo.
+  const ultimaPronta = useRef<{ url: string; mensagem: Extract<DaApresentacao, { tipo: "pronta" }> } | null>(null);
 
   useEffect(() => {
     document.title = "Apresentação · MecTRIA";
     const c = abrirCanal(reuniaoId, (m) => {
-      if (m.tipo === "estado") setEstado({ empresa: m.empresa, slide: m.slide, apresentacao: m.apresentacao });
+      if (m.tipo === "estado") {
+        setEstado({ empresa: m.empresa, slide: m.slide, apresentacao: m.apresentacao });
+        const pronta = ultimaPronta.current;
+        if (pronta && m.apresentacao.tipo === "html" && m.apresentacao.url === pronta.url) c.enviar({ tipo: "apresentacao", mensagem: pronta.mensagem });
+      }
       else if (m.tipo === "slide") setEstado((e) => (e ? { ...e, slide: m.slide } : e));
       else if (m.tipo === "acionar") quadro.current?.acionar(m.acao);
       else if (m.tipo === "calcular") quadro.current?.calcular(m.valores);
@@ -50,6 +56,7 @@ export default function JanelaDaApresentacao() {
   }, [estado?.empresa]);
 
   function daApresentacao(m: DaApresentacao) {
+    if (m.tipo === "pronta" && estado?.apresentacao.tipo === "html") ultimaPronta.current = { url: estado.apresentacao.url, mensagem: m };
     if (m.tipo === "tecla") canal.current?.enviar({ tipo: "tecla", tecla: m.tecla });
     else canal.current?.enviar({ tipo: "apresentacao", mensagem: m });
   }

@@ -15,3 +15,17 @@ export function pedidoDeOutroSite(req: Request): boolean {
   if (origem && origem !== new URL(req.url).origin) return true;
   return false;
 }
+
+const DESTINOS_EM_QUADRO = new Set(["iframe", "frame", "embed", "object"]);
+const ARQUIVO_DA_APRESENTACAO = /^\/api\/servicos\/[^/]+\/apresentacao$/;
+
+/**
+ * A API aberta dentro de um quadro (iframe). A apresentação em HTML roda isolada, mas consegue navegar
+ * o próprio iframe; numa navegação o navegador manda o login, e a resposta apareceria na tela que o
+ * vendedor compartilha. Só o próprio arquivo da apresentação abre em quadro.
+ */
+export function pedidoEmQuadro(req: Request): boolean {
+  const destino = req.headers.get("Sec-Fetch-Dest");
+  if (!destino || !DESTINOS_EM_QUADRO.has(destino)) return false;
+  return !(req.method === "GET" && ARQUIVO_DA_APRESENTACAO.test(new URL(req.url).pathname));
+}
