@@ -17,3 +17,11 @@
   font-size: 28px;
   color: #ffffff;
 }
+
+/* A apresentação em HTML ocupa a janela inteira e cuida da própria escala. */
+.janelaHtml {
+  width: 100vw;
+  height: 100vh;
+  overflow: hidden;
+  background: #1f1e1c;
+}

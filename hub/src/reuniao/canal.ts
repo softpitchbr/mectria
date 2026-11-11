@@ -1,15 +1,24 @@
+import type { DaApresentacao, Interacoes } from "../../compartilhado/contrato-apresentacao";
 import type { SlideMontado } from "../../compartilhado/proposta";
 
+/** O que a janela mostra: a apresentação de exemplo (o hub desenha) ou a do serviço, em HTML. */
+export type ApresentacaoNaJanela =
+  | { tipo: "exemplo"; slides: SlideMontado[] }
+  | { tipo: "html"; url: string; dados: Record<string, string>; interacoes: Interacoes };
+
 /**
- * O que o painel e a janela da apresentação dizem um ao outro. O painel manda; a janela só desenha
- * e avisa que está viva (e as setas apertadas nela).
+ * O que o painel e a janela da apresentação dizem um ao outro. O painel manda; a janela desenha,
+ * avisa que está viva e repassa o que a apresentação em HTML contou (e as setas apertadas nela).
  */
 export type MensagemReuniao =
   | { tipo: "pronta" }
   | { tipo: "viva" }
-  | { tipo: "estado"; empresa: string; slides: SlideMontado[]; slide: number }
+  | { tipo: "estado"; empresa: string; slide: number; apresentacao: ApresentacaoNaJanela }
   | { tipo: "slide"; slide: number }
+  | { tipo: "acionar"; acao: string }
+  | { tipo: "calcular"; valores: Record<string, number> }
   | { tipo: "tecla"; tecla: "ArrowRight" | "ArrowLeft" }
+  | { tipo: "apresentacao"; mensagem: Exclude<DaApresentacao, { tipo: "tecla" }> }
   | { tipo: "fim" };
 
 /** Canal entre as janelas da mesma reunião, pelo próprio navegador (funciona sem internet). */

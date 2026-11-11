@@ -106,7 +106,7 @@ test("a janela que abre recebe o estado inteiro", async () => {
   const janela = abrirCanal(7, (m) => recebidas.push(m));
   await comecar();
   janela.enviar({ tipo: "pronta" });
-  await vi.waitFor(() => expect(recebidas.some((m) => m.tipo === "estado" && m.empresa === "Usinagem Alfa" && m.slides.length === 13)).toBe(true));
+  await vi.waitFor(() => expect(recebidas.some((m) => m.tipo === "estado" && m.empresa === "Usinagem Alfa" && m.apresentacao.tipo === "exemplo" && m.apresentacao.slides.length === 13)).toBe(true));
   janela.fechar();
 });
 

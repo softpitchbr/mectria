@@ -111,8 +111,8 @@ export default function PainelDaProposta() {
         canal.current?.enviar({
           tipo: "estado",
           empresa: r.empresa,
-          slides: r.montados,
           slide: r.a.slide,
+          apresentacao: { tipo: "exemplo", slides: r.montados },
         });
     };
     canal.current = abrirCanal(reuniaoId, (m) => {
@@ -138,8 +138,8 @@ export default function PainelDaProposta() {
       canal.current?.enviar({
         tipo: "estado",
         empresa: r.empresa,
-        slides: montados,
         slide: r.a.slide,
+        apresentacao: { tipo: "exemplo", slides: montados },
       });
   }, [pronto, montados]);
   const slideAtual = a?.slide;
