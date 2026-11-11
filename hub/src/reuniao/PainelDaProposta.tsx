@@ -1,15 +1,17 @@
 import { useEffect, useMemo, useRef, useState } from "react";
 import { Link, useNavigate, useParams } from "react-router";
+import { aplicarEvento, INTERACOES_VAZIAS, lerMensagemDaApresentacao } from "../../compartilhado/contrato-apresentacao";
 import { hojeEmSaoPaulo } from "../../compartilhado/datas";
 import { PLAYBOOK_PROPOSTA } from "../../compartilhado/dados/playbooks";
 import type { Reuniao } from "../../compartilhado/oportunidade";
 import {
+  apresentacaoDaReuniao,
+  dadosDaApresentacao,
   faltandoNaProposta,
   quemDecideNaSala,
   type DesfechoProposta,
   montarSlides,
   partesDoModelo,
-  slidesDaProposta,
   valoresDaProposta,
   type SessaoProposta,
 } from "../../compartilhado/proposta";
@@ -21,8 +23,9 @@ import Anotacoes from "../diagnostica/Anotacoes";
 import { useRascunho, type EstadoRascunho } from "../diagnostica/rascunho";
 import { mensagemDe } from "../telas/followup/comum";
 import { useAndamento } from "./andamento";
-import { abrirCanal } from "./canal";
+import { abrirCanal, type ApresentacaoNaJanela } from "./canal";
 import { useDonoDaReuniao } from "./dono";
+import NaApresentacao, { type DoDeck } from "./NaApresentacao";
 import FechamentoDaProposta from "./FechamentoDaProposta";
 import ObjecoesDaReuniao from "./ObjecoesDaReuniao";
 import Sala from "./Sala";
@@ -67,7 +70,7 @@ export default function PainelDaProposta() {
   const [fechando, setFechando] = useState(false);
   const [agora, setAgora] = useState(Date.now());
   const [ultimaViva, setUltimaViva] = useState(0);
-  const slides = useMemo(() => slidesDaProposta(), []);
+  const [doDeck, setDoDeck] = useState<DoDeck | null>(null);
 
   useEffect(() => {
     api<SessaoProposta>(`/api/reunioes/${reuniaoId}/proposta`)
@@ -91,6 +94,9 @@ export default function PainelDaProposta() {
           },
     [sessao],
   );
+  // Com apresentação própria, os slides vêm do roteiro do serviço; sem ela, da apresentação de exemplo.
+  const { slides, html } = useMemo(() => apresentacaoDaReuniao(sessao?.servico ?? null), [sessao?.servico]);
+  const dadosHtml = useMemo(() => (sessao ? dadosDaApresentacao(valores, sessao.variaveis, sessao.servico) : {}), [sessao, valores]);
   const montados = useMemo(() => montarSlides(slides, valores, doCliente), [slides, valores, doCliente]);
   const dono = useDonoDaReuniao(reuniaoId);
   const andamento = useAndamento(reuniaoId, sessao?.andamento ?? null, 5000, dono === "sim");
@@ -100,9 +106,17 @@ export default function PainelDaProposta() {
   const aoVivo = sessao?.reuniao.situacao === "em_andamento";
 
   // O canal entre as janelas lê sempre o estado mais recente.
-  const atual = useRef({ a, montados, empresa: "", aoVivo, fechando, dono, mudar: andamento.mudar });
-  atual.current = { a, montados, empresa: sessao?.oportunidade.empresa ?? "", aoVivo, fechando, dono, mudar: andamento.mudar };
+  const atual = useRef({ a, montados, html, dadosHtml, empresa: "", aoVivo, fechando, dono, mudar: andamento.mudar });
+  atual.current = { a, montados, html, dadosHtml, empresa: sessao?.oportunidade.empresa ?? "", aoVivo, fechando, dono, mudar: andamento.mudar };
   const canal = useRef<ReturnType<typeof abrirCanal> | null>(null);
+
+  /** O que a janela mostra agora: a apresentação em HTML (com os dados e as interações atuais) ou a de exemplo. */
+  const naJanela = (): ApresentacaoNaJanela => {
+    const r = atual.current;
+    return r.html
+      ? { tipo: "html", url: r.html, dados: r.dadosHtml, interacoes: r.a?.interacoes ?? INTERACOES_VAZIAS }
+      : { tipo: "exemplo", slides: r.montados };
+  };
 
   useEffect(() => {
     const enviarEstado = () => {
@@ -111,8 +125,8 @@ export default function PainelDaProposta() {
         canal.current?.enviar({
           tipo: "estado",
           empresa: r.empresa,
-          slide: r.a.slide,
-          apresentacao: { tipo: "exemplo", slides: r.montados },
+          slide: Math.min(r.a.slide, slides.length - 1),
+          apresentacao: naJanela(),
         });
     };
     canal.current = abrirCanal(reuniaoId, (m) => {
@@ -122,6 +136,14 @@ export default function PainelDaProposta() {
       if (m.tipo === "pronta") enviarEstado();
       else if (m.tipo === "tecla" && atual.current.aoVivo && !atual.current.fechando) {
         atual.current.mudar((x) => (m.tecla === "ArrowRight" ? avancar(x, slides.length) : voltar(x)));
+      } else if (m.tipo === "apresentacao") {
+        // A janela já conferiu; o painel confere de novo antes de guardar.
+        const msg = lerMensagemDaApresentacao(m.mensagem);
+        if (msg?.tipo === "pronta") setDoDeck({ slides: msg.slides, acoes: msg.acoes, campos: msg.campos });
+        else if (msg?.tipo === "evento") {
+          const { mectria: _versao, tipo: _tipo, ...evento } = msg;
+          atual.current.mudar((x) => ({ ...x, interacoes: aplicarEvento(x.interacoes ?? INTERACOES_VAZIAS, evento) }));
+        }
       }
     });
     return () => {
@@ -138,11 +160,17 @@ export default function PainelDaProposta() {
       canal.current?.enviar({
         tipo: "estado",
         empresa: r.empresa,
-        slide: r.a.slide,
-        apresentacao: { tipo: "exemplo", slides: montados },
+        slide: Math.min(r.a.slide, slides.length - 1),
+        apresentacao: naJanela(),
       });
-  }, [pronto, montados]);
-  const slideAtual = a?.slide;
+    // naJanela lê o estado mais recente pelo ref; as dependências são o que muda o que a janela mostra.
+  }, [pronto, montados, html, dadosHtml]);
+  // Um roteiro mais curto que o andamento salvo (editado depois): o painel volta para o último slide.
+  const passouDoFim = !!a && a.slide > slides.length - 1;
+  useEffect(() => {
+    if (passouDoFim && dono === "sim") atual.current.mudar((x) => ({ ...x, slide: slides.length - 1 }), { silencioso: true });
+  }, [passouDoFim, dono, slides.length]);
+  const slideAtual = a ? Math.min(a.slide, slides.length - 1) : undefined;
   useEffect(() => {
     if (slideAtual !== undefined && atual.current.dono === "sim") canal.current?.enviar({ tipo: "slide", slide: slideAtual });
   }, [slideAtual]);
@@ -152,7 +180,9 @@ export default function PainelDaProposta() {
     const t = setInterval(() => {
       setAgora(Date.now());
       // O tempo do bloco só corre com os slides na tela (o fechamento aberto para o relógio) e não mexe no "Salvo".
-      if (atual.current.dono === "sim" && atual.current.aoVivo && !atual.current.fechando) atual.current.mudar((x) => somarTempo(x, slides[x.slide].id, 1), { silencioso: true });
+      if (atual.current.dono === "sim" && atual.current.aoVivo && !atual.current.fechando) {
+        atual.current.mudar((x) => somarTempo(x, slides[Math.min(x.slide, slides.length - 1)].id, 1), { silencioso: true });
+      }
     }, 1000);
     return () => clearInterval(t);
   }, [slides]);
@@ -290,8 +320,9 @@ export default function PainelDaProposta() {
     );
   }
 
-  const slide = slides[a.slide];
-  const proximo = montados[a.slide + 1];
+  const indice = Math.min(a.slide, slides.length - 1);
+  const slide = slides[indice];
+  const proximo = montados[indice + 1];
   const tempoReal = a.tempos[slide.id] ?? 0;
   const estourou = tempoReal > slide.tempoPlanejado;
   const inicio = reuniao.iniciadaEm ? Date.parse(`${reuniao.iniciadaEm.replace(" ", "T")}Z`) : agora;
@@ -322,7 +353,7 @@ export default function PainelDaProposta() {
           <div className={estilos.coluna}>
             <div className={estilos.linhaDoSlide}>
               <span className="mono">
-                {a.slide + 1} de {slides.length}
+                {indice + 1} de {slides.length}
               </span>
               <span className="mono suave">{relogio(Math.max(0, Math.floor((agora - inicio) / 1000)))} no total</span>
               <span className={estilos.tempo} aria-label="Tempo do bloco" data-estourou={estourou ? "sim" : undefined}>
@@ -335,8 +366,8 @@ export default function PainelDaProposta() {
                   key={s.id}
                   type="button"
                   aria-label={`Ir para o slide ${i + 1}`}
-                  aria-current={i === a.slide ? "step" : undefined}
-                  data-passou={i < a.slide ? "sim" : undefined}
+                  aria-current={i === indice ? "step" : undefined}
+                  data-passou={i < indice ? "sim" : undefined}
                   className={estilos.segmento}
                   onClick={() => andamento.mudar((x) => irPara(x, i, slides.length))}
                 />
@@ -349,7 +380,7 @@ export default function PainelDaProposta() {
               </p>
             )}
 
-            <h2 className={estilos.tituloDoSlide}>{montados[a.slide].titulo.map((p) => p.texto).join("")}</h2>
+            <h2 className={estilos.tituloDoSlide}>{montados[indice].titulo.map((p) => p.texto).join("")}</h2>
             {slide.fala && (
               <section className={estilos.fala} aria-label="Fala">
                 <p>
@@ -386,8 +417,19 @@ export default function PainelDaProposta() {
               </span>
             </div>
 
+            {html && (
+              <NaApresentacao
+                slide={indice}
+                totalDoRoteiro={slides.length}
+                doDeck={doDeck}
+                interacoes={a.interacoes ?? INTERACOES_VAZIAS}
+                aoAcionar={(acao) => canal.current?.enviar({ tipo: "acionar", acao })}
+                aoCalcular={(valores) => canal.current?.enviar({ tipo: "calcular", valores })}
+              />
+            )}
+
             <div className={estilos.navegacao}>
-              <Botao variante="fantasma" disabled={a.slide === 0} onClick={() => andamento.mudar(voltar)}>
+              <Botao variante="fantasma" disabled={indice === 0} onClick={() => andamento.mudar(voltar)}>
                 ← Voltar
               </Botao>
               {proximo ? (
@@ -402,10 +444,10 @@ export default function PainelDaProposta() {
               {botaoDaJanela}
             </div>
             {proximo && (
-              <div className={estilos.miniatura} aria-label="Próximo slide">
+              <section className={estilos.miniatura} aria-label="Próximo slide">
                 <p className={`mono ${estilos.sobre}`}>A SEGUIR</p>
-                <Slide slide={proximo} destacarFaltas />
-              </div>
+                {html ? <p className={estilos.proximoTitulo}>{proximo.titulo.map((p) => p.texto).join("")}</p> : <Slide slide={proximo} destacarFaltas />}
+              </section>
             )}
           </div>
         )}
