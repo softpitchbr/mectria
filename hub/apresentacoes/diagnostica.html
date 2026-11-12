@@ -699,6 +699,8 @@ p {
   function preencher() {
     document.querySelectorAll("[data-modelo]").forEach(function (el) {
       el.textContent = "";
+      // Um trecho que só aparece com a chave preenchida (data-se) fica vazio sem ela, sem o [rótulo].
+      if (el.hasAttribute("data-se") && !valor(el.getAttribute("data-se"))) return;
       el.getAttribute("data-modelo")
         .split(/(\{\w+\})/)
         .forEach(function (pedaco) {
@@ -712,6 +714,22 @@ p {
           falta.textContent = "[" + (ROTULOS[chave[1]] || chave[1]) + "]";
           el.appendChild(falta);
         });
+    });
+    // [data-lista="chave"]: uma lista com um item por linha da chave; sem itens, some.
+    document.querySelectorAll("[data-lista]").forEach(function (el) {
+      el.textContent = "";
+      valor(el.getAttribute("data-lista"))
+        .split("\n")
+        .map(function (l) {
+          return l.trim();
+        })
+        .filter(Boolean)
+        .forEach(function (item) {
+          var li = document.createElement("li");
+          li.textContent = item;
+          el.appendChild(li);
+        });
+      el.hidden = !el.children.length;
     });
     document.querySelectorAll("[data-se]").forEach(function (el) {
       el.hidden = !valor(el.getAttribute("data-se"));
@@ -771,14 +789,16 @@ p {
         calculadora: i.calculadora && typeof i.calculadora === "object" ? Object.assign({}, i.calculadora) : {},
       };
       preencher();
+      desenharInterativos();
       if (opcoes.aoEstado) opcoes.aoEstado(estado);
       mostrar(m.slide);
     } else if (m.tipo === "slide") {
       mostrar(m.slide);
     } else if (m.tipo === "acionar" && typeof m.acao === "string") {
-      if (opcoes.aoAcionar) opcoes.aoAcionar(m.acao);
+      acionar(m.acao);
     } else if (m.tipo === "calcular" && m.valores && typeof m.valores === "object") {
-      if (opcoes.aoCalcular) opcoes.aoCalcular(m.valores);
+      if (opcoes.calculadora) calcular(m.valores);
+      else if (opcoes.aoCalcular) opcoes.aoCalcular(m.valores);
     }
   });
 
@@ -791,17 +811,179 @@ p {
     enviar({ tipo: "tecla", tecla: e.key });
   });
 
+  // Partes interativas comuns às propostas ------------------------------------------------
+
+  /** Dor 1 é a do cliente (inicial maiúscula); 2 a 4, as dores cadastradas no serviço. */
+  function textoDaDor(n) {
+    if (n === 1) {
+      var dor = valor("dor");
+      return dor ? dor.charAt(0).toUpperCase() + dor.slice(1) : "[" + ROTULOS.dor + "]";
+    }
+    return (
+      valor("doresDoServico")
+        .split("\n")
+        .map(function (d) {
+          return d.trim();
+        })
+        .filter(Boolean)[n - 2] || ""
+    );
+  }
+
+  function desenharDores() {
+    document.querySelectorAll("[data-dor]").forEach(function (botao) {
+      var texto = textoDaDor(Number(botao.getAttribute("data-dor")));
+      botao.textContent = texto;
+      botao.hidden = !texto;
+      botao.setAttribute("aria-pressed", estado.interacoes.dores.indexOf(texto) >= 0 ? "true" : "false");
+    });
+  }
+
+  function alternarDor(n) {
+    var texto = textoDaDor(n);
+    if (!texto) return;
+    var marcada = estado.interacoes.dores.indexOf(texto) < 0;
+    estado.interacoes.dores = estado.interacoes.dores.filter(function (d) {
+      return d !== texto;
+    });
+    if (marcada) estado.interacoes.dores.push(texto);
+    desenharDores();
+    Apresentacao.enviar({ evento: "dor", valor: texto, marcada: marcada });
+  }
+
+  /** O preço aparece em etapas ([data-etapa="1"], "2", "3"); [data-espera] some na primeira. */
+  function desenharPreco() {
+    var etapa = estado.interacoes.precoEtapa;
+    document.querySelectorAll("[data-etapa]").forEach(function (el) {
+      el.hidden = Number(el.getAttribute("data-etapa")) > etapa;
+    });
+    document.querySelectorAll("[data-espera]").forEach(function (el) {
+      el.hidden = etapa > 0;
+    });
+  }
+
+  function revelarPreco() {
+    var total = (opcoes.preco && opcoes.preco.etapas) || 3;
+    if (estado.interacoes.precoEtapa >= total) return;
+    estado.interacoes.precoEtapa += 1;
+    desenharPreco();
+    Apresentacao.enviar({ evento: "preco", etapa: estado.interacoes.precoEtapa });
+  }
+
+  /** A calculadora: os campos [data-campo] e o resultado em [data-resultado] (custo do ano e em quantos meses o projeto se paga). */
+  function desenharCalculo() {
+    var c = opcoes.calculadora;
+    if (!c) return;
+    var numeros = estado.interacoes.calculadora;
+    c.campos.forEach(function (campo) {
+      var el = document.querySelector('[data-campo="' + campo.id + '"]');
+      if (el && document.activeElement !== el) el.value = typeof numeros[campo.id] === "number" ? String(numeros[campo.id]) : "";
+    });
+    var saida = document.querySelector("[data-resultado]");
+    if (!saida) return;
+    var completos = c.campos.every(function (campo) {
+      return typeof numeros[campo.id] === "number" && numeros[campo.id] > 0;
+    });
+    saida.textContent = "";
+    if (!completos) {
+      saida.textContent = c.vazio || "Preencha os números para ver quanto custa ficar como está.";
+      return;
+    }
+    var mes = c.porMes(numeros);
+    saida.appendChild(document.createTextNode("Por ano, ficar como está custa "));
+    var ano = document.createElement("strong");
+    ano.textContent = reais(mes * 12);
+    saida.appendChild(ano);
+    saida.appendChild(document.createTextNode("."));
+    var centavos = Number(valor("valorCentavos"));
+    if (centavos > 0 && mes > 0) {
+      var meses = Math.max(1, Math.ceil(centavos / 100 / mes));
+      saida.appendChild(document.createTextNode(" O projeto se paga em " + meses + (meses === 1 ? " mês." : " meses.")));
+    }
+  }
+
+  function avisarCalculadora() {
+    var valores = {};
+    opcoes.calculadora.campos.forEach(function (campo) {
+      if (typeof estado.interacoes.calculadora[campo.id] === "number") valores[campo.id] = estado.interacoes.calculadora[campo.id];
+    });
+    Apresentacao.enviar({ evento: "calculadora", valores: valores });
+  }
+
+  function calcular(valores) {
+    if (!opcoes.calculadora) return;
+    opcoes.calculadora.campos.forEach(function (campo) {
+      var n = valores[campo.id];
+      if (typeof n === "number" && isFinite(n)) estado.interacoes.calculadora[campo.id] = n;
+    });
+    desenharCalculo();
+    avisarCalculadora();
+  }
+
+  function desenharInterativos() {
+    if (opcoes.dores) desenharDores();
+    if (opcoes.preco) desenharPreco();
+    if (opcoes.calculadora) desenharCalculo();
+  }
+
+  function acoesEcampos() {
+    var acoes = (opcoes.acoes || []).slice();
+    var campos = (opcoes.campos || []).slice();
+    if (opcoes.dores) {
+      [1, 2, 3, 4].forEach(function (n) {
+        acoes.push({ slide: opcoes.dores.slide, id: "dor-" + n, rotulo: n === 1 ? "Marcar a dor do cliente" : "Marcar a dor " + n });
+      });
+    }
+    if (opcoes.preco) acoes.push({ slide: opcoes.preco.slide, id: "revelar-preco", rotulo: "Revelar o preço" });
+    if (opcoes.calculadora) {
+      opcoes.calculadora.campos.forEach(function (campo) {
+        campos.push({ slide: opcoes.calculadora.slide, id: campo.id, rotulo: campo.rotulo });
+      });
+    }
+    return { acoes: acoes, campos: campos };
+  }
+
+  function ligarInterativos() {
+    document.querySelectorAll("[data-dor]").forEach(function (botao) {
+      botao.addEventListener("click", function () {
+        alternarDor(Number(botao.getAttribute("data-dor")));
+      });
+    });
+    if (opcoes.calculadora) {
+      opcoes.calculadora.campos.forEach(function (campo) {
+        var el = document.querySelector('[data-campo="' + campo.id + '"]');
+        if (!el) return;
+        el.addEventListener("input", function () {
+          var n = Number(el.value);
+          if (el.value === "" || !isFinite(n)) delete estado.interacoes.calculadora[campo.id];
+          else estado.interacoes.calculadora[campo.id] = n;
+          desenharCalculo();
+          avisarCalculadora();
+        });
+      });
+    }
+  }
+
+  function acionar(acao) {
+    var dor = /^dor-([1-4])$/.exec(acao);
+    if (dor && opcoes.dores) return alternarDor(Number(dor[1]));
+    if (acao === "revelar-preco" && opcoes.preco) return revelarPreco();
+    if (opcoes.aoAcionar) opcoes.aoAcionar(acao);
+  }
+
   window.Apresentacao = {
     iniciar: function (o) {
       opcoes = o || {};
       slides = Array.prototype.slice.call(document.querySelectorAll("[data-slide]"));
       numerar();
+      ligarInterativos();
       window.addEventListener("resize", escalar);
       escalar();
       preencher();
+      desenharInterativos();
       if (opcoes.aoEstado) opcoes.aoEstado(estado);
       mostrar(0);
-      enviar({ tipo: "pronta", slides: slides.length, acoes: opcoes.acoes || [], campos: opcoes.campos || [] });
+      var ac = acoesEcampos();
+      enviar({ tipo: "pronta", slides: slides.length, acoes: ac.acoes, campos: ac.campos });
     },
     /** Manda um evento ao hub: { evento: "dor" | "preco" | "calculadora", ... }. */
     enviar: function (evento) {

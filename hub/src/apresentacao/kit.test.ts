@@ -43,6 +43,23 @@ test("o kit preenche {chave} e mostra o rótulo do hub no que falta", async () =
   expect(texto("[data-contagem]")).toBe("01 / 03");
 });
 
+test("data-lista desenha os itens (um por linha) e some sem eles", async () => {
+  const html = montarDeck(
+    '<div id="palco"><section class="slide" data-slide="um"><ul data-lista="entregamosItens"></ul></section></div><!-- kit:js --><script>Apresentacao.iniciar({});</script>',
+    "",
+    kitJs,
+  );
+  const { doc, enviar, esperar } = await abrirDeck(html);
+  enviar({ tipo: "estado", slide: 0, dados: { entregamosItens: "Projeto CAD 3D\n\nManual" }, interacoes: INTERACOES_VAZIAS });
+  await esperar();
+  const lista = doc.querySelector("[data-lista]")!;
+  expect([...lista.querySelectorAll("li")].map((li) => li.textContent)).toEqual(["Projeto CAD 3D", "Manual"]);
+  enviar({ tipo: "estado", slide: 0, dados: {}, interacoes: INTERACOES_VAZIAS });
+  await esperar();
+  expect(lista.querySelectorAll("li")).toHaveLength(0);
+  expect(lista.hasAttribute("hidden")).toBe(true);
+});
+
 test("só o slide atual fica visível (estilo computado)", async () => {
   const { enviar, esperar, visiveis } = await abrirDeck(teste());
   expect(visiveis()).toEqual(["um"]);

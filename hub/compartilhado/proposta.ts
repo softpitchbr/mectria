@@ -176,13 +176,19 @@ export function apresentacaoDaReuniao(servico: Servico | null): { slides: SlideD
 /** O que vai para a apresentação em HTML: os valores, o valor em centavos e as dores do serviço (CONTRATO.md). */
 export function dadosDaApresentacao(
   valores: Record<string, string>,
-  variaveis: Pick<VariaveisProposta, "valor">,
+  variaveis: Pick<VariaveisProposta, "valor" | "escopo" | "ficaComCliente">,
   servico: Pick<Servico, "dores"> | null,
 ): Record<string, string> {
+  // Os itens com a grafia original (um por linha), para a apresentação listar; {entregamos} e {fica} são para o meio da fala.
+  const itens = (texto: string) => texto.split("\n").map((l) => l.trim()).filter(Boolean).join("\n");
+  const entregamosItens = itens(variaveis.escopo);
+  const ficaItens = itens(variaveis.ficaComCliente);
   return {
     ...valores,
     ...(variaveis.valor ? { valorCentavos: String(variaveis.valor) } : {}),
     ...(servico?.dores.length ? { doresDoServico: servico.dores.join("\n") } : {}),
+    ...(entregamosItens ? { entregamosItens } : {}),
+    ...(ficaItens ? { ficaItens } : {}),
   };
 }
 
@@ -227,6 +233,7 @@ export function valoresDaProposta(ctx: {
     fica: emFrase(v.ficaComCliente),
     prazoProjeto: v.prazo.trim(),
     equipe: v.equipe.trim(),
+    condicoes: v.condicoes.trim(),
   };
   if (v.valor) valores.valor = formatarReais(v.valor);
 
