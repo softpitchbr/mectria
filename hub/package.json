@@ -7,6 +7,7 @@
     "dev": "vite",
     "typecheck": "tsc -p tsconfig.app.json --noEmit && tsc -p tsconfig.api.json --noEmit",
     "build": "npm run typecheck && vite build",
+    "apresentacoes": "node --experimental-strip-types --no-warnings apresentacoes/montar.ts",
     "test:app": "vitest run",
     "test:api": "vitest run --config vitest.api.config.ts",
     "test": "npm run test:app && npm run test:api",

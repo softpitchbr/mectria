@@ -1,0 +1,351 @@
+/* Kit das apresentações da MecTRIA: a identidade do site novo (fundo escuro, vermelho de destaque,
+   títulos grandes, rótulos em fonte mono). O slide tem 1280 × 720 e o kit escala para caber na janela. */
+@import url("https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500&family=Inter+Tight:wght@400;500;600&display=swap");
+
+:root {
+  --fundo: #0b0b0c;
+  --fundo-alto: #141518;
+  --texto: #f4f2ee;
+  --suave: #a6a39d;
+  --apagado: #6f6c67;
+  --linha: rgba(255, 255, 255, 0.12);
+  --linha-forte: rgba(255, 255, 255, 0.24);
+  --vermelho: #c8102e;
+  --vermelho-vivo: #ef3b4f;
+  --mono: "IBM Plex Mono", ui-monospace, monospace;
+  --sans: "Inter Tight", "Helvetica Neue", Arial, sans-serif;
+  --entrar: 520ms cubic-bezier(0.2, 0.7, 0.2, 1);
+}
+
+* {
+  box-sizing: border-box;
+}
+
+html,
+body {
+  margin: 0;
+  height: 100%;
+  overflow: hidden;
+  background: #050506;
+}
+
+#palco {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 1280px;
+  height: 720px;
+  transform-origin: 0 0;
+}
+
+.slide {
+  position: absolute;
+  inset: 0;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  gap: 24px;
+  padding: 72px 88px 88px;
+  color: var(--texto);
+  font: 400 24px/1.45 var(--sans);
+  background:
+    radial-gradient(ellipse 70% 60% at 78% 40%, rgba(60, 72, 96, 0.28), transparent 70%),
+    radial-gradient(ellipse 50% 40% at 15% 110%, rgba(200, 16, 46, 0.12), transparent 70%),
+    var(--fundo);
+}
+
+.slide[data-ativo="sim"] > * {
+  animation: entrar var(--entrar) both;
+}
+
+.slide[data-ativo="sim"] > :nth-child(2) {
+  animation-delay: 60ms;
+}
+
+.slide[data-ativo="sim"] > :nth-child(3) {
+  animation-delay: 120ms;
+}
+
+.slide[data-ativo="sim"] > :nth-child(n + 4) {
+  animation-delay: 180ms;
+}
+
+@keyframes entrar {
+  from {
+    opacity: 0;
+    transform: translateY(14px);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+/* O rótulo do slide (como "DIAGNÓSTICO" no site): mono, maiúsculo, espaçado, em vermelho. */
+.rotulo {
+  margin: 0;
+  font: 500 15px/1.2 var(--mono);
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--vermelho-vivo);
+}
+
+.sobre {
+  margin: 0;
+  font: 400 14px/1.4 var(--mono);
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--suave);
+}
+
+h1,
+h2 {
+  margin: 0;
+  font-family: var(--sans);
+  font-weight: 600;
+  letter-spacing: -0.025em;
+  color: var(--texto);
+}
+
+h1 {
+  font-size: 84px;
+  line-height: 1;
+}
+
+h2 {
+  font-size: 62px;
+  line-height: 1.04;
+}
+
+h3 {
+  margin: 0;
+  font: 600 26px/1.2 var(--sans);
+  letter-spacing: -0.01em;
+}
+
+p {
+  margin: 0;
+}
+
+.texto {
+  max-width: 760px;
+  color: var(--suave);
+}
+
+.lista {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  display: grid;
+  gap: 14px;
+}
+
+.lista li {
+  position: relative;
+  padding-left: 30px;
+}
+
+.lista li::before {
+  content: "";
+  position: absolute;
+  left: 0;
+  top: 0.62em;
+  width: 14px;
+  height: 2px;
+  background: var(--vermelho-vivo);
+}
+
+.colunas {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 56px;
+  align-items: center;
+}
+
+.cartao {
+  padding: 24px 26px;
+  border: 1px solid var(--linha);
+  border-radius: 16px;
+  background: rgba(255, 255, 255, 0.03);
+}
+
+.faixas {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+}
+
+.faixas span {
+  padding: 8px 16px;
+  border: 1px solid var(--linha-forte);
+  border-radius: 999px;
+  font: 500 13px/1 var(--mono);
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+}
+
+/* Os quatro números do site. */
+.numeros {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 24px;
+  border-top: 1px solid var(--linha);
+  padding-top: 32px;
+}
+
+.numeros strong {
+  display: block;
+  font: 600 64px/1 var(--sans);
+  letter-spacing: -0.03em;
+}
+
+.numeros span {
+  display: block;
+  margin-top: 10px;
+  font-size: 18px;
+  color: var(--suave);
+}
+
+/* Contagem "01 / 13" e a marca, no rodapé de cada slide. */
+.rodape {
+  position: absolute;
+  left: 88px;
+  right: 88px;
+  bottom: 36px;
+  display: flex;
+  justify-content: space-between;
+  font: 500 13px/1 var(--mono);
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--apagado);
+}
+
+.falta {
+  color: var(--vermelho-vivo);
+  opacity: 0.85;
+}
+
+/* Desenho técnico que se desenha (do papel à peça). */
+.desenho path,
+.desenho line,
+.desenho rect,
+.desenho circle,
+.desenho polyline {
+  fill: none;
+  stroke: var(--texto);
+  stroke-width: 1.6;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+
+.desenho .cota {
+  stroke: var(--vermelho-vivo);
+  stroke-width: 1.2;
+}
+
+.desenho .eixo {
+  stroke: var(--apagado);
+  stroke-dasharray: 10 4 2 4;
+}
+
+.desenho .solido {
+  fill: rgba(200, 16, 46, 0.16);
+  stroke: var(--vermelho-vivo);
+}
+
+.desenho text {
+  fill: var(--suave);
+  font: 500 13px var(--mono);
+  letter-spacing: 0.08em;
+}
+
+.slide[data-ativo="sim"] .desenho [pathLength] {
+  stroke-dasharray: 1;
+  stroke-dashoffset: 1;
+  animation: tracar 1.6s cubic-bezier(0.4, 0, 0.2, 1) forwards;
+}
+
+.slide[data-ativo="sim"] .desenho .depois {
+  opacity: 0;
+  animation: aparecer 700ms ease forwards 1.4s;
+}
+
+@keyframes tracar {
+  to {
+    stroke-dashoffset: 0;
+  }
+}
+
+@keyframes aparecer {
+  to {
+    opacity: 1;
+  }
+}
+
+/* Botões e campos dentro da apresentação (dores, calculadora). */
+.escolha {
+  text-align: left;
+  font: 500 22px/1.35 var(--sans);
+  color: var(--texto);
+  background: rgba(255, 255, 255, 0.03);
+  border: 1px solid var(--linha-forte);
+  border-radius: 14px;
+  padding: 18px 22px;
+  cursor: pointer;
+  transition:
+    border-color 160ms,
+    background 160ms;
+}
+
+.escolha:hover {
+  border-color: var(--texto);
+}
+
+.escolha[aria-pressed="true"] {
+  border-color: var(--vermelho-vivo);
+  background: rgba(200, 16, 46, 0.14);
+}
+
+.escolha[aria-pressed="true"]::before {
+  content: "✓  ";
+  color: var(--vermelho-vivo);
+}
+
+.campo {
+  display: grid;
+  gap: 8px;
+  font: 500 14px/1.2 var(--mono);
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--suave);
+}
+
+.campo input {
+  font: 500 28px var(--mono);
+  color: var(--texto);
+  background: transparent;
+  border: 1px solid var(--linha-forte);
+  border-radius: 10px;
+  padding: 8px 14px;
+  width: 100%;
+}
+
+.destaque {
+  color: var(--vermelho-vivo);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .slide[data-ativo="sim"] > *,
+  .slide[data-ativo="sim"] .desenho [pathLength],
+  .slide[data-ativo="sim"] .desenho .depois {
+    animation: none;
+    stroke-dashoffset: 0;
+    opacity: 1;
+  }
+}
+
+/* Por último: o display dos slides (flex) venceria o hidden do navegador; o escondido fica escondido de verdade. */
+[hidden] {
+  display: none !important;
+}

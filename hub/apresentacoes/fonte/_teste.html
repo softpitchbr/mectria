@@ -1,0 +1,35 @@
+<!doctype html>
+<html lang="pt-BR">
+  <head>
+    <meta charset="utf-8" />
+    <title>Apresentação de teste do kit</title>
+    <!-- kit:css -->
+  </head>
+  <body>
+    <div id="palco">
+      <section class="slide" data-slide="um">
+        <p class="rotulo" data-modelo="Proposta para {empresa}"></p>
+        <h2 data-modelo="{servico}"></h2>
+        <p data-contagem></p>
+      </section>
+      <section class="slide" data-slide="dois">
+        <h2>Dois</h2>
+        <p data-modelo="Time: {equipe}"></p>
+        <input data-campo="horas" type="number" />
+      </section>
+      <section class="slide" data-slide="tres">
+        <h2>Três</h2>
+      </section>
+    </div>
+    <!-- kit:js -->
+    <script>
+      Apresentacao.iniciar({
+        acoes: [{ slide: 1, id: "fazer", rotulo: "Fazer" }],
+        campos: [{ slide: 1, id: "horas", rotulo: "Horas" }],
+        aoAcionar: function (acao) {
+          if (acao === "fazer") Apresentacao.enviar({ evento: "preco", etapa: 1 });
+        },
+      });
+    </script>
+  </body>
+</html>

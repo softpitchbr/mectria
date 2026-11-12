@@ -89,3 +89,24 @@ Todas vão por `postMessage` e têm `mectria: 1`.
 ## 6. Como testar
 
 Envie o arquivo em Serviços e clique em **Ver a apresentação**. A vista mostra a apresentação com dados de exemplo, os botões das ações, os campos da calculadora e tudo o que ela mandar para o hub. Ela também avisa se o número de slides é diferente do roteiro.
+
+## 7. Usando o kit
+
+As apresentações da MecTRIA saem de uma base comum, em `hub/apresentacoes/fonte/`:
+
+- `kit.css`: o visual do site (fundo escuro, vermelho de destaque, títulos grandes, rótulos em mono), o slide de 1280 × 720 e o desenho técnico que se desenha (`.desenho`, com `pathLength="1"` nas linhas);
+- `kit.js`: o contrato, a escala, as setas, o rodapé "01 / 13" e os textos com `{chave}`.
+
+Cada apresentação é um arquivo em `fonte/` com `<!-- kit:css -->` no `<head>`, os slides (`<section class="slide" data-slide="id">`), `<!-- kit:js -->` e, no fim, `Apresentacao.iniciar({ acoes, campos, aoEstado, aoAcionar, aoCalcular, aoSlide })`. Dentro dos slides:
+
+- `data-modelo="Proposta para {empresa}"` preenche o texto com os dados (o que falta vira `[rótulo]`);
+- `data-se="condicoes"` só aparece quando a chave tem valor; `data-senao="condicoes"`, só quando não tem;
+- `Apresentacao.enviar({ evento: "dor", valor, marcada })` manda um evento ao hub.
+
+Depois de mudar uma fonte ou o kit, monte:
+
+```bash
+npm run apresentacoes
+```
+
+Isso grava `hub/apresentacoes/<nome>.html`, com tudo dentro: é o arquivo que o diretor envia. O teste do kit falha se uma apresentação montada ficar desatualizada.
