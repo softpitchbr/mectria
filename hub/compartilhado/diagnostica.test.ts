@@ -1,6 +1,7 @@
 import { DIAGNOSTICA } from "./dados/diagnostica";
 import { servicosDaCarta } from "./dados/servicos-completos";
-import { briefingDaFicha, resumoDoFechamento, resumoParaCliente, roteiroDaDiagnostica, valoresDasRespostas, type Anotacao } from "./diagnostica";
+import { formatarDia } from "./datas";
+import { dadosDaDiagnostica, SLIDES_DA_DIAGNOSTICA, slideDoPasso, briefingDaFicha, resumoDoFechamento, resumoParaCliente, roteiroDaDiagnostica, valoresDasRespostas, type Anotacao } from "./diagnostica";
 
 const perguntasDe = (id: string) => servicosDaCarta().find((s) => s.id === id)!.perguntas;
 const idDe = (chave: string) => DIAGNOSTICA.blocos.flatMap((b) => b.perguntas).find((p) => p.chave === chave)!.id;
@@ -68,4 +69,38 @@ test("a pergunta inativa sai do roteiro e continua no briefing", () => {
   expect(roteiroDaDiagnostica(perguntas.filter((p) => !p.inativa)).filter((p) => p.grupo === "tecnica").map((p) => p.id)).toEqual(["x-area"]);
   const secoes = briefingDaFicha({ respostas: { "x-velha": "Sim, 300 m²" }, anotacoes: [], perguntasDoServico: perguntas });
   expect(secoes).toEqual([{ titulo: "Técnico do serviço", itens: [{ pergunta: "Pergunta antiga?", resposta: "Sim, 300 m²" }] }]);
+});
+
+test("slideDoPasso leva a abertura, os blocos, o escopo e o fechamento aos 5 slides", () => {
+  expect(SLIDES_DA_DIAGNOSTICA).toEqual(["agenda", "quem-somos", "escuta", "como-trabalhamos", "proximo-passo"]);
+  const roteiro = roteiroDaDiagnostica(perguntasDe("climatizacao"));
+  const porGrupo = (grupo: string) => [...new Set(roteiro.filter((p) => p.grupo === grupo).map(slideDoPasso))];
+  expect(roteiro.slice(0, 2).map(slideDoPasso)).toEqual([0, 1]);
+  expect(porGrupo("bloco")).toEqual([2]);
+  expect(porGrupo("tecnica")).toEqual([2]);
+  expect(porGrupo("escopo")).toEqual([3]);
+  expect(porGrupo("fechamento")).toEqual([4]);
+});
+
+test("dadosDaDiagnostica traz a etapa do bloco atual", () => {
+  const ficha = {
+    reuniao: { dataHora: "2026-11-13T10:00" },
+    oportunidade: { empresa: "Solda Hunter", contato: "Ana Souza" },
+    servicoNome: "Climatização",
+    perguntasDoServico: perguntasDe("climatizacao"),
+  };
+  const roteiro = roteiroDaDiagnostica(ficha.perguntasDoServico);
+  const etapas = [...DIAGNOSTICA.blocos.map((b) => b.titulo), "Técnico"].join("\n");
+  expect(dadosDaDiagnostica(ficha, roteiro.find((p) => p.grupo === "bloco")!)).toEqual({
+    empresa: "Solda Hunter",
+    contato: "Ana",
+    data: formatarDia("2026-11-13"),
+    servico: "Climatização",
+    etapas,
+    etapa: DIAGNOSTICA.blocos[0].titulo,
+  });
+  expect(dadosDaDiagnostica(ficha, roteiro.find((p) => p.grupo === "tecnica")!).etapa).toBe("Técnico");
+  expect(dadosDaDiagnostica(ficha, roteiro[0]).etapa).toBe("");
+  const semTecnicas = { ...ficha, perguntasDoServico: [] };
+  expect(dadosDaDiagnostica(semTecnicas, roteiro[0]).etapas).toBe(DIAGNOSTICA.blocos.map((b) => b.titulo).join("\n"));
 });

@@ -8,6 +8,9 @@ import {
 } from "../../functions/api/apresentacoes/[id]";
 import { onRequestGet as getGerais } from "../../functions/api/apresentacoes/index";
 import { onRequestPut as putApresentacaoDoServico } from "../../functions/api/servicos/[id]/apresentacao";
+import { onRequestGet as getReuniao } from "../../functions/api/reunioes/[id]";
+import type { FichaCompleta } from "../../compartilhado/oportunidade";
+import { criarDiagnostica } from "../oportunidades";
 import { criar } from "../pessoas";
 import type { DadosApi, Env } from "../tipos";
 
@@ -75,4 +78,17 @@ test("id que não é diagnostica dá 404", async () => {
   expect((await enviar("dir@mectria.com", HTML, { id: "portfolio" })).status).toBe(404);
   expect((await chamar(g(getGeral), "clo@mectria.com", { params: { id: "portfolio" }, busca: "?v=1" })).status).toBe(404);
   expect((await env.APRESENTACOES.list({ prefix: "geral/portfolio/" })).keys).toEqual([]);
+});
+
+test("a ficha traz o nome do serviço", async () => {
+  await env.DB.exec("DELETE FROM pendencias; DELETE FROM anotacoes; DELETE FROM fichas; DELETE FROM historico; DELETE FROM reunioes; DELETE FROM oportunidades");
+  const closer = await env.DB.prepare("SELECT id FROM pessoas WHERE email = 'clo@mectria.com'").first<{ id: number }>();
+  const hunter = (await env.DB.prepare("SELECT id, nome, email, cargo, ativo FROM pessoas WHERE email = 'hun@mectria.com'").first())! as never;
+  const { reuniao } = await criarDiagnostica(
+    env.DB,
+    { empresa: "Solda Hunter", contato: "Ana", telefone: "34999990000", servico: "desenho-tecnico", closerId: closer!.id, dataHora: "2099-01-05T10:00", formato: "online" },
+    hunter,
+  );
+  const ficha = await corpo<FichaCompleta>(await chamar(g(getReuniao), "hun@mectria.com", { params: { id: String(reuniao.id) } }));
+  expect(ficha.servicoNome).toBe("Desenho Técnico");
 });

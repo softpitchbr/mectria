@@ -96,6 +96,7 @@ export async function fichaDaReuniao(db: D1Database, reuniaoId: number): Promise
   ]);
   const linhaProxima = (proxima.results as LinhaReuniao[])[0];
   const oportunidade = (await buscarOportunidade(db, reuniao.oportunidadeId))!;
+  const servico = await buscarServico(db, oportunidade.servico);
   return {
     reuniao,
     oportunidade,
@@ -122,7 +123,8 @@ export async function fichaDaReuniao(db: D1Database, reuniaoId: number): Promise
       }),
     ),
     proximaReuniao: linhaProxima ? reuniaoDeLinha(linhaProxima) : null,
-    perguntasDoServico: (await buscarServico(db, oportunidade.servico))?.perguntas ?? [],
+    perguntasDoServico: servico?.perguntas ?? [],
+    servicoNome: servico?.nome ?? oportunidade.servico,
   };
 }
 

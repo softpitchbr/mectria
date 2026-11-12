@@ -228,6 +228,8 @@ export interface FichaCompleta {
   proximaReuniao: Reuniao | null;
   /** As perguntas técnicas do serviço, também as desativadas (o briefing mostra as respostas antigas). */
   perguntasDoServico: import("./servico").PerguntaTecnica[];
+  /** O nome do serviço (vai para a apresentação da diagnóstica). */
+  servicoNome: string;
 }
 
 /** A reunião ainda pode andar: a oportunidade continua na etapa dela (diagnóstica marcada ou proposta marcada). */
