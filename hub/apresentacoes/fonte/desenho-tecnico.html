@@ -1,0 +1,419 @@
+<!doctype html>
+<html lang="pt-BR">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Proposta · Desenho Técnico · MecTRIA</title>
+    <!--
+      A apresentação de proposta de Desenho Técnico. São os 13 slides do roteiro padrão, com o roteiro do serviço
+      em hub/apresentacoes/roteiros/desenho-tecnico.json. Interativo: as dores (slide 6), o preço em 3 etapas e a
+      calculadora do retrabalho (slide 12). Os textos de "Quem somos" e os números são os do site, sem mudar uma palavra.
+    -->
+    <!-- kit:css -->
+    <style>
+      .capa h1 {
+        font-size: 104px;
+        line-height: 0.96;
+        letter-spacing: -0.04em;
+        max-width: 620px;
+      }
+
+      .pergunta h2 {
+        font-size: 76px;
+        max-width: 980px;
+      }
+
+      .dores {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 14px;
+      }
+
+      .cenario {
+        display: grid;
+        gap: 6px;
+        color: var(--suave);
+        font-size: 20px;
+      }
+
+      .metodo h2 {
+        font-size: 50px;
+      }
+
+      .metodo .passos {
+        gap: 10px;
+      }
+
+      .metodo .passos li {
+        padding-top: 10px;
+      }
+
+      .metodo .passos h3 {
+        font-size: 21px;
+      }
+
+
+      .metodo .passos p {
+        font-size: 17px;
+      }
+
+      .entregas {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 6px 28px;
+        font-size: 17px;
+        line-height: 1.4;
+      }
+
+      .entregas .sobre {
+        grid-column: 1 / -1;
+        margin-top: 4px;
+      }
+
+      .entregas .lista {
+        grid-column: 1 / -1;
+        grid-template-columns: 1fr 1fr;
+        gap: 6px 24px;
+        color: var(--suave);
+      }
+
+      .entregas .lista.uma {
+        grid-template-columns: 1fr;
+      }
+
+      .proposito h2 {
+        font-size: 50px;
+      }
+
+      .desenho {
+        width: 100%;
+        height: auto;
+      }
+
+      .jornada .lista {
+        gap: 18px;
+        font-size: 22px;
+      }
+
+      .combinado {
+        font: 600 40px/1.1 var(--sans);
+        letter-spacing: -0.02em;
+      }
+
+      .investimento .colunas {
+        align-items: start;
+      }
+
+      .etapas-do-preco {
+        display: grid;
+        gap: 18px;
+      }
+
+      .etapas-do-preco .mercado {
+        font-size: 22px;
+        color: var(--suave);
+      }
+
+      .etapas-do-preco .valor {
+        font: 600 76px/1 var(--sans);
+        letter-spacing: -0.03em;
+        color: var(--texto);
+      }
+
+      .etapas-do-preco .condicoes {
+        font-size: 20px;
+        color: var(--suave);
+      }
+
+      [data-etapa]:not([hidden]) {
+        animation: entrar 420ms ease both;
+      }
+
+      .calculadora {
+        display: grid;
+        gap: 16px;
+        padding: 26px 28px;
+        border: 1px solid var(--linha-forte);
+        border-radius: 18px;
+      }
+
+      .calculadora .resultado {
+        font-size: 20px;
+        line-height: 1.45;
+        color: var(--suave);
+      }
+
+      .calculadora .resultado strong {
+        color: var(--vermelho-vivo);
+        font-weight: 600;
+      }
+    </style>
+  </head>
+  <body>
+    <div id="palco">
+      <section class="slide capa" data-slide="capa">
+        <div class="colunas">
+          <div class="pilha">
+            <p class="rotulo" data-modelo="Proposta para {empresa}"></p>
+            <h1 data-modelo="{servico}"></h1>
+            <p class="sobre" data-modelo="{data}"></p>
+          </div>
+          <svg class="desenho" viewBox="0 0 520 440" role="img" aria-label="Uma folha de desenho técnico">
+            <rect x="40" y="40" width="440" height="360" pathLength="1" />
+            <rect x="300" y="340" width="180" height="60" pathLength="1" />
+            <line x1="300" y1="370" x2="480" y2="370" pathLength="1" />
+            <line class="eixo" x1="80" y1="190" x2="280" y2="190" pathLength="1" />
+            <rect x="100" y="140" width="160" height="100" pathLength="1" />
+            <circle cx="180" cy="190" r="30" pathLength="1" />
+            <line class="cota" x1="100" y1="264" x2="260" y2="264" pathLength="1" />
+            <text x="160" y="284">160</text>
+          </svg>
+        </div>
+      </section>
+
+      <section class="slide" data-slide="abertura">
+        <div class="pilha">
+          <p class="rotulo">Hoje</p>
+          <h2>O projeto que desenhamos para vocês</h2>
+          <p class="texto">No fim, você diz com sinceridade se faz sentido.</p>
+        </div>
+      </section>
+
+      <section class="slide proposito" data-slide="proposito">
+        <div class="colunas">
+          <div class="pilha">
+            <p class="rotulo">Quem somos</p>
+            <h2>Mais do que engenharia: propósito, aprendizado e transformação real.</h2>
+          </div>
+          <div class="pilha">
+            <p class="texto pequeno">
+              A MecTRIA é a Empresa Júnior de Engenharia Mecânica da UFTM, em Uberaba (MG). Desde 2013, unimos conhecimento acadêmico e prática de mercado para entregar soluções mecânicas eficientes e seguras.
+            </p>
+            <p class="texto pequeno">Com o apoio de professores doutores, garantimos excelência no produto e no atendimento. Cuidado em cada detalhe, do primeiro contato à entrega.</p>
+            <div class="faixas">
+              <span>UFTM</span>
+              <span>FEJEMG</span>
+              <span>Núcleo Triângulo</span>
+              <span>Brasil Júnior</span>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section class="slide" data-slide="numeros">
+        <div class="pilha">
+          <p class="rotulo">Histórico</p>
+          <h2>Nossa história em números</h2>
+          <div class="numeros">
+            <div><strong>+13</strong> <span>anos de mercado</span></div>
+            <div><strong>+130</strong> <span>projetos realizados</span></div>
+            <div><strong>100%</strong> <span>dos clientes avaliados recomendam</span></div>
+            <div><strong>70%</strong> <span>abaixo do preço de mercado</span></div>
+          </div>
+        </div>
+      </section>
+
+      <section class="slide" data-slide="time">
+        <div class="colunas">
+          <div class="pilha">
+            <p class="rotulo">Quem cuida do seu projeto</p>
+            <h2>O time</h2>
+          </div>
+          <div class="pilha">
+            <p class="combinado" data-modelo="{equipe}"></p>
+            <p class="texto">Com o apoio de professores doutores, garantimos excelência no produto e no atendimento.</p>
+            <p class="sobre"><span class="falta">[professor orientador]</span></p>
+          </div>
+        </div>
+      </section>
+
+      <section class="slide" data-slide="ceu-inferno">
+        <div class="pilha">
+          <p class="rotulo">O cenário de vocês</p>
+          <h2>O que mais pesa hoje?</h2>
+          <div class="dores">
+            <button type="button" class="escolha" data-dor="1" aria-pressed="false"></button>
+            <button type="button" class="escolha" data-dor="2" aria-pressed="false"></button>
+            <button type="button" class="escolha" data-dor="3" aria-pressed="false"></button>
+            <button type="button" class="escolha" data-dor="4" aria-pressed="false"></button>
+          </div>
+          <div class="cenario">
+            <p data-modelo="Se ficar como está: {impacto}"></p>
+            <p data-modelo="Com o projeto: {objetivo}"></p>
+          </div>
+        </div>
+      </section>
+
+      <section class="slide metodo" data-slide="metodo">
+        <div class="colunas">
+          <div class="pilha">
+            <p class="rotulo">Do papel à peça</p>
+            <h2>O caminho do projeto</h2>
+            <ol class="passos">
+              <li>
+                <span>01</span>
+                <h3>Levantamento</h3>
+                <p>As peças ou o conceito, levantados com vocês.</p>
+              </li>
+              <li>
+                <span>02</span>
+                <h3>Medição</h3>
+                <p>A peça física medida, quando é engenharia reversa.</p>
+              </li>
+              <li>
+                <span>03</span>
+                <h3>Modelo</h3>
+                <p>A peça modelada em 3D.</p>
+              </li>
+              <li>
+                <span>04</span>
+                <h3>Desenho</h3>
+                <p>Desenhos 2D com tolerâncias, revisados antes da entrega.</p>
+              </li>
+            </ol>
+          </div>
+          <div class="pilha">
+            <svg class="desenho" viewBox="0 0 520 300" style="max-height: 230px" role="img" aria-label="Duas vistas de um eixo com as cotas, que se completa até virar peça">
+              <line class="eixo" x1="20" y1="140" x2="350" y2="140" pathLength="1" />
+              <rect x="40" y="110" width="90" height="60" pathLength="1" />
+              <rect x="130" y="90" width="140" height="100" pathLength="1" />
+              <rect x="270" y="120" width="60" height="40" pathLength="1" />
+              <line class="eixo" x1="440" y1="60" x2="440" y2="220" pathLength="1" />
+              <circle cx="440" cy="140" r="50" pathLength="1" />
+              <circle cx="440" cy="140" r="20" pathLength="1" />
+              <line class="cota" x1="40" y1="230" x2="330" y2="230" pathLength="1" />
+              <line class="cota" x1="130" y1="70" x2="270" y2="70" pathLength="1" />
+              <text x="170" y="250">290 ±0,1</text>
+              <text x="180" y="60">140</text>
+              <g class="depois">
+                <rect class="solido" x="130" y="90" width="140" height="100" />
+                <circle class="solido" cx="440" cy="140" r="50" />
+              </g>
+            </svg>
+            <div class="entregas">
+              <p class="sobre">Entregamos</p>
+              <ul class="lista" data-lista="entregamosItens"></ul>
+              <p class="sobre" data-senao="entregamosItens"><span class="falta">[o que entregamos]</span></p>
+              <p class="sobre">Fica com vocês</p>
+              <ul class="lista uma" data-lista="ficaItens"></ul>
+              <p class="sobre" data-modelo="Prazo: {prazoProjeto}"></p>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section class="slide pergunta" data-slide="pacto-duvida">
+        <div class="pilha">
+          <p class="rotulo">Antes de seguir</p>
+          <h2>Ficou alguma dúvida sobre o projeto?</h2>
+        </div>
+      </section>
+
+      <section class="slide pergunta" data-slide="pacto-cliente">
+        <div class="pilha">
+          <p class="rotulo">Uma pergunta sincera</p>
+          <h2>Tirando o preço da mesa, vocês seriam nossos clientes?</h2>
+        </div>
+      </section>
+
+      <section class="slide jornada" data-slide="valor-preco">
+        <div class="colunas">
+          <div class="pilha">
+            <p class="rotulo">Jornada de parcerias</p>
+            <h2>Por que o valor fica abaixo do mercado</h2>
+          </div>
+          <div class="pilha">
+            <ul class="lista">
+              <li>A MecTRIA faz parte do Movimento Empresa Júnior: aqui ninguém recebe pró-labore nem ganha pelos projetos.</li>
+              <li>O que o membro leva é o resultado: um projeto admirável vira um case na carreira dele.</li>
+              <li>Para cuidar da capacidade do time, pedimos um sim ou um não em até 7 dias.</li>
+            </ul>
+            <p class="combinado">Combinado?</p>
+          </div>
+        </div>
+      </section>
+
+      <section class="slide" data-slide="provas">
+        <div class="pilha">
+          <p class="rotulo">Quem já confiou</p>
+          <h2>Clientes que voltam</h2>
+          <ul class="lista">
+            <li><span class="falta">[Caso de Desenho Técnico, com autorização do cliente]</span></li>
+            <li><span class="falta">[Depoimento]</span></li>
+          </ul>
+        </div>
+      </section>
+
+      <section class="slide investimento" data-slide="investimento">
+        <div class="colunas">
+          <div class="pilha">
+            <p class="rotulo">Investimento</p>
+            <div class="etapas-do-preco">
+              <p class="sobre" data-espera>O investimento aparece em instantes.</p>
+              <p class="mercado" data-etapa="1" hidden>
+                <span data-modelo="No mercado: {ancora}, "></span><span class="falta">[valor de mercado]</span>
+              </p>
+              <p class="mercado" data-etapa="2" hidden data-modelo="Na MecTRIA: {fraseValor}."></p>
+              <div data-etapa="3" hidden>
+                <p class="valor" data-modelo="{valor}"></p>
+                <p class="condicoes" data-se="condicoes" data-modelo="{condicoes}"></p>
+              </div>
+            </div>
+          </div>
+          <div class="calculadora">
+            <h3>Quanto custa ficar como está</h3>
+            <label class="campo">Retrabalhos por mês <input data-campo="retrabalhos-mes" type="number" min="0" inputmode="decimal" /></label>
+            <label class="campo">Custo de cada retrabalho (R$) <input data-campo="custo-retrabalho" type="number" min="0" inputmode="decimal" /></label>
+            <p class="resultado" data-resultado></p>
+          </div>
+        </div>
+      </section>
+
+      <section class="slide" data-slide="fechamento">
+        <div class="colunas">
+          <div class="pilha">
+            <p class="rotulo">Próximos passos</p>
+            <h2>Como a gente começa</h2>
+            <p class="texto">Como combinamos: um sim ou um não em até 7 dias.</p>
+          </div>
+          <ol class="passos">
+            <li>
+              <span>01</span>
+              <h3>Aceite da proposta</h3>
+              <p>Vocês dizem sim, e a gente reserva o time.</p>
+            </li>
+            <li>
+              <span>02</span>
+              <h3>Contrato</h3>
+              <p>E a ART, quando o projeto exige.</p>
+            </li>
+            <li>
+              <span>03</span>
+              <h3>Kick-off</h3>
+              <p>Começamos com a visita técnica.</p>
+            </li>
+          </ol>
+        </div>
+      </section>
+    </div>
+
+    <!-- kit:js -->
+    <script>
+      Apresentacao.iniciar({
+        dores: { slide: 5 },
+        preco: { slide: 11, etapas: 3 },
+        calculadora: {
+          slide: 11,
+          campos: [
+            { id: "retrabalhos-mes", rotulo: "Retrabalhos por mês" },
+            { id: "custo-retrabalho", rotulo: "Custo de cada retrabalho (R$)" },
+          ],
+          vazio: "Preencha os retrabalhos e o custo de cada um para ver quanto eles custam por ano.",
+          porMes: function (n) {
+            return n["retrabalhos-mes"] * n["custo-retrabalho"];
+          },
+        },
+      });
+    </script>
+  </body>
+</html>
