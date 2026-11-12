@@ -9,7 +9,8 @@ import Botao from "../componentes/Botao";
 import Foco from "../componentes/Foco";
 import Tag from "../componentes/Tag";
 import type { Eu } from "../sessao/useEu";
-import { mensagemDe, nomeDoServico } from "./followup/comum";
+import { nomeDoServico, useServicos } from "../servicos/servicos";
+import { mensagemDe } from "./followup/comum";
 import NovaProposta from "./followup/NovaProposta";
 import Resultado from "./followup/Resultado";
 import Reativacao from "./followup/Reativacao";
@@ -30,6 +31,7 @@ const GRUPOS: { estado: EstadoFollowup; titulo: string }[] = [
 
 function CartaoDaProposta({ item, eu, aoAbrir }: { item: ItemFollowup; eu: Eu; aoAbrir: (origem: HTMLElement) => void }) {
   const { oportunidade, proposta, proximo } = item;
+  const servicos = useServicos();
   return (
     <button type="button" className={estilos.cartao} onClick={(e) => aoAbrir(e.currentTarget)}>
       <span className={estilos.linhaTopo}>
@@ -42,7 +44,7 @@ function CartaoDaProposta({ item, eu, aoAbrir }: { item: ItemFollowup; eu: Eu; a
         {item.estado === "hoje" && <Tag tipo="hoje">Hoje</Tag>}
       </span>
       <span className="suave">
-        {nomeDoServico(proposta.servico)} · <span className={`mono ${estilos.valor}`}>{formatarReais(proposta.valor)}</span>
+        {nomeDoServico(servicos, proposta.servico)} · <span className={`mono ${estilos.valor}`}>{formatarReais(proposta.valor)}</span>
       </span>
       <span className={`mono ${estilos.toque}`}>
         {proximo ? (

@@ -2,6 +2,7 @@ import { hojeEmSaoPaulo, somarDiasUteis } from "../compartilhado/datas";
 import { retomarOuPadrao } from "../compartilhado/reativacao";
 import type { Anotacao, Marcacao } from "../compartilhado/diagnostica";
 import { MOTIVO_NAO_COMPARECEU, type FechamentoDiagnostica, type FichaCompleta, type Pendencia, type Reuniao } from "../compartilhado/oportunidade";
+import { buscarServico } from "./servicos";
 import { buscarOportunidade, reuniaoDeLinha, SELECT_REUNIAO, type LinhaReuniao } from "./oportunidades";
 import type { Pessoa } from "./tipos";
 
@@ -94,9 +95,10 @@ export async function fichaDaReuniao(db: D1Database, reuniaoId: number): Promise
       .bind(reuniao.oportunidadeId, reuniaoId),
   ]);
   const linhaProxima = (proxima.results as LinhaReuniao[])[0];
+  const oportunidade = (await buscarOportunidade(db, reuniao.oportunidadeId))!;
   return {
     reuniao,
-    oportunidade: (await buscarOportunidade(db, reuniao.oportunidadeId))!,
+    oportunidade,
     respostas: Object.fromEntries((respostas.results as { pergunta_id: string; resposta: string }[]).map((r) => [r.pergunta_id, r.resposta])),
     anotacoes: (anotacoes.results as { id_cliente: string; minuto: number; passo: string; marcacao: Marcacao | null; texto: string; criado_em: string }[]).map(
       (a) => ({
@@ -120,6 +122,7 @@ export async function fichaDaReuniao(db: D1Database, reuniaoId: number): Promise
       }),
     ),
     proximaReuniao: linhaProxima ? reuniaoDeLinha(linhaProxima) : null,
+    perguntasDoServico: (await buscarServico(db, oportunidade.servico))?.perguntas ?? [],
   };
 }
 

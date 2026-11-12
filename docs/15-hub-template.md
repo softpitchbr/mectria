@@ -252,9 +252,9 @@ O plano de implementação segue estas fases, cada uma testável e mostrável so
 
 - **Conteúdo das apresentações:** a diagnóstica, o portfólio e as propostas por serviço, com valor × preço e calculadora. Este template entrega o motor da janela da apresentação e a sincronização.
 - **Revisão do conteúdo dos playbooks e da copy** (Retórica), com as respostas da MecTRIA.
-- **Editor de roteiros** para o diretor mexer sem a Triângulo, **exceto os serviços**: desde 04/11/2026, o diretor cadastra serviços no hub e anexa a cada um a apresentação de proposta em HTML, o roteiro por slide e as perguntas técnicas da diagnóstica (ver `07-decisoes-e-pendencias.md`). Cadências, objeções e playbooks continuam nos arquivos do código.
+- **Editor de roteiros** para o diretor mexer sem a Triângulo, **exceto os serviços**: desde 04/11/2026, o diretor cadastra serviços no hub e anexa a cada um a apresentação de proposta em HTML, o roteiro por slide e as perguntas técnicas da diagnóstica (ver `07-decisoes-e-pendencias.md`). Cadências, objeções e playbooks continuam nos arquivos do código. O cadastro de serviços e o motor das apresentações em HTML ficaram prontos na fase 8 (11/11/2026); o contrato está em `hub/apresentacoes/CONTRATO.md`.
 - **Integração com o banco de leads** da MecTRIA.
-- **Calculadora ao vivo** no painel.
+- **Calculadora ao vivo** no painel. Na fase 8, os campos da calculadora de uma apresentação em HTML passaram a aparecer no painel; falta a calculadora com os números de cada serviço, que vem com o conteúdo das apresentações.
 
 ## 13. Referências
 

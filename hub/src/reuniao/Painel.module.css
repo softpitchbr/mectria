@@ -429,3 +429,55 @@
   color: var(--vermelho-texto);
   font-weight: 500;
 }
+
+/* Apresentação em HTML (fase 8): as ações e os números do slide e o que a apresentação contou. */
+.acoesDoSlide {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: end;
+  gap: 10px;
+}
+
+.campoDoSlide {
+  display: grid;
+  gap: 4px;
+  font-size: 13px;
+  font-weight: 500;
+  color: var(--suave);
+}
+
+.campoDoSlide input {
+  font: inherit;
+  font-size: 15px;
+  width: 150px;
+  min-height: 40px;
+  padding: 0 12px;
+  border-radius: 9px;
+  border: 1px solid var(--linha);
+  background: var(--fundo);
+  color: var(--texto);
+}
+
+.campoDoSlide input:focus {
+  outline: none;
+  border-color: var(--linha-viva);
+  box-shadow: 0 0 0 3px var(--luz), 0 0 0 1px var(--vermelho-texto);
+}
+
+.naApresentacao {
+  display: grid;
+  gap: 4px;
+  padding: 10px 14px;
+  border: 1px solid var(--linha);
+  border-radius: 9px;
+  font-size: 14px;
+}
+
+.naApresentacao p {
+  margin: 0;
+}
+
+.proximoTitulo {
+  margin: 0;
+  font-size: 15px;
+}

@@ -1,7 +1,10 @@
 import { screen, within } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import { diasDepois, hojeEmSaoPaulo } from "../../compartilhado/datas";
+import { servicosDaCarta } from "../../compartilhado/dados/servicos-completos";
 import { variaveisIniciais } from "../../compartilhado/proposta";
+
+const CLIMATIZACAO = servicosDaCarta().find((s) => s.id === "climatizacao")!;
 import { abrir, fingirApi, PESSOAS } from "../teste/ajuda";
 
 const R = (id: number, empresa: string, tipo: string, oportunidadeSituacao: string) => ({
@@ -12,10 +15,11 @@ const R = (id: number, empresa: string, tipo: string, oportunidadeSituacao: stri
 const SESSAO = {
   reuniao: R(7, "Usinagem Alfa", "proposta", "proposta_marcada"),
   oportunidade: { id: 7, empresa: "Usinagem Alfa", contato: "Ana", servico: "climatizacao", closerId: 2, situacao: "proposta_marcada" },
-  variaveis: variaveisIniciais("climatizacao"),
+  variaveis: variaveisIniciais("climatizacao", CLIMATIZACAO),
   andamento: { sala: [], pactos: [], tempos: {}, slide: 0 },
   anotacoes: [],
   respostasDaDiagnostica: {},
+  servico: CLIMATIZACAO,
 };
 
 function api(extra: Record<string, unknown> = {}) {
@@ -76,7 +80,7 @@ test("o catálogo mostra os 13 slides de exemplo e o que ainda vem", async () =>
   abrir("/apresentacoes");
   const catalogo = await screen.findByRole("region", { name: "Catálogo" });
   expect(within(catalogo).getAllByRole("region", { name: /^Slide: / })).toHaveLength(13);
-  expect(within(catalogo).getAllByText("Chega com o subprojeto das apresentações.")).toHaveLength(3);
+  expect(within(catalogo).getAllByText("Chega com o subprojeto das apresentações.")).toHaveLength(2);
 });
 
 test("o hunter não vê Apresentações", async () => {
@@ -104,4 +108,17 @@ test("Apresentações mostra há quantos dias a proposta está em construção, 
   const pronta = within(lista).getByText("Forja Pronta").closest("li") as HTMLElement;
   expect(pronta).toHaveTextContent("Proposta pronta");
   expect(pronta).not.toHaveTextContent("Passou de 3 dias");
+});
+
+test("o catálogo mostra o cartão do serviço com apresentação própria", async () => {
+  const comArquivo = { ...CLIMATIZACAO, apresentacao: { arquivo: "c.html", bytes: 10, versao: 4, enviadaEm: "2026-11-11 10:00:00", enviadaPor: "Diana" } };
+  api({ "/api/servicos": { corpo: servicosDaCarta().map((s) => (s.id === "climatizacao" ? comArquivo : s)) } });
+  abrir("/apresentacoes");
+  const catalogo = await screen.findByRole("region", { name: "Catálogo" });
+  const cartao = (await within(catalogo).findByRole("heading", { name: "Climatização · apresentação própria" })).closest("div")!;
+  expect(cartao).toHaveTextContent("Versão 4");
+  await userEvent.click(within(cartao).getByRole("button", { name: "Ver" }));
+  const foco = await screen.findByRole("dialog", { name: "Apresentação · Climatização" });
+  expect(within(foco).getByTitle("Apresentação · Climatização")).toHaveAttribute("src", "/api/servicos/climatizacao/apresentacao?v=4");
+  expect(within(catalogo).queryByText("Uma proposta por serviço")).not.toBeInTheDocument();
 });

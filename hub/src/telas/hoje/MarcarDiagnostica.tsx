@@ -8,12 +8,14 @@ import AreaDeTexto from "../../componentes/AreaDeTexto";
 import Botao from "../../componentes/Botao";
 import Campo from "../../componentes/Campo";
 import Selecao from "../../componentes/Selecao";
-import { mensagemDe, OPCOES_SERVICO } from "../followup/comum";
+import { opcoesDeServico, useServicos } from "../../servicos/servicos";
+import { mensagemDe } from "../followup/comum";
 import estilos from "./hoje.module.css";
 
 /** Formulário da diagnóstica marcada na ligação: cria a oportunidade e a reunião. */
 export default function MarcarDiagnostica({ aoMarcar, aoVoltar, aoRegistrar }: { aoMarcar: () => void; aoVoltar: () => void; aoRegistrar?: () => void }) {
   const [closers, setClosers] = useState<{ id: number; nome: string }[]>([]);
+  const servicos = useServicos();
   const [c, setC] = useState({ empresa: "", contato: "", telefone: "", servico: "", closerId: "", data: "", hora: "", formato: "online", observacoes: "" });
   const [erro, setErro] = useState("");
   const [enviando, setEnviando] = useState(false);
@@ -96,7 +98,7 @@ export default function MarcarDiagnostica({ aoMarcar, aoVoltar, aoRegistrar }: {
         <Campo rotulo="Empresa" value={c.empresa} onChange={mudar("empresa")} />
         <Campo rotulo="Contato" value={c.contato} onChange={mudar("contato")} />
         <Campo rotulo="Telefone" inputMode="tel" value={c.telefone} onChange={mudar("telefone")} />
-        <Selecao rotulo="Serviço" vazio="Escolha o serviço" value={c.servico} onChange={mudar("servico")} opcoes={OPCOES_SERVICO} />
+        <Selecao rotulo="Serviço" vazio="Escolha o serviço" value={c.servico} onChange={mudar("servico")} opcoes={opcoesDeServico(servicos)} />
         <Selecao
           rotulo="Closer"
           vazio="Escolha o closer"

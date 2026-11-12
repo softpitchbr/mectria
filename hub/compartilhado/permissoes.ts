@@ -1,7 +1,7 @@
 import type { Cargo } from "./cargos";
 import type { NomeIcone } from "./icones";
 
-export type Secao = "hoje" | "reunioes" | "followup" | "playbooks" | "apresentacoes" | "rotinas" | "time" | "briefings";
+export type Secao = "hoje" | "reunioes" | "followup" | "playbooks" | "apresentacoes" | "rotinas" | "time" | "briefings" | "servicos";
 
 /** As seções do hub, na ordem do menu, com a fase em que cada uma fica pronta. */
 export const SECOES: { id: Secao; rotulo: string; caminho: string; icone: NomeIcone; fase: number }[] = [
@@ -13,6 +13,7 @@ export const SECOES: { id: Secao; rotulo: string; caminho: string; icone: NomeIc
   { id: "rotinas", rotulo: "Rotinas", caminho: "/rotinas", icone: "rotinas", fase: 2 },
   { id: "time", rotulo: "Time", caminho: "/time", icone: "time", fase: 1 },
   { id: "briefings", rotulo: "Briefings", caminho: "/briefings", icone: "briefings", fase: 6 },
+  { id: "servicos", rotulo: "Serviços", caminho: "/servicos", icone: "servicos", fase: 8 },
 ];
 
 /** Quem vê cada seção (spec, seções 4 e 5). O diretor vê tudo. */
@@ -25,6 +26,7 @@ const QUEM_VE: Record<Secao, readonly Cargo[]> = {
   rotinas: ["hunter", "closer", "diretor"],
   time: ["diretor"],
   briefings: ["diretor", "projetos"],
+  servicos: ["diretor"],
 };
 
 export function podeVer(cargo: Cargo, secao: Secao): boolean {
@@ -75,4 +77,11 @@ export function eDonoDaOportunidade(pessoa: { id: number; cargo: Cargo }, closer
 /** Projetos responde e fecha as pendências técnicas; o diretor também pode. */
 export function podeResponderPendencia(cargo: Cargo): boolean {
   return cargo === "projetos" || cargo === "diretor";
+}
+
+// Fase 8 ------------------------------------------------------------------------
+
+/** Cria e edita os serviços e anexa a apresentação de cada um. */
+export function podeCadastrarServicos(cargo: Cargo): boolean {
+  return cargo === "diretor";
 }

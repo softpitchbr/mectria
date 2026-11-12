@@ -12,6 +12,11 @@ database_name = "hub-mectria"
 database_id = "local"
 migrations_dir = "migrations"
 
+# As apresentações em HTML de cada serviço (fase 8). Em dev, o wrangler guarda numa pasta local.
+[[kv_namespaces]]
+binding = "APRESENTACOES"
+id = "local"
+
 # Produção e prévias no Cloudflare Pages. Com este arquivo no repositório, o Pages lê
 # as variáveis daqui; os valores PREENCHER são trocados na implantação (IMPLANTACAO.md).
 # DIRETOR_INICIAL não fica aqui: entra como segredo do projeto.
@@ -26,6 +31,10 @@ database_name = "hub-mectria"
 database_id = "PREENCHER"
 migrations_dir = "migrations"
 
+[[env.production.kv_namespaces]]
+binding = "APRESENTACOES"
+id = "PREENCHER"
+
 [env.preview.vars]
 AMBIENTE = "producao"
 ACCESS_EQUIPE = "PREENCHER"
@@ -37,3 +46,7 @@ binding = "DB"
 database_name = "hub-mectria-previa"
 database_id = "PREENCHER-PREVIA"
 migrations_dir = "migrations"
+
+[[env.preview.kv_namespaces]]
+binding = "APRESENTACOES"
+id = "PREENCHER-PREVIA"

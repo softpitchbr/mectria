@@ -1,6 +1,7 @@
 import { screen, within } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import { diasDepois, hojeEmSaoPaulo } from "../../compartilhado/datas";
+import { servicosDaCarta } from "../../compartilhado/dados/servicos-completos";
 import { abrir, fingirApi, PESSOAS } from "../teste/ajuda";
 
 function item(id: number, empresa: string, estado: string, codigo: string, extra: { atrasados?: number; dor?: string } = {}) {
@@ -251,4 +252,23 @@ test("o cartão do follow-up mostra os dias em negociação", async () => {
   fingirApi({ "/api/eu": { corpo: PESSOAS.closer }, "GET /api/followup": { corpo: [emNegociacao] } });
   abrir("/follow-up");
   expect(await screen.findByRole("button", { name: /Bomba Norte/ })).toHaveTextContent("Em negociação há 5 dias");
+});
+
+test("a oportunidade com serviço inativado mostra o serviço dela no seletor", async () => {
+  const antiga = { id: 8, empresa: "Desenho Antigo", contato: "Ana", telefone: "", servico: "desenho-tecnico", closerId: 2, situacao: "diagnostica_marcada", closerNome: "Vinícius Miguel" };
+  fingirApi({
+    "/api/eu": { corpo: PESSOAS.closer },
+    "/api/servicos": { corpo: servicosDaCarta().map((s) => (s.id === "desenho-tecnico" ? { ...s, situacao: "inativo" } : s)) },
+    "GET /api/followup": { corpo: [] },
+    "GET /api/oportunidades": { corpo: [antiga] },
+  });
+  abrir("/follow-up");
+  await userEvent.click(await screen.findByRole("button", { name: "Registrar proposta apresentada" }));
+  const foco = screen.getByRole("dialog", { name: "Registrar proposta apresentada" });
+  const servico = within(foco).getByLabelText("Serviço");
+  expect(within(servico).queryByRole("option", { name: /Desenho Técnico/ })).not.toBeInTheDocument();
+  await within(foco).findByRole("option", { name: /Desenho Antigo/ });
+  await userEvent.selectOptions(within(foco).getByLabelText("Oportunidade"), "8");
+  expect(servico).toHaveValue("desenho-tecnico");
+  expect(within(servico).getByRole("option", { name: "Desenho Técnico (inativo)" })).toBeInTheDocument();
 });

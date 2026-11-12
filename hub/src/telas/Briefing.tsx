@@ -7,7 +7,8 @@ import { api } from "../api/cliente";
 import { avisar } from "../componentes/Aviso";
 import Botao from "../componentes/Botao";
 import type { Eu } from "../sessao/useEu";
-import { mensagemDe, nomeDoServico } from "./followup/comum";
+import { nomeDoServico, useServicos } from "../servicos/servicos";
+import { mensagemDe } from "./followup/comum";
 import estilos from "./Briefing.module.css";
 
 function resultadoEmTexto(r: Reuniao): string {
@@ -20,6 +21,7 @@ function resultadoEmTexto(r: Reuniao): string {
 /** Briefing da diagnóstica para Projetos: uma página A4 clara, que o navegador salva em PDF. */
 export default function Briefing() {
   const { id } = useParams();
+  const servicos = useServicos();
   const [ficha, setFicha] = useState<FichaCompleta | null>(null);
   const [erro, setErro] = useState("");
   const eu = useOutletContext<Eu | undefined>();
@@ -140,7 +142,7 @@ export default function Briefing() {
           </div>
           <div>
             <dt>Serviço</dt>
-            <dd>{nomeDoServico(oportunidade.servico)}</dd>
+            <dd>{nomeDoServico(servicos, oportunidade.servico)}</dd>
           </div>
           <div>
             <dt>Closer</dt>

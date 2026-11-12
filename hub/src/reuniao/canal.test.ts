@@ -21,3 +21,19 @@ test("sem BroadcastChannel no navegador, o canal não quebra", () => {
   canal.fechar();
   vi.unstubAllGlobals();
 });
+
+test("o estado com a apresentação em HTML passa inteiro pelo canal", async () => {
+  const recebidas: MensagemReuniao[] = [];
+  const painel = abrirCanal(8, () => {});
+  const janela = abrirCanal(8, (m) => recebidas.push(m));
+  const estado: MensagemReuniao = {
+    tipo: "estado",
+    empresa: "Alfa",
+    slide: 2,
+    apresentacao: { tipo: "html", url: "/api/servicos/a/apresentacao?v=1", dados: { empresa: "Alfa" }, interacoes: { dores: ["Calor"], precoEtapa: 1, calculadora: { x: 2 } } },
+  };
+  painel.enviar(estado);
+  await vi.waitFor(() => expect(recebidas).toEqual([estado]));
+  painel.fechar();
+  janela.fechar();
+});

@@ -1,6 +1,8 @@
 import { screen, within } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import { abrir, fingirApi, PESSOAS } from "../teste/ajuda";
+import { servicosDaCarta } from "../../compartilhado/dados/servicos-completos";
+
 
 const FICHA = {
   reuniao: {
@@ -12,6 +14,7 @@ const FICHA = {
   respostas: { "c-dor": "O galpão passa de 38 °C à tarde", "b-faixa": "Até R$ 30 mil" },
   anotacoes: [{ idCliente: "a", minuto: 12, passo: "x", marcacao: "tecnico", texto: "Pé-direito de 9 m" }],
   pendencias: [],
+  perguntasDoServico: servicosDaCarta().find((s) => s.id === "climatizacao")!.perguntas,
 };
 
 function api(extra: Record<string, unknown> = {}) {
@@ -133,4 +136,16 @@ test("o briefing de uma reunião cancelada mostra que o cliente não compareceu 
   const linha = (await screen.findByText("Resultado")).closest("div") as HTMLElement;
   expect(linha).toHaveTextContent("Cliente não compareceu");
   expect(screen.queryByRole("button", { name: "Marcar como enviado para Projetos" })).toBeNull();
+});
+
+test("o briefing mostra a resposta de uma pergunta desativada", async () => {
+  const perguntasDoServico = [{ id: "x-velha", tipo: "curto", texto: "Qual era a pergunta antiga?", bloco: "escopo", inativa: true }];
+  fingirApi({
+    "/api/eu": { corpo: PESSOAS.closer },
+    "GET /api/reunioes/5": { corpo: { ...FICHA, respostas: { ...FICHA.respostas, "x-velha": "Resposta antiga" }, perguntasDoServico } },
+  });
+  abrir("/reunioes/5/briefing");
+  const secao = (await screen.findByRole("heading", { name: "Técnico do serviço" })).closest("section")!;
+  expect(secao).toHaveTextContent("Qual era a pergunta antiga?");
+  expect(secao).toHaveTextContent("Resposta antiga");
 });

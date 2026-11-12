@@ -1,0 +1,619 @@
+<!doctype html>
+<html lang="pt-BR">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Apresentação de exemplo · MecTRIA</title>
+    <!--
+      A apresentação de proposta de exemplo, em HTML, seguindo o contrato de hub/apresentacoes/CONTRATO.md.
+      São os mesmos 13 slides da apresentação de exemplo do hub (compartilhado/dados/apresentacao-exemplo.ts),
+      com três partes interativas: as dores clicáveis (slide 6), o preço revelado em 3 etapas e a calculadora
+      de "quanto custa ficar como está" (slide 12). Use como modelo para desenhar as apresentações de cada serviço.
+      Tudo fica neste arquivo: CSS, JavaScript e imagens (em data:). Só as fontes vêm do Google Fonts.
+    -->
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      rel="stylesheet"
+      href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@500&family=IBM+Plex+Sans:wght@400;500&family=Poppins:wght@600&display=swap"
+    />
+    <style>
+      /* O que o cliente vê é claro e segue o manual da MecTRIA. O slide tem 1280 × 720 e é escalado para caber. */
+      :root {
+        --vinho: #780000;
+        --vinho-claro: #f2d6d6;
+        --texto: #1f1e1c;
+        --suave: #6b6760;
+        --fundo: #ffffff;
+        --linha: #e7e2da;
+        --falta: #b3242a;
+      }
+      * {
+        box-sizing: border-box;
+      }
+      html,
+      body {
+        margin: 0;
+        height: 100%;
+        background: #1f1e1c;
+        overflow: hidden;
+      }
+      #palco {
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        width: 1280px;
+        height: 720px;
+        transform-origin: 0 0;
+      }
+      .slide {
+        position: absolute;
+        inset: 0;
+        padding: 77px 90px;
+        background: var(--fundo);
+        color: var(--texto);
+        font-family: "IBM Plex Sans", sans-serif;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        gap: 26px;
+        overflow: hidden;
+      }
+      .slide[data-ativo="sim"] {
+        animation: entrar 420ms cubic-bezier(0.2, 0.7, 0.2, 1);
+      }
+      @keyframes entrar {
+        from {
+          opacity: 0;
+          transform: translateY(18px);
+        }
+        to {
+          opacity: 1;
+          transform: none;
+        }
+      }
+      @media (prefers-reduced-motion: reduce) {
+        .slide[data-ativo="sim"],
+        .revela:not([hidden]) {
+          animation: none;
+        }
+      }
+      .slide.capa {
+        background: var(--vinho);
+        color: #ffffff;
+      }
+      .rotulo {
+        margin: 0;
+        font-family: "IBM Plex Mono", monospace;
+        font-size: 20px;
+        letter-spacing: 0.08em;
+        text-transform: uppercase;
+        color: var(--vinho);
+      }
+      .capa .rotulo {
+        color: var(--vinho-claro);
+      }
+      h2 {
+        margin: 0;
+        font-family: "Poppins", sans-serif;
+        font-weight: 600;
+        font-size: 59px;
+        line-height: 1.15;
+      }
+      ul.linhas {
+        margin: 13px 0 0;
+        padding: 0;
+        list-style: none;
+        display: grid;
+        gap: 18px;
+        font-size: 28px;
+        line-height: 1.4;
+      }
+      ul.linhas li {
+        padding-left: 31px;
+        border-left: 5px solid var(--vinho);
+      }
+      .capa ul.linhas li {
+        border-left-color: #ffffff;
+      }
+      .marca {
+        position: absolute;
+        right: 51px;
+        bottom: 38px;
+        font-family: "Poppins", sans-serif;
+        font-weight: 600;
+        font-size: 18px;
+        color: var(--vinho);
+      }
+      .capa .marca {
+        color: #ffffff;
+      }
+      .falta {
+        color: var(--falta);
+      }
+
+      /* Slide 6: as dores clicáveis. */
+      .dores {
+        display: grid;
+        grid-template-columns: repeat(2, 1fr);
+        gap: 16px;
+      }
+      .dor {
+        text-align: left;
+        font: 500 24px/1.35 "IBM Plex Sans", sans-serif;
+        color: var(--texto);
+        background: #faf8f5;
+        border: 2px solid var(--linha);
+        border-radius: 14px;
+        padding: 18px 22px;
+        cursor: pointer;
+        transition:
+          border-color 160ms,
+          background 160ms,
+          box-shadow 160ms;
+      }
+      .dor:hover {
+        box-shadow: 0 6px 18px rgba(31, 30, 28, 0.08);
+      }
+      .dor[aria-pressed="true"] {
+        border-color: var(--vinho);
+        background: #fbeeee;
+      }
+      .dor[aria-pressed="true"]::before {
+        content: "✓ ";
+        color: var(--vinho);
+      }
+      .cenario {
+        font-size: 24px;
+        line-height: 1.4;
+        color: var(--suave);
+        display: grid;
+        gap: 6px;
+      }
+
+      /* Slide 12: o preço em 3 etapas e a calculadora. */
+      .investimento {
+        display: grid;
+        grid-template-columns: 1.1fr 1fr;
+        gap: 48px;
+        align-items: center;
+      }
+      .etapas {
+        display: grid;
+        gap: 14px;
+      }
+      .ancora {
+        font-size: 24px;
+        color: var(--suave);
+      }
+      .valor {
+        font-family: "Poppins", sans-serif;
+        font-weight: 600;
+        font-size: 72px;
+        color: var(--vinho);
+        line-height: 1.05;
+      }
+      .condicoes {
+        font-size: 24px;
+      }
+      .revela:not([hidden]) {
+        animation: entrar 500ms cubic-bezier(0.2, 0.7, 0.2, 1);
+      }
+      .espera {
+        font-family: "IBM Plex Mono", monospace;
+        font-size: 18px;
+        color: var(--suave);
+      }
+      .calculadora {
+        border: 2px solid var(--linha);
+        border-radius: 18px;
+        padding: 26px 28px;
+        display: grid;
+        gap: 14px;
+        font-size: 20px;
+      }
+      .calculadora h3 {
+        margin: 0;
+        font: 600 24px/1.2 "Poppins", sans-serif;
+      }
+      .calculadora label {
+        display: grid;
+        gap: 6px;
+        color: var(--suave);
+      }
+      .calculadora input {
+        font: 500 26px "IBM Plex Mono", monospace;
+        padding: 8px 12px;
+        border: 2px solid var(--linha);
+        border-radius: 10px;
+        width: 100%;
+      }
+      .resultado {
+        font-size: 22px;
+        line-height: 1.4;
+      }
+      .resultado strong {
+        color: var(--vinho);
+      }
+      /* Por último: o display dos slides (flex) venceria o hidden do navegador; o escondido fica escondido de verdade. */
+      [hidden] {
+        display: none !important;
+      }
+    </style>
+  </head>
+  <body>
+    <div id="palco">
+      <section class="slide capa" data-slide="capa">
+        <p class="rotulo" data-modelo="Proposta para {empresa}"></p>
+        <h2 data-modelo="{servico}"></h2>
+        <ul class="linhas">
+          <li data-modelo="{data}"></li>
+          <li>MecTRIA · Empresa Júnior de Engenharia Mecânica da UFTM</li>
+        </ul>
+        <span class="marca">MecTRIA</span>
+      </section>
+
+      <section class="slide" data-slide="abertura">
+        <p class="rotulo">Hoje</p>
+        <h2>O projeto que desenhamos para vocês</h2>
+        <ul class="linhas">
+          <li>No fim, você diz com sinceridade se faz sentido.</li>
+        </ul>
+        <span class="marca">MecTRIA</span>
+      </section>
+
+      <section class="slide" data-slide="proposito">
+        <p class="rotulo">Quem vai fazer o seu projeto</p>
+        <h2>Engenharia de verdade, feita por estudantes, com propósito</h2>
+        <ul class="linhas">
+          <li>Empresa júnior sem fins lucrativos, vinculada à UFTM</li>
+          <li>Projetos reais, com orientação de professores</li>
+          <li>O que o projeto paga volta para a formação de engenheiros</li>
+        </ul>
+        <span class="marca">MecTRIA</span>
+      </section>
+
+      <section class="slide" data-slide="numeros">
+        <p class="rotulo">Histórico</p>
+        <h2>Nossa história em números</h2>
+        <ul class="linhas">
+          <li data-modelo="{anos} anos de MecTRIA"></li>
+          <li><span class="falta">[nº de projetos]</span> projetos entregues</li>
+          <li><span class="falta">[nº de clientes]</span> clientes atendidos</li>
+          <li><span class="falta">[nº]</span> clientes que voltaram</li>
+        </ul>
+        <span class="marca">MecTRIA</span>
+      </section>
+
+      <section class="slide" data-slide="time">
+        <p class="rotulo">Quem cuida do seu projeto</p>
+        <h2>O time</h2>
+        <ul class="linhas">
+          <li data-modelo="{equipe}"></li>
+          <li>Orientação de professores da UFTM nas decisões técnicas</li>
+        </ul>
+        <span class="marca">MecTRIA</span>
+      </section>
+
+      <section class="slide" data-slide="ceu-inferno">
+        <p class="rotulo">O cenário de vocês</p>
+        <h2>O que mais pesa hoje?</h2>
+        <div class="dores">
+          <button type="button" class="dor" data-dor="1" aria-pressed="false"></button>
+          <button type="button" class="dor" data-dor="2" aria-pressed="false"></button>
+          <button type="button" class="dor" data-dor="3" aria-pressed="false"></button>
+          <button type="button" class="dor" data-dor="4" aria-pressed="false"></button>
+        </div>
+        <div class="cenario">
+          <span data-modelo="Se ficar como está: {impacto}"></span>
+          <span data-modelo="Com o projeto: {objetivo}"></span>
+        </div>
+        <span class="marca">MecTRIA</span>
+      </section>
+
+      <section class="slide" data-slide="metodo">
+        <p class="rotulo">Projeto e método</p>
+        <h2>O caminho do projeto</h2>
+        <ul class="linhas">
+          <li data-modelo="Entregamos: {entregamos}"></li>
+          <li data-modelo="Fica com vocês: {fica}"></li>
+          <li data-modelo="Prazo: {prazoProjeto}"></li>
+        </ul>
+        <span class="marca">MecTRIA</span>
+      </section>
+
+      <section class="slide" data-slide="pacto-duvida">
+        <p class="rotulo">Antes de seguir</p>
+        <h2>Ficou alguma dúvida sobre o projeto?</h2>
+        <span class="marca">MecTRIA</span>
+      </section>
+
+      <section class="slide" data-slide="pacto-cliente">
+        <p class="rotulo">Uma pergunta sincera</p>
+        <h2>Tirando o preço da mesa, vocês seriam nossos clientes?</h2>
+        <span class="marca">MecTRIA</span>
+      </section>
+
+      <section class="slide" data-slide="valor-preco">
+        <p class="rotulo">Valor × preço</p>
+        <h2>Quanto vale e quanto custa</h2>
+        <ul class="linhas">
+          <li><span data-modelo="Feito por {ancora}: "></span><span class="falta">[valor de mercado]</span></li>
+          <li data-modelo="Na MecTRIA: {fraseValor}"></li>
+        </ul>
+        <span class="marca">MecTRIA</span>
+      </section>
+
+      <section class="slide" data-slide="provas">
+        <p class="rotulo">Quem já confiou</p>
+        <h2>Clientes que voltam</h2>
+        <ul class="linhas">
+          <li><span class="falta">[Caso do mesmo serviço, com autorização do cliente]</span></li>
+          <li><span class="falta">[Depoimento]</span></li>
+        </ul>
+        <span class="marca">MecTRIA</span>
+      </section>
+
+      <section class="slide" data-slide="investimento">
+        <p class="rotulo">Investimento</p>
+        <div class="investimento">
+          <div class="etapas">
+            <p class="espera" data-espera>O investimento aparece em instantes.</p>
+            <p class="revela ancora" data-etapa="1" hidden data-modelo="No mercado, o projeto seria feito por {ancora}."></p>
+            <p class="revela valor" data-etapa="2" hidden data-modelo="{valor}"></p>
+            <p class="revela condicoes" data-etapa="3" hidden data-modelo="Em até {parcelas}x sem juros · à vista com {descontoAVista}% de desconto"></p>
+          </div>
+          <div class="calculadora">
+            <h3>Quanto custa ficar como está</h3>
+            <label>Horas paradas por mês <input data-campo="horas-paradas" type="number" min="0" inputmode="decimal" /></label>
+            <label>Custo da hora parada (R$) <input data-campo="custo-hora" type="number" min="0" inputmode="decimal" /></label>
+            <p class="resultado" data-resultado></p>
+          </div>
+        </div>
+        <span class="marca">MecTRIA</span>
+      </section>
+
+      <section class="slide" data-slide="fechamento">
+        <p class="rotulo">Próximos passos</p>
+        <h2>Como a gente começa</h2>
+        <ul class="linhas">
+          <li>Aceite da proposta</li>
+          <li>Contrato e ART quando o projeto exige</li>
+          <li>Kick-off com visita técnica</li>
+        </ul>
+        <span class="marca">MecTRIA</span>
+      </section>
+    </div>
+
+    <script>
+      (function () {
+        "use strict";
+
+        // O que falta aparece como [rótulo], com os mesmos rótulos do hub.
+        var ROTULOS = {
+          empresa: "empresa do cliente",
+          servico: "serviço",
+          data: "data",
+          anos: "anos de MecTRIA",
+          equipe: "nomes e papéis do time",
+          dor: "dor do cliente",
+          impacto: "impacto",
+          objetivo: "objetivo",
+          entregamos: "o que entregamos",
+          fica: "o que fica com o cliente",
+          prazoProjeto: "prazo do projeto",
+          ancora: "quem faria o projeto no mercado",
+          fraseValor: "frase de valor",
+          valor: "valor",
+          parcelas: "parcelas",
+          descontoAVista: "desconto à vista",
+        };
+        // Quando o serviço não tem dores cadastradas, as dores 2 a 4 usam estas.
+        var DORES_DE_EXEMPLO = ["Retrabalho e peças fora de medida", "Custo alto de manutenção", "Risco para quem opera"];
+        var SLIDES = Array.prototype.slice.call(document.querySelectorAll("[data-slide]"));
+        var INVESTIMENTO = SLIDES.findIndex(function (s) {
+          return s.getAttribute("data-slide") === "investimento";
+        });
+        var CENARIO = SLIDES.findIndex(function (s) {
+          return s.getAttribute("data-slide") === "ceu-inferno";
+        });
+        var CAMPOS = ["horas-paradas", "custo-hora"];
+
+        var estado = { slide: 0, dados: {}, dores: [], precoEtapa: 0, calculadora: {} };
+
+        function enviar(mensagem) {
+          mensagem.mectria = 1;
+          window.parent.postMessage(mensagem, "*");
+        }
+
+        function preencher(el, modelo) {
+          el.textContent = "";
+          modelo.split(/(\{\w+\})/).forEach(function (pedaco) {
+            if (!pedaco) return;
+            var chave = /^\{(\w+)\}$/.exec(pedaco);
+            if (!chave) return el.appendChild(document.createTextNode(pedaco));
+            var valor = (estado.dados[chave[1]] || "").trim();
+            if (valor) return el.appendChild(document.createTextNode(valor));
+            var falta = document.createElement("span");
+            falta.className = "falta";
+            falta.textContent = "[" + (ROTULOS[chave[1]] || chave[1]) + "]";
+            el.appendChild(falta);
+          });
+        }
+
+        function textoDaDor(n) {
+          if (n === 1) {
+            // A dor vem no meio da frase (inicial minúscula); no cartão, começa com maiúscula.
+            var dor = (estado.dados.dor || "").trim();
+            return dor ? dor.charAt(0).toUpperCase() + dor.slice(1) : "[" + ROTULOS.dor + "]";
+          }
+          var doServico = (estado.dados.doresDoServico || "")
+            .split("\n")
+            .map(function (d) {
+              return d.trim();
+            })
+            .filter(Boolean);
+          return doServico[n - 2] || DORES_DE_EXEMPLO[n - 2];
+        }
+
+        function reais(n) {
+          return new Intl.NumberFormat("pt-BR", { style: "currency", currency: "BRL", maximumFractionDigits: 0 }).format(n);
+        }
+
+        function desenhar() {
+          document.querySelectorAll("[data-modelo]").forEach(function (el) {
+            preencher(el, el.getAttribute("data-modelo"));
+          });
+          document.querySelectorAll("[data-dor]").forEach(function (botao) {
+            var texto = textoDaDor(Number(botao.getAttribute("data-dor")));
+            botao.textContent = texto;
+            botao.setAttribute("aria-pressed", estado.dores.indexOf(texto) >= 0 ? "true" : "false");
+          });
+          document.querySelectorAll("[data-etapa]").forEach(function (el) {
+            el.hidden = Number(el.getAttribute("data-etapa")) > estado.precoEtapa;
+          });
+          document.querySelector("[data-espera]").hidden = estado.precoEtapa > 0;
+          CAMPOS.forEach(function (id) {
+            var campo = document.querySelector('[data-campo="' + id + '"]');
+            var valor = estado.calculadora[id];
+            if (document.activeElement !== campo) campo.value = typeof valor === "number" ? String(valor) : "";
+          });
+          desenharCalculo();
+          SLIDES.forEach(function (s, i) {
+            var ativo = i === estado.slide;
+            s.hidden = !ativo;
+            if (ativo) s.setAttribute("data-ativo", "sim");
+            else s.removeAttribute("data-ativo");
+          });
+        }
+
+        function desenharCalculo() {
+          var horas = estado.calculadora["horas-paradas"];
+          var custo = estado.calculadora["custo-hora"];
+          var saida = document.querySelector("[data-resultado]");
+          if (!(horas > 0 && custo > 0)) {
+            saida.textContent = "Preencha as horas e o custo para ver quanto custa ficar como está.";
+            return;
+          }
+          var mes = horas * custo;
+          saida.textContent = "";
+          saida.appendChild(document.createTextNode("Por ano, ficar como está custa "));
+          var ano = document.createElement("strong");
+          ano.textContent = reais(mes * 12);
+          saida.appendChild(ano);
+          saida.appendChild(document.createTextNode("."));
+          var centavos = Number(estado.dados.valorCentavos);
+          if (centavos > 0) {
+            var meses = Math.max(1, Math.ceil(centavos / 100 / mes));
+            saida.appendChild(document.createTextNode(" O projeto se paga em " + meses + (meses === 1 ? " mês." : " meses.")));
+          }
+        }
+
+        function irPara(slide) {
+          if (typeof slide !== "number") return;
+          estado.slide = Math.max(0, Math.min(SLIDES.length - 1, Math.floor(slide)));
+          desenhar();
+        }
+
+        function alternarDor(n) {
+          var texto = textoDaDor(n);
+          var marcada = estado.dores.indexOf(texto) < 0;
+          estado.dores = estado.dores.filter(function (d) {
+            return d !== texto;
+          });
+          if (marcada) estado.dores.push(texto);
+          desenhar();
+          enviar({ tipo: "evento", evento: "dor", valor: texto, marcada: marcada });
+        }
+
+        function revelarPreco() {
+          if (estado.precoEtapa >= 3) return;
+          estado.precoEtapa += 1;
+          desenhar();
+          enviar({ tipo: "evento", evento: "preco", etapa: estado.precoEtapa });
+        }
+
+        function avisarCalculadora() {
+          var valores = {};
+          CAMPOS.forEach(function (id) {
+            if (typeof estado.calculadora[id] === "number") valores[id] = estado.calculadora[id];
+          });
+          enviar({ tipo: "evento", evento: "calculadora", valores: valores });
+        }
+
+        // Mensagens do hub: só as que vêm da janela que abriu esta apresentação.
+        window.addEventListener("message", function (e) {
+          if (e.source !== window.parent) return;
+          var m = e.data;
+          if (!m || m.mectria !== 1) return;
+          if (m.tipo === "estado") {
+            estado.dados = m.dados && typeof m.dados === "object" ? m.dados : {};
+            var i = m.interacoes || {};
+            estado.dores = Array.isArray(i.dores) ? i.dores.slice() : [];
+            estado.precoEtapa = typeof i.precoEtapa === "number" ? Math.min(3, i.precoEtapa) : 0;
+            estado.calculadora = i.calculadora && typeof i.calculadora === "object" ? Object.assign({}, i.calculadora) : {};
+            irPara(m.slide);
+          } else if (m.tipo === "slide") {
+            irPara(m.slide);
+          } else if (m.tipo === "acionar") {
+            if (m.acao === "revelar-preco") revelarPreco();
+            var dor = /^dor-([1-4])$/.exec(m.acao || "");
+            if (dor) alternarDor(Number(dor[1]));
+          } else if (m.tipo === "calcular" && m.valores && typeof m.valores === "object") {
+            CAMPOS.forEach(function (id) {
+              if (typeof m.valores[id] === "number" && isFinite(m.valores[id])) estado.calculadora[id] = m.valores[id];
+            });
+            desenhar();
+            avisarCalculadora();
+          }
+        });
+
+        document.querySelectorAll("[data-dor]").forEach(function (botao) {
+          botao.addEventListener("click", function () {
+            alternarDor(Number(botao.getAttribute("data-dor")));
+          });
+        });
+        CAMPOS.forEach(function (id) {
+          document.querySelector('[data-campo="' + id + '"]').addEventListener("input", function (e) {
+            var n = Number(e.target.value);
+            if (e.target.value === "" || !isFinite(n)) delete estado.calculadora[id];
+            else estado.calculadora[id] = n;
+            desenharCalculo();
+            avisarCalculadora();
+          });
+        });
+
+        // As setas apertadas aqui passam o slide pelo hub (quem manda no slide é o painel).
+        document.addEventListener("keydown", function (e) {
+          if (e.key !== "ArrowRight" && e.key !== "ArrowLeft") return;
+          if (e.target && e.target.tagName === "INPUT") return;
+          e.preventDefault();
+          enviar({ tipo: "tecla", tecla: e.key });
+        });
+
+        function escalar() {
+          var escala = Math.min(window.innerWidth / 1280, window.innerHeight / 720) || 1;
+          var palco = document.getElementById("palco");
+          palco.style.transform = "scale(" + escala + ") translate(-50%, -50%)";
+        }
+        window.addEventListener("resize", escalar);
+        escalar();
+        desenhar();
+
+        var acoes = [1, 2, 3, 4].map(function (n) {
+          return { slide: CENARIO, id: "dor-" + n, rotulo: n === 1 ? "Marcar a dor do cliente" : "Marcar a dor " + n };
+        });
+        acoes.push({ slide: INVESTIMENTO, id: "revelar-preco", rotulo: "Revelar o preço" });
+        enviar({
+          tipo: "pronta",
+          slides: SLIDES.length,
+          acoes: acoes,
+          campos: [
+            { slide: INVESTIMENTO, id: "horas-paradas", rotulo: "Horas paradas por mês" },
+            { slide: INVESTIMENTO, id: "custo-hora", rotulo: "Custo da hora parada (R$)" },
+          ],
+        });
+      })();
+    </script>
+  </body>
+</html>

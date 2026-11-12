@@ -8,7 +8,8 @@ import { avisar } from "../../componentes/Aviso";
 import Botao from "../../componentes/Botao";
 import Selecao from "../../componentes/Selecao";
 import type { Eu } from "../../sessao/useEu";
-import { mensagemDe, nomeDoServico } from "./comum";
+import { nomeDoServico, useServicos } from "../../servicos/servicos";
+import { mensagemDe } from "./comum";
 import estilos from "./followup.module.css";
 
 function canalPadrao(canal: string): string {
@@ -28,12 +29,13 @@ export default function ToqueEmFoco({
   aoRegistrar: () => void;
   aoPedirResultado: () => void;
 }) {
+  const servicos = useServicos();
   const toque = item.proximo!;
   const { oportunidade, proposta } = item;
   const modelo = modeloDoToque(toque.codigo, proposta.apresentadaEm);
   const texto = preencherModelo(modelo.modelo, {
     contato: oportunidade.contato,
-    servico: nomeDoServico(proposta.servico),
+    servico: nomeDoServico(servicos, proposta.servico) || undefined,
     dor: proposta.dor,
     data_decisao: proposta.dataDecisao ? formatarDia(proposta.dataDecisao) : undefined,
     vendedor: eu.nome.trim().split(/\s+/)[0],

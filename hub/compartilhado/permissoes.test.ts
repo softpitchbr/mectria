@@ -5,7 +5,7 @@ test("seções de cada cargo", () => {
   // Fase 6: o hunter conduz a diagnóstica que marcou, então vê a seção Reuniões.
   expect(secoesDoCargo("hunter")).toEqual(["hoje", "reunioes", "playbooks", "rotinas"]);
   expect(secoesDoCargo("closer")).toEqual(["hoje", "reunioes", "followup", "playbooks", "apresentacoes", "rotinas"]);
-  expect(secoesDoCargo("diretor")).toEqual(["hoje", "reunioes", "followup", "playbooks", "apresentacoes", "rotinas", "time", "briefings"]);
+  expect(secoesDoCargo("diretor")).toEqual(["hoje", "reunioes", "followup", "playbooks", "apresentacoes", "rotinas", "time", "briefings", "servicos"]);
   expect(secoesDoCargo("projetos")).toEqual(["hoje", "briefings"]);
 });
 
@@ -29,5 +29,6 @@ test("caminhos e fases das seções", () => {
     ["rotinas", "/rotinas", 2],
     ["time", "/time", 1],
     ["briefings", "/briefings", 6],
+    ["servicos", "/servicos", 8],
   ]);
 });

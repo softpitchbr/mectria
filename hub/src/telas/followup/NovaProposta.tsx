@@ -8,11 +8,13 @@ import Botao from "../../componentes/Botao";
 import Campo from "../../componentes/Campo";
 import Selecao from "../../componentes/Selecao";
 import type { Eu } from "../../sessao/useEu";
-import { mensagemDe, OPCOES_SERVICO } from "./comum";
+import { opcoesDeServico, useServicos } from "../../servicos/servicos";
+import { mensagemDe } from "./comum";
 import estilos from "./followup.module.css";
 
 /** Registra uma proposta apresentada (até a fase 4, e depois para as apresentadas fora do hub). */
 export default function NovaProposta({ eu, aoRegistrar }: { eu: Eu; aoRegistrar: () => void }) {
+  const servicos = useServicos();
   const [oportunidades, setOportunidades] = useState<Oportunidade[]>([]);
   const [oportunidadeId, setOportunidadeId] = useState("");
   const [campos, setCampos] = useState({
@@ -100,7 +102,7 @@ export default function NovaProposta({ eu, aoRegistrar }: { eu: Eu; aoRegistrar:
             <Campo rotulo="Telefone" inputMode="tel" value={campos.telefone} onChange={mudar("telefone")} />
           </>
         )}
-        <Selecao rotulo="Serviço" vazio="Escolha o serviço" value={campos.servico} onChange={mudar("servico")} opcoes={OPCOES_SERVICO} />
+        <Selecao rotulo="Serviço" vazio="Escolha o serviço" value={campos.servico} onChange={mudar("servico")} opcoes={opcoesDeServico(servicos, escolhida?.servico)} />
         <Campo rotulo="Valor" inputMode="decimal" placeholder="12.500,00" value={campos.valor} onChange={mudar("valor")} />
         <Campo rotulo="Apresentada em" type="date" value={campos.apresentadaEm} onChange={mudar("apresentadaEm")} />
         <Campo rotulo="Decisão combinada para" type="date" value={campos.dataDecisao} onChange={mudar("dataDecisao")} />

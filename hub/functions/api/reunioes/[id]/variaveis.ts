@@ -1,6 +1,7 @@
 import { acessarReuniao } from "../../../../servidor/acessoReuniao";
 import { salvarVariaveis } from "../../../../servidor/proposta";
 import { erro, json } from "../../../../servidor/respostas";
+import { idsDosServicos } from "../../../../servidor/servicos";
 import type { DadosApi, Env } from "../../../../servidor/tipos";
 import { lerCorpo, validarVariaveis } from "../../../../servidor/validacao";
 import { erroDaReuniao } from "../../../../servidor/errosDaReuniao";
@@ -9,7 +10,7 @@ import { erroDaReuniao } from "../../../../servidor/errosDaReuniao";
 export const onRequestPut: PagesFunction<Env, "id", DadosApi> = async ({ request, env, data, params }) => {
   const acesso = await acessarReuniao(env.DB, data.pessoa, params.id, true);
   if (acesso instanceof Response) return acesso;
-  const validado = validarVariaveis(await lerCorpo(request));
+  const validado = validarVariaveis(await lerCorpo(request), await idsDosServicos(env.DB, { soVendaveis: false }));
   if (!validado.ok) return erro("invalido", validado.mensagem);
   try {
     await salvarVariaveis(env.DB, acesso.reuniao.id, validado.dados);

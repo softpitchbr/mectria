@@ -1,0 +1,24 @@
+.vista {
+  display: grid;
+  gap: 14px;
+  width: min(960px, 100%);
+}
+
+.moldura {
+  width: 100%;
+  aspect-ratio: 16 / 9;
+  border-radius: 10px;
+  overflow: hidden;
+  background: #1f1e1c;
+}
+
+.controles {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 12px;
+}
+
+.vista p {
+  margin: 0;
+}

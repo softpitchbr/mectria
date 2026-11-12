@@ -19,6 +19,7 @@ const TRACOS: Record<NomeIcone, string[]> = {
     "M9 2.5h6a1 1 0 0 1 1 1V5a1 1 0 0 1-1 1H9a1 1 0 0 1-1-1V3.5a1 1 0 0 1 1-1Z",
     "M8.5 11h7M8.5 15h5",
   ],
+  servicos: ["M12 3 3 7.5 12 12l9-4.5L12 3Z", "M3 12l9 4.5 9-4.5", "M3 16.5 12 21l9-4.5"],
   busca: [circulo(11, 11, 6.5), "M16 16l4.5 4.5"],
   sair: ["M10 4H6.5A1.5 1.5 0 0 0 5 5.5v13A1.5 1.5 0 0 0 6.5 20H10", "M15 8l4 4-4 4M19 12H9.5"],
   mais: [circulo(5, 12, 1), circulo(12, 12, 1), circulo(19, 12, 1)],

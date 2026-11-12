@@ -1,6 +1,9 @@
 import { datasDaCadencia } from "../compartilhado/cadencia";
 import { applyD1Migrations, env } from "cloudflare:test";
+import { servicosDaCarta } from "../compartilhado/dados/servicos-completos";
 import { variaveisIniciais } from "../compartilhado/proposta";
+
+const CLIMATIZACAO = servicosDaCarta().find((s) => s.id === "climatizacao")!;
 import { encerrarDiagnostica, iniciarReuniao, salvarRespostas } from "./diagnostica";
 import { hojeEmSaoPaulo } from "../compartilhado/datas";
 import { listarFollowup, numerosDoMes, registrarProposta } from "./followup";
@@ -35,7 +38,7 @@ beforeEach(async () => {
 
 test("sessão nova traz as variáveis iniciais do serviço, a sala com quem decide e as respostas da diagnóstica", async () => {
   const s = await sessaoDaProposta(env.DB, propostaId);
-  expect(s?.variaveis).toEqual(variaveisIniciais("climatizacao"));
+  expect(s?.variaveis).toEqual(variaveisIniciais("climatizacao", CLIMATIZACAO));
   expect(s?.andamento).toEqual({ sala: [{ nome: "Bia", decide: true }, { nome: "Ana", decide: false }], pactos: [], tempos: {}, slide: 0 });
   expect(s?.respostasDaDiagnostica["c-dor"]).toBe("O galpão passa de 38 °C");
   expect(s?.anotacoes).toEqual([]);
@@ -43,7 +46,7 @@ test("sessão nova traz as variáveis iniciais do serviço, a sala com quem deci
 });
 
 test("variáveis e andamento gravados voltam na sessão", async () => {
-  const variaveis = { ...variaveisIniciais("climatizacao"), valor: 1250000, prazo: "45 dias", equipe: "Rui e Bia" };
+  const variaveis = { ...variaveisIniciais("climatizacao", CLIMATIZACAO), valor: 1250000, prazo: "45 dias", equipe: "Rui e Bia" };
   const andamento = { sala: [{ nome: "Bia", decide: true }], pactos: [{ id: "agenda" as const, minuto: 2 }], tempos: { capa: 40, abertura: 95 }, slide: 2 };
   await salvarVariaveis(env.DB, propostaId, variaveis);
   await salvarAndamento(env.DB, propostaId, andamento);
@@ -60,11 +63,11 @@ test("reunião de proposta inicia só com a oportunidade em proposta_marcada", a
 });
 
 test("salvarVariaveis recusa reunião de diagnóstica", async () => {
-  await expect(salvarVariaveis(env.DB, diagnosticaId, variaveisIniciais("climatizacao"))).rejects.toThrow("nao_e_proposta");
+  await expect(salvarVariaveis(env.DB, diagnosticaId, variaveisIniciais("climatizacao", CLIMATIZACAO))).rejects.toThrow("nao_e_proposta");
 });
 
 const HOJE = "2026-11-18";
-const preparada = { ...variaveisIniciais("climatizacao"), valor: 1250000, prazo: "45 dias", equipe: "Rui e Bia" };
+const preparada = { ...variaveisIniciais("climatizacao", CLIMATIZACAO), valor: 1250000, prazo: "45 dias", equipe: "Rui e Bia" };
 
 async function contar(tabela: string, onde = "1 = 1", ...valores: unknown[]) {
   return (await env.DB.prepare(`SELECT COUNT(*) AS n FROM ${tabela} WHERE ${onde}`).bind(...valores).first<{ n: number }>())!.n;

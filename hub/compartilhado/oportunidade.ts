@@ -226,6 +226,8 @@ export interface FichaCompleta {
   pendencias: Pendencia[];
   /** A reunião de proposta combinada no fechamento (null enquanto não há). */
   proximaReuniao: Reuniao | null;
+  /** As perguntas técnicas do serviço, também as desativadas (o briefing mostra as respostas antigas). */
+  perguntasDoServico: import("./servico").PerguntaTecnica[];
 }
 
 /** A reunião ainda pode andar: a oportunidade continua na etapa dela (diagnóstica marcada ou proposta marcada). */

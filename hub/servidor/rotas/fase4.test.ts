@@ -5,6 +5,7 @@ import { onRequestPost as postIniciar } from "../../functions/api/reunioes/[id]/
 import { onRequestPut as putAndamento } from "../../functions/api/reunioes/[id]/andamento";
 import { onRequestGet as getProposta } from "../../functions/api/reunioes/[id]/proposta";
 import { onRequestPut as putVariaveis } from "../../functions/api/reunioes/[id]/variaveis";
+import { servicosDaCarta } from "../../compartilhado/dados/servicos-completos";
 import { variaveisIniciais } from "../../compartilhado/proposta";
 import { hojeEmSaoPaulo, diasDepois } from "../../compartilhado/datas";
 import { encerrarDiagnostica } from "../diagnostica";
@@ -12,6 +13,7 @@ import { criarDiagnostica } from "../oportunidades";
 import { criar } from "../pessoas";
 import type { DadosApi, Env } from "../tipos";
 
+const CLIMATIZACAO = servicosDaCarta().find((s) => s.id === "climatizacao")!;
 type Manipulador = (contexto: never) => Response | Promise<Response>;
 const g = (m: unknown) => m as Manipulador;
 let params: { id: string };
@@ -59,7 +61,7 @@ test("o closer dono lê a sessão, salva variáveis e andamento e encerra; de no
   const sessao = await corpo<{ variaveis: { servico: string }; andamento: { sala: unknown[] } }>(await chamar(g(getProposta), "clo@mectria.com"));
   expect(sessao.variaveis.servico).toBe("climatizacao");
   expect(sessao.andamento.sala).toEqual([{ nome: "Bia", decide: true }, { nome: "Ana", decide: false }]);
-  const variaveis = { ...variaveisIniciais("climatizacao"), valor: 1250000, prazo: "45 dias", equipe: "Rui" };
+  const variaveis = { ...variaveisIniciais("climatizacao", CLIMATIZACAO), valor: 1250000, prazo: "45 dias", equipe: "Rui" };
   expect((await chamar(g(putVariaveis), "clo@mectria.com", { metodo: "PUT", corpo: variaveis })).status).toBe(200);
   const andamento = { sala: [{ nome: "Bia", decide: true }], pactos: [{ id: "agenda", minuto: 1 }], tempos: { capa: 30 }, slide: 1 };
   expect((await chamar(g(putAndamento), "clo@mectria.com", { metodo: "PUT", corpo: andamento })).status).toBe(200);
@@ -79,7 +81,7 @@ test("outro closer e projetos recebem 403; o diretor passa", async () => {
 });
 
 test("dados inválidos dão 400", async () => {
-  const variaveis = { ...variaveisIniciais("climatizacao"), servico: "foguete" };
+  const variaveis = { ...variaveisIniciais("climatizacao", CLIMATIZACAO), servico: "foguete" };
   expect((await chamar(g(putVariaveis), "clo@mectria.com", { metodo: "PUT", corpo: variaveis })).status).toBe(400);
   const andamento = { sala: [], pactos: [{ id: "xyz", minuto: 1 }], tempos: {}, slide: 0 };
   expect((await chamar(g(putAndamento), "clo@mectria.com", { metodo: "PUT", corpo: andamento })).status).toBe(400);

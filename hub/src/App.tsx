@@ -21,6 +21,7 @@ import Vitrine from "./telas/Vitrine";
 import JanelaDaApresentacao from "./apresentacao/JanelaDaApresentacao";
 import Apresentacoes from "./telas/Apresentacoes";
 import Briefings from "./telas/Briefings";
+import Servicos from "./telas/servicos/Servicos";
 import PainelDaProposta from "./reuniao/PainelDaProposta";
 import estilos from "./App.module.css";
 
@@ -44,6 +45,7 @@ function PaginaDaSecao({ secao }: { secao: Secao }) {
   if (secao === "playbooks") return <Playbooks eu={eu} />;
   if (secao === "apresentacoes") return <Apresentacoes eu={eu} />;
   if (secao === "briefings") return <Briefings />;
+  if (secao === "servicos") return <Servicos />;
   return <EmConstrucao secao={info.rotulo} fase={info.fase} icone={info.icone} />;
 }
 
@@ -101,6 +103,7 @@ function criarRotas(): RouteObject[] {
           children: [
             ...secoes,
             { path: "playbooks/:aba", element: <PaginaDaSecao secao="playbooks" /> },
+            { path: "servicos/:id", element: <PaginaDaSecao secao="servicos" /> },
             { path: "*", element: <NaoEncontrada /> },
           ],
         },

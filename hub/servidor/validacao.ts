@@ -1,8 +1,7 @@
 import { hojeEmSaoPaulo, lerReais } from "../compartilhado/datas";
 import { MOTIVOS_PERDA } from "../compartilhado/dados/cadencia";
-import { MOTIVOS_NAO_QUALIFICOU } from "../compartilhado/dados/diagnostica";
+import { DIAGNOSTICA, MOTIVOS_NAO_QUALIFICOU, type TipoPergunta } from "../compartilhado/dados/diagnostica";
 import type { Anotacao, Marcacao } from "../compartilhado/diagnostica";
-import { SERVICOS } from "../compartilhado/dados/servicos";
 import {
   CANAIS_DE_TOQUE,
   type FechamentoDiagnostica,
@@ -12,10 +11,11 @@ import {
   type ResultadoProposta,
 } from "../compartilhado/oportunidade";
 import { CARGOS, type Cargo } from "../compartilhado/cargos";
+import { LIMITE_DA_APRESENTACAO, type DadosDoServico, type PerguntaTecnica, type SituacaoServico, type SlideDoRoteiro } from "../compartilhado/servico";
 import { normalizarEmail } from "../compartilhado/texto";
+import { lerInteracoes } from "../compartilhado/contrato-apresentacao";
 import {
   IDS_PACTO,
-  slidesDaProposta,
   type Andamento,
   type FechamentoProposta,
   type IdPacto,
@@ -116,9 +116,10 @@ function valorEmReais(valor: unknown): number | null {
   return centavos !== null && centavos > 0 ? centavos : null;
 }
 
-const servicoValido = (valor: unknown) => SERVICOS.some((s) => s.id === valor);
+/** Os ids aceitos vêm do banco (idsDosServicos): só os vendáveis para oportunidade nova. */
+const servicoValido = (valor: unknown, servicos: ReadonlySet<string>) => typeof valor === "string" && servicos.has(valor);
 
-export function validarNovaDiagnostica(corpo: unknown): Validado<NovaDiagnostica> {
+export function validarNovaDiagnostica(corpo: unknown, servicos: ReadonlySet<string>): Validado<NovaDiagnostica> {
   if (!ehObjeto(corpo)) return { ok: false, mensagem: MENSAGEM.corpo };
   const empresa = textoEntre(corpo.empresa, 2, 120);
   if (!empresa) return { ok: false, mensagem: "Informe a empresa (de 2 a 120 caracteres)." };
@@ -128,7 +129,7 @@ export function validarNovaDiagnostica(corpo: unknown): Validado<NovaDiagnostica
   if (telefone.replace(/\D/g, "").length < 8) return { ok: false, mensagem: "Confira o telefone (com DDD)." };
   const email = typeof corpo.email === "string" ? normalizarEmail(corpo.email) : "";
   if (email && (!FORMATO_EMAIL.test(email) || email.includes(".."))) return { ok: false, mensagem: MENSAGEM.email };
-  if (!servicoValido(corpo.servico)) return { ok: false, mensagem: "Escolha um serviço da lista." };
+  if (!servicoValido(corpo.servico, servicos)) return { ok: false, mensagem: "Escolha um serviço da lista." };
   const closerId = inteiroPositivo(corpo.closerId);
   if (!closerId) return { ok: false, mensagem: "Escolha o closer." };
   if (typeof corpo.dataHora !== "string" || !DIA_E_HORA.test(corpo.dataHora) || Number.isNaN(Date.parse(`${corpo.dataHora}:00-03:00`))) {
@@ -156,13 +157,13 @@ export function validarNovaDiagnostica(corpo: unknown): Validado<NovaDiagnostica
   };
 }
 
-export function validarNovaProposta(corpo: unknown, hoje: string): Validado<NovaProposta> {
+export function validarNovaProposta(corpo: unknown, hoje: string, servicos: ReadonlySet<string>): Validado<NovaProposta> {
   if (!ehObjeto(corpo)) return { ok: false, mensagem: MENSAGEM.corpo };
   const oportunidadeId = corpo.oportunidadeId === undefined || corpo.oportunidadeId === null ? undefined : inteiroPositivo(corpo.oportunidadeId);
   if (oportunidadeId === null) return { ok: false, mensagem: "Oportunidade inválida." };
   const empresa = oportunidadeId ? undefined : textoEntre(corpo.empresa, 2, 120);
   if (empresa === null) return { ok: false, mensagem: "Informe a empresa (de 2 a 120 caracteres)." };
-  if (!servicoValido(corpo.servico)) return { ok: false, mensagem: "Escolha um serviço da lista." };
+  if (!servicoValido(corpo.servico, servicos)) return { ok: false, mensagem: "Escolha um serviço da lista." };
   const valor = valorEmReais(corpo.valor);
   if (!valor) return { ok: false, mensagem: "Informe o valor da proposta em reais (por exemplo, 12.500,00)." };
   if (!diaValido(corpo.apresentadaEm) || corpo.apresentadaEm > hoje) {
@@ -301,14 +302,17 @@ export function validarFechamento(corpo: unknown, hoje: string = hojeEmSaoPaulo(
 
 // Fase 4 ------------------------------------------------------------------------
 
-const IDS_SLIDE = slidesDaProposta().map((s) => s.id);
+/** Os slides vêm do roteiro de cada serviço: o andamento aceita qualquer id de slide (um roteiro editado no meio da reunião não trava a gravação). */
+const ID_DE_SLIDE = /^[a-z0-9-]{1,40}$/;
+const MAXIMO_DE_SLIDES = 60;
 const inteiroEntre = (v: unknown, min: number, max: number): v is number => typeof v === "number" && Number.isInteger(v) && v >= min && v <= max;
 /** Texto que pode ter quebras de linha (escopo, o que fica com o cliente). */
 const textoLivre = (v: unknown, max: number): string | null => (typeof v === "string" && v.length <= max ? v.trim() : null);
 
-export function validarVariaveis(corpo: unknown): Validado<VariaveisProposta> {
+/** servicos: todos os do banco (a proposta de um serviço que ficou inativo continua sendo preparada). */
+export function validarVariaveis(corpo: unknown, servicos: ReadonlySet<string>): Validado<VariaveisProposta> {
   if (!ehObjeto(corpo)) return { ok: false, mensagem: MENSAGEM.corpo };
-  if (typeof corpo.servico !== "string" || !SERVICOS.some((s) => s.id === corpo.servico)) return { ok: false, mensagem: "Escolha um serviço da lista." };
+  if (typeof corpo.servico !== "string" || !servicos.has(corpo.servico)) return { ok: false, mensagem: "Escolha um serviço da lista." };
   const escopo = textoLivre(corpo.escopo, 2000);
   const ficaComCliente = textoLivre(corpo.ficaComCliente, 2000);
   if (escopo === null || ficaComCliente === null) return { ok: false, mensagem: "O escopo e o que fica com o cliente têm até 2.000 caracteres." };
@@ -341,12 +345,17 @@ export function validarAndamento(corpo: unknown): Validado<Andamento> {
     pactos.push({ id: p.id as IdPacto, minuto: p.minuto });
   }
   const tempos: Record<string, number> = {};
-  for (const [id, segundos] of Object.entries(corpo.tempos)) {
-    if (!IDS_SLIDE.includes(id) || !inteiroEntre(segundos, 0, 10_000_000)) return { ok: false, mensagem: "Tempo de slide inválido." };
+  const entradas = Object.entries(corpo.tempos);
+  if (entradas.length > MAXIMO_DE_SLIDES) return { ok: false, mensagem: "Tempo de slide inválido." };
+  for (const [id, segundos] of entradas) {
+    if (!ID_DE_SLIDE.test(id) || !inteiroEntre(segundos, 0, 10_000_000)) return { ok: false, mensagem: "Tempo de slide inválido." };
     tempos[id] = segundos;
   }
-  if (!inteiroEntre(corpo.slide, 0, IDS_SLIDE.length - 1)) return { ok: false, mensagem: "Slide inválido." };
-  return { ok: true, dados: { sala, pactos, tempos, slide: corpo.slide } };
+  if (!inteiroEntre(corpo.slide, 0, MAXIMO_DE_SLIDES - 1)) return { ok: false, mensagem: "Slide inválido." };
+  if (corpo.interacoes === undefined) return { ok: true, dados: { sala, pactos, tempos, slide: corpo.slide } };
+  const interacoes = lerInteracoes(corpo.interacoes);
+  if (!interacoes) return { ok: false, mensagem: "As interações da apresentação vieram inválidas." };
+  return { ok: true, dados: { sala, pactos, tempos, slide: corpo.slide, interacoes } };
 }
 
 export function validarFechamentoProposta(corpo: unknown, hoje: string = hojeEmSaoPaulo()): Validado<FechamentoProposta> {
@@ -410,4 +419,111 @@ export function validarConfirmacao(corpo: unknown): Validado<{ fup: 1 | 2 | 3 } 
   if (corpo.confirmada === true) return { ok: true, dados: { confirmada: true } };
   if (corpo.fup === 1 || corpo.fup === 2 || corpo.fup === 3) return { ok: true, dados: { fup: corpo.fup } };
   return { ok: false, mensagem: "Escolha o FUP (1, 2 ou 3) ou a confirmação." };
+}
+
+// Fase 8 ------------------------------------------------------------------------
+
+const TIPOS_DE_PERGUNTA: readonly TipoPergunta[] = ["texto", "curto", "opcoes", "numero"];
+const BLOCOS_TECNICOS = ["escopo", "parametros"];
+const SITUACOES_SERVICO: readonly SituacaoServico[] = ["ativo", "em_estruturacao", "inativo"];
+/** As perguntas da base (GPCTBA + C&I e escopo geral): a pergunta técnica não pode ter o mesmo id. */
+const IDS_DA_BASE = new Set([...DIAGNOSTICA.blocos.flatMap((b) => b.perguntas), ...DIAGNOSTICA.escopoGeral].map((p) => p.id));
+const ID_PERGUNTA = /^[a-z0-9-]{1,60}$/;
+const ID_SLIDE = /^[a-z0-9-]{1,40}$/;
+
+/** Lista de itens (uma dor, uma entrega...), cada um de 1 a 200 caracteres. */
+function itens(valor: unknown, max: number): string[] | null {
+  if (!Array.isArray(valor) || valor.length > max) return null;
+  const lista: string[] = [];
+  for (const item of valor) {
+    const t = textoEntre(item, 1, 200);
+    if (t === null) return null;
+    lista.push(t);
+  }
+  return lista;
+}
+
+function validarPerguntas(valor: unknown): Validado<PerguntaTecnica[]> {
+  const erroP = (mensagem: string): Validado<PerguntaTecnica[]> => ({ ok: false, mensagem });
+  if (!Array.isArray(valor) || valor.length > 30) return erroP("O serviço tem até 30 perguntas técnicas.");
+  const perguntas: PerguntaTecnica[] = [];
+  for (const p of valor) {
+    if (!ehObjeto(p) || typeof p.id !== "string" || !ID_PERGUNTA.test(p.id)) return erroP("Confira as perguntas técnicas.");
+    if (IDS_DA_BASE.has(p.id) || perguntas.some((x) => x.id === p.id)) return erroP("Duas perguntas com o mesmo código. Recarregue a página e tente de novo.");
+    const texto = textoEntre(p.texto, 1, 300);
+    if (!texto) return erroP("Cada pergunta técnica tem de 1 a 300 caracteres.");
+    if (!TIPOS_DE_PERGUNTA.includes(p.tipo as TipoPergunta)) return erroP("Escolha o tipo de cada pergunta.");
+    if (typeof p.bloco !== "string" || !BLOCOS_TECNICOS.includes(p.bloco)) return erroP("Escolha o bloco de cada pergunta.");
+    const dica = textoEntre(p.dica, 0, 300);
+    if (dica === null) return erroP("A dica da pergunta tem até 300 caracteres.");
+    if (p.inativa !== undefined && typeof p.inativa !== "boolean") return erroP("Confira as perguntas técnicas.");
+    const pergunta: PerguntaTecnica = { id: p.id, tipo: p.tipo as TipoPergunta, texto, bloco: p.bloco };
+    if (p.tipo === "opcoes") {
+      const opcoes = Array.isArray(p.opcoes) && p.opcoes.length >= 2 && p.opcoes.length <= 10 ? p.opcoes.map((o) => textoEntre(o, 1, 80)) : null;
+      if (!opcoes || opcoes.some((o) => o === null)) return erroP("A pergunta de opções tem de 2 a 10 opções, cada uma com até 80 caracteres.");
+      pergunta.opcoes = opcoes as string[];
+    }
+    if (dica) pergunta.dica = dica;
+    if (p.inativa) pergunta.inativa = true;
+    perguntas.push(pergunta);
+  }
+  return { ok: true, dados: perguntas };
+}
+
+function validarRoteiro(valor: unknown): Validado<SlideDoRoteiro[] | null> {
+  if (valor === null) return { ok: true, dados: null };
+  const erroR = (mensagem: string): Validado<SlideDoRoteiro[] | null> => ({ ok: false, mensagem });
+  if (!Array.isArray(valor) || valor.length < 1 || valor.length > 40) return erroR("O roteiro tem de 1 a 40 slides.");
+  const slides: SlideDoRoteiro[] = [];
+  for (const s of valor) {
+    if (!ehObjeto(s) || typeof s.id !== "string" || !ID_SLIDE.test(s.id) || slides.some((x) => x.id === s.id)) return erroR("Confira os slides do roteiro.");
+    const titulo = textoEntre(s.titulo, 1, 120);
+    if (!titulo) return erroR("Cada slide do roteiro tem um título de até 120 caracteres.");
+    const fala = textoLivre(s.fala ?? "", 2000);
+    const dica = textoLivre(s.dica ?? "", 500);
+    if (fala === null || dica === null) return erroR("A fala tem até 2.000 caracteres e a dica, até 500.");
+    if (s.pacto !== null && !IDS_PACTO.includes(s.pacto as IdPacto)) return erroR("Escolha o pacto do slide.");
+    if (!inteiroEntre(s.tempo, 1, 30)) return erroR("O tempo do slide vai de 1 a 30 minutos.");
+    slides.push({ id: s.id, titulo, fala, ...(dica ? { dica } : {}), pacto: s.pacto as IdPacto | null, tempo: s.tempo });
+  }
+  return { ok: true, dados: slides };
+}
+
+/** O serviço inteiro, como o diretor manda ao criar ou editar. */
+export function validarServico(corpo: unknown): Validado<DadosDoServico> {
+  if (!ehObjeto(corpo)) return { ok: false, mensagem: MENSAGEM.corpo };
+  const nome = textoEntre(corpo.nome, 2, 80);
+  if (!nome) return { ok: false, mensagem: "O nome do serviço tem de 2 a 80 caracteres." };
+  const sigla = typeof corpo.sigla === "string" && /^[A-Za-z0-9]{1,6}$/.test(corpo.sigla.trim()) ? corpo.sigla.trim().toUpperCase() : null;
+  if (!sigla) return { ok: false, mensagem: "A sigla tem de 1 a 6 letras ou números." };
+  const resumo = textoEntre(corpo.resumo, 0, 300);
+  const ancoraValor = textoEntre(corpo.ancoraValor, 0, 500);
+  if (resumo === null || ancoraValor === null) return { ok: false, mensagem: "O resumo tem até 300 caracteres e a âncora de valor, até 500." };
+  const dores = itens(corpo.dores, 12);
+  if (!dores) return { ok: false, mensagem: "O serviço tem até 12 dores, cada uma com até 200 caracteres." };
+  const entregamos = itens(corpo.entregamos, 20);
+  const ficaComCliente = itens(corpo.ficaComCliente, 20);
+  if (!entregamos || !ficaComCliente) return { ok: false, mensagem: "O que entregamos e o que fica com o cliente têm até 20 itens, cada um com até 200 caracteres." };
+  if (!SITUACOES_SERVICO.includes(corpo.situacao as SituacaoServico)) return { ok: false, mensagem: "Escolha a situação do serviço." };
+  const perguntas = validarPerguntas(corpo.perguntas);
+  if (!perguntas.ok) return perguntas;
+  const roteiro = validarRoteiro(corpo.roteiro ?? null);
+  if (!roteiro.ok) return roteiro;
+  return {
+    ok: true,
+    dados: { nome, sigla, resumo, dores, entregamos, ficaComCliente, ancoraValor, situacao: corpo.situacao as SituacaoServico, perguntas: perguntas.dados, roteiro: roteiro.dados },
+  };
+}
+
+/** O arquivo da apresentação: um .html só, com tudo dentro, até 5 MB. */
+export function validarArquivoDaApresentacao(corpo: unknown): Validado<{ arquivo: string; html: string }> {
+  const mensagem = "Envie um arquivo .html.";
+  if (!ehObjeto(corpo)) return { ok: false, mensagem: MENSAGEM.corpo };
+  const arquivo = textoEntre(corpo.arquivo, 1, 120);
+  if (!arquivo || !/\.html?$/i.test(arquivo) || typeof corpo.html !== "string") return { ok: false, mensagem };
+  if (new TextEncoder().encode(corpo.html).length > LIMITE_DA_APRESENTACAO) {
+    return { ok: false, mensagem: "A apresentação passa de 5 MB. Diminua as imagens e envie de novo." };
+  }
+  if (!/<html[\s>]|<!doctype html/i.test(corpo.html)) return { ok: false, mensagem };
+  return { ok: true, dados: { arquivo, html: corpo.html } };
 }

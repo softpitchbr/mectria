@@ -13,6 +13,7 @@ import {
 } from "../compartilhado/proposta";
 import { buscarReuniao, motivoDaRecusa, OPORTUNIDADE_NA_ETAPA } from "./diagnostica";
 import { buscarOportunidade } from "./oportunidades";
+import { buscarServico } from "./servicos";
 import type { Pessoa } from "./tipos";
 
 function lerJson<T>(texto: string | null | undefined, padrao: T): T {
@@ -40,10 +41,10 @@ export async function salvarVariaveis(db: D1Database, reuniaoId: number, v: Vari
 export async function salvarAndamento(db: D1Database, reuniaoId: number, a: Andamento): Promise<void> {
   const mudou = await db
     .prepare(
-      `UPDATE reunioes SET sala = ?, pactos = ?, tempos = ?, slide_atual = ?, atualizado_em = datetime('now')
+      `UPDATE reunioes SET sala = ?, pactos = ?, tempos = ?, slide_atual = ?, interacoes = ?, atualizado_em = datetime('now')
        WHERE id = ? AND tipo = 'proposta' AND situacao IN ('marcada', 'em_andamento') RETURNING id`,
     )
-    .bind(JSON.stringify(a.sala), JSON.stringify(a.pactos), JSON.stringify(a.tempos), a.slide, reuniaoId)
+    .bind(JSON.stringify(a.sala), JSON.stringify(a.pactos), JSON.stringify(a.tempos), a.slide, a.interacoes ? JSON.stringify(a.interacoes) : null, reuniaoId)
     .first();
   if (!mudou) throw new Error(await motivoDaRecusa(db, reuniaoId, "proposta"));
 }
@@ -62,7 +63,7 @@ export async function sessaoDaProposta(db: D1Database, reuniaoId: number): Promi
   if (!reuniao || reuniao.tipo !== "proposta") return null;
   const oportunidade = (await buscarOportunidade(db, reuniao.oportunidadeId))!;
   const [linha, anotacoes, respostas] = await db.batch([
-    db.prepare("SELECT variaveis, sala, pactos, tempos, slide_atual FROM reunioes WHERE id = ?").bind(reuniaoId),
+    db.prepare("SELECT variaveis, sala, pactos, tempos, slide_atual, interacoes FROM reunioes WHERE id = ?").bind(reuniaoId),
     db.prepare("SELECT id_cliente, minuto, passo, marcacao, texto, criado_em FROM anotacoes WHERE reuniao_id = ? ORDER BY id").bind(reuniaoId),
     // A última diagnóstica concluída da oportunidade: é dela que vêm as palavras do cliente.
     db
@@ -72,17 +73,30 @@ export async function sessaoDaProposta(db: D1Database, reuniaoId: number): Promi
       )
       .bind(reuniao.oportunidadeId),
   ]);
-  const l = linha.results[0] as { variaveis: string | null; sala: string | null; pactos: string | null; tempos: string | null; slide_atual: number };
+  const l = linha.results[0] as {
+    variaveis: string | null;
+    sala: string | null;
+    pactos: string | null;
+    tempos: string | null;
+    slide_atual: number;
+    interacoes: string | null;
+  };
+  const variaveis = l.variaveis ? lerJson(l.variaveis, null as VariaveisProposta | null) : null;
+  const servicoId = variaveis?.servico ?? oportunidade.servico;
+  const servico = await buscarServico(db, servicoId);
+  const interacoes = lerJson<Andamento["interacoes"] | null>(l.interacoes, null);
   return {
     reuniao,
     oportunidade,
-    variaveis: lerJson(l.variaveis, variaveisIniciais(oportunidade.servico)),
+    variaveis: variaveis ?? variaveisIniciais(servicoId, servico),
     andamento: {
       sala: lerJson(l.sala, salaInicial(reuniao.quemDecide, oportunidade.contato)),
       pactos: lerJson(l.pactos, []),
       tempos: lerJson(l.tempos, {}),
       slide: l.slide_atual,
+      ...(interacoes ? { interacoes } : {}),
     },
+    servico,
     anotacoes: (anotacoes.results as { id_cliente: string; minuto: number; passo: string; marcacao: Marcacao | null; texto: string; criado_em: string }[]).map(
       (a): Anotacao => ({ idCliente: a.id_cliente, minuto: a.minuto, passo: a.passo, marcacao: a.marcacao, texto: a.texto, criadoEm: a.criado_em }),
     ),
@@ -117,7 +131,8 @@ export async function encerrarProposta(
   if (reuniao.tipo !== "proposta") throw new Error("nao_e_proposta");
   const oportunidade = (await buscarOportunidade(db, reuniao.oportunidadeId))!;
   const linha = await db.prepare("SELECT variaveis FROM reunioes WHERE id = ?").bind(reuniaoId).first<{ variaveis: string | null }>();
-  const v = lerJson(linha?.variaveis, variaveisIniciais(oportunidade.servico));
+  const lida = linha?.variaveis ? lerJson(linha.variaveis, null as VariaveisProposta | null) : null;
+  const v = lida ?? variaveisIniciais(oportunidade.servico, await buscarServico(db, oportunidade.servico));
 
   const vaiDecidir = f.desfecho === "decidir" || f.desfecho === "ajuste";
   const para = SITUACAO_DEPOIS[f.desfecho];

@@ -2,7 +2,10 @@ import { act, screen, within } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import { dataDoD7 } from "../../compartilhado/cadencia";
 import { hojeEmSaoPaulo } from "../../compartilhado/datas";
+import { servicosDaCarta } from "../../compartilhado/dados/servicos-completos";
 import { variaveisIniciais } from "../../compartilhado/proposta";
+
+const CLIMATIZACAO = servicosDaCarta().find((s) => s.id === "climatizacao")!;
 import { abrir, fingirApi, PESSOAS } from "../teste/ajuda";
 import { abrirCanal, type MensagemReuniao } from "./canal";
 
@@ -29,10 +32,11 @@ const REUNIAO = {
 const SESSAO = {
   reuniao: REUNIAO,
   oportunidade: { id: 1, empresa: "Usinagem Alfa", contato: "Ana", servico: "climatizacao", closerId: 2, situacao: "proposta_marcada" },
-  variaveis: { ...variaveisIniciais("climatizacao"), valor: 1250000, prazo: "45 dias", equipe: "Rui e Bia" },
+  variaveis: { ...variaveisIniciais("climatizacao", CLIMATIZACAO), valor: 1250000, prazo: "45 dias", equipe: "Rui e Bia" },
   andamento: { sala: [{ nome: "Bia", decide: true }, { nome: "Ana", decide: false }], pactos: [], tempos: {}, slide: 0 },
   anotacoes: [],
   respostasDaDiagnostica: { "c-dor": "O galpão passa de 38 °C" },
+  servico: CLIMATIZACAO,
 };
 
 function api(extra: Record<string, unknown> = {}) {
@@ -102,7 +106,7 @@ test("a janela que abre recebe o estado inteiro", async () => {
   const janela = abrirCanal(7, (m) => recebidas.push(m));
   await comecar();
   janela.enviar({ tipo: "pronta" });
-  await vi.waitFor(() => expect(recebidas.some((m) => m.tipo === "estado" && m.empresa === "Usinagem Alfa" && m.slides.length === 13)).toBe(true));
+  await vi.waitFor(() => expect(recebidas.some((m) => m.tipo === "estado" && m.empresa === "Usinagem Alfa" && m.apresentacao.tipo === "exemplo" && m.apresentacao.slides.length === 13)).toBe(true));
   janela.fechar();
 });
 
@@ -344,4 +348,120 @@ test("depois de marcar quem decide, as setas continuam passando o slide", async 
   await userEvent.click(screen.getByRole("checkbox", { name: "Ana decide" }));
   await userEvent.keyboard("{ArrowRight}");
   expect(screen.getByText("2 de 13")).toBeInTheDocument();
+});
+
+// Apresentação em HTML (fase 8) -------------------------------------------------
+
+const ROTEIRO = [
+  { id: "abre", titulo: "Bem-vindos", fala: "Comece pela agenda, {contato}.", pacto: "agenda" as const, tempo: 2 },
+  { id: "preco", titulo: "Investimento", fala: "Revele o preço em etapas.", pacto: null, tempo: 3 },
+  { id: "fim", titulo: "Próximos passos", fala: "Combine a decisão.", pacto: null, tempo: 2 },
+];
+const COM_HTML = {
+  ...SESSAO,
+  servico: { ...CLIMATIZACAO, roteiro: ROTEIRO, apresentacao: { arquivo: "c.html", bytes: 10, versao: 3, enviadaEm: "2026-11-11 10:00:00", enviadaPor: "Diana" } },
+};
+const PRONTA = {
+  mectria: 1 as const,
+  tipo: "pronta" as const,
+  slides: 3,
+  acoes: [{ slide: 1, id: "revelar-preco", rotulo: "Revelar o preço" }],
+  campos: [{ slide: 1, id: "horas-paradas", rotulo: "Horas paradas por mês" }],
+};
+
+/** Começa a reunião com a apresentação própria e uma janela de mentira, que já avisou que a apresentação está pronta. */
+async function comecarComHtml(sessao: unknown = COM_HTML, pronta: unknown = PRONTA) {
+  api({ "GET /api/reunioes/7/proposta": { corpo: sessao } });
+  const recebidas: MensagemReuniao[] = [];
+  const janela = abrirCanal(7, (m) => recebidas.push(m));
+  await abrirPainel();
+  await userEvent.click(screen.getByRole("button", { name: "Começar reunião" }));
+  janela.enviar({ tipo: "pronta" });
+  janela.enviar({ tipo: "apresentacao", mensagem: pronta as never });
+  return { janela, recebidas };
+}
+
+test("com apresentação própria, o painel usa o roteiro do serviço (fala e número de slides) e manda o estado html", async () => {
+  const { janela, recebidas } = await comecarComHtml();
+  expect(await screen.findByText("1 de 3")).toBeInTheDocument();
+  expect(screen.getByRole("region", { name: "Fala" })).toHaveTextContent("Comece pela agenda, Ana.");
+  await vi.waitFor(() =>
+    expect(recebidas).toContainEqual({
+      tipo: "estado",
+      empresa: "Usinagem Alfa",
+      slide: 0,
+      apresentacao: {
+        tipo: "html",
+        url: "/api/servicos/climatizacao/apresentacao?v=3",
+        dados: expect.objectContaining({ empresa: "Usinagem Alfa", valorCentavos: "1250000", doresDoServico: CLIMATIZACAO.dores.join("\n") }),
+        interacoes: { dores: [], precoEtapa: 0, calculadora: {} },
+      },
+    }),
+  );
+  expect(within(screen.getByRole("region", { name: "Próximo slide" })).getByText("Investimento")).toBeInTheDocument();
+  expect(screen.queryByRole("region", { name: /^Slide: / })).not.toBeInTheDocument();
+  janela.fechar();
+});
+
+test("a pronta com 12 slides para um roteiro de 13 mostra o alerta só no painel", async () => {
+  const sessao = { ...COM_HTML, servico: { ...COM_HTML.servico, roteiro: null } };
+  const { janela } = await comecarComHtml(sessao, { ...PRONTA, slides: 12 });
+  expect(await screen.findByText("1 de 13")).toBeInTheDocument();
+  expect(await screen.findByText("A apresentação tem 12 slides e o roteiro tem 13. Ajuste o roteiro em Serviços.")).toBeInTheDocument();
+  janela.fechar();
+});
+
+test("o botão Revelar o preço manda acionar revelar-preco", async () => {
+  const { janela, recebidas } = await comecarComHtml();
+  await screen.findByText("1 de 3");
+  expect(screen.queryByRole("button", { name: "Revelar o preço" })).not.toBeInTheDocument();
+  await userEvent.keyboard("{ArrowRight}");
+  await userEvent.click(await screen.findByRole("button", { name: "Revelar o preço" }));
+  await vi.waitFor(() => expect(recebidas).toContainEqual({ tipo: "acionar", acao: "revelar-preco" }));
+  janela.fechar();
+});
+
+test("o evento da dor aparece em Na apresentação e vai no próximo andamento salvo", async () => {
+  const { janela } = await comecarComHtml();
+  await screen.findByText("1 de 3");
+  janela.enviar({ tipo: "apresentacao", mensagem: { mectria: 1, tipo: "evento", evento: "dor", valor: "O galpão é muito quente", marcada: true } });
+  janela.enviar({ tipo: "apresentacao", mensagem: { mectria: 1, tipo: "evento", evento: "preco", etapa: 2 } });
+  const resumo = await screen.findByRole("region", { name: "Na apresentação" });
+  await vi.waitFor(() => expect(resumo).toHaveTextContent("O galpão é muito quente"));
+  expect(resumo).toHaveTextContent("Preço revelado até a etapa 2");
+  await vi.waitFor(() =>
+    expect(JSON.parse(localStorage.getItem("hub-proposta-7")!).andamento.interacoes).toEqual({ dores: ["O galpão é muito quente"], precoEtapa: 2, calculadora: {} }),
+  );
+  janela.fechar();
+});
+
+test("o campo Horas paradas manda calcular com o número", async () => {
+  const { janela, recebidas } = await comecarComHtml();
+  await screen.findByText("1 de 3");
+  await userEvent.keyboard("{ArrowRight}");
+  await userEvent.type(await screen.findByLabelText("Horas paradas por mês"), "12");
+  await vi.waitFor(() => expect(recebidas).toContainEqual({ tipo: "calcular", valores: { "horas-paradas": 12 } }));
+  janela.enviar({ tipo: "apresentacao", mensagem: { mectria: 1, tipo: "evento", evento: "calculadora", valores: { "horas-paradas": 12 } } });
+  await vi.waitFor(() => expect(screen.getByRole("region", { name: "Na apresentação" })).toHaveTextContent("Horas paradas por mês: 12"));
+  expect(screen.getByLabelText("Horas paradas por mês")).toHaveValue(12);
+  janela.fechar();
+});
+
+test("sem apresentação própria, o painel continua com os 13 slides de exemplo e a miniatura", async () => {
+  api();
+  await comecar();
+  expect(within(screen.getByRole("region", { name: "Próximo slide" })).getByRole("region", { name: /^Slide: / })).toBeInTheDocument();
+  expect(screen.queryByRole("region", { name: "Na apresentação" })).not.toBeInTheDocument();
+});
+
+test("andamento salvo num slide além do roteiro (roteiro encurtado) abre no último slide, sem quebrar", async () => {
+  const sessao = { ...COM_HTML, reuniao: { ...REUNIAO, situacao: "em_andamento", iniciadaEm: "2026-11-18 17:00:00" }, andamento: { ...COM_HTML.andamento, slide: 9, tempos: { velho: 30 } } };
+  api({ "GET /api/reunioes/7/proposta": { corpo: sessao } });
+  await abrirPainel();
+  expect(await screen.findByText("3 de 3")).toBeInTheDocument();
+  expect(screen.getByRole("heading", { name: "Próximos passos" })).toBeInTheDocument();
+  await act(async () => {
+    await new Promise((r) => setTimeout(r, 1100));
+  });
+  expect(screen.getByText("3 de 3")).toBeInTheDocument();
 });
