@@ -4,13 +4,19 @@ import App from "../App";
 
 type RespostaFalsa = { status?: number; corpo: unknown };
 
-/** Troca o fetch por respostas fixas por caminho (o resto dá 404; GET /api/servicos dá a carta). */
+/** Troca o fetch por respostas fixas por caminho (o resto dá 404; GET /api/servicos dá a carta e GET /api/apresentacoes, a diagnóstica sem arquivo). */
 export function fingirApi(rotas: Record<string, RespostaFalsa | ((init?: RequestInit) => RespostaFalsa)>) {
   const falso = vi.fn(async (entrada: RequestInfo | URL, init?: RequestInit) => {
     const url = typeof entrada === "string" ? entrada : entrada instanceof URL ? entrada.href : entrada.url;
     const caminho = new URL(url, "http://localhost").pathname;
     // Os serviços (GET /api/servicos) respondem a carta, a não ser que o teste defina outra lista.
-    const padrao = caminho === "/api/servicos" && (init?.method ?? "GET") === "GET" ? { corpo: servicosDaCarta() } : undefined;
+    const ehGet = (init?.method ?? "GET") === "GET";
+    const padrao =
+      caminho === "/api/servicos" && ehGet
+        ? { corpo: servicosDaCarta() }
+        : caminho === "/api/apresentacoes" && ehGet
+          ? { corpo: [{ id: "diagnostica", apresentacao: null }] }
+          : undefined;
     const rota = rotas[`${init?.method ?? "GET"} ${caminho}`] ?? rotas[caminho] ?? padrao;
     const r = typeof rota === "function" ? rota(init) : rota;
     if (!r) return new Response(JSON.stringify({ erro: "nao_encontrado", mensagem: "Não encontrado." }), { status: 404 });

@@ -3,10 +3,11 @@ import { ALERTA_CONSTRUCAO_DIAS, diasNaEtapa, etapaDaProposta } from "../../comp
 import Tag from "../componentes/Tag";
 import { diasDepois, formatarDia, formatarReais, hojeEmSaoPaulo, lerReais } from "../../compartilhado/datas";
 import type { Reuniao } from "../../compartilhado/oportunidade";
-import type { Servico } from "../../compartilhado/servico";
+import { urlDaApresentacao, type Servico } from "../../compartilhado/servico";
 import {
   faltandoNaProposta,
   montarSlides,
+  roteiroPadrao,
   slidesDaProposta,
   valoresDaProposta,
   variaveisIniciais,
@@ -15,7 +16,7 @@ import {
 } from "../../compartilhado/proposta";
 import { api } from "../api/cliente";
 import Slide from "../apresentacao/Slide";
-import VistaDaApresentacao from "../apresentacao/VistaDaApresentacao";
+import VistaDaApresentacao, { dadosDeExemploDoServico } from "../apresentacao/VistaDaApresentacao";
 import AreaDeTexto from "../componentes/AreaDeTexto";
 import { avisar } from "../componentes/Aviso";
 import Botao from "../componentes/Botao";
@@ -210,7 +211,12 @@ export default function Apresentacoes({ eu: _eu }: { eu: Eu }) {
 
       {vendo && (
         <Foco titulo={`Apresentação · ${vendo.servico.nome}`} origem={vendo.origem} aoSair={() => setVendo(null)}>
-          <VistaDaApresentacao servico={vendo.servico} />
+          <VistaDaApresentacao
+            url={urlDaApresentacao(vendo.servico)!}
+            titulo={`Apresentação · ${vendo.servico.nome}`}
+            dados={dadosDeExemploDoServico(vendo.servico)}
+            totalDoRoteiro={(vendo.servico.roteiro ?? roteiroPadrao()).length}
+          />
         </Foco>
       )}
       {aberta && (

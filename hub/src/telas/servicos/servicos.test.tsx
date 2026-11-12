@@ -238,3 +238,43 @@ test("Ver a apresentação abre o iframe do serviço, e Próximo passa o slide",
   expect(enviar).toHaveBeenCalledWith({ mectria: 1, tipo: "slide", slide: 1 }, "*");
   expect(within(foco).getByText("Slide 2 de 12")).toBeInTheDocument();
 });
+
+// A apresentação da diagnóstica, igual para todos (fase 9) --------------------------
+
+test("o diretor envia a apresentação da diagnóstica no topo de Serviços", async () => {
+  let enviado: Record<string, unknown> | undefined;
+  fingirApi({
+    "/api/eu": { corpo: PESSOAS.diretor },
+    "PUT /api/apresentacoes/diagnostica": (init) => {
+      enviado = corpoDe(init);
+      return { corpo: { id: "diagnostica", apresentacao: { ...ARQUIVO, arquivo: "diagnostica.html" } } };
+    },
+  });
+  abrir("/servicos");
+  const secao = (await screen.findByRole("heading", { name: "Apresentação da diagnóstica" })).closest("section")!;
+  expect(await within(secao).findByText("Sem apresentação: a diagnóstica continua sem a janela do cliente.")).toBeInTheDocument();
+  await userEvent.upload(within(secao).getByLabelText("Enviar apresentação (.html)"), new File([HTML], "diagnostica.html", { type: "text/html" }));
+  await waitFor(() => expect(enviado).toEqual({ arquivo: "diagnostica.html", html: HTML }));
+  await waitFor(() => expect(secao).toHaveTextContent("diagnostica.html · 2 KB · versão 2"));
+  expect(screen.getByRole("list", { name: "Serviços" })).toBeInTheDocument();
+});
+
+test("Ver a apresentação da diagnóstica abre com dados de exemplo e sem alerta de roteiro", async () => {
+  fingirApi({
+    "/api/eu": { corpo: PESSOAS.diretor },
+    "/api/apresentacoes": { corpo: [{ id: "diagnostica", apresentacao: { ...ARQUIVO, arquivo: "diagnostica.html" } }] },
+  });
+  abrir("/servicos");
+  const secao = (await screen.findByRole("heading", { name: "Apresentação da diagnóstica" })).closest("section")!;
+  await userEvent.click(await within(secao).findByRole("button", { name: "Ver a apresentação" }));
+  const foco = await screen.findByRole("dialog", { name: "Apresentação · Diagnóstica" });
+  const iframe = within(foco).getByTitle("Apresentação · Diagnóstica") as HTMLIFrameElement;
+  expect(iframe.getAttribute("src")).toBe("/api/apresentacoes/diagnostica?v=2");
+  const enviar = vi.spyOn(iframe.contentWindow!, "postMessage");
+  act(() => {
+    window.dispatchEvent(new MessageEvent("message", { data: { mectria: 1, tipo: "pronta", slides: 5, acoes: [], campos: [] }, source: iframe.contentWindow }));
+  });
+  expect(enviar).toHaveBeenCalledWith(expect.objectContaining({ tipo: "estado", dados: expect.objectContaining({ empresa: "Cliente de exemplo", etapa: "Objetivos" }) }), "*");
+  expect(await within(foco).findByText("Slide 1 de 5")).toBeInTheDocument();
+  expect(within(foco).queryByText(/A apresentação tem/)).not.toBeInTheDocument();
+});
