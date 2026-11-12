@@ -55,30 +55,17 @@ body {
     var(--fundo);
 }
 
-.slide[data-ativo="sim"] > * {
-  animation: entrar var(--entrar) both;
-}
-
-.slide[data-ativo="sim"] > :nth-child(2) {
-  animation-delay: 60ms;
-}
-
-.slide[data-ativo="sim"] > :nth-child(3) {
-  animation-delay: 120ms;
-}
-
-.slide[data-ativo="sim"] > :nth-child(n + 4) {
-  animation-delay: 180ms;
+/* Um só movimento na troca de slide: o slide inteiro aparece. O que se mexe de verdade é o desenho técnico. */
+.slide[data-ativo="sim"] {
+  animation: entrar 360ms ease both;
 }
 
 @keyframes entrar {
   from {
     opacity: 0;
-    transform: translateY(14px);
   }
   to {
     opacity: 1;
-    transform: none;
   }
 }
 
@@ -183,6 +170,51 @@ p {
   font: 500 13px/1 var(--mono);
   letter-spacing: 0.12em;
   text-transform: uppercase;
+}
+
+/* Uma coluna de texto: rótulo, título e parágrafos, com o respiro do site. */
+.pilha {
+  display: grid;
+  gap: 20px;
+  align-content: center;
+}
+
+.pequeno {
+  font-size: 19px;
+  line-height: 1.5;
+}
+
+/* Uma sequência de passos (a ordem importa): número em mono, título e uma linha. */
+.passos {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  display: grid;
+  gap: 22px;
+}
+
+.passos li {
+  display: grid;
+  grid-template-columns: 52px 1fr;
+  gap: 4px 16px;
+  align-items: baseline;
+  padding-top: 18px;
+  border-top: 1px solid var(--linha);
+}
+
+.passos li > span {
+  font: 500 15px/1 var(--mono);
+  color: var(--vermelho-vivo);
+}
+
+.passos h3 {
+  font-size: 24px;
+}
+
+.passos p {
+  grid-column: 2;
+  font-size: 18px;
+  color: var(--suave);
 }
 
 /* Os quatro números do site. */
@@ -336,7 +368,7 @@ p {
 }
 
 @media (prefers-reduced-motion: reduce) {
-  .slide[data-ativo="sim"] > *,
+  .slide[data-ativo="sim"],
   .slide[data-ativo="sim"] .desenho [pathLength],
   .slide[data-ativo="sim"] .desenho .depois {
     animation: none;
