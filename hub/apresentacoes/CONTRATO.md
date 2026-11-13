@@ -2,7 +2,11 @@
 
 Cada serviço pode ter a sua apresentação de proposta em HTML. O diretor envia o arquivo em **Serviços → o serviço → Apresentação de proposta**. Na reunião, a janela que o cliente vê abre esse HTML, e o painel do vendedor continua mandando: passa os slides, mostra a fala e aciona o que é interativo.
 
-Este documento é para quem desenha as apresentações. O modelo pronto é o [`exemplo.html`](exemplo.html): os 13 slides da apresentação de exemplo, com dores clicáveis, preço revelado em 3 etapas e uma calculadora. Comece copiando ele.
+Este documento é para quem desenha as apresentações. As prontas, com o visual do site da MecTRIA, são:
+- [`diagnostica.html`](diagnostica.html): a da diagnóstica, igual para todos;
+- [`desenvolvimento-de-produto.html`](desenvolvimento-de-produto.html) e [`desenho-tecnico.html`](desenho-tecnico.html): as de proposta, com o roteiro em `roteiros/`.
+
+Para uma apresentação nova, comece copiando uma delas em `fonte/` e monte com o kit (seção 7). O [`exemplo.html`](exemplo.html) da fase 8 continua como modelo sem o kit.
 
 ## 1. O arquivo
 
@@ -71,7 +75,23 @@ Todas vão por `postMessage` e têm `mectria: 1`.
 | `parcelas`, `descontoAVista` | As condições de pagamento |
 | `ancora`, `fraseValor` | Quem faria o projeto no mercado e a frase de valor da MecTRIA |
 | `doresDoServico` | As dores cadastradas no serviço, uma por linha |
+| `entregamosItens`, `ficaItens` | O escopo e o que fica com o cliente, um item por linha, com a grafia original (para listar; `entregamos` e `fica` são para o meio de uma frase) |
+| `condicoes` | As condições de pagamento que o closer preparou para o cliente |
 | `dor`, `objetivo`, `impacto`, `prazo`, `ganho`, `tentativas`, `porqueAgora`, `criterio`, `numeros`, `prazoDecisao` | As palavras do cliente na diagnóstica |
+
+### A apresentação da diagnóstica
+
+A da diagnóstica é igual para todos e o diretor envia no topo de **Serviços**. Ela não tem roteiro próprio: segue o painel da diagnóstica sozinha, com 5 slides nesta ordem (os ids precisam ser estes):
+
+| Slide | Quando aparece |
+|---|---|
+| `agenda` | No acordo de agenda |
+| `quem-somos` | No "Quem somos, em 1 minuto" |
+| `escuta` | Durante o GPCTBA + C&I e as perguntas técnicas |
+| `como-trabalhamos` | No escopo geral |
+| `proximo-passo` | No fechamento |
+
+Os dados são `empresa`, `contato`, `data`, `servico`, `etapas` (as etapas da conversa, uma por linha) e `etapa` (a atual).
 
 ## 5. Regras
 

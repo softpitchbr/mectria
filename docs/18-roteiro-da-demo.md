@@ -158,3 +158,20 @@ Para o Lucas conduzir a reunião com a MecTRIA. São cerca de 40 minutos de demo
   - os cases com autorização;
   - a política comercial: parcelas, desconto à vista e desconto máximo.
 - **Combinados:** as datas das validações (copy na quinta, 12/11) e se a reunião de terça às 18h30 passa a ser fixa.
+
+## 8. As apresentações em HTML (fases 8 e 9) · para as próximas demos
+
+Com a fase 9, a parte 7 acima mudou: as primeiras apresentações em HTML existem. Para mostrar (uns 10 minutos):
+
+1. **Aba 4, Diana · Serviços:**
+   - no topo, em "Apresentação da diagnóstica", envie `hub/apresentacoes/diagnostica.html` e clique em "Ver a apresentação";
+   - abra **Desenvolvimento de Produto**: em "Apresentação de proposta", envie `hub/apresentacoes/desenvolvimento-de-produto.html`. O roteiro por slide já vem com a jornada de parcerias no slide 10.
+2. **Aba 1, Helena · Reuniões → Solda Hunter → Iniciar → Abrir apresentação:**
+   - a janela do cliente mostra a agenda com o nome da empresa;
+   - ao passar para as perguntas (bloco G), a janela mostra "Antes de desenhar, a gente escuta." com a etapa atual acesa. A apresentação acompanha o painel sozinha.
+3. **Aba 2, Carlos · Reuniões → Torno Novo → Iniciar → Abrir apresentação → Começar reunião:**
+   - no slide 6, clique numa dor dentro da apresentação: ela aparece no painel;
+   - no slide 10, a fala da jornada de parcerias e o "Combinado?";
+   - no slide 12, "Revelar o preço" três vezes (o mercado, a MecTRIA e o valor com as condições) e os números da calculadora.
+
+**Pergunte:** o visual está como o site? O que falta para a primeira reunião de verdade: o professor (prova social), os cases e a política comercial.

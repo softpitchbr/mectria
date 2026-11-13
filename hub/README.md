@@ -2,7 +2,7 @@
 
 O hub do vendedor da MecTRIA: login pelo e-mail, navegação por cargo (hunter, closer, diretor comercial e projetos), busca Ctrl K e o sistema visual Prancheta, nos temas claro e escuro. A especificação está em [`docs/15-hub-template.md`](../docs/15-hub-template.md).
 
-Pronto até agora (fases 1 a 4 e 6 a 8; a 5, o celular como controle, fica para depois):
+Pronto até agora (fases 1 a 4 e 6 a 9; a 5, o celular como controle, fica para depois):
 
 - **Base:** login, cargos, navegação, busca, Time e os dois temas.
 - **Rotina e follow-up:** o Hoje de cada cargo (bloco de ligações do hunter em modo foco, próxima reunião do closer, resumo do time para o diretor), a seção Rotinas (checklist do dia e histórico) e o Follow-up (janela de 7 dias com D0, D1, ligação, sexta fixa e D7, atraso e o toque em modo foco, com a mensagem pronta; as propostas antigas continuam com os toques D3 a D15).
@@ -11,6 +11,7 @@ Pronto até agora (fases 1 a 4 e 6 a 8; a 5, o celular como controle, fica para 
 - **Diretor, Projetos e reativação (fase 6):** os números do mês no Hoje do diretor e na aba Mês de Time (propostas, fechadas, conversão, valor vendido, tempo da diagnóstica à decisão, números por closer, % da rotina de cada pessoa e objeções), as exportações (CSV do histórico do mês e todos os dados em JSON) e a exclusão de dados pessoais a pedido (LGPD) no briefing; a seção Briefings e o Hoje de Projetos, com as pendências técnicas respondidas em foco e a resposta no card do follow-up; a aba Reativação, com o mês para retomar escolhido ao mandar para nutrição; e o hunter conduzindo a diagnóstica que marcou.
 - **Processo comercial (fase 7):** a rotina em blocos de prioridade com o % do dia (hunter: leads em conversa, reagendamentos, cold call e confirmações; closer: fechamento, AP, construção e reativação, com a tarefa feita sozinha quando o bloco está vazio), a conexão nas ligações e a meta de 8 conexões por semana, o cold call novo com os desvios e a cold message, as observações ao marcar a diagnóstica, os FUPs de confirmação e a mensagem para o Comercial & Projetos, o "Cliente não compareceu" com o reagendamento do hunter e há quantos dias cada lead está na etapa (alerta depois de 3 dias em construção).
 - **Serviços e apresentações em HTML (fase 8):** os serviços saíram do código e foram para o banco, já com os 12 da carta. Na seção Serviços, o diretor cria e edita cada um (nome, sigla, resumo, dores, o que entregamos, o que fica com o cliente, âncora de valor e situação), as perguntas técnicas da diagnóstica (a salva é desativada, não apagada) e o roteiro por slide (fala, dica, pacto e tempo). Ele também envia a apresentação de proposta em HTML, que fica no Workers KV. Na reunião, a janela do cliente abre esse HTML num iframe isolado (sem o login, sem chamar a internet e sem abrir a API do hub), e o painel continua mandando: passa os slides, mostra a fala do roteiro do serviço, aciona as ações (revelar o preço, marcar uma dor) e digita os números da calculadora; o que a apresentação conta volta para o painel e fica no andamento. O contrato e o modelo estão em [`apresentacoes/`](apresentacoes/CONTRATO.md).
+- **As primeiras apresentações (fase 9):** com a identidade do site novo, saem de um kit comum (`apresentacoes/fonte/`, montado com `npm run apresentacoes`). São a da diagnóstica (igual para todos, enviada no topo de Serviços), que acompanha o painel da diagnóstica sozinha (agenda, quem somos, a escuta com a etapa atual, do papel à peça e o próximo passo), e as de proposta de Desenvolvimento de Produto e de Desenho Técnico, com dores clicáveis, a jornada de parcerias antes do preço, o preço em 3 etapas com as condições do cliente e a calculadora. Os roteiros delas entram no banco pela migração 0010.
 
 - Interface: React + Vite, servida pelo Cloudflare Pages.
 - API: Pages Functions em `functions/api/`, com a lógica em `servidor/`.
@@ -50,7 +51,7 @@ O CI (`.github/workflows/hub.yml`) roda os três em todo push que mexe em `hub/`
 
 ```
 hub/
-  migrations/                      0001 pessoas · 0002 oportunidades, reuniões, propostas, toques, rotinas, ligações e histórico · 0003 fichas, anotações e pendências · 0004 uma pendência por anotação · 0005 preparação, andamento e desfecho da proposta · 0006 mês para retomar e resposta das pendências · 0007 conexão nas ligações, observações e confirmação da diagnóstica · 0008 serviços (com os 12 da carta) e as interações da apresentação na reunião
+  migrations/                      0001 pessoas · 0002 oportunidades, reuniões, propostas, toques, rotinas, ligações e histórico · 0003 fichas, anotações e pendências · 0004 uma pendência por anotação · 0005 preparação, andamento e desfecho da proposta · 0006 mês para retomar e resposta das pendências · 0007 conexão nas ligações, observações e confirmação da diagnóstica · 0008 serviços (com os 12 da carta) e as interações da apresentação na reunião · 0009 a apresentação geral da diagnóstica · 0010 os roteiros de Desenvolvimento de Produto e Desenho Técnico
   compartilhado/                   usado pela interface e pela API
     cargos.ts, pessoa.ts           cargos, rótulos e o tipo Pessoa
     permissoes.ts                  seções, fase de cada uma e quem pode fazer o quê
@@ -104,7 +105,8 @@ hub/
     reuniao/                       painel da proposta, canal entre as janelas, andamento no computador, fechamento e o painel diante da apresentação em HTML
     apresentacao/                  o slide, a janela da apresentação que o cliente vê, o iframe isolado do HTML e a vista para conferir uma apresentação
     telas/                         Hoje (e hoje/), FollowUp (e followup/, com a Reativação), Rotinas, Reunioes, Briefing, Briefings, Playbooks, Apresentacoes, Time (e time/, a aba Mês), servicos/ (lista e edição) e Vitrine
-  apresentacoes/                   o contrato das apresentações em HTML (CONTRATO.md) e a apresentação de exemplo (exemplo.html)
+  apresentacoes/                   o contrato das apresentações em HTML (CONTRATO.md), as prontas (diagnostica, desenvolvimento-de-produto,
+                                   desenho-tecnico e o exemplo da fase 8), o kit e as fontes (fonte/, npm run apresentacoes) e os roteiros (roteiros/)
   e2e/                             testes ponta a ponta e a semente do banco local
 ```
 
