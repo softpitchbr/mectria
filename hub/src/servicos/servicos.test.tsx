@@ -3,7 +3,7 @@ import userEvent from "@testing-library/user-event";
 import { servicosDaCarta } from "../../compartilhado/dados/servicos-completos";
 import type { Servico } from "../../compartilhado/servico";
 import { abrir, fingirApi, PESSOAS } from "../teste/ajuda";
-import { nomeDoServico, opcoesDeServico, useServicos } from "./servicos";
+import { nomeDoServico, opcoesDeServico, recarregarServicos, useServicos } from "./servicos";
 
 const NOVO: Servico = { ...servicosDaCarta()[0], id: "servico-novo", nome: "Serviço Novo", sigla: "SN" };
 const comInativo = () => servicosDaCarta().map((s) => (s.id === "desenho-tecnico" ? { ...s, situacao: "inativo" as const } : s));
@@ -71,4 +71,27 @@ test("o follow-up mostra o nome do serviço vindo da API", async () => {
   abrir("/follow-up");
   const cartao = (await within(await screen.findByRole("main")).findAllByRole("listitem"))[0];
   await waitFor(() => expect(cartao).toHaveTextContent("Serviço Novo · R$ 12.500,00"));
+});
+
+test("uma busca antiga que chega depois de recarregar não troca a lista nova", async () => {
+  const pendentes: ((r: Response) => void)[] = [];
+  vi.stubGlobal(
+    "fetch",
+    vi.fn(() => new Promise<Response>((resolver) => pendentes.push(resolver))),
+  );
+  const resposta = (lista: unknown) => new Response(JSON.stringify(lista), { status: 200, headers: { "Content-Type": "application/json" } });
+  function Nomes() {
+    const servicos = useServicos();
+    return <p aria-label="nomes">{servicos ? servicos.map((s) => s.nome).join(", ") : "carregando"}</p>;
+  }
+  render(<Nomes />);
+  await waitFor(() => expect(pendentes).toHaveLength(1));
+  const recarga = recarregarServicos();
+  await waitFor(() => expect(pendentes).toHaveLength(2));
+  pendentes[1](resposta([{ ...NOVO, nome: "Lista nova" }]));
+  await recarga;
+  expect(await screen.findByLabelText("nomes")).toHaveTextContent("Lista nova");
+  pendentes[0](resposta([{ ...NOVO, nome: "Lista velha" }]));
+  await new Promise((r) => setTimeout(r, 20));
+  expect(screen.getByLabelText("nomes")).toHaveTextContent("Lista nova");
 });

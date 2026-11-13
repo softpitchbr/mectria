@@ -220,6 +220,7 @@ test("Ver a apresentação abre o iframe do serviço, e Próximo passa o slide",
   const iframe = within(foco).getByTitle("Apresentação · Desenho Técnico") as HTMLIFrameElement;
   expect(iframe.getAttribute("src")).toBe("/api/servicos/desenho-tecnico/apresentacao?v=2");
   expect(iframe.getAttribute("sandbox")).toBe("allow-scripts");
+  await act(async () => {}); // espera o efeito que ouve as mensagens do iframe
   const enviar = vi.spyOn(iframe.contentWindow!, "postMessage");
   act(() => {
     window.dispatchEvent(
@@ -270,6 +271,7 @@ test("Ver a apresentação da diagnóstica abre com dados de exemplo e sem alert
   const foco = await screen.findByRole("dialog", { name: "Apresentação · Diagnóstica" });
   const iframe = within(foco).getByTitle("Apresentação · Diagnóstica") as HTMLIFrameElement;
   expect(iframe.getAttribute("src")).toBe("/api/apresentacoes/diagnostica?v=2");
+  await act(async () => {}); // espera o efeito que ouve as mensagens do iframe
   const enviar = vi.spyOn(iframe.contentWindow!, "postMessage");
   act(() => {
     window.dispatchEvent(new MessageEvent("message", { data: { mectria: 1, tipo: "pronta", slides: 5, acoes: [], campos: [] }, source: iframe.contentWindow }));
