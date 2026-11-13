@@ -126,7 +126,7 @@ WHERE tipo = 'diagnostica' AND oportunidade_id = (SELECT id FROM oportunidades W
 -- própria nem roteiro). "Prensa Nova" (Desenvolvimento de Produto) tem a proposta de hoje com o Carlos,
 -- já preparada, para a reunião com a apresentação em HTML.
 DELETE FROM servicos WHERE ordem > 12;
-UPDATE servicos SET apresentacao = NULL, roteiro = NULL, apresentacao_versao = 0;
+UPDATE servicos SET apresentacao = NULL, apresentacao_versao = 0;
 INSERT INTO oportunidades (empresa, contato, telefone, origem, servico, closer_id, situacao)
 VALUES ('Prensa Nova', 'Rui', '34999990020', 'cold call', 'desenvolvimento-de-produto', (SELECT id FROM pessoas WHERE email = 'clo@mectria.com'), 'proposta_marcada');
 INSERT INTO reunioes (oportunidade_id, tipo, data_hora, formato, situacao, resultado, quem_decide, encerrada_em)
@@ -137,4 +137,21 @@ INSERT INTO reunioes (oportunidade_id, tipo, data_hora, formato, quem_decide, va
 VALUES (
   (SELECT id FROM oportunidades WHERE empresa = 'Prensa Nova'), 'proposta', date('now', '-3 hours') || 'T23:50', 'online', 'Rui',
   '{"servico":"desenvolvimento-de-produto","escopo":"Modelagem CAD 3D\nDesenhos 2D para fabricação","ficaComCliente":"Fabricação e montagem física","valor":2400000,"parcelas":6,"prazo":"60 dias","condicoes":"","equipe":"Rui e Bia"}'
+);
+
+-- Fase 9: a apresentação da diagnóstica volta a não existir; os roteiros de Desenvolvimento de Produto e de
+-- Desenho Técnico continuam os da migração 0010 (os outros serviços voltam ao padrão). "Torno Novo"
+-- (Desenvolvimento de Produto) tem a proposta de hoje com o Carlos, preparada com as condições de pagamento.
+UPDATE apresentacoes_gerais SET apresentacao = NULL, apresentacao_versao = 0;
+UPDATE servicos SET roteiro = NULL WHERE id NOT IN ('desenvolvimento-de-produto', 'desenho-tecnico');
+INSERT INTO oportunidades (empresa, contato, telefone, origem, servico, closer_id, situacao)
+VALUES ('Torno Novo', 'Lia', '34999990021', 'cold call', 'desenvolvimento-de-produto', (SELECT id FROM pessoas WHERE email = 'clo@mectria.com'), 'proposta_marcada');
+INSERT INTO reunioes (oportunidade_id, tipo, data_hora, formato, situacao, resultado, quem_decide, encerrada_em)
+VALUES ((SELECT id FROM oportunidades WHERE empresa = 'Torno Novo'), 'diagnostica', date('now', '-3 hours', '-3 days') || 'T10:00', 'online', 'concluida', 'proposta_marcada', 'Lia', datetime('now', '-3 days'));
+INSERT INTO fichas (reuniao_id, pergunta_id, resposta)
+VALUES ((SELECT r.id FROM reunioes r JOIN oportunidades o ON o.id = r.oportunidade_id WHERE o.empresa = 'Torno Novo' AND r.tipo = 'diagnostica'), 'c-dor', 'O torno manual não dá conta da produção');
+INSERT INTO reunioes (oportunidade_id, tipo, data_hora, formato, quem_decide, variaveis)
+VALUES (
+  (SELECT id FROM oportunidades WHERE empresa = 'Torno Novo'), 'proposta', date('now', '-3 hours') || 'T23:55', 'online', 'Lia',
+  '{"servico":"desenvolvimento-de-produto","escopo":"Modelagem CAD 3D\nDesenhos 2D para fabricação","ficaComCliente":"Fabricação e montagem física","valor":1800000,"parcelas":6,"prazo":"45 dias","condicoes":"Entrada de 30% e o restante em 3 vezes","equipe":"Rui e Bia"}'
 );

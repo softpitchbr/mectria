@@ -1,0 +1,103 @@
+[
+  {
+    "id": "capa",
+    "titulo": "{servico}",
+    "fala": "",
+    "pacto": null,
+    "tempo": 1
+  },
+  {
+    "id": "abertura",
+    "titulo": "O projeto que desenhamos para vocês",
+    "fala": "{contato}, obrigado pelo tempo. Hoje eu vou te mostrar o projeto que o nosso time desenhou a partir do que você me contou. A ideia é que, no final, você me diga com sinceridade se faz sentido para vocês. Pode ser?",
+    "pacto": "agenda",
+    "tempo": 2
+  },
+  {
+    "id": "proposito",
+    "titulo": "Engenharia de verdade, feita por estudantes, com propósito",
+    "fala": "Antes do projeto, quero que você saiba quem vai fazer. A MecTRIA é a Empresa Júnior de Engenharia Mecânica da UFTM. Somos sem fins lucrativos: estudantes de engenharia desenvolvem projetos reais, com orientação de professores, e tudo o que o projeto paga volta para a formação de engenheiros aqui da região.",
+    "dica": "Fale com orgulho. Ser empresa júnior é diferencial, não desculpa.",
+    "pacto": null,
+    "tempo": 2
+  },
+  {
+    "id": "numeros",
+    "titulo": "Nossa história em números",
+    "fala": "São mais de 13 anos de MecTRIA e mais de 130 projetos realizados. 100% dos clientes avaliados recomendam, e o valor fica 70% abaixo do preço de mercado.",
+    "dica": "São os números do site da MecTRIA.",
+    "pacto": null,
+    "tempo": 1
+  },
+  {
+    "id": "time",
+    "titulo": "O time",
+    "fala": "Quem vai cuidar do projeto de vocês: {equipe}, com o apoio de professores doutores da UFTM, que acompanham as decisões técnicas. O professor orientador do projeto é [nome do professor].",
+    "dica": "Hoje o professor só aparece no fim da apresentação. Ele é o maior diferencial: traga para cá.",
+    "pacto": null,
+    "tempo": 2
+  },
+  {
+    "id": "ceu-inferno",
+    "titulo": "Onde vocês estão e aonde querem chegar",
+    "fala": "Na nossa conversa, você me contou que {dor}. Se ficar como está, o risco é {impacto}. Com o projeto, o objetivo é {objetivo}. Esse é o cenário de vocês hoje? Faltou alguma coisa?",
+    "dica": "Use as frases que o cliente disse na diagnóstica. Marque na apresentação as dores que ele confirmar (ou pelos botões aqui no painel).",
+    "pacto": "dor",
+    "tempo": 5
+  },
+  {
+    "id": "metodo",
+    "titulo": "O caminho do projeto",
+    "fala": "Esse é o caminho do projeto, do papel à peça: o levantamento das peças ou do conceito, a medição da peça física quando é engenharia reversa, a modelagem 3D e os desenhos 2D com tolerâncias, revisados antes da entrega dos arquivos. No final vocês recebem: {entregamos}. O que fica com vocês: {fica}.",
+    "dica": "Mostrar o que não está incluído evita a objeção depois do preço.",
+    "pacto": null,
+    "tempo": 8
+  },
+  {
+    "id": "pacto-duvida",
+    "titulo": "Ficou alguma dúvida sobre o projeto?",
+    "fala": "Ficou alguma dúvida sobre o projeto?",
+    "dica": "Se tiver dúvida, volte ao método e responda. Só siga quando estiver tudo claro.",
+    "pacto": "duvida",
+    "tempo": 1
+  },
+  {
+    "id": "pacto-cliente",
+    "titulo": "Tirando o preço da mesa, vocês seriam nossos clientes?",
+    "fala": "Tirando o preço da mesa, vocês seriam nossos clientes? ... Por quê?",
+    "dica": "Se for \"sim\", pergunte por quê: o cliente mesmo diz os motivos. Se for \"não\", pergunte o que faltaria. É a objeção real aparecendo antes do preço.",
+    "pacto": "cliente",
+    "tempo": 1
+  },
+  {
+    "id": "valor-preco",
+    "titulo": "Jornada de parcerias",
+    "fala": "Antes de te mostrar o investimento, deixa eu te explicar como funciona a nossa jornada de parcerias. A MecTRIA faz parte do Movimento Empresa Júnior, que existe para apoiar o empreendedorismo com soluções financeiramente mais viáveis. Aqui ninguém recebe pró-labore nem ganha pelos projetos. O que o membro leva de um projeto é o resultado: quando o projeto dá um resultado admirável, ele vira um case na carreira dele. Então o time é o primeiro interessado em que o projeto de vocês dê certo. Como a gente trabalha com valores abaixo do mercado, temos um volume bem alto de reuniões e de novos parceiros. Para ter controle da nossa capacidade de produção, pedimos uma formalidade: um sim ou um não em até 7 dias. Combinado?",
+    "dica": "É o pacto antes do preço: quando o cliente vê o investimento, ele já combinou responder em até 7 dias.",
+    "pacto": "valor",
+    "tempo": 3
+  },
+  {
+    "id": "provas",
+    "titulo": "Clientes que voltam",
+    "fala": "[Caso do mesmo serviço, com autorização do cliente] e [depoimento].",
+    "pacto": null,
+    "tempo": 3
+  },
+  {
+    "id": "investimento",
+    "titulo": "{valor}",
+    "fala": "No mercado, um desenho como esse fica em torno de [valor de mercado]. Na MecTRIA são {fraseValor}. O investimento é de {valor}: {condicoes}. Na calculadora, com os retrabalhos de cada mês e o custo de cada um, dá para ver em quantos meses o projeto se paga.",
+    "dica": "Revele em 3 toques: o mercado, a MecTRIA e o valor. Depois do valor, fique em silêncio e deixe o cliente falar primeiro.",
+    "pacto": null,
+    "tempo": 5
+  },
+  {
+    "id": "fechamento",
+    "titulo": "Como a gente começa",
+    "fala": "Faz sentido a gente começar? ... Então os próximos passos são: aceite da proposta, contrato, ART quando o projeto exige e o kick-off com visita técnica. Como combinamos, o sim ou o não fica para até 7 dias.",
+    "dica": "Se não fechar, saia com data e hora para a decisão. Use o guia de objeções ao lado.",
+    "pacto": "fechamento",
+    "tempo": 3
+  }
+]

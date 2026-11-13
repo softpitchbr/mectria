@@ -82,6 +82,8 @@ async function abrirComHtml(slide = 2) {
   await vi.waitFor(() => expect(painel.recebidas).toContainEqual({ tipo: "pronta" }));
   act(() => painel.canal.enviar({ tipo: "estado", empresa: "Usinagem Alfa", slide, apresentacao: HTML }));
   const iframe = (await screen.findByTitle("Apresentação · Usinagem Alfa")) as HTMLIFrameElement;
+  // O iframe aparece antes de o efeito que ouve as mensagens rodar: espera os efeitos do React.
+  await act(async () => {});
   const paraOIframe = vi.spyOn(iframe.contentWindow!, "postMessage");
   const doIframe = (data: unknown) => act(() => window.dispatchEvent(new MessageEvent("message", { data, source: iframe.contentWindow })));
   return { painel, iframe, paraOIframe, doIframe };

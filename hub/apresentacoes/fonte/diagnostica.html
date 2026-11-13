@@ -1,0 +1,301 @@
+<!doctype html>
+<html lang="pt-BR">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Diagnóstica · MecTRIA</title>
+    <!--
+      A apresentação da diagnóstica, igual para todos os clientes. Ela acompanha o roteiro do painel sozinha:
+      agenda (acordo de agenda), quem-somos (quem somos em 1 minuto), escuta (GPCTBA + C&I e as perguntas
+      técnicas, com a etapa atual em destaque), como-trabalhamos (escopo) e proximo-passo (fechamento).
+      Os textos de "Quem somos" e de "Antes de desenhar, a gente escuta." são os do site, sem mudar uma palavra.
+    -->
+    <!-- kit:css -->
+    <style>
+      .nome-da-empresa {
+        font-size: 92px;
+        line-height: 0.98;
+        letter-spacing: -0.035em;
+        overflow-wrap: anywhere;
+      }
+
+      .quem-somos h2 {
+        font-size: 46px;
+      }
+
+      .numeros.dois {
+        grid-template-columns: 1fr 1fr;
+        gap: 22px 28px;
+        padding-top: 0;
+        border-top: 0;
+      }
+
+      .numeros.dois strong {
+        font-size: 52px;
+      }
+
+      .numeros.dois span {
+        font-size: 16px;
+        margin-top: 6px;
+      }
+
+      .missao {
+        display: grid;
+        gap: 8px;
+        padding-top: 20px;
+        border-top: 1px solid var(--linha);
+        font-size: 17px;
+        line-height: 1.5;
+      }
+
+      /* As etapas da conversa: a atual acende, as anteriores ficam marcadas. */
+      .etapas {
+        margin: 0;
+        padding: 0;
+        list-style: none;
+        display: grid;
+        gap: 6px;
+      }
+
+      .etapas li {
+        display: grid;
+        grid-template-columns: 52px 1fr;
+        align-items: center;
+        padding: 12px 18px;
+        border-radius: 12px;
+        font-size: 24px;
+        color: var(--apagado);
+        transition:
+          background 300ms,
+          color 300ms;
+      }
+
+      .etapas li .num {
+        font: 500 14px/1 var(--mono);
+      }
+
+      .etapas li[data-estado="feita"] {
+        color: var(--suave);
+      }
+
+      .etapas li[data-estado="feita"] .num::after {
+        content: " ✓";
+        color: var(--vermelho-vivo);
+      }
+
+      .etapas li[data-estado="atual"] {
+        color: var(--texto);
+        background: rgba(200, 16, 46, 0.16);
+        box-shadow: inset 3px 0 0 var(--vermelho-vivo);
+      }
+
+      .etapas li[data-estado="atual"] .num {
+        color: var(--vermelho-vivo);
+      }
+
+      .desenho {
+        width: 100%;
+        height: auto;
+      }
+
+      .como h2 {
+        font-size: 52px;
+      }
+
+      .como .passos {
+        gap: 14px;
+      }
+
+      .como .passos li {
+        padding-top: 14px;
+      }
+    </style>
+  </head>
+  <body>
+    <div id="palco">
+      <section class="slide" data-slide="agenda">
+        <div class="colunas">
+          <div class="pilha">
+            <p class="rotulo">Diagnóstica</p>
+            <h1 class="nome-da-empresa" data-modelo="{empresa}"></h1>
+            <p class="texto">Hoje, a conversa é sobre vocês.</p>
+            <p class="sobre" data-modelo="{data}, cerca de 40 minutos"></p>
+          </div>
+          <ol class="passos">
+            <li>
+              <span>01</span>
+              <h3>Entender</h3>
+              <p>Algumas perguntas sobre a operação de vocês.</p>
+            </li>
+            <li>
+              <span>02</span>
+              <h3>Mostrar</h3>
+              <p>Como a MecTRIA trabalha, do papel à peça.</p>
+            </li>
+            <li>
+              <span>03</span>
+              <h3>Decidir juntos</h3>
+              <p>Se faz sentido a gente voltar com uma proposta.</p>
+            </li>
+          </ol>
+        </div>
+      </section>
+
+      <section class="slide quem-somos" data-slide="quem-somos">
+        <div class="colunas">
+          <div class="pilha">
+            <p class="rotulo">Quem somos</p>
+            <h2>Mais do que engenharia: propósito, aprendizado e transformação real.</h2>
+            <p class="texto pequeno">
+              A MecTRIA é a Empresa Júnior de Engenharia Mecânica da UFTM, em Uberaba (MG). Desde 2013, unimos conhecimento acadêmico e prática de mercado para entregar soluções mecânicas eficientes e seguras.
+            </p>
+            <p class="texto pequeno">Com o apoio de professores doutores, garantimos excelência no produto e no atendimento. Cuidado em cada detalhe, do primeiro contato à entrega.</p>
+          </div>
+          <div class="pilha">
+            <div class="numeros dois">
+              <div><strong>+13</strong> <span>anos de mercado</span></div>
+              <div><strong>+130</strong> <span>projetos realizados</span></div>
+              <div><strong>100%</strong> <span>dos clientes avaliados recomendam</span></div>
+              <div><strong>70%</strong> <span>abaixo do preço de mercado</span></div>
+            </div>
+            <div class="missao">
+              <p class="rotulo">Missão</p>
+              <p>Ser uma empresa inovadora que impacta a sociedade, proporcionando boas experiências aos clientes, a fim de formar líderes que se destacam no mercado e se preocupam com o futuro do país.</p>
+            </div>
+            <div class="faixas">
+              <span>UFTM</span>
+              <span>FEJEMG</span>
+              <span>Núcleo Triângulo</span>
+              <span>Brasil Júnior</span>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section class="slide" data-slide="escuta">
+        <div class="colunas">
+          <div class="pilha">
+            <p class="rotulo">Diagnóstico</p>
+            <h2>Antes de desenhar, a gente escuta.</h2>
+            <p class="texto">Entendemos a máquina, o processo e o problema real. Um sistema funcionando é o ponto de partida: tudo o que vem depois precisa respeitar o que ele faz.</p>
+          </div>
+          <ol class="etapas" data-etapas aria-label="Etapas da conversa"></ol>
+        </div>
+      </section>
+
+      <section class="slide como" data-slide="como-trabalhamos">
+        <div class="colunas">
+          <div class="pilha">
+            <p class="rotulo">Do papel à peça</p>
+            <h2>Como a gente trabalha</h2>
+            <ol class="passos">
+              <li>
+                <span>01</span>
+                <h3>Diagnóstico</h3>
+                <p>Entender a máquina, o processo e o problema real.</p>
+              </li>
+              <li>
+                <span>02</span>
+                <h3>Modelo</h3>
+                <p>Conceber a solução com vocês e modelar em 3D.</p>
+              </li>
+              <li>
+                <span>03</span>
+                <h3>Simulação</h3>
+                <p>Testar o projeto no computador antes de fabricar.</p>
+              </li>
+              <li>
+                <span>04</span>
+                <h3>Desenho</h3>
+                <p>Detalhar para fabricar, com a revisão do professor orientador.</p>
+              </li>
+            </ol>
+          </div>
+          <svg class="desenho" viewBox="0 0 520 460" role="img" aria-label="Desenho técnico de uma flange se completando até virar peça">
+            <line class="eixo" x1="40" y1="230" x2="480" y2="230" />
+            <line class="eixo" x1="260" y1="30" x2="260" y2="430" />
+            <circle cx="260" cy="230" r="160" pathLength="1" />
+            <circle cx="260" cy="230" r="58" pathLength="1" />
+            <circle cx="260" cy="118" r="16" pathLength="1" />
+            <circle cx="357" cy="174" r="16" pathLength="1" />
+            <circle cx="357" cy="286" r="16" pathLength="1" />
+            <circle cx="260" cy="342" r="16" pathLength="1" />
+            <circle cx="163" cy="286" r="16" pathLength="1" />
+            <circle cx="163" cy="174" r="16" pathLength="1" />
+            <circle class="eixo" cx="260" cy="230" r="112" />
+            <line class="cota" x1="100" y1="420" x2="420" y2="420" pathLength="1" />
+            <line class="cota" x1="100" y1="408" x2="100" y2="432" pathLength="1" />
+            <line class="cota" x1="420" y1="408" x2="420" y2="432" pathLength="1" />
+            <text x="260" y="410" text-anchor="middle">Ø 320</text>
+            <g class="depois">
+              <circle class="solido" cx="260" cy="230" r="160" />
+              <circle cx="260" cy="230" r="58" style="fill: var(--fundo)" />
+              <text x="440" y="60" text-anchor="end">PEÇA</text>
+            </g>
+          </svg>
+        </div>
+      </section>
+
+      <section class="slide" data-slide="proximo-passo">
+        <div class="colunas">
+          <div class="pilha">
+            <p class="rotulo">Próximo passo</p>
+            <h2>A proposta, feita para vocês.</h2>
+            <p class="texto">Com o que vocês contaram hoje, o nosso time monta o projeto.</p>
+          </div>
+          <ol class="passos">
+            <li>
+              <span>01</span>
+              <h3>Estudo</h3>
+              <p>O time de projetos estuda o que vocês contaram.</p>
+            </li>
+            <li>
+              <span>02</span>
+              <h3>Proposta</h3>
+              <p>Montamos o projeto, o prazo e o investimento.</p>
+            </li>
+            <li>
+              <span>03</span>
+              <h3>Apresentação</h3>
+              <p>Mostramos a proposta numa reunião, com quem decide.</p>
+            </li>
+          </ol>
+        </div>
+      </section>
+    </div>
+
+    <!-- kit:js -->
+    <script>
+      (function () {
+        // A lista de etapas da conversa (dados.etapas, uma por linha), com a atual (dados.etapa) em destaque.
+        function desenharEtapas() {
+          var lista = document.querySelector("[data-etapas]");
+          var etapas = Apresentacao.valor("etapas")
+            .split("\n")
+            .map(function (e) {
+              return e.trim();
+            })
+            .filter(Boolean);
+          var atual = etapas.indexOf(Apresentacao.valor("etapa"));
+          lista.textContent = "";
+          etapas.forEach(function (nome, i) {
+            var li = document.createElement("li");
+            li.setAttribute("data-estado", atual < 0 ? "proxima" : i < atual ? "feita" : i === atual ? "atual" : "proxima");
+            if (i === atual) li.setAttribute("aria-current", "step");
+            var num = document.createElement("span");
+            num.className = "num";
+            num.textContent = String(i + 1).padStart(2, "0");
+            var titulo = document.createElement("span");
+            titulo.textContent = nome;
+            li.appendChild(num);
+            li.appendChild(document.createTextNode(" "));
+            li.appendChild(titulo);
+            lista.appendChild(li);
+          });
+        }
+
+        Apresentacao.iniciar({ aoEstado: desenharEtapas });
+      })();
+    </script>
+  </body>
+</html>

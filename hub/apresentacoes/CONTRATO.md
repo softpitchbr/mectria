@@ -2,7 +2,11 @@
 
 Cada serviço pode ter a sua apresentação de proposta em HTML. O diretor envia o arquivo em **Serviços → o serviço → Apresentação de proposta**. Na reunião, a janela que o cliente vê abre esse HTML, e o painel do vendedor continua mandando: passa os slides, mostra a fala e aciona o que é interativo.
 
-Este documento é para quem desenha as apresentações. O modelo pronto é o [`exemplo.html`](exemplo.html): os 13 slides da apresentação de exemplo, com dores clicáveis, preço revelado em 3 etapas e uma calculadora. Comece copiando ele.
+Este documento é para quem desenha as apresentações. As prontas, com o visual do site da MecTRIA, são:
+- [`diagnostica.html`](diagnostica.html): a da diagnóstica, igual para todos;
+- [`desenvolvimento-de-produto.html`](desenvolvimento-de-produto.html) e [`desenho-tecnico.html`](desenho-tecnico.html): as de proposta, com o roteiro em `roteiros/`.
+
+Para uma apresentação nova, comece copiando uma delas em `fonte/` e monte com o kit (seção 7). O [`exemplo.html`](exemplo.html) da fase 8 continua como modelo sem o kit.
 
 ## 1. O arquivo
 
@@ -71,7 +75,23 @@ Todas vão por `postMessage` e têm `mectria: 1`.
 | `parcelas`, `descontoAVista` | As condições de pagamento |
 | `ancora`, `fraseValor` | Quem faria o projeto no mercado e a frase de valor da MecTRIA |
 | `doresDoServico` | As dores cadastradas no serviço, uma por linha |
+| `entregamosItens`, `ficaItens` | O escopo e o que fica com o cliente, um item por linha, com a grafia original (para listar; `entregamos` e `fica` são para o meio de uma frase) |
+| `condicoes` | As condições de pagamento que o closer preparou para o cliente |
 | `dor`, `objetivo`, `impacto`, `prazo`, `ganho`, `tentativas`, `porqueAgora`, `criterio`, `numeros`, `prazoDecisao` | As palavras do cliente na diagnóstica |
+
+### A apresentação da diagnóstica
+
+A da diagnóstica é igual para todos e o diretor envia no topo de **Serviços**. Ela não tem roteiro próprio: segue o painel da diagnóstica sozinha, com 5 slides nesta ordem (os ids precisam ser estes):
+
+| Slide | Quando aparece |
+|---|---|
+| `agenda` | No acordo de agenda |
+| `quem-somos` | No "Quem somos, em 1 minuto" |
+| `escuta` | Durante o GPCTBA + C&I e as perguntas técnicas |
+| `como-trabalhamos` | No escopo geral |
+| `proximo-passo` | No fechamento |
+
+Os dados são `empresa`, `contato`, `data`, `servico`, `etapas` (as etapas da conversa, uma por linha) e `etapa` (a atual).
 
 ## 5. Regras
 
@@ -89,3 +109,24 @@ Todas vão por `postMessage` e têm `mectria: 1`.
 ## 6. Como testar
 
 Envie o arquivo em Serviços e clique em **Ver a apresentação**. A vista mostra a apresentação com dados de exemplo, os botões das ações, os campos da calculadora e tudo o que ela mandar para o hub. Ela também avisa se o número de slides é diferente do roteiro.
+
+## 7. Usando o kit
+
+As apresentações da MecTRIA saem de uma base comum, em `hub/apresentacoes/fonte/`:
+
+- `kit.css`: o visual do site (fundo escuro, vermelho de destaque, títulos grandes, rótulos em mono), o slide de 1280 × 720 e o desenho técnico que se desenha (`.desenho`, com `pathLength="1"` nas linhas);
+- `kit.js`: o contrato, a escala, as setas, o rodapé "01 / 13" e os textos com `{chave}`.
+
+Cada apresentação é um arquivo em `fonte/` com `<!-- kit:css -->` no `<head>`, os slides (`<section class="slide" data-slide="id">`), `<!-- kit:js -->` e, no fim, `Apresentacao.iniciar({ acoes, campos, aoEstado, aoAcionar, aoCalcular, aoSlide })`. Dentro dos slides:
+
+- `data-modelo="Proposta para {empresa}"` preenche o texto com os dados (o que falta vira `[rótulo]`);
+- `data-se="condicoes"` só aparece quando a chave tem valor; `data-senao="condicoes"`, só quando não tem;
+- `Apresentacao.enviar({ evento: "dor", valor, marcada })` manda um evento ao hub.
+
+Depois de mudar uma fonte ou o kit, monte:
+
+```bash
+npm run apresentacoes
+```
+
+Isso grava `hub/apresentacoes/<nome>.html`, com tudo dentro: é o arquivo que o diretor envia. O teste do kit falha se uma apresentação montada ficar desatualizada.

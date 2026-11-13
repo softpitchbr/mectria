@@ -5,17 +5,22 @@ import { api } from "../api/cliente";
 /** Os serviços vêm da API uma vez e ficam guardados para todas as telas (o diretor recarrega depois de salvar). */
 let guardados: Servico[] | null = null;
 let pedido: Promise<void> | null = null;
+// Cada recarga (ou esquecimento) começa uma geração nova: a resposta de uma busca mais antiga é descartada.
+let geracao = 0;
 const ouvintes = new Set<(s: Servico[]) => void>();
 
 function buscar(): Promise<void> {
-  pedido ??= api<Servico[]>("/api/servicos")
+  if (pedido) return pedido;
+  const minha = geracao;
+  pedido = api<Servico[]>("/api/servicos")
     .then((s) => {
+      if (minha !== geracao) return;
       guardados = s;
       for (const ouvir of ouvintes) ouvir(s);
     })
     .catch(() => {
       // Sem a lista, os seletores ficam vazios; a próxima tela que pedir tenta de novo.
-      pedido = null;
+      if (minha === geracao) pedido = null;
     });
   return pedido;
 }
@@ -35,12 +40,14 @@ export function useServicos(): Servico[] | null {
 
 /** Busca de novo e avisa todas as telas abertas. */
 export async function recarregarServicos(): Promise<void> {
+  geracao += 1;
   pedido = null;
   await buscar();
 }
 
 /** Só para os testes: cada teste começa sem a lista guardada. */
 export function esquecerServicos(): void {
+  geracao += 1;
   guardados = null;
   pedido = null;
   ouvintes.clear();

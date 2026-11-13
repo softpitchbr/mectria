@@ -9,7 +9,10 @@ import Campo from "../../componentes/Campo";
 import Selecao from "../../componentes/Selecao";
 import { recarregarServicos } from "../../servicos/servicos";
 import { mensagemDe } from "../followup/comum";
-import ApresentacaoDoServico from "./ApresentacaoDoServico";
+import VistaDaApresentacao, { dadosDeExemploDoServico } from "../../apresentacao/VistaDaApresentacao";
+import { roteiroPadrao } from "../../../compartilhado/proposta";
+import { urlDaApresentacao } from "../../../compartilhado/servico";
+import ApresentacaoEmHtml from "./ApresentacaoEmHtml";
 import { itensDasLinhas, type PerguntaEmEdicao } from "./edicao";
 import EditorDePerguntas from "./EditorDePerguntas";
 import EditorDoRoteiro from "./EditorDoRoteiro";
@@ -156,7 +159,26 @@ export default function EditarServico({ id }: { id: string | null }) {
           </Botao>
         </div>
       </form>
-      {servico && <ApresentacaoDoServico servico={servico} aoMudar={setServico} />}
+      {servico && (
+        <ApresentacaoEmHtml<Servico>
+          idDoTitulo="titulo-apresentacao"
+          titulo="Apresentação de proposta"
+          semArquivo="Sem apresentação própria: a reunião usa a de exemplo."
+          aviso="Remover a apresentação? As reuniões deste serviço voltam para a de exemplo."
+          caminho={`/api/servicos/${encodeURIComponent(servico.id)}/apresentacao`}
+          arquivo={servico.apresentacao}
+          tituloDaVista={`Apresentação · ${servico.nome}`}
+          vista={() => (
+            <VistaDaApresentacao
+              url={urlDaApresentacao(servico)!}
+              titulo={`Apresentação · ${servico.nome}`}
+              dados={dadosDeExemploDoServico(servico)}
+              totalDoRoteiro={(servico.roteiro ?? roteiroPadrao()).length}
+            />
+          )}
+          aoMudar={setServico}
+        />
+      )}
     </div>
   );
 }

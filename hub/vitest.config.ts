@@ -9,6 +9,7 @@ export default defineConfig({
     globals: true,
     include: ["src/**/*.test.{ts,tsx}", "compartilhado/**/*.test.ts"],
     setupFiles: ["src/teste/preparar.ts"],
-    css: { modules: { classNameStrategy: "non-scoped" } },
+    // O CSS do kit das apresentações entra cru nos testes (a montagem é comparada com o arquivo do repositório).
+    css: { include: [/apresentacoes\/fonte\/.*\.css/], modules: { classNameStrategy: "non-scoped" } },
   },
 });

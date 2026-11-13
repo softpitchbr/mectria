@@ -3,6 +3,7 @@ import userEvent from "@testing-library/user-event";
 import { DIAGNOSTICA } from "../../compartilhado/dados/diagnostica";
 import { diasDepois, hojeEmSaoPaulo } from "../../compartilhado/datas";
 import { abrir, fingirApi, PESSOAS } from "../teste/ajuda";
+import { abrirCanal, type MensagemReuniao } from "../reuniao/canal";
 import { servicosDaCarta } from "../../compartilhado/dados/servicos-completos";
 
 const FICHA = {
@@ -213,4 +214,85 @@ test("o painel da diagnóstica usa as perguntas técnicas da ficha, sem as desat
   await userEvent.keyboard("{ArrowRight}");
   expect(screen.queryByText("Pergunta desativada?")).not.toBeInTheDocument();
   expect(screen.getByRole("heading", { level: 2 })).toHaveTextContent("Escopo geral");
+});
+
+// A janela da apresentação na diagnóstica (fase 9) ----------------------------------
+
+const COM_APRESENTACAO = {
+  "/api/apresentacoes": { corpo: [{ id: "diagnostica", apresentacao: { arquivo: "diagnostica.html", bytes: 10, versao: 2, enviadaEm: "2026-11-12 10:00:00", enviadaPor: "Diana" } }] },
+};
+
+/** Abre o painel com a apresentação da diagnóstica e uma janela de mentira no canal da reunião 5. */
+async function comJanela() {
+  api(COM_APRESENTACAO);
+  const recebidas: MensagemReuniao[] = [];
+  const janela = abrirCanal(5, (m) => recebidas.push(m));
+  await abrirPainel();
+  return { janela, recebidas };
+}
+const estados = (recebidas: MensagemReuniao[]) => recebidas.filter((m): m is Extract<MensagemReuniao, { tipo: "estado" }> => m.tipo === "estado");
+
+test("com a apresentação da diagnóstica, o painel abre a janela e manda o slide do passo atual", async () => {
+  const abrirJanela = vi.spyOn(window, "open").mockReturnValue(null);
+  const { janela, recebidas } = await comJanela();
+  await userEvent.click(await screen.findByRole("button", { name: "Abrir apresentação" }));
+  expect(abrirJanela).toHaveBeenCalledWith("/apresentacao/5", "hub-apresentacao-5", expect.any(String));
+  janela.enviar({ tipo: "pronta" });
+  await waitFor(() =>
+    expect(estados(recebidas).at(-1)).toEqual({
+      tipo: "estado",
+      empresa: "Usinagem Alfa",
+      slide: 0,
+      apresentacao: {
+        tipo: "html",
+        url: "/api/apresentacoes/diagnostica?v=2",
+        dados: expect.objectContaining({ empresa: "Usinagem Alfa", contato: "Ana", etapa: "" }),
+        interacoes: { dores: [], precoEtapa: 0, calculadora: {} },
+      },
+    }),
+  );
+  expect(await screen.findByText("Apresentação aberta")).toBeInTheDocument();
+  janela.fechar();
+  abrirJanela.mockRestore();
+});
+
+test("a janela aberta no meio da diagnóstica recebe o slide e a etapa do passo atual", async () => {
+  const { janela, recebidas } = await comJanela();
+  await userEvent.keyboard("{ArrowRight}{ArrowRight}");
+  janela.enviar({ tipo: "pronta" });
+  await waitFor(() => expect(estados(recebidas).at(-1)).toMatchObject({ slide: 2, apresentacao: { dados: { etapa: DIAGNOSTICA.blocos[0].titulo } } }));
+  await userEvent.click(screen.getByRole("button", { name: "Ir para Escopo" }));
+  await waitFor(() => expect(estados(recebidas).at(-1)).toMatchObject({ slide: 3 }));
+  janela.enviar({ tipo: "tecla", tecla: "ArrowLeft" });
+  await waitFor(() => expect(estados(recebidas).at(-1)).toMatchObject({ slide: 2, apresentacao: { dados: { etapa: "Técnico" } } }));
+  janela.fechar();
+});
+
+test("sem a apresentação da diagnóstica, o painel não mostra o botão nem dá erro", async () => {
+  api();
+  await abrirPainel();
+  await new Promise((r) => setTimeout(r, 30));
+  expect(screen.queryByRole("button", { name: /Abrir apresentação/ })).not.toBeInTheDocument();
+  expect(screen.queryByRole("alert")).not.toBeInTheDocument();
+});
+
+test("encerrar a diagnóstica fecha a janela", async () => {
+  api({
+    ...COM_APRESENTACAO,
+    "POST /api/reunioes/5/encerrar": { corpo: { ...FICHA.reuniao, situacao: "concluida" } },
+    "PUT /api/reunioes/5/respostas": { corpo: { ok: true } },
+    "GET /api/reunioes/5/briefing": { corpo: {} },
+  });
+  const recebidas: MensagemReuniao[] = [];
+  const janela = abrirCanal(5, (m) => recebidas.push(m));
+  await abrirPainel();
+  await userEvent.click(screen.getByRole("button", { name: "Ir para Fechamento" }));
+  const form = screen.getByRole("form", { name: "Fechamento da diagnóstica" });
+  await userEvent.click(within(form).getByRole("radio", { name: "Proposta marcada" }));
+  await userEvent.type(within(form).getByLabelText("Data da apresentação"), "2026-11-18");
+  await userEvent.type(within(form).getByLabelText("Hora"), "14:00");
+  await userEvent.type(within(form).getByLabelText("Quem decide"), "Ana e o sócio");
+  await userEvent.click(within(form).getByRole("button", { name: "Encerrar diagnóstica" }));
+  await waitFor(() => expect(recebidas).toContainEqual({ tipo: "fim" }));
+  janela.fechar();
 });

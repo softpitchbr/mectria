@@ -1,9 +1,13 @@
-import { useEffect, useMemo, useRef, useState } from "react";
+import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { useNavigate, useParams } from "react-router";
-import { roteiroDaDiagnostica, type Marcacao, type Passo } from "../../compartilhado/diagnostica";
+import { INTERACOES_VAZIAS } from "../../compartilhado/contrato-apresentacao";
+import { dadosDaDiagnostica, roteiroDaDiagnostica, slideDoPasso, type Marcacao, type Passo } from "../../compartilhado/diagnostica";
 import type { FichaCompleta } from "../../compartilhado/oportunidade";
+import { urlDaApresentacaoGeral, type ApresentacaoGeral } from "../../compartilhado/servico";
 import { api } from "../api/cliente";
 import { avisar } from "../componentes/Aviso";
+import { abrirCanal } from "../reuniao/canal";
+import { abrirJanela, JANELA_SUMIU_MS } from "../reuniao/janela";
 import { mensagemDe } from "../telas/followup/comum";
 import Anotacoes from "./Anotacoes";
 import Fechamento from "./Fechamento";
@@ -37,6 +41,9 @@ export default function PainelDaDiagnostica() {
   const [anotando, setAnotando] = useState(false);
   const inicio = useRef(Date.now());
   const [agora, setAgora] = useState(Date.now());
+  // A apresentação da diagnóstica (igual para todos): sem ela, o painel funciona sem a janela do cliente.
+  const [urlDaApresentacao, setUrlDaApresentacao] = useState<string | null>(null);
+  const [ultimaViva, setUltimaViva] = useState(0);
 
   const inicial = useMemo(() => (ficha ? { respostas: ficha.respostas, anotacoes: ficha.anotacoes } : null), [ficha]);
   const rascunho = useRascunho(reuniaoId, inicial);
@@ -66,6 +73,54 @@ export default function PainelDaDiagnostica() {
 
   const atual = indice !== null ? roteiro[indice] : undefined;
   const minuto = Math.max(0, Math.floor((agora - inicio.current) / 60_000));
+
+  useEffect(() => {
+    api<ApresentacaoGeral[]>("/api/apresentacoes")
+      .then((lista) => {
+        const diagnostica = lista.find((g) => g.id === "diagnostica");
+        setUrlDaApresentacao(diagnostica ? urlDaApresentacaoGeral(diagnostica) : null);
+      })
+      .catch(() => setUrlDaApresentacao(null));
+  }, []);
+
+  // A janela do cliente segue o roteiro: cada passo leva o slide e a etapa da conversa (o canal lê o estado mais recente).
+  const paraAJanela = useRef({ ficha, atual, url: urlDaApresentacao, total: roteiro.length });
+  paraAJanela.current = { ficha, atual, url: urlDaApresentacao, total: roteiro.length };
+  const canal = useRef<ReturnType<typeof abrirCanal> | null>(null);
+  const enviarEstado = useCallback(() => {
+    const { ficha: f, atual: passo, url } = paraAJanela.current;
+    if (!f || !passo || !url) return;
+    canal.current?.enviar({
+      tipo: "estado",
+      empresa: f.oportunidade.empresa,
+      slide: slideDoPasso(passo),
+      apresentacao: { tipo: "html", url, dados: dadosDaDiagnostica(f, passo), interacoes: INTERACOES_VAZIAS },
+    });
+  }, []);
+  useEffect(() => {
+    canal.current = abrirCanal(reuniaoId, (m) => {
+      if (m.tipo === "pronta" || m.tipo === "viva") setUltimaViva(Date.now());
+      if (m.tipo === "pronta") enviarEstado();
+      // A seta apertada dentro da apresentação passa a pergunta, como no painel.
+      else if (m.tipo === "tecla") {
+        const total = paraAJanela.current.total;
+        setIndice((i) => (i === null ? i : m.tecla === "ArrowRight" ? Math.min(total - 1, i + 1) : Math.max(0, i - 1)));
+      }
+    });
+    return () => {
+      canal.current?.fechar();
+      canal.current = null;
+    };
+  }, [reuniaoId, enviarEstado]);
+  useEffect(() => {
+    enviarEstado();
+  }, [indice, ficha, urlDaApresentacao, enviarEstado]);
+  // Com a apresentação, o sinal da janela é conferido a cada segundo.
+  useEffect(() => {
+    if (!urlDaApresentacao) return;
+    const t = setInterval(() => setAgora(Date.now()), 1000);
+    return () => clearInterval(t);
+  }, [urlDaApresentacao]);
 
   useEffect(() => {
     const aoTeclar = (e: KeyboardEvent) => {
@@ -111,6 +166,21 @@ export default function PainelDaDiagnostica() {
         <span className={rascunho.estado === "sem_internet" || rascunho.estado === "sem_permissao" ? estilos.semInternet : "mono suave"} role="status">
           {ROTULO_ESTADO[rascunho.estado]}
         </span>
+        {urlDaApresentacao &&
+          (agora - ultimaViva < JANELA_SUMIU_MS ? (
+            <span className="mono suave" title={`No Meet ou no Zoom, compartilhe só a janela “Apresentação · ${ficha.oportunidade.empresa}”.`}>
+              Apresentação aberta
+            </span>
+          ) : (
+            <button
+              type="button"
+              className={estilos.sair}
+              title={`No Meet ou no Zoom, compartilhe só a janela “Apresentação · ${ficha.oportunidade.empresa}”.`}
+              onClick={() => abrirJanela(reuniaoId)}
+            >
+              {ultimaViva > 0 ? "Reabrir apresentação" : "Abrir apresentação"}
+            </button>
+          ))}
         <button type="button" className={estilos.sair} onClick={() => navegar("/reunioes")}>
           Sair do painel
         </button>
@@ -158,6 +228,7 @@ export default function PainelDaDiagnostica() {
               respostas={rascunho.respostas}
               antesDeEncerrar={() => rascunho.sincronizar()}
               aoEncerrar={(resultado) => {
+                canal.current?.enviar({ tipo: "fim" });
                 if (resultado === "nao_compareceu") {
                   // Não há briefing de no-show: o hunter reagenda pelo Hoje.
                   avisar("Reunião cancelada: o cliente não compareceu. Reagende no Hoje.");

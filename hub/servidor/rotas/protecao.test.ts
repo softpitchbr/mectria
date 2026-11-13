@@ -78,3 +78,9 @@ test("a apresentação em HTML não abre a API dentro do iframe (navegação em 
   expect((await passar("GET", { "Sec-Fetch-Dest": "document", "Sec-Fetch-Mode": "navigate" }, "/api/exportar/historico.csv")).chegou).toBe(true);
   expect((await passar("GET", {}, "/api/oportunidades")).chegou).toBe(true);
 });
+
+test("a apresentação da diagnóstica também abre em quadro; o resto da API, não", async () => {
+  expect((await passar("GET", { "Sec-Fetch-Dest": "iframe", "Sec-Fetch-Mode": "navigate" }, "/api/apresentacoes/diagnostica")).chegou).toBe(true);
+  expect((await passar("GET", { "Sec-Fetch-Dest": "iframe", "Sec-Fetch-Mode": "navigate" }, "/api/apresentacoes")).chegou).toBe(false);
+  expect((await passar("GET", { "Sec-Fetch-Dest": "iframe" }, "/api/apresentacoes/diagnostica/outra")).chegou).toBe(false);
+});

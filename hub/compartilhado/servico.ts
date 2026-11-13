@@ -72,6 +72,20 @@ export function idDoServico(nome: string): string {
     .replace(/-+$/, "");
 }
 
+/** Apresentação igual para todos (fase 9): por enquanto, só a da diagnóstica. */
+export type IdApresentacaoGeral = "diagnostica";
+export const IDS_APRESENTACAO_GERAL: readonly IdApresentacaoGeral[] = ["diagnostica"];
+
+export interface ApresentacaoGeral {
+  id: IdApresentacaoGeral;
+  apresentacao: ArquivoDaApresentacao | null;
+}
+
+/** O endereço do HTML de uma apresentação geral, com a versão; null se ainda não foi enviada. */
+export function urlDaApresentacaoGeral(g: ApresentacaoGeral): string | null {
+  return g.apresentacao ? `/api/apresentacoes/${g.id}?v=${g.apresentacao.versao}` : null;
+}
+
 /** O endereço do HTML do serviço, com a versão (troca o cache a cada envio). */
 export function urlDaApresentacao(s: Pick<Servico, "id" | "apresentacao">): string | null {
   return s.apresentacao ? `/api/servicos/${encodeURIComponent(s.id)}/apresentacao?v=${s.apresentacao.versao}` : null;

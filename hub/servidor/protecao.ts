@@ -17,7 +17,7 @@ export function pedidoDeOutroSite(req: Request): boolean {
 }
 
 const DESTINOS_EM_QUADRO = new Set(["iframe", "frame", "embed", "object"]);
-const ARQUIVO_DA_APRESENTACAO = /^\/api\/servicos\/[^/]+\/apresentacao$/;
+const ARQUIVO_DA_APRESENTACAO = /^\/api\/(servicos\/[^/]+\/apresentacao|apresentacoes\/[^/]+)$/;
 
 /**
  * A API aberta dentro de um quadro (iframe). A apresentação em HTML roda isolada, mas consegue navegar

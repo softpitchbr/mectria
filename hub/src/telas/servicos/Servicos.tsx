@@ -1,10 +1,43 @@
+import { useEffect, useState } from "react";
 import { Link, useNavigate, useParams } from "react-router";
-import { ROTULO_SITUACAO_SERVICO } from "../../../compartilhado/servico";
+import { ROTULO_SITUACAO_SERVICO, urlDaApresentacaoGeral, type ApresentacaoGeral } from "../../../compartilhado/servico";
+import { api } from "../../api/cliente";
+import VistaDaApresentacao, { dadosDeExemploDaDiagnostica } from "../../apresentacao/VistaDaApresentacao";
 import Botao from "../../componentes/Botao";
 import Tag from "../../componentes/Tag";
 import { useServicos } from "../../servicos/servicos";
+import { mensagemDe } from "../followup/comum";
+import ApresentacaoEmHtml from "./ApresentacaoEmHtml";
 import EditarServico from "./EditarServico";
 import estilos from "./Servicos.module.css";
+
+/** A apresentação da diagnóstica, igual para todos: fica no topo de Serviços. */
+function ApresentacaoDaDiagnostica() {
+  const [geral, setGeral] = useState<ApresentacaoGeral | null>(null);
+  const [erro, setErro] = useState("");
+
+  useEffect(() => {
+    api<ApresentacaoGeral[]>("/api/apresentacoes")
+      .then((lista) => setGeral(lista.find((g) => g.id === "diagnostica") ?? null))
+      .catch((e: unknown) => setErro(mensagemDe(e)));
+  }, []);
+
+  if (erro) return <p role="alert">{erro}</p>;
+  if (!geral) return null;
+  return (
+    <ApresentacaoEmHtml<ApresentacaoGeral>
+      idDoTitulo="titulo-diagnostica"
+      titulo="Apresentação da diagnóstica"
+      semArquivo="Sem apresentação: a diagnóstica continua sem a janela do cliente."
+      aviso="Remover a apresentação da diagnóstica? As diagnósticas voltam a não ter a janela do cliente."
+      caminho="/api/apresentacoes/diagnostica"
+      arquivo={geral.apresentacao}
+      tituloDaVista="Apresentação · Diagnóstica"
+      vista={() => <VistaDaApresentacao url={urlDaApresentacaoGeral(geral)!} titulo="Apresentação · Diagnóstica" dados={dadosDeExemploDaDiagnostica()} totalDoRoteiro={null} />}
+      aoMudar={setGeral}
+    />
+  );
+}
 
 /** Serviços (só o diretor): o que a MecTRIA vende, com as perguntas técnicas, o roteiro e a apresentação de cada um. */
 export default function Servicos() {
@@ -24,6 +57,7 @@ export default function Servicos() {
           Novo serviço
         </Botao>
       </header>
+      <ApresentacaoDaDiagnostica />
       {!servicos ? (
         <p className="mono suave">Abrindo os serviços…</p>
       ) : (

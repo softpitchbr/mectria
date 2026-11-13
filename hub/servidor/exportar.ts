@@ -17,6 +17,7 @@ const TABELAS = [
   "rotinas",
   "ligacoes",
   "servicos",
+  "apresentacoes_gerais",
 ] as const;
 
 /** Exportação completa do banco, para a MecTRIA guardar ou levar para outro sistema (spec, seção 8). */

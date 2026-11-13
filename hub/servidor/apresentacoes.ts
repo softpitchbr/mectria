@@ -1,19 +1,21 @@
-import type { Servico } from "../compartilhado/servico";
-import { COLUNAS_SERVICO, servicoDeLinha, type LinhaServico } from "./servicos";
+import type { ApresentacaoGeral, ArquivoDaApresentacao, IdApresentacaoGeral, Servico } from "../compartilhado/servico";
+import { IDS_APRESENTACAO_GERAL } from "../compartilhado/servico";
+import { buscarServico } from "./servicos";
 import type { Env, Pessoa } from "./tipos";
 
 type Ambiente = Pick<Env, "DB" | "APRESENTACOES">;
 
-/**
- * Cada versão tem a chave dela (apresentacao/{id}/{versao}). O KV demora a propagar: com a chave por versão,
- * o endereço ?v=N nunca recebe o HTML de outra versão, e a anterior continua no endereço dela até a seguinte.
- */
-const chave = (servicoId: string, versao: number) => `apresentacao/${servicoId}/${versao}`;
+/** Onde a apresentação está anexada: a um serviço (a de proposta) ou geral (a da diagnóstica). */
+type Lugar = { tipo: "servico"; id: string } | { tipo: "geral"; id: IdApresentacaoGeral };
 
-async function versaoAtual(env: Ambiente, servicoId: string): Promise<number | null> {
-  const l = await env.DB.prepare("SELECT apresentacao_versao FROM servicos WHERE id = ?1").bind(servicoId).first<{ apresentacao_versao: number }>();
-  return l ? l.apresentacao_versao : null;
-}
+const TABELA = { servico: "servicos", geral: "apresentacoes_gerais" } as const;
+
+/**
+ * Cada versão tem a chave dela (apresentacao/{id}/{versao} ou geral/{id}/{versao}). O KV demora a propagar:
+ * com a chave por versão, o endereço ?v=N nunca recebe o HTML de outra versão, e a anterior continua no
+ * endereço dela até a seguinte.
+ */
+const chave = (l: Lugar, versao: number) => `${l.tipo === "servico" ? "apresentacao" : "geral"}/${l.id}/${versao}`;
 
 /**
  * Como o HTML da apresentação é servido. Ele nunca roda com a origem do hub: o sandbox sem
@@ -40,45 +42,83 @@ export const CABECALHOS_DA_APRESENTACAO: Record<string, string> = {
   "Cache-Control": "private, max-age=3600",
 };
 
-/**
- * Grava o HTML na chave da versão nova e, depois, a versão no serviço (só se ninguém enviou outra no meio:
- * aí lança "conflito"). Apaga a chave de duas versões atrás. Null se o serviço não existe.
- */
-export async function salvarApresentacao(env: Ambiente, servicoId: string, a: { arquivo: string; html: string }, autor: Pessoa): Promise<Servico | null> {
-  const anterior = await versaoAtual(env, servicoId);
-  if (anterior === null) return null;
-  const nova = anterior + 1;
-  await env.APRESENTACOES.put(chave(servicoId, nova), a.html);
-  const l = await env.DB.prepare(
-    `UPDATE servicos SET apresentacao_versao = ?5,
-       apresentacao = json_object('arquivo', ?2, 'bytes', ?3, 'versao', ?5, 'enviadaEm', datetime('now'), 'enviadaPor', ?4),
-       atualizado_por = ?4, atualizado_em = datetime('now')
-     WHERE id = ?1 AND apresentacao_versao = ?6 RETURNING ${COLUNAS_SERVICO}`,
-  )
-    .bind(servicoId, a.arquivo, new TextEncoder().encode(a.html).length, autor.nome, nova, anterior)
-    .first<LinhaServico>();
-  if (!l) {
-    await env.APRESENTACOES.delete(chave(servicoId, nova));
-    throw new Error("conflito");
-  }
-  if (anterior > 1) await env.APRESENTACOES.delete(chave(servicoId, anterior - 1));
-  return servicoDeLinha(l);
+async function versaoAtual(env: Ambiente, l: Lugar): Promise<number | null> {
+  const linha = await env.DB.prepare(`SELECT apresentacao_versao FROM ${TABELA[l.tipo]} WHERE id = ?1`).bind(l.id).first<{ apresentacao_versao: number }>();
+  return linha ? linha.apresentacao_versao : null;
 }
 
-/** Tira a apresentação do serviço (a reunião volta para a de exemplo). A versão não volta. */
-export async function removerApresentacao(env: Ambiente, servicoId: string, autor: Pessoa): Promise<Servico | null> {
-  const versao = await versaoAtual(env, servicoId);
-  const l = await env.DB.prepare(
-    `UPDATE servicos SET apresentacao = NULL, atualizado_por = ?2, atualizado_em = datetime('now') WHERE id = ?1 RETURNING ${COLUNAS_SERVICO}`,
+/**
+ * Grava o HTML na chave da versão nova e, depois, a versão na tabela (só se ninguém enviou outra no meio:
+ * aí lança "conflito"). Apaga a chave de duas versões atrás. False se o lugar não existe.
+ */
+async function gravar(env: Ambiente, l: Lugar, a: { arquivo: string; html: string }, autor: Pessoa): Promise<boolean> {
+  const anterior = await versaoAtual(env, l);
+  if (anterior === null) return false;
+  const nova = anterior + 1;
+  await env.APRESENTACOES.put(chave(l, nova), a.html);
+  const linha = await env.DB.prepare(
+    `UPDATE ${TABELA[l.tipo]} SET apresentacao_versao = ?5,
+       apresentacao = json_object('arquivo', ?2, 'bytes', ?3, 'versao', ?5, 'enviadaEm', datetime('now'), 'enviadaPor', ?4),
+       atualizado_por = ?4, atualizado_em = datetime('now')
+     WHERE id = ?1 AND apresentacao_versao = ?6 RETURNING id`,
   )
-    .bind(servicoId, autor.nome)
-    .first<LinhaServico>();
-  if (!l) return null;
-  if (versao) await Promise.all([env.APRESENTACOES.delete(chave(servicoId, versao)), env.APRESENTACOES.delete(chave(servicoId, versao - 1))]);
-  return servicoDeLinha(l);
+    .bind(l.id, a.arquivo, new TextEncoder().encode(a.html).length, autor.nome, nova, anterior)
+    .first();
+  if (!linha) {
+    await env.APRESENTACOES.delete(chave(l, nova));
+    throw new Error("conflito");
+  }
+  if (anterior > 1) await env.APRESENTACOES.delete(chave(l, anterior - 1));
+  return true;
+}
+
+/** Tira a apresentação (o serviço volta para a de exemplo; a diagnóstica, para sem janela). A versão não volta. */
+async function remover(env: Ambiente, l: Lugar, autor: Pessoa): Promise<boolean> {
+  const versao = await versaoAtual(env, l);
+  const linha = await env.DB.prepare(
+    `UPDATE ${TABELA[l.tipo]} SET apresentacao = NULL, atualizado_por = ?2, atualizado_em = datetime('now') WHERE id = ?1 RETURNING id`,
+  )
+    .bind(l.id, autor.nome)
+    .first();
+  if (!linha) return false;
+  if (versao) await Promise.all([env.APRESENTACOES.delete(chave(l, versao)), env.APRESENTACOES.delete(chave(l, versao - 1))]);
+  return true;
+}
+
+// Serviços (a apresentação de proposta) -----------------------------------------------
+
+export async function salvarApresentacao(env: Ambiente, servicoId: string, a: { arquivo: string; html: string }, autor: Pessoa): Promise<Servico | null> {
+  return (await gravar(env, { tipo: "servico", id: servicoId }, a, autor)) ? buscarServico(env.DB, servicoId) : null;
+}
+
+export async function removerApresentacao(env: Ambiente, servicoId: string, autor: Pessoa): Promise<Servico | null> {
+  return (await remover(env, { tipo: "servico", id: servicoId }, autor)) ? buscarServico(env.DB, servicoId) : null;
 }
 
 /** O HTML de uma versão (a do ?v= do endereço). */
 export async function lerApresentacao(env: Ambiente, servicoId: string, versao: number): Promise<string | null> {
-  return env.APRESENTACOES.get(chave(servicoId, versao));
+  return env.APRESENTACOES.get(chave({ tipo: "servico", id: servicoId }, versao));
+}
+
+// Apresentações gerais (a da diagnóstica) ---------------------------------------------
+
+export const ehIdGeral = (id: string): id is IdApresentacaoGeral => (IDS_APRESENTACAO_GERAL as readonly string[]).includes(id);
+
+export async function listarApresentacoesGerais(db: D1Database): Promise<ApresentacaoGeral[]> {
+  const { results } = await db.prepare("SELECT id, apresentacao FROM apresentacoes_gerais ORDER BY id").all<{ id: IdApresentacaoGeral; apresentacao: string | null }>();
+  return results.map((l) => ({ id: l.id, apresentacao: l.apresentacao ? (JSON.parse(l.apresentacao) as ArquivoDaApresentacao) : null }));
+}
+
+const buscarGeral = async (db: D1Database, id: IdApresentacaoGeral) => (await listarApresentacoesGerais(db)).find((g) => g.id === id) ?? null;
+
+export async function salvarApresentacaoGeral(env: Ambiente, id: IdApresentacaoGeral, a: { arquivo: string; html: string }, autor: Pessoa): Promise<ApresentacaoGeral | null> {
+  return (await gravar(env, { tipo: "geral", id }, a, autor)) ? buscarGeral(env.DB, id) : null;
+}
+
+export async function removerApresentacaoGeral(env: Ambiente, id: IdApresentacaoGeral, autor: Pessoa): Promise<ApresentacaoGeral | null> {
+  return (await remover(env, { tipo: "geral", id }, autor)) ? buscarGeral(env.DB, id) : null;
+}
+
+export async function lerApresentacaoGeral(env: Ambiente, id: IdApresentacaoGeral, versao: number): Promise<string | null> {
+  return env.APRESENTACOES.get(chave({ tipo: "geral", id }, versao));
 }

@@ -1,4 +1,5 @@
 import { preencherModelo } from "./cadencia";
+import { formatarDia } from "./datas";
 import { DIAGNOSTICA, type Pergunta } from "./dados/diagnostica";
 
 export type Marcacao = "objecao" | "tecnico" | "escopo" | "proximo_passo";
@@ -120,4 +121,41 @@ export function briefingDaFicha(ficha: { respostas: Respostas; anotacoes: Anotac
     },
   ];
   return secoes.filter((s) => s.itens.length > 0);
+}
+
+// Fase 9: a apresentação da diagnóstica acompanha o roteiro ----------------------------
+
+/** Os slides da apresentação da diagnóstica, na ordem (hub/apresentacoes/fonte/diagnostica.html). */
+export const SLIDES_DA_DIAGNOSTICA = ["agenda", "quem-somos", "escuta", "como-trabalhamos", "proximo-passo"] as const;
+
+/** O slide que o cliente vê em cada passo: a apresentação segue o roteiro sozinha, sem setas próprias. */
+export function slideDoPasso(passo: Pick<Passo, "id" | "grupo">): number {
+  if (passo.grupo === "abertura") return passo.id === "abertura-1" ? 0 : 1;
+  if (passo.grupo === "bloco" || passo.grupo === "tecnica") return 2;
+  if (passo.grupo === "escopo") return 3;
+  return 4;
+}
+
+const ETAPA_TECNICA = "Técnico";
+
+/** O que vai para a apresentação da diagnóstica: o cliente, a data, o serviço e a etapa atual da conversa. */
+export function dadosDaDiagnostica(
+  ficha: {
+    reuniao: { dataHora: string };
+    oportunidade: { empresa: string; contato: string };
+    servicoNome?: string;
+    perguntasDoServico: (Pergunta & { inativa?: boolean })[];
+  },
+  passo: Pick<Passo, "grupo" | "titulo">,
+): Record<string, string> {
+  const temTecnicas = ficha.perguntasDoServico.some((p) => !p.inativa);
+  const etapas = [...DIAGNOSTICA.blocos.map((b) => b.titulo), ...(temTecnicas ? [ETAPA_TECNICA] : [])];
+  return {
+    empresa: ficha.oportunidade.empresa,
+    contato: ficha.oportunidade.contato.trim().split(/\s+/)[0] ?? "",
+    data: formatarDia(ficha.reuniao.dataHora.slice(0, 10)),
+    servico: ficha.servicoNome ?? "",
+    etapas: etapas.join("\n"),
+    etapa: passo.grupo === "bloco" ? passo.titulo : passo.grupo === "tecnica" ? ETAPA_TECNICA : "",
+  };
 }

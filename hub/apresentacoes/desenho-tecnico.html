@@ -1,0 +1,1174 @@
+<!doctype html>
+<html lang="pt-BR">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Proposta · Desenho Técnico · MecTRIA</title>
+    <!--
+      A apresentação de proposta de Desenho Técnico. São os 13 slides do roteiro padrão, com o roteiro do serviço
+      em hub/apresentacoes/roteiros/desenho-tecnico.json. Interativo: as dores (slide 6), o preço em 3 etapas e a
+      calculadora do retrabalho (slide 12). Os textos de "Quem somos" e os números são os do site, sem mudar uma palavra.
+    -->
+    <style>
+/* Kit das apresentações da MecTRIA: a identidade do site novo (fundo escuro, vermelho de destaque,
+   títulos grandes, rótulos em fonte mono). O slide tem 1280 × 720 e o kit escala para caber na janela. */
+@import url("https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500&family=Inter+Tight:wght@400;500;600&display=swap");
+
+:root {
+  --fundo: #0b0b0c;
+  --fundo-alto: #141518;
+  --texto: #f4f2ee;
+  --suave: #a6a39d;
+  --apagado: #6f6c67;
+  --linha: rgba(255, 255, 255, 0.12);
+  --linha-forte: rgba(255, 255, 255, 0.24);
+  --vermelho: #c8102e;
+  --vermelho-vivo: #ef3b4f;
+  --mono: "IBM Plex Mono", ui-monospace, monospace;
+  --sans: "Inter Tight", "Helvetica Neue", Arial, sans-serif;
+  --entrar: 520ms cubic-bezier(0.2, 0.7, 0.2, 1);
+}
+
+* {
+  box-sizing: border-box;
+}
+
+html,
+body {
+  margin: 0;
+  height: 100%;
+  overflow: hidden;
+  background: #050506;
+}
+
+#palco {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 1280px;
+  height: 720px;
+  transform-origin: 0 0;
+}
+
+.slide {
+  position: absolute;
+  inset: 0;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  gap: 24px;
+  padding: 72px 88px 88px;
+  color: var(--texto);
+  font: 400 24px/1.45 var(--sans);
+  background:
+    radial-gradient(ellipse 70% 60% at 78% 40%, rgba(60, 72, 96, 0.28), transparent 70%),
+    radial-gradient(ellipse 50% 40% at 15% 110%, rgba(200, 16, 46, 0.12), transparent 70%),
+    var(--fundo);
+}
+
+/* Um só movimento na troca de slide: o slide inteiro aparece. O que se mexe de verdade é o desenho técnico. */
+.slide[data-ativo="sim"] {
+  animation: entrar 360ms ease both;
+}
+
+@keyframes entrar {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+/* O rótulo do slide (como "DIAGNÓSTICO" no site): mono, maiúsculo, espaçado, em vermelho. */
+.rotulo {
+  margin: 0;
+  font: 500 15px/1.2 var(--mono);
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--vermelho-vivo);
+}
+
+.sobre {
+  margin: 0;
+  font: 400 14px/1.4 var(--mono);
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--suave);
+}
+
+h1,
+h2 {
+  margin: 0;
+  font-family: var(--sans);
+  font-weight: 600;
+  letter-spacing: -0.025em;
+  color: var(--texto);
+}
+
+h1 {
+  font-size: 84px;
+  line-height: 1;
+}
+
+h2 {
+  font-size: 62px;
+  line-height: 1.04;
+}
+
+h3 {
+  margin: 0;
+  font: 600 26px/1.2 var(--sans);
+  letter-spacing: -0.01em;
+}
+
+p {
+  margin: 0;
+}
+
+.texto {
+  max-width: 760px;
+  color: var(--suave);
+}
+
+.lista {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  display: grid;
+  gap: 14px;
+}
+
+.lista li {
+  position: relative;
+  padding-left: 30px;
+}
+
+.lista li::before {
+  content: "";
+  position: absolute;
+  left: 0;
+  top: 0.62em;
+  width: 14px;
+  height: 2px;
+  background: var(--vermelho-vivo);
+}
+
+.colunas {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 56px;
+  align-items: center;
+}
+
+.cartao {
+  padding: 24px 26px;
+  border: 1px solid var(--linha);
+  border-radius: 16px;
+  background: rgba(255, 255, 255, 0.03);
+}
+
+.faixas {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+}
+
+.faixas span {
+  padding: 8px 16px;
+  border: 1px solid var(--linha-forte);
+  border-radius: 999px;
+  font: 500 13px/1 var(--mono);
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+}
+
+/* Uma coluna de texto: rótulo, título e parágrafos, com o respiro do site. */
+.pilha {
+  display: grid;
+  gap: 20px;
+  align-content: center;
+}
+
+.pequeno {
+  font-size: 19px;
+  line-height: 1.5;
+}
+
+/* Uma sequência de passos (a ordem importa): número em mono, título e uma linha. */
+.passos {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  display: grid;
+  gap: 22px;
+}
+
+.passos li {
+  display: grid;
+  grid-template-columns: 52px 1fr;
+  gap: 4px 16px;
+  align-items: baseline;
+  padding-top: 18px;
+  border-top: 1px solid var(--linha);
+}
+
+.passos li > span {
+  font: 500 15px/1 var(--mono);
+  color: var(--vermelho-vivo);
+}
+
+.passos h3 {
+  font-size: 24px;
+}
+
+.passos p {
+  grid-column: 2;
+  font-size: 18px;
+  color: var(--suave);
+}
+
+/* Os quatro números do site. */
+.numeros {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 24px;
+  border-top: 1px solid var(--linha);
+  padding-top: 32px;
+}
+
+.numeros strong {
+  display: block;
+  font: 600 64px/1 var(--sans);
+  letter-spacing: -0.03em;
+}
+
+.numeros span {
+  display: block;
+  margin-top: 10px;
+  font-size: 18px;
+  color: var(--suave);
+}
+
+/* Contagem "01 / 13" e a marca, no rodapé de cada slide. */
+.rodape {
+  position: absolute;
+  left: 88px;
+  right: 88px;
+  bottom: 36px;
+  display: flex;
+  justify-content: space-between;
+  font: 500 13px/1 var(--mono);
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--apagado);
+}
+
+/* A marca é sempre MecTRIA, nunca em maiúsculas. */
+.rodape .marca {
+  text-transform: none;
+  letter-spacing: 0.04em;
+}
+
+.falta {
+  color: var(--vermelho-vivo);
+  opacity: 0.85;
+}
+
+/* Desenho técnico que se desenha (do papel à peça). */
+.desenho path,
+.desenho line,
+.desenho rect,
+.desenho circle,
+.desenho polyline {
+  fill: none;
+  stroke: var(--texto);
+  stroke-width: 1.6;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+
+.desenho .cota {
+  stroke: var(--vermelho-vivo);
+  stroke-width: 1.2;
+}
+
+.desenho .eixo {
+  stroke: var(--apagado);
+  stroke-dasharray: 10 4 2 4;
+}
+
+.desenho .solido {
+  fill: rgba(200, 16, 46, 0.16);
+  stroke: var(--vermelho-vivo);
+}
+
+.desenho text {
+  fill: var(--suave);
+  font: 500 13px var(--mono);
+  letter-spacing: 0.08em;
+}
+
+/* As linhas se traçam; as de centro (.eixo) guardam o traço-ponto e só aparecem. */
+.slide[data-ativo="sim"] .desenho [pathLength]:not(.eixo) {
+  stroke-dasharray: 1;
+  stroke-dashoffset: 1;
+  animation: tracar 1.6s cubic-bezier(0.4, 0, 0.2, 1) forwards;
+}
+
+.slide[data-ativo="sim"] .desenho .eixo {
+  opacity: 0;
+  animation: aparecer 600ms ease forwards 200ms;
+}
+
+.slide[data-ativo="sim"] .desenho .depois {
+  opacity: 0;
+  animation: aparecer 700ms ease forwards 1.4s;
+}
+
+@keyframes tracar {
+  to {
+    stroke-dashoffset: 0;
+  }
+}
+
+@keyframes aparecer {
+  to {
+    opacity: 1;
+  }
+}
+
+/* Botões e campos dentro da apresentação (dores, calculadora). */
+.escolha {
+  text-align: left;
+  font: 500 22px/1.35 var(--sans);
+  color: var(--texto);
+  background: rgba(255, 255, 255, 0.03);
+  border: 1px solid var(--linha-forte);
+  border-radius: 14px;
+  padding: 18px 22px;
+  cursor: pointer;
+  transition:
+    border-color 160ms,
+    background 160ms;
+}
+
+.escolha:hover {
+  border-color: var(--texto);
+}
+
+.escolha[aria-pressed="true"] {
+  border-color: var(--vermelho-vivo);
+  background: rgba(200, 16, 46, 0.14);
+}
+
+.escolha[aria-pressed="true"]::before {
+  content: "✓  ";
+  color: var(--vermelho-vivo);
+}
+
+.campo {
+  display: grid;
+  gap: 8px;
+  font: 500 14px/1.2 var(--mono);
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--suave);
+}
+
+.campo input {
+  font: 500 28px var(--mono);
+  color: var(--texto);
+  background: transparent;
+  border: 1px solid var(--linha-forte);
+  border-radius: 10px;
+  padding: 8px 14px;
+  width: 100%;
+}
+
+.destaque {
+  color: var(--vermelho-vivo);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .slide[data-ativo="sim"],
+  .slide[data-ativo="sim"] .desenho [pathLength]:not(.eixo),
+  .slide[data-ativo="sim"] .desenho .eixo,
+  .slide[data-ativo="sim"] .desenho .depois {
+    animation: none;
+    stroke-dashoffset: 0;
+    opacity: 1;
+  }
+}
+
+/* Por último: o display dos slides (flex) venceria o hidden do navegador; o escondido fica escondido de verdade. */
+[hidden] {
+  display: none !important;
+}
+
+</style>
+    <style>
+      .capa h1 {
+        font-size: 104px;
+        line-height: 0.96;
+        letter-spacing: -0.04em;
+        max-width: 620px;
+      }
+
+      .pergunta h2 {
+        font-size: 76px;
+        max-width: 980px;
+      }
+
+      .dores {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 14px;
+      }
+
+      .cenario {
+        display: grid;
+        gap: 6px;
+        color: var(--suave);
+        font-size: 20px;
+      }
+
+      .metodo h2 {
+        font-size: 50px;
+      }
+
+      .metodo .passos {
+        gap: 10px;
+      }
+
+      .metodo .passos li {
+        padding-top: 10px;
+      }
+
+      .metodo .passos h3 {
+        font-size: 21px;
+      }
+
+
+      .metodo .passos p {
+        font-size: 17px;
+      }
+
+      .entregas {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 6px 28px;
+        font-size: 17px;
+        line-height: 1.4;
+      }
+
+      .entregas .sobre {
+        grid-column: 1 / -1;
+        margin-top: 4px;
+      }
+
+      .entregas .lista {
+        grid-column: 1 / -1;
+        grid-template-columns: 1fr 1fr;
+        gap: 6px 24px;
+        color: var(--suave);
+      }
+
+      .entregas .lista.uma {
+        grid-template-columns: 1fr;
+      }
+
+      .proposito h2 {
+        font-size: 50px;
+      }
+
+      .desenho {
+        width: 100%;
+        height: auto;
+      }
+
+      .jornada .lista {
+        gap: 18px;
+        font-size: 22px;
+      }
+
+      .combinado {
+        font: 600 40px/1.1 var(--sans);
+        letter-spacing: -0.02em;
+      }
+
+      .investimento .colunas {
+        align-items: start;
+      }
+
+      .etapas-do-preco {
+        display: grid;
+        gap: 18px;
+      }
+
+      .etapas-do-preco .mercado {
+        font-size: 22px;
+        color: var(--suave);
+      }
+
+      .etapas-do-preco .valor {
+        font: 600 76px/1 var(--sans);
+        letter-spacing: -0.03em;
+        color: var(--texto);
+      }
+
+      .etapas-do-preco .condicoes {
+        font-size: 20px;
+        color: var(--suave);
+      }
+
+      [data-etapa]:not([hidden]) {
+        animation: entrar 420ms ease both;
+      }
+
+      .calculadora {
+        display: grid;
+        gap: 16px;
+        padding: 26px 28px;
+        border: 1px solid var(--linha-forte);
+        border-radius: 18px;
+      }
+
+      .calculadora .resultado {
+        font-size: 20px;
+        line-height: 1.45;
+        color: var(--suave);
+      }
+
+      .calculadora .resultado strong {
+        color: var(--vermelho-vivo);
+        font-weight: 600;
+      }
+    </style>
+  </head>
+  <body>
+    <div id="palco">
+      <section class="slide capa" data-slide="capa">
+        <div class="colunas">
+          <div class="pilha">
+            <p class="rotulo" data-modelo="Proposta para {empresa}"></p>
+            <h1 data-modelo="{servico}"></h1>
+            <p class="sobre" data-modelo="{data}"></p>
+          </div>
+          <svg class="desenho" viewBox="0 0 520 440" role="img" aria-label="Uma folha de desenho técnico">
+            <rect x="40" y="40" width="440" height="360" pathLength="1" />
+            <rect x="300" y="340" width="180" height="60" pathLength="1" />
+            <line x1="300" y1="370" x2="480" y2="370" pathLength="1" />
+            <line class="eixo" x1="80" y1="190" x2="280" y2="190" />
+            <rect x="100" y="140" width="160" height="100" pathLength="1" />
+            <circle cx="180" cy="190" r="30" pathLength="1" />
+            <line class="cota" x1="100" y1="264" x2="260" y2="264" pathLength="1" />
+            <text x="160" y="284">160</text>
+          </svg>
+        </div>
+      </section>
+
+      <section class="slide" data-slide="abertura">
+        <div class="pilha">
+          <p class="rotulo">Hoje</p>
+          <h2>O projeto que desenhamos para vocês</h2>
+          <p class="texto">No fim, você diz com sinceridade se faz sentido.</p>
+        </div>
+      </section>
+
+      <section class="slide proposito" data-slide="proposito">
+        <div class="colunas">
+          <div class="pilha">
+            <p class="rotulo">Quem somos</p>
+            <h2>Mais do que engenharia: propósito, aprendizado e transformação real.</h2>
+          </div>
+          <div class="pilha">
+            <p class="texto pequeno">
+              A MecTRIA é a Empresa Júnior de Engenharia Mecânica da UFTM, em Uberaba (MG). Desde 2013, unimos conhecimento acadêmico e prática de mercado para entregar soluções mecânicas eficientes e seguras.
+            </p>
+            <p class="texto pequeno">Com o apoio de professores doutores, garantimos excelência no produto e no atendimento. Cuidado em cada detalhe, do primeiro contato à entrega.</p>
+            <div class="faixas">
+              <span>UFTM</span>
+              <span>FEJEMG</span>
+              <span>Núcleo Triângulo</span>
+              <span>Brasil Júnior</span>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section class="slide" data-slide="numeros">
+        <div class="pilha">
+          <p class="rotulo">Histórico</p>
+          <h2>Nossa história em números</h2>
+          <div class="numeros">
+            <div><strong>+13</strong> <span>anos de mercado</span></div>
+            <div><strong>+130</strong> <span>projetos realizados</span></div>
+            <div><strong>100%</strong> <span>dos clientes avaliados recomendam</span></div>
+            <div><strong>70%</strong> <span>abaixo do preço de mercado</span></div>
+          </div>
+        </div>
+      </section>
+
+      <section class="slide" data-slide="time">
+        <div class="colunas">
+          <div class="pilha">
+            <p class="rotulo">Quem cuida do seu projeto</p>
+            <h2>O time</h2>
+          </div>
+          <div class="pilha">
+            <p class="combinado" data-modelo="{equipe}"></p>
+            <p class="texto">Com o apoio de professores doutores, garantimos excelência no produto e no atendimento.</p>
+            <p class="sobre"><span class="falta">[professor orientador]</span></p>
+          </div>
+        </div>
+      </section>
+
+      <section class="slide" data-slide="ceu-inferno">
+        <div class="pilha">
+          <p class="rotulo">O cenário de vocês</p>
+          <h2>O que mais pesa hoje?</h2>
+          <div class="dores">
+            <button type="button" class="escolha" data-dor="1" aria-pressed="false"></button>
+            <button type="button" class="escolha" data-dor="2" aria-pressed="false"></button>
+            <button type="button" class="escolha" data-dor="3" aria-pressed="false"></button>
+            <button type="button" class="escolha" data-dor="4" aria-pressed="false"></button>
+          </div>
+          <div class="cenario">
+            <p data-modelo="Se ficar como está: {impacto}"></p>
+            <p data-modelo="Com o projeto: {objetivo}"></p>
+          </div>
+        </div>
+      </section>
+
+      <section class="slide metodo" data-slide="metodo">
+        <div class="colunas">
+          <div class="pilha">
+            <p class="rotulo">Do papel à peça</p>
+            <h2>O caminho do projeto</h2>
+            <ol class="passos">
+              <li>
+                <span>01</span>
+                <h3>Levantamento</h3>
+                <p>As peças ou o conceito, levantados com vocês.</p>
+              </li>
+              <li>
+                <span>02</span>
+                <h3>Medição</h3>
+                <p>A peça física medida, quando é engenharia reversa.</p>
+              </li>
+              <li>
+                <span>03</span>
+                <h3>Modelo</h3>
+                <p>A peça modelada em 3D.</p>
+              </li>
+              <li>
+                <span>04</span>
+                <h3>Desenho</h3>
+                <p>Desenhos 2D com tolerâncias, revisados antes da entrega.</p>
+              </li>
+            </ol>
+          </div>
+          <div class="pilha">
+            <svg class="desenho" viewBox="0 0 520 300" style="max-height: 230px" role="img" aria-label="Duas vistas de um eixo com as cotas, que se completa até virar peça">
+              <line class="eixo" x1="20" y1="140" x2="350" y2="140" />
+              <rect x="40" y="110" width="90" height="60" pathLength="1" />
+              <rect x="130" y="90" width="140" height="100" pathLength="1" />
+              <rect x="270" y="120" width="60" height="40" pathLength="1" />
+              <line class="eixo" x1="440" y1="60" x2="440" y2="220" />
+              <circle cx="440" cy="140" r="50" pathLength="1" />
+              <circle cx="440" cy="140" r="20" pathLength="1" />
+              <line class="cota" x1="40" y1="230" x2="330" y2="230" pathLength="1" />
+              <line class="cota" x1="130" y1="70" x2="270" y2="70" pathLength="1" />
+              <text x="170" y="250">290 ±0,1</text>
+              <text x="180" y="60">140</text>
+              <g class="depois">
+                <rect class="solido" x="130" y="90" width="140" height="100" />
+                <circle class="solido" cx="440" cy="140" r="50" />
+              </g>
+            </svg>
+            <div class="entregas">
+              <p class="sobre">Entregamos</p>
+              <ul class="lista" data-lista="entregamosItens"></ul>
+              <p class="sobre" data-senao="entregamosItens"><span class="falta">[o que entregamos]</span></p>
+              <p class="sobre">Fica com vocês</p>
+              <ul class="lista uma" data-lista="ficaItens"></ul>
+              <p class="sobre" data-modelo="Prazo: {prazoProjeto}"></p>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section class="slide pergunta" data-slide="pacto-duvida">
+        <div class="pilha">
+          <p class="rotulo">Antes de seguir</p>
+          <h2>Ficou alguma dúvida sobre o projeto?</h2>
+        </div>
+      </section>
+
+      <section class="slide pergunta" data-slide="pacto-cliente">
+        <div class="pilha">
+          <p class="rotulo">Uma pergunta sincera</p>
+          <h2>Tirando o preço da mesa, vocês seriam nossos clientes?</h2>
+        </div>
+      </section>
+
+      <section class="slide jornada" data-slide="valor-preco">
+        <div class="colunas">
+          <div class="pilha">
+            <p class="rotulo">Jornada de parcerias</p>
+            <h2>Por que o valor fica abaixo do mercado</h2>
+          </div>
+          <div class="pilha">
+            <ul class="lista">
+              <li>A MecTRIA faz parte do Movimento Empresa Júnior: aqui ninguém recebe pró-labore nem ganha pelos projetos.</li>
+              <li>O que o membro leva é o resultado: um projeto admirável vira um case na carreira dele.</li>
+              <li>Para cuidar da capacidade do time, pedimos um sim ou um não em até 7 dias.</li>
+            </ul>
+            <p class="combinado">Combinado?</p>
+          </div>
+        </div>
+      </section>
+
+      <section class="slide" data-slide="provas">
+        <div class="pilha">
+          <p class="rotulo">Quem já confiou</p>
+          <h2>Clientes que voltam</h2>
+          <ul class="lista">
+            <li><span class="falta">[Caso de Desenho Técnico, com autorização do cliente]</span></li>
+            <li><span class="falta">[Depoimento]</span></li>
+          </ul>
+        </div>
+      </section>
+
+      <section class="slide investimento" data-slide="investimento">
+        <div class="colunas">
+          <div class="pilha">
+            <p class="rotulo">Investimento</p>
+            <div class="etapas-do-preco">
+              <p class="sobre" data-espera>O investimento aparece em instantes.</p>
+              <p class="mercado" data-etapa="1" hidden>
+                <span data-modelo="No mercado: {ancora}, "></span><span class="falta">[valor de mercado]</span>
+              </p>
+              <p class="mercado" data-etapa="2" hidden data-modelo="Na MecTRIA: {fraseValor}."></p>
+              <div data-etapa="3" hidden>
+                <p class="valor" data-modelo="{valor}"></p>
+                <p class="condicoes" data-se="condicoes" data-modelo="{condicoes}"></p>
+              </div>
+            </div>
+          </div>
+          <div class="calculadora">
+            <h3>Quanto custa ficar como está</h3>
+            <label class="campo">Retrabalhos por mês <input data-campo="retrabalhos-mes" type="number" min="0" inputmode="decimal" /></label>
+            <label class="campo">Custo de cada retrabalho (R$) <input data-campo="custo-retrabalho" type="number" min="0" inputmode="decimal" /></label>
+            <p class="resultado" data-resultado></p>
+          </div>
+        </div>
+      </section>
+
+      <section class="slide" data-slide="fechamento">
+        <div class="colunas">
+          <div class="pilha">
+            <p class="rotulo">Próximos passos</p>
+            <h2>Como a gente começa</h2>
+            <p class="texto">Como combinamos: um sim ou um não em até 7 dias.</p>
+          </div>
+          <ol class="passos">
+            <li>
+              <span>01</span>
+              <h3>Aceite da proposta</h3>
+              <p>Vocês dizem sim, e a gente reserva o time.</p>
+            </li>
+            <li>
+              <span>02</span>
+              <h3>Contrato</h3>
+              <p>E a ART, quando o projeto exige.</p>
+            </li>
+            <li>
+              <span>03</span>
+              <h3>Kick-off</h3>
+              <p>Começamos com a visita técnica.</p>
+            </li>
+          </ol>
+        </div>
+      </section>
+    </div>
+
+    <script>
+/*
+ * Kit das apresentações da MecTRIA: o contrato com o hub (hub/apresentacoes/CONTRATO.md) e o que toda
+ * apresentação faz igual (slides, escala, teclas, textos com {chave}, rodapé "01 / 13").
+ * Cada apresentação chama Apresentacao.iniciar({...}) no fim e cuida só do que é dela.
+ */
+(function () {
+  "use strict";
+
+  // O que falta aparece como [rótulo], com os mesmos rótulos do hub (compartilhado/dados/cadencia.ts).
+  var ROTULOS = {
+    contato: "nome do contato",
+    empresa: "empresa do cliente",
+    servico: "serviço",
+    data: "data",
+    anos: "anos de MecTRIA",
+    equipe: "nomes e papéis do time",
+    dor: "dor do cliente",
+    impacto: "impacto",
+    objetivo: "objetivo",
+    prazo: "prazo",
+    entregamos: "o que entregamos",
+    fica: "o que fica com o cliente",
+    prazoProjeto: "prazo do projeto",
+    ancora: "quem faria o projeto no mercado",
+    fraseValor: "frase de valor",
+    valor: "valor",
+    condicoes: "condições de pagamento",
+    data_decisao: "data da decisão",
+    etapa: "etapa",
+  };
+
+  var estado = { slide: 0, dados: {}, interacoes: { dores: [], precoEtapa: 0, calculadora: {} } };
+  var opcoes = {};
+  var slides = [];
+
+  function enviar(mensagem) {
+    mensagem.mectria = 1;
+    window.parent.postMessage(mensagem, "*");
+  }
+
+  function valor(chave) {
+    var v = estado.dados[chave];
+    return typeof v === "string" ? v.trim() : "";
+  }
+
+  /** Preenche [data-modelo] ("Proposta para {empresa}") e mostra/esconde [data-se] e [data-senao]. */
+  function preencher() {
+    document.querySelectorAll("[data-modelo]").forEach(function (el) {
+      el.textContent = "";
+      // Um trecho que só aparece com a chave preenchida (data-se) fica vazio sem ela, sem o [rótulo].
+      if (el.hasAttribute("data-se") && !valor(el.getAttribute("data-se"))) return;
+      el.getAttribute("data-modelo")
+        .split(/(\{\w+\})/)
+        .forEach(function (pedaco) {
+          if (!pedaco) return;
+          var chave = /^\{(\w+)\}$/.exec(pedaco);
+          if (!chave) return el.appendChild(document.createTextNode(pedaco));
+          var v = valor(chave[1]);
+          if (v) return el.appendChild(document.createTextNode(v));
+          var falta = document.createElement("span");
+          falta.className = "falta";
+          falta.textContent = "[" + (ROTULOS[chave[1]] || chave[1]) + "]";
+          el.appendChild(falta);
+        });
+    });
+    // [data-lista="chave"]: uma lista com um item por linha da chave; sem itens, some.
+    document.querySelectorAll("[data-lista]").forEach(function (el) {
+      el.textContent = "";
+      valor(el.getAttribute("data-lista"))
+        .split("\n")
+        .map(function (l) {
+          return l.trim();
+        })
+        .filter(Boolean)
+        .forEach(function (item) {
+          var li = document.createElement("li");
+          li.textContent = item;
+          el.appendChild(li);
+        });
+      el.hidden = !el.children.length;
+    });
+    document.querySelectorAll("[data-se]").forEach(function (el) {
+      el.hidden = !valor(el.getAttribute("data-se"));
+    });
+    document.querySelectorAll("[data-senao]").forEach(function (el) {
+      el.hidden = !!valor(el.getAttribute("data-senao"));
+    });
+  }
+
+  function mostrar(indice) {
+    if (typeof indice !== "number" || !isFinite(indice)) return;
+    estado.slide = Math.max(0, Math.min(slides.length - 1, Math.floor(indice)));
+    slides.forEach(function (s, i) {
+      var ativo = i === estado.slide;
+      s.hidden = !ativo;
+      if (ativo) s.setAttribute("data-ativo", "sim");
+      else s.removeAttribute("data-ativo");
+    });
+    if (opcoes.aoSlide) opcoes.aoSlide(estado.slide);
+  }
+
+  function reais(n) {
+    return new Intl.NumberFormat("pt-BR", { style: "currency", currency: "BRL", maximumFractionDigits: 0 }).format(n);
+  }
+
+  function escalar() {
+    var escala = Math.min(window.innerWidth / 1280, window.innerHeight / 720) || 1;
+    document.getElementById("palco").style.transform = "scale(" + escala + ") translate(-50%, -50%)";
+  }
+
+  function numerar() {
+    var total = String(slides.length).padStart(2, "0");
+    slides.forEach(function (s, i) {
+      if (!s.querySelector(".rodape") && !s.hasAttribute("data-sem-rodape")) {
+        var rodape = document.createElement("div");
+        rodape.className = "rodape";
+        rodape.innerHTML = '<span data-contagem></span><span class="marca">MecTRIA</span>';
+        s.appendChild(rodape);
+      }
+      s.querySelectorAll("[data-contagem]").forEach(function (el) {
+        el.textContent = String(i + 1).padStart(2, "0") + " / " + total;
+      });
+    });
+  }
+
+  // Mensagens do hub: só as que vêm da janela que abriu esta apresentação.
+  window.addEventListener("message", function (e) {
+    if (e.source !== window.parent) return;
+    var m = e.data;
+    if (!m || m.mectria !== 1) return;
+    if (m.tipo === "estado") {
+      estado.dados = m.dados && typeof m.dados === "object" ? m.dados : {};
+      var i = m.interacoes || {};
+      estado.interacoes = {
+        dores: Array.isArray(i.dores) ? i.dores.slice() : [],
+        precoEtapa: typeof i.precoEtapa === "number" ? i.precoEtapa : 0,
+        calculadora: i.calculadora && typeof i.calculadora === "object" ? Object.assign({}, i.calculadora) : {},
+      };
+      preencher();
+      desenharInterativos();
+      if (opcoes.aoEstado) opcoes.aoEstado(estado);
+      mostrar(m.slide);
+    } else if (m.tipo === "slide") {
+      mostrar(m.slide);
+    } else if (m.tipo === "acionar" && typeof m.acao === "string") {
+      acionar(m.acao);
+    } else if (m.tipo === "calcular" && m.valores && typeof m.valores === "object") {
+      if (opcoes.calculadora) calcular(m.valores);
+      else if (opcoes.aoCalcular) opcoes.aoCalcular(m.valores);
+    }
+  });
+
+  // As setas apertadas aqui passam o slide pelo hub (quem manda no slide é o painel).
+  document.addEventListener("keydown", function (e) {
+    if (e.key !== "ArrowRight" && e.key !== "ArrowLeft") return;
+    var alvo = e.target && e.target.tagName;
+    if (alvo === "INPUT" || alvo === "TEXTAREA" || alvo === "SELECT") return;
+    e.preventDefault();
+    enviar({ tipo: "tecla", tecla: e.key });
+  });
+
+  // Partes interativas comuns às propostas ------------------------------------------------
+
+  /** Dor 1 é a do cliente (inicial maiúscula); 2 a 4, as dores cadastradas no serviço. */
+  function textoDaDor(n) {
+    if (n === 1) {
+      var dor = valor("dor");
+      return dor ? dor.charAt(0).toUpperCase() + dor.slice(1) : "[" + ROTULOS.dor + "]";
+    }
+    return (
+      valor("doresDoServico")
+        .split("\n")
+        .map(function (d) {
+          return d.trim();
+        })
+        .filter(Boolean)[n - 2] || ""
+    );
+  }
+
+  function desenharDores() {
+    document.querySelectorAll("[data-dor]").forEach(function (botao) {
+      var texto = textoDaDor(Number(botao.getAttribute("data-dor")));
+      botao.textContent = texto;
+      botao.hidden = !texto;
+      botao.setAttribute("aria-pressed", estado.interacoes.dores.indexOf(texto) >= 0 ? "true" : "false");
+    });
+  }
+
+  function alternarDor(n) {
+    var texto = textoDaDor(n);
+    if (!texto) return;
+    var marcada = estado.interacoes.dores.indexOf(texto) < 0;
+    estado.interacoes.dores = estado.interacoes.dores.filter(function (d) {
+      return d !== texto;
+    });
+    if (marcada) estado.interacoes.dores.push(texto);
+    desenharDores();
+    Apresentacao.enviar({ evento: "dor", valor: texto, marcada: marcada });
+  }
+
+  /** O preço aparece em etapas ([data-etapa="1"], "2", "3"); [data-espera] some na primeira. */
+  function desenharPreco() {
+    var etapa = estado.interacoes.precoEtapa;
+    document.querySelectorAll("[data-etapa]").forEach(function (el) {
+      el.hidden = Number(el.getAttribute("data-etapa")) > etapa;
+    });
+    document.querySelectorAll("[data-espera]").forEach(function (el) {
+      el.hidden = etapa > 0;
+    });
+  }
+
+  function revelarPreco() {
+    var total = (opcoes.preco && opcoes.preco.etapas) || 3;
+    if (estado.interacoes.precoEtapa >= total) return;
+    estado.interacoes.precoEtapa += 1;
+    desenharPreco();
+    Apresentacao.enviar({ evento: "preco", etapa: estado.interacoes.precoEtapa });
+  }
+
+  /** A calculadora: os campos [data-campo] e o resultado em [data-resultado] (custo do ano e em quantos meses o projeto se paga). */
+  function desenharCalculo() {
+    var c = opcoes.calculadora;
+    if (!c) return;
+    var numeros = estado.interacoes.calculadora;
+    c.campos.forEach(function (campo) {
+      var el = document.querySelector('[data-campo="' + campo.id + '"]');
+      if (el && document.activeElement !== el) el.value = typeof numeros[campo.id] === "number" ? String(numeros[campo.id]) : "";
+    });
+    var saida = document.querySelector("[data-resultado]");
+    if (!saida) return;
+    var completos = c.campos.every(function (campo) {
+      return typeof numeros[campo.id] === "number" && numeros[campo.id] > 0;
+    });
+    saida.textContent = "";
+    if (!completos) {
+      saida.textContent = c.vazio || "Preencha os números para ver quanto custa ficar como está.";
+      return;
+    }
+    var mes = c.porMes(numeros);
+    saida.appendChild(document.createTextNode("Por ano, ficar como está custa "));
+    var ano = document.createElement("strong");
+    ano.textContent = reais(mes * 12);
+    saida.appendChild(ano);
+    saida.appendChild(document.createTextNode("."));
+    var centavos = Number(valor("valorCentavos"));
+    if (centavos > 0 && mes > 0) {
+      var meses = Math.max(1, Math.ceil(centavos / 100 / mes));
+      saida.appendChild(document.createTextNode(" O projeto se paga em " + meses + (meses === 1 ? " mês." : " meses.")));
+    }
+  }
+
+  function avisarCalculadora() {
+    var valores = {};
+    opcoes.calculadora.campos.forEach(function (campo) {
+      if (typeof estado.interacoes.calculadora[campo.id] === "number") valores[campo.id] = estado.interacoes.calculadora[campo.id];
+    });
+    Apresentacao.enviar({ evento: "calculadora", valores: valores });
+  }
+
+  function calcular(valores) {
+    if (!opcoes.calculadora) return;
+    opcoes.calculadora.campos.forEach(function (campo) {
+      var n = valores[campo.id];
+      if (typeof n === "number" && isFinite(n)) estado.interacoes.calculadora[campo.id] = n;
+    });
+    desenharCalculo();
+    avisarCalculadora();
+  }
+
+  function desenharInterativos() {
+    if (opcoes.dores) desenharDores();
+    if (opcoes.preco) desenharPreco();
+    if (opcoes.calculadora) desenharCalculo();
+  }
+
+  function acoesEcampos() {
+    var acoes = (opcoes.acoes || []).slice();
+    var campos = (opcoes.campos || []).slice();
+    if (opcoes.dores) {
+      [1, 2, 3, 4].forEach(function (n) {
+        acoes.push({ slide: opcoes.dores.slide, id: "dor-" + n, rotulo: n === 1 ? "Marcar a dor do cliente" : "Marcar a dor " + n });
+      });
+    }
+    if (opcoes.preco) acoes.push({ slide: opcoes.preco.slide, id: "revelar-preco", rotulo: "Revelar o preço" });
+    if (opcoes.calculadora) {
+      opcoes.calculadora.campos.forEach(function (campo) {
+        campos.push({ slide: opcoes.calculadora.slide, id: campo.id, rotulo: campo.rotulo });
+      });
+    }
+    return { acoes: acoes, campos: campos };
+  }
+
+  function ligarInterativos() {
+    document.querySelectorAll("[data-dor]").forEach(function (botao) {
+      botao.addEventListener("click", function () {
+        alternarDor(Number(botao.getAttribute("data-dor")));
+      });
+    });
+    if (opcoes.calculadora) {
+      opcoes.calculadora.campos.forEach(function (campo) {
+        var el = document.querySelector('[data-campo="' + campo.id + '"]');
+        if (!el) return;
+        el.addEventListener("input", function () {
+          var n = Number(el.value);
+          if (el.value === "" || !isFinite(n)) delete estado.interacoes.calculadora[campo.id];
+          else estado.interacoes.calculadora[campo.id] = n;
+          desenharCalculo();
+          avisarCalculadora();
+        });
+      });
+    }
+  }
+
+  function acionar(acao) {
+    var dor = /^dor-([1-4])$/.exec(acao);
+    if (dor && opcoes.dores) return alternarDor(Number(dor[1]));
+    if (acao === "revelar-preco" && opcoes.preco) return revelarPreco();
+    if (opcoes.aoAcionar) opcoes.aoAcionar(acao);
+  }
+
+  window.Apresentacao = {
+    iniciar: function (o) {
+      opcoes = o || {};
+      slides = Array.prototype.slice.call(document.querySelectorAll("[data-slide]"));
+      numerar();
+      ligarInterativos();
+      window.addEventListener("resize", escalar);
+      escalar();
+      preencher();
+      desenharInterativos();
+      if (opcoes.aoEstado) opcoes.aoEstado(estado);
+      mostrar(0);
+      var ac = acoesEcampos();
+      enviar({ tipo: "pronta", slides: slides.length, acoes: ac.acoes, campos: ac.campos });
+    },
+    /** Manda um evento ao hub: { evento: "dor" | "preco" | "calculadora", ... }. */
+    enviar: function (evento) {
+      var m = { tipo: "evento" };
+      for (var k in evento) m[k] = evento[k];
+      enviar(m);
+    },
+    dados: function () {
+      return estado.dados;
+    },
+    valor: valor,
+    interacoes: function () {
+      return estado.interacoes;
+    },
+    slideAtual: function () {
+      return estado.slide;
+    },
+    preencher: preencher,
+    reais: reais,
+  };
+})();
+
+</script>
+    <script>
+      Apresentacao.iniciar({
+        dores: { slide: 5 },
+        preco: { slide: 11, etapas: 3 },
+        calculadora: {
+          slide: 11,
+          campos: [
+            { id: "retrabalhos-mes", rotulo: "Retrabalhos por mês" },
+            { id: "custo-retrabalho", rotulo: "Custo de cada retrabalho (R$)" },
+          ],
+          vazio: "Preencha os retrabalhos e o custo de cada um para ver quanto eles custam por ano.",
+          porMes: function (n) {
+            return n["retrabalhos-mes"] * n["custo-retrabalho"];
+          },
+        },
+      });
+    </script>
+  </body>
+</html>

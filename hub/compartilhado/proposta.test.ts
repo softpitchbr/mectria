@@ -92,14 +92,16 @@ test("apresentacaoDaReuniao sem apresentação usa o exemplo; com apresentação
 });
 
 test("dadosDaApresentacao leva os valores, o valor em centavos e as dores do serviço", () => {
-  const variaveis = { ...variaveisIniciais("climatizacao", climatizacao), valor: 2400000 };
+  const variaveis = { ...variaveisIniciais("climatizacao", climatizacao), valor: 2400000, escopo: "Projeto CAD 3D\n\n Memorial de cálculo ", ficaComCliente: "Instalação" };
   expect(dadosDaApresentacao({ empresa: "Alfa", valor: "R$ 24.000,00" }, variaveis, climatizacao)).toEqual({
     empresa: "Alfa",
     valor: "R$ 24.000,00",
     valorCentavos: "2400000",
     doresDoServico: climatizacao.dores.join("\n"),
+    entregamosItens: "Projeto CAD 3D\nMemorial de cálculo",
+    ficaItens: "Instalação",
   });
-  expect(dadosDaApresentacao({ empresa: "Alfa" }, { ...variaveis, valor: null }, null)).toEqual({ empresa: "Alfa" });
+  expect(dadosDaApresentacao({ empresa: "Alfa" }, { ...variaveis, valor: null, escopo: " ", ficaComCliente: "" }, null)).toEqual({ empresa: "Alfa" });
 });
 
 test("partes do modelo separam o que é do cliente, variável e pendência", () => {
@@ -134,4 +136,11 @@ test("a apresentação de exemplo não traz os números errados da call", () => 
   expect(texto).not.toContain("4.950");
   expect(texto).not.toContain("54.900");
   expect(texto).toContain("MecTRIA");
+});
+
+test("valoresDaProposta traz as condições que o closer preparou", () => {
+  const variaveis = { ...variaveisIniciais("climatizacao", climatizacao), condicoes: "  Entrada de 30% e 3 parcelas " };
+  const { valores } = valoresDaProposta({ oportunidade, variaveis, respostas: {}, hoje: "2026-11-13", servico: climatizacao });
+  expect(valores.condicoes).toBe("Entrada de 30% e 3 parcelas");
+  expect(valoresDaProposta({ oportunidade, variaveis: { ...variaveis, condicoes: "" }, respostas: {}, hoje: "2026-11-13", servico: climatizacao }).valores.condicoes).toBe("");
 });

@@ -1,7 +1,6 @@
-import { useState, type ChangeEvent } from "react";
-import { LIMITE_DA_APRESENTACAO, type Servico } from "../../../compartilhado/servico";
+import { useState, type ChangeEvent, type ReactNode } from "react";
+import { LIMITE_DA_APRESENTACAO, type ArquivoDaApresentacao } from "../../../compartilhado/servico";
 import { api } from "../../api/cliente";
-import VistaDaApresentacao from "../../apresentacao/VistaDaApresentacao";
 import { avisar } from "../../componentes/Aviso";
 import Botao from "../../componentes/Botao";
 import Foco from "../../componentes/Foco";
@@ -26,14 +25,35 @@ const tamanho = (bytes: number) =>
 const diaDoEnvio = (enviadaEm: string) =>
   new Intl.DateTimeFormat("pt-BR", { timeZone: "America/Sao_Paulo" }).format(new Date(`${enviadaEm.replace(" ", "T")}Z`));
 
-/** A apresentação de proposta em HTML do serviço: enviar, trocar, ver e remover. */
-export default function ApresentacaoDoServico({ servico, aoMudar }: { servico: Servico; aoMudar: (s: Servico) => void }) {
+/**
+ * Uma apresentação em HTML: enviar, trocar, ver e remover. Serve para a de proposta de um serviço
+ * e para a da diagnóstica (igual para todos); quem usa diz os textos, o endereço e a vista.
+ */
+export default function ApresentacaoEmHtml<T extends { apresentacao: ArquivoDaApresentacao | null }>({
+  idDoTitulo,
+  titulo,
+  semArquivo,
+  aviso,
+  caminho,
+  arquivo,
+  tituloDaVista,
+  vista,
+  aoMudar,
+}: {
+  idDoTitulo: string;
+  titulo: string;
+  semArquivo: string;
+  aviso: string;
+  caminho: string;
+  arquivo: ArquivoDaApresentacao | null;
+  tituloDaVista: string;
+  vista: () => ReactNode;
+  aoMudar: (salvo: T) => void;
+}) {
   const [erro, setErro] = useState("");
   const [enviando, setEnviando] = useState(false);
   const [confirmando, setConfirmando] = useState(false);
   const [vendo, setVendo] = useState<HTMLElement | null>(null);
-  const arquivo = servico.apresentacao;
-  const caminho = `/api/servicos/${encodeURIComponent(servico.id)}/apresentacao`;
 
   async function enviar(e: ChangeEvent<HTMLInputElement>) {
     const escolhido = e.target.files?.[0];
@@ -45,7 +65,7 @@ export default function ApresentacaoDoServico({ servico, aoMudar }: { servico: S
     setEnviando(true);
     try {
       const html = await lerArquivo(escolhido);
-      const salvo = await api<Servico>(caminho, { method: "PUT", body: JSON.stringify({ arquivo: escolhido.name, html }) });
+      const salvo = await api<T>(caminho, { method: "PUT", body: JSON.stringify({ arquivo: escolhido.name, html }) });
       aoMudar(salvo);
       avisar(`Apresentação enviada (versão ${salvo.apresentacao?.versao ?? ""}).`);
       void recarregarServicos();
@@ -59,10 +79,10 @@ export default function ApresentacaoDoServico({ servico, aoMudar }: { servico: S
   async function remover() {
     setErro("");
     try {
-      const salvo = await api<Servico>(caminho, { method: "DELETE" });
+      const salvo = await api<T>(caminho, { method: "DELETE" });
       setConfirmando(false);
       aoMudar(salvo);
-      avisar("Apresentação removida. As reuniões deste serviço voltam para a de exemplo.");
+      avisar("Apresentação removida.");
       void recarregarServicos();
     } catch (falha) {
       setErro(mensagemDe(falha));
@@ -70,8 +90,8 @@ export default function ApresentacaoDoServico({ servico, aoMudar }: { servico: S
   }
 
   return (
-    <section aria-labelledby="titulo-apresentacao" className={estilos.secao}>
-      <h2 id="titulo-apresentacao">Apresentação de proposta</h2>
+    <section aria-labelledby={idDoTitulo} className={estilos.secao}>
+      <h2 id={idDoTitulo}>{titulo}</h2>
       {arquivo ? (
         <div>
           <p className="mono">
@@ -82,7 +102,7 @@ export default function ApresentacaoDoServico({ servico, aoMudar }: { servico: S
           </p>
         </div>
       ) : (
-        <p>Sem apresentação própria: a reunião usa a de exemplo.</p>
+        <p>{semArquivo}</p>
       )}
       <p className="suave">
         Um arquivo .html, de até 5 MB, com tudo dentro. O modelo e as regras estão em hub/apresentacoes (exemplo.html e CONTRATO.md).
@@ -103,7 +123,7 @@ export default function ApresentacaoDoServico({ servico, aoMudar }: { servico: S
       </div>
       {confirmando && (
         <div className={estilos.confirmacao} role="group" aria-label="Confirmar a remoção">
-          <p>Remover a apresentação? As reuniões deste serviço voltam para a de exemplo.</p>
+          <p>{aviso}</p>
           <div className={estilos.acoesDoItem}>
             <Botao variante="primario" onClick={remover}>
               Sim, remover
@@ -120,8 +140,8 @@ export default function ApresentacaoDoServico({ servico, aoMudar }: { servico: S
         </p>
       )}
       {vendo && arquivo && (
-        <Foco titulo={`Apresentação · ${servico.nome}`} origem={vendo} aoSair={() => setVendo(null)}>
-          <VistaDaApresentacao servico={servico} />
+        <Foco titulo={tituloDaVista} origem={vendo} aoSair={() => setVendo(null)}>
+          {vista()}
         </Foco>
       )}
     </section>

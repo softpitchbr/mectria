@@ -25,6 +25,7 @@ import { mensagemDe } from "../telas/followup/comum";
 import { useAndamento } from "./andamento";
 import { abrirCanal, type ApresentacaoNaJanela } from "./canal";
 import { useDonoDaReuniao } from "./dono";
+import { abrirJanela, JANELA_SUMIU_MS } from "./janela";
 import NaApresentacao, { type DoDeck } from "./NaApresentacao";
 import FechamentoDaProposta from "./FechamentoDaProposta";
 import ObjecoesDaReuniao from "./ObjecoesDaReuniao";
@@ -43,20 +44,12 @@ const pior = (a: EstadoRascunho, b: EstadoRascunho) => (GRAVIDADE.indexOf(a) >= 
 
 const TEXTO_DO_PACTO = Object.fromEntries(PLAYBOOK_PROPOSTA.pactos.map((p) => [p.id, p.texto])) as Record<string, string>;
 const TOTAL_DE_PACTOS = PLAYBOOK_PROPOSTA.pactos.length;
-/** Sem sinal da janela por mais que isso, o painel oferece reabrir. */
-const JANELA_SUMIU_MS = 5000;
 
 /** Campo onde as teclas são do texto (o checkbox de "decide" não conta: depois dele, as setas continuam passando o slide). */
 const emCampo = (alvo: EventTarget | null) =>
   !!(alvo as HTMLElement | null)?.closest?.('textarea, select, [contenteditable], input:not([type="checkbox"])');
 const relogio = (segundos: number) => `${Math.floor(segundos / 60)}:${String(segundos % 60).padStart(2, "0")}`;
 
-/** Abre (ou traz de volta) a janela da apresentação, com uns 70% da tela, à esquerda. */
-function abrirJanela(reuniaoId: number) {
-  const largura = Math.round((window.screen?.availWidth || 1600) * 0.7);
-  const altura = window.screen?.availHeight || 900;
-  window.open(`/apresentacao/${reuniaoId}`, `hub-apresentacao-${reuniaoId}`, `popup,left=0,top=0,width=${largura},height=${altura}`);
-}
 
 /** Painel da reunião de proposta: antes de começar (sala e janela) e ao vivo (slides, fala, pactos, tempo e anotações). */
 export default function PainelDaProposta() {
