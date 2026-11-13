@@ -88,6 +88,27 @@
 }
 
 .lista li:first-child,
+/* Conexões da semana por hunter: o nome à esquerda, "3 de 8" à direita. */
+.conexoes {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: grid;
+}
+
+.conexoes li {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  gap: 16px;
+  padding: 10px 0;
+  border-top: 1px solid var(--linha);
+}
+
+.conexoes li:first-child {
+  border-top: 0;
+}
+
 .atrasados li:first-child {
   border-top: 0;
 }

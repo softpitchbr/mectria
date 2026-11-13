@@ -525,8 +525,11 @@ test("o diretor vê as conexões da semana de cada hunter", async () => {
   abrir("/");
   const lista = await screen.findByRole("list", { name: "Conexões da semana por hunter" });
   const [hugo, helena] = within(lista).getAllByRole("listitem");
-  expect(hugo).toHaveTextContent("Hugo Hunter3 de 8");
-  expect(helena).toHaveTextContent("Helena Hunter9 de 8");
+  // O nome e o número ficam separados, e a lista não usa o vermelho dos atrasados.
+  expect(hugo).toHaveTextContent("Hugo Hunter 3 de 8");
+  expect(helena).toHaveTextContent("Helena Hunter 9 de 8");
+  expect(lista).not.toHaveClass("atrasados");
+  expect(lista).toHaveClass("conexoes");
   expect(within(lista).queryByText(/Carlos/)).toBeNull();
 });
 

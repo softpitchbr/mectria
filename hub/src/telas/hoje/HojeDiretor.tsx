@@ -47,10 +47,10 @@ export default function HojeDiretor() {
         return (
           <Painel>
             <h2 className={estilos.subtitulo}>Conexões da semana</h2>
-            <ul className={estilos.atrasados} aria-label="Conexões da semana por hunter">
+            <ul className={estilos.conexoes} aria-label="Conexões da semana por hunter">
               {hunters.map((p) => (
                 <li key={p.pessoa.id}>
-                  <span>{p.pessoa.nome}</span>
+                  <span>{p.pessoa.nome}</span>{" "}
                   <span className={`mono ${p.conexoesSemana! >= META_CONEXOES_SEMANA ? "" : "suave"}`}>
                     {p.conexoesSemana} de {META_CONEXOES_SEMANA}
                   </span>
