@@ -266,6 +266,12 @@ p {
   color: var(--apagado);
 }
 
+/* A marca é sempre MecTRIA, nunca em maiúsculas. */
+.rodape .marca {
+  text-transform: none;
+  letter-spacing: 0.04em;
+}
+
 .falta {
   color: var(--vermelho-vivo);
   opacity: 0.85;
@@ -305,10 +311,16 @@ p {
   letter-spacing: 0.08em;
 }
 
-.slide[data-ativo="sim"] .desenho [pathLength] {
+/* As linhas se traçam; as de centro (.eixo) guardam o traço-ponto e só aparecem. */
+.slide[data-ativo="sim"] .desenho [pathLength]:not(.eixo) {
   stroke-dasharray: 1;
   stroke-dashoffset: 1;
   animation: tracar 1.6s cubic-bezier(0.4, 0, 0.2, 1) forwards;
+}
+
+.slide[data-ativo="sim"] .desenho .eixo {
+  opacity: 0;
+  animation: aparecer 600ms ease forwards 200ms;
 }
 
 .slide[data-ativo="sim"] .desenho .depois {
@@ -382,7 +394,8 @@ p {
 
 @media (prefers-reduced-motion: reduce) {
   .slide[data-ativo="sim"],
-  .slide[data-ativo="sim"] .desenho [pathLength],
+  .slide[data-ativo="sim"] .desenho [pathLength]:not(.eixo),
+  .slide[data-ativo="sim"] .desenho .eixo,
   .slide[data-ativo="sim"] .desenho .depois {
     animation: none;
     stroke-dashoffset: 0;
@@ -545,7 +558,7 @@ p {
             <p class="sobre" data-modelo="{data}"></p>
           </div>
           <svg class="desenho" viewBox="0 0 520 440" role="img" aria-label="Esboço de uma máquina">
-            <line class="eixo" x1="260" y1="20" x2="260" y2="420" pathLength="1" />
+            <line class="eixo" x1="260" y1="20" x2="260" y2="420" />
             <rect x="120" y="360" width="280" height="36" pathLength="1" />
             <line x1="160" y1="360" x2="160" y2="80" pathLength="1" />
             <line x1="360" y1="360" x2="360" y2="80" pathLength="1" />
@@ -660,7 +673,7 @@ p {
           </div>
           <div class="pilha">
             <svg class="desenho" viewBox="0 0 520 300" style="max-height: 230px" role="img" aria-label="Desenho de uma prensa se completando até virar máquina">
-              <line class="eixo" x1="260" y1="10" x2="260" y2="290" pathLength="1" />
+              <line class="eixo" x1="260" y1="10" x2="260" y2="290" />
               <rect x="120" y="244" width="280" height="30" pathLength="1" />
               <line x1="156" y1="244" x2="156" y2="44" pathLength="1" />
               <line x1="364" y1="244" x2="364" y2="44" pathLength="1" />
@@ -899,7 +912,7 @@ p {
       if (!s.querySelector(".rodape") && !s.hasAttribute("data-sem-rodape")) {
         var rodape = document.createElement("div");
         rodape.className = "rodape";
-        rodape.innerHTML = "<span data-contagem></span><span>MecTRIA</span>";
+        rodape.innerHTML = '<span data-contagem></span><span class="marca">MecTRIA</span>';
         s.appendChild(rodape);
       }
       s.querySelectorAll("[data-contagem]").forEach(function (el) {

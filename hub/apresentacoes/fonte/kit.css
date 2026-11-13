@@ -253,6 +253,12 @@ p {
   color: var(--apagado);
 }
 
+/* A marca é sempre MecTRIA, nunca em maiúsculas. */
+.rodape .marca {
+  text-transform: none;
+  letter-spacing: 0.04em;
+}
+
 .falta {
   color: var(--vermelho-vivo);
   opacity: 0.85;
@@ -292,10 +298,16 @@ p {
   letter-spacing: 0.08em;
 }
 
-.slide[data-ativo="sim"] .desenho [pathLength] {
+/* As linhas se traçam; as de centro (.eixo) guardam o traço-ponto e só aparecem. */
+.slide[data-ativo="sim"] .desenho [pathLength]:not(.eixo) {
   stroke-dasharray: 1;
   stroke-dashoffset: 1;
   animation: tracar 1.6s cubic-bezier(0.4, 0, 0.2, 1) forwards;
+}
+
+.slide[data-ativo="sim"] .desenho .eixo {
+  opacity: 0;
+  animation: aparecer 600ms ease forwards 200ms;
 }
 
 .slide[data-ativo="sim"] .desenho .depois {
@@ -369,7 +381,8 @@ p {
 
 @media (prefers-reduced-motion: reduce) {
   .slide[data-ativo="sim"],
-  .slide[data-ativo="sim"] .desenho [pathLength],
+  .slide[data-ativo="sim"] .desenho [pathLength]:not(.eixo),
+  .slide[data-ativo="sim"] .desenho .eixo,
   .slide[data-ativo="sim"] .desenho .depois {
     animation: none;
     stroke-dashoffset: 0;

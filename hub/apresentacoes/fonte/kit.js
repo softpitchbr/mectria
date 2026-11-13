@@ -114,7 +114,7 @@
       if (!s.querySelector(".rodape") && !s.hasAttribute("data-sem-rodape")) {
         var rodape = document.createElement("div");
         rodape.className = "rodape";
-        rodape.innerHTML = "<span data-contagem></span><span>MecTRIA</span>";
+        rodape.innerHTML = '<span data-contagem></span><span class="marca">MecTRIA</span>';
         s.appendChild(rodape);
       }
       s.querySelectorAll("[data-contagem]").forEach(function (el) {

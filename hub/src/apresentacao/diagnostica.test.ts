@@ -56,3 +56,32 @@ test("os textos do site entram sem mudar uma palavra", async () => {
     "Entendemos a máquina, o processo e o problema real. Um sistema funcionando é o ponto de partida: tudo o que vem depois precisa respeitar o que ele faz.",
   );
 });
+
+test("as linhas de centro do desenho ficam em traço-ponto, como num desenho técnico", async () => {
+  const { doc, janela, enviar, esperar } = await abrirDeck(html);
+  enviar({ tipo: "estado", slide: 3, dados: DADOS, interacoes: INTERACOES_VAZIAS });
+  await esperar();
+  const eixo = doc.querySelector('[data-slide="como-trabalhamos"] .desenho .eixo')!;
+  expect(janela.getComputedStyle(eixo).getPropertyValue("stroke-dasharray")).toBe("10 4 2 4");
+});
+
+test("nenhuma linha de centro tem pathLength (ele mediria o traço-ponto contra 1 e a linha sairia cheia)", () => {
+  for (const deck of Object.values(import.meta.glob<string>("../../apresentacoes/*.html", { query: "?raw", import: "default", eager: true }))) {
+    expect(deck).not.toMatch(/class="eixo"[^>]*pathLength|pathLength[^>]*class="eixo"/);
+  }
+});
+
+test("a marca no rodapé é MecTRIA, não em maiúsculas", async () => {
+  const { doc, janela } = await abrirDeck(html);
+  const marca = doc.querySelector('[data-slide="agenda"] .rodape .marca')!;
+  expect(marca.textContent).toBe("MecTRIA");
+  expect(janela.getComputedStyle(marca).textTransform).toBe("none");
+});
+
+test("o próximo passo não põe artigo antes do nome da empresa", async () => {
+  const { enviar, esperar, texto } = await abrirDeck(html);
+  enviar({ tipo: "estado", slide: 4, dados: { ...DADOS, empresa: "Grupo Alfa" }, interacoes: INTERACOES_VAZIAS });
+  await esperar();
+  expect(texto('[data-slide="proximo-passo"]')).toContain("Com o que vocês contaram hoje, o nosso time monta o projeto.");
+  expect(texto('[data-slide="proximo-passo"]')).not.toMatch(/\ba Grupo Alfa/);
+});
